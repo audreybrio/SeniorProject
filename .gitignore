@@ -1,0 +1,11 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+*.csproj
+*.sln
+*.suo
+*.sqlite
+/.vs
+/Marvel/Marvel/obj
+/Marvel/Marvel/bin
