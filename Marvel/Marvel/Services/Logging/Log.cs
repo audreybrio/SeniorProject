@@ -25,11 +25,28 @@ namespace Marvel.Services.Logging
 			this.user = user;
 			this.description = description;
 		}
+
+		// Reference: https://docs.microsoft.com/en-us/dotnet/api/system.object.tostring?view=net-5.0
         public override string ToString()
         {
 			string delimiter = " | ";
 			return this.timestamp.ToString() + delimiter + this.category + delimiter + 
 				   this.level + delimiter + this.user + delimiter + this.description;
         }
-	}
+
+		// Reference: https://docs.microsoft.com/en-us/dotnet/api/system.object.equals?view=net-5.0
+        public override bool Equals(object obj)
+        {
+            if ((obj == null) || ! this.GetType().Equals(obj.GetType()))
+            {
+				return false;
+            }
+			Log other = (Log) obj;
+			return other.timestamp == this.timestamp &&
+				   other.category == this.category &&
+				   other.level == this.level &&
+				   other.user == this.user &&
+				   other.description == this.description;
+        }
+    }
 }
