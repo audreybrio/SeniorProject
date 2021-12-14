@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using System.Data.SqlClient;
 
 namespace Marvel.Services.Logging
 {
@@ -121,15 +122,15 @@ namespace Marvel.Services.Logging
                     Log current = logs.Dequeue();
                     using (SqlConnection connection = new SqlConnection(dbConnectionString))
                     {
-                        string query = "INSERT INTO " + this.tableName + " (timestamp, category, layer, username, message) "
-                                                 + "VALUES (@timestamp, @category, @layer, @username, @message);";
+                        string query = "INSERT INTO " + this.tableName + " (timestamp, category, level, username, description) "
+                                                 + "VALUES (@timestamp, @category, @level, @username, @description);";
                         using (SqlCommand command = new SqlCommand(query, connection))
                         {
                             command.Parameters.AddWithValue("@timestamp", current.timestamp);
                             command.Parameters.AddWithValue("@category", current.category);
                             command.Parameters.AddWithValue("@layer", current.level);
                             command.Parameters.AddWithValue("@username", current.user);
-                            command.Parameters.AddWithValue("@message", current.message);
+                            command.Parameters.AddWithValue("@message", current.description);
                             connection.Open();
                             command.ExecuteNonQuery();
                         }
