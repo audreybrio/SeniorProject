@@ -5,16 +5,21 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data.SqlClient;
 using System.IO.Compression;
+using System.Threading;
 
 namespace Marvel.Services.Logging
 {
     public class LogArchiver
     {
+        public string sql { get; set; }
 
-        private static readonly string sql = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING");
+        public SqlConnection _connection { get; set; }
 
-        private static readonly SqlConnection _connection = new SqlConnection(sql);
-
+        public LogArchiver()
+        {
+            sql = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING");
+            _connection = new SqlConnection(sql);
+        }
 
         public async void run()
         {
@@ -55,7 +60,7 @@ namespace Marvel.Services.Logging
         {
             var current = DateTime.Now;
             var today = DateTime.Today;
-            var month = new DateTime(today.Year, today.Month, 1);
+            var month = new DateTime(today.Year, today.Month, 1, 0, 0, 0);
             var first = month.AddMonths(+1);
             var restTime = first.Date - today;
             Thread.Sleep(restTime);
@@ -65,14 +70,14 @@ namespace Marvel.Services.Logging
             return 0;
         }
 
-        private void deleteFromDB(List<int> ids)
+        public int deleteFromDB(List<int> ids)
         {
             string query = "DELETE FROM logs WHERE (logs.id IN " + String.Join(",", ids) + ")";
             SqlCommand cmd = new SqlCommand(query, _connection);
-            cmd.ExecuteReader();
+            return cmd.ExecuteNonQuery();
         }
 
-        private SqlDataReader readFromDb(DateTime cutoff)
+        public SqlDataReader readFromDb(DateTime cutoff)
         {
             string query = "SELECT * FROM logs WHERE (timestamp < " + cutoff.ToString() + ");";
             SqlCommand cmd = new SqlCommand(query, _connection);

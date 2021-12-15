@@ -10,6 +10,21 @@ namespace Tests
     public class ArchivingTests
     {
         [Fact]
+        public void TestLogArchiverConstructor()
+        {
+            // Arrange
+            LogArchiver testArchiver = null;
+
+            // Act
+            testArchiver = new LogArchiver();
+
+            // Assert
+            Assert.NotNull(testArchiver);
+            Assert.NotNull(testArchiver.sql);
+            Assert.NotNull(testArchiver._connection);
+        }
+
+        [Fact]
         public void TestReadFromDB()
         {
             // Arrange
@@ -17,11 +32,11 @@ namespace Tests
             string connectionString = null;
             connectionString = Environment.GetEnvironmentVariable("MARVELTESTCONNECTIONSTRING");
             Assert.NotNull(connectionString);
-            testArchiver.connection = new SqlConnection(connectionString);
+            testArchiver._connection = new SqlConnection(connectionString);
             SqlDataReader testReader = null;
 
             // Act
-            testReader = testArchiver.ReadFromDb(DateTime.UtcNow);
+            testReader = testArchiver.readFromDb(DateTime.UtcNow);
 
             // Assert
             Assert.NotNull(testReader);
@@ -103,7 +118,7 @@ namespace Tests
             }
 
             LogArchiver testArchiver = new LogArchiver();
-            testArchiver.connection = new SqlConnection(connectionString);
+            testArchiver._connection = new SqlConnection(connectionString);
             int result = -1;
 
             // Act
