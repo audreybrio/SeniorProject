@@ -6,8 +6,8 @@ namespace Authentication
 {
 
     // Takes in email and passcode and returns true if the credentials are correct 
-    class Authenticate
-    {
+     public class Authenticate
+     {
         public static bool Authen(string email, string passcode)
         {
             bool userExists;
@@ -25,8 +25,8 @@ namespace Authentication
     }
 
     // Validates user exists in the database
-    class Validate
-    {
+     public class Validate
+     {
         public static bool UserExist(string email, string passcode)
         {
             SqlConnection conn = new SqlConnection();
@@ -70,7 +70,7 @@ namespace Authentication
     }
 
     // Evaluates the return types 
-    class Evaluate
+    public class Evaluate
     {
 
         // Turns int into a bool
