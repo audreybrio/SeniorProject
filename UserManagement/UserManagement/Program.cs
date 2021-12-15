@@ -5,7 +5,43 @@ namespace UserManagement
 {
     public class UserManager
     {
-        public static bool DeleteUser(string username)
+
+        public static bool CreateUsers(string name, string username, string pass, string email, string passcode)
+        {
+
+            bool userExist = Validate.UserExist(username);
+            bool validUsername = false, validPasscode=false;
+            if (userExist == false)
+            {
+                int length = username.Length;
+                if (length >= 5)
+                {
+                    validUsername = Validate.ValidateUserName(username);
+                }
+                int passcodeLength = passcode.Length;
+                if(passcodeLength >= 8)
+                {
+                    validPasscode = Validate.ValidatePassword(passcode);
+                }
+                if(validUsername == true && validPasscode == true)
+                {
+                    Update.UpdateCreate(name, username, pass, email, passcode);
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+
+        }
+
+
+            public static bool DeleteUser(string username)
         {
             bool userExist = Validate.UserExist(username);
             if (userExist == true)
@@ -196,7 +232,77 @@ namespace UserManagement
             }
         }
 
+        public static bool ValidateUserName(string username)
+        {
+            int validCondition = 0;
+            foreach (char c in username)
+            {
+                if (c >= 'a' && c <= 'z')
+                {
+                    validCondition++;
+                   
+                }
+                else if (c >= '0' && c <= '9')
+                {
+                    validCondition++;
+                }
+                else
+                {
+                    char[] special = { '.', ',', '@', '!' };
+                    if (username.IndexOfAny(special) == 1)
+                    {
+                        validCondition++;
+                    }
 
+                }
+            }
+            if(validCondition == username.Length)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public static bool ValidatePassword(string password)
+        {
+            int validCondition = 0;
+            foreach (char c in password)
+            {
+                if (c >= 'a' && c <= 'z')
+                {
+                    validCondition++;
+                }
+                else if (c >= 'A' && c <= 'Z')
+                {
+                    validCondition++;
+                }
+                else if (c >= '0' && c <= '9')
+                {
+                    validCondition++;
+                    break;
+                }
+                else
+                {
+                    char[] special = { '.', ',', '@', '!', ' ' };
+                    if (password.IndexOfAny(special) == 1)
+                    {
+                        validCondition++;
+                    }
+
+                }
+            }
+            if (validCondition == password.Length)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
 
 
     }
@@ -253,6 +359,43 @@ namespace UserManagement
             cmd.ExecuteNonQuery();
         }
 
+        public static void UpdateCreate(string name, string username, string password, string email, string passcode)
+        {
+            // inserts the created user into the database
+            SqlConnection conn = new SqlConnection();
+            conn.ConnectionString = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING");
+            conn.Open();
+            int id = (int) generateID();
+            SqlCommand cmd = new SqlCommand("INSERT INTO UserTable " + "(id, name, username, password, email, passcode, role, active_status) " + "  values (@id, @name, @username, @password, @email, @passcode, @role, @active_status)", conn);
+            cmd.Parameters.AddWithValue("@id", id);
+            cmd.Parameters.AddWithValue("@name", name);
+            cmd.Parameters.AddWithValue("@username", username);
+            cmd.Parameters.AddWithValue("@password", password);
+            cmd.Parameters.AddWithValue("@email", email);
+            cmd.Parameters.AddWithValue("@passcode", passcode);
+            cmd.Parameters.AddWithValue("@role", "student");
+            cmd.Parameters.AddWithValue("@active_status", 1);
+            cmd.ExecuteNonQuery();
+        }
+
+        public static int generateID()
+        {
+            SqlConnection conn = new SqlConnection();
+            conn.ConnectionString = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING");
+            conn.Open();
+            SqlCommand cmd = new SqlCommand("SELECT MAX(id) AS ID" + " FROM UserTable", conn);
+            cmd.ExecuteNonQuery();
+            int id = (int)cmd.ExecuteScalar();
+            if (id != null)
+            {
+                return id + 1;
+            }
+            else
+            {
+                return 1;
+            }
+        }
+
 
 
     }
@@ -288,9 +431,6 @@ namespace UserManagement
 
         static void Main(string[] args)
         {
-           // string user = "jcutri";
-            //string role = "student";
-            //bool t = UserManager.UpdateRoleUser(user,role);
             
         }
     }
