@@ -39,29 +39,30 @@ namespace Rextester{
             if(GetUserRole(currentUsername) == "Admin"){
                 string fileName = "bulkops.txt"
                 string[] bulkOperLines = System.IO.File.ReadAllLines(@"C:\Users\Public\TestFolder\" + fileName);
+                
                 for(int i = 0; i < bulkOperLines.Length; i++){
                     string[] singleOperation = bulkOperLines[i].Split(' '); // [0] = operation
-                    if(singleOperation[0] == "Create User"){
+                    if(singleOperation[0] == "CreateUser"){
                         if(!UserExist(singleOperation[1])){
                             Console.WriteLine("User Created")
                         }
                     }
-                    else if(singleOperation[0] == "Delete User"){
+                    else if(singleOperation[0] == "DeleteUser"){
                         if(UserExist(singleOperation[1])){
                             Console.WriteLine("User deleted")
                         }
                     }
-                    else if(singleOperation[0] == "Update Role"){
+                    else if(singleOperation[0] == "UpdateRole"){
                         if(UserExist(singleOperation[1])){
                             Console.WriteLine("User's role updated")
                         }
                     }
-                    else if(singleOperation[0] == "Enable User"){
+                    else if(singleOperation[0] == "EnableUser"){
                         if(UserExist(singleOperation[1])){
                             Console.WriteLine("User Enabled")
                         }
                     }
-                    else if(singleOperation[0] == "Disable User"){
+                    else if(singleOperation[0] == "DisableUser"){
                         if(UserExist(singleOperation[1])){
                             Console.WriteLine("User Disabled")
                         }
