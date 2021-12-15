@@ -173,6 +173,7 @@ namespace Marvel.Services.Logging
             }
             logs = new Queue<Log>();
         }
+
         // Add a new log to the queue. Returns the number of logs successfully added.
         // Intended to be called with a discard, like so: _ = myLogWriter.AddLog(...);
         // Reference: https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/async/
@@ -193,6 +194,26 @@ namespace Marvel.Services.Logging
             }
             return result;
         }
+
+        // Add an existing log to the queue. Returns the number of logs successfully added.
+        public async Task<int> AddLog(string category, string level, string user, string description, DateTime timestamp)
+        {
+            int result = 0;
+            Log newLog = new Log(category, level, user, description, timestamp);
+            try
+            {
+                logs.Enqueue(newLog);
+                result = await this.WriteAllLogs();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("The following exception has occurred: " +
+                                    ex.GetType().FullName);
+                Console.WriteLine(ex.Message);
+            }
+            return result;
+        }
+
         public override async Task<int> WriteAllLogs()
         {
             if (logs.Count < 1)
