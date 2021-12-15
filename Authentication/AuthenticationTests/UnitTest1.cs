@@ -11,13 +11,13 @@ namespace AuthenticationTests
         public void LoginSuccessfulTest()
         {
             string email = "audrey.brio@student.csulb.edu";
-            string passcode = "1234";
+            string passcode = "hello world";
             bool log;
             log = Authenticate.Authen(email, passcode);
             Assert.True(log);
 
             string username = "abrio";
-            string password = "Pas$word1";
+            string password = "123456";
             int temp;
             temp = Validate.LoginUser(username, password);
             bool t = Evaluate.EvaluateBool(temp);
@@ -31,14 +31,14 @@ namespace AuthenticationTests
 
 
             string email = "abrio@student.csulb.edu";
-            string passcode = "1234";
+            string passcode = "hello world";
             bool log;
             log = Authenticate.Authen(email, passcode);
             Assert.True(log);
 
 
             string username = "abrio";
-            string password = "Pas$word1";
+            string password = "123456";
             int temp;
             temp = Validate.LoginUser(username, password);
             bool t = Evaluate.EvaluateBool(temp);
@@ -50,13 +50,13 @@ namespace AuthenticationTests
         public void IncorrectPasscodeTest()
         {
             string email = "audrey.brio@student.csulb.edu";
-            string passcode = "12345678";
+            string passcode = "no";
             bool log;
             log = Authenticate.Authen(email, passcode);
             Assert.True(log);
 
             string username = "abrio";
-            string password = "Pas$word1";
+            string password = "123456";
             int temp;
             temp = Validate.LoginUser(username, password);
             bool t = Evaluate.EvaluateBool(temp);
@@ -70,13 +70,13 @@ namespace AuthenticationTests
 
 
             string email = "bradley.nickle@student.csulb.edu";
-            string passcode = "12345";
+            string passcode = "marvel fan";
             bool log;
             log = Authenticate.Authen(email, passcode);
             Assert.True(log);
 
             string username = "bnickle";
-            string password = "Pas$word2";
+            string password = "987654";
             int temp;
             temp = Validate.LoginUser(username, password);
             bool t = Evaluate.EvaluateBool(temp);
@@ -89,13 +89,13 @@ namespace AuthenticationTests
         {
 
             string email = "michael.kriesel@student.csulb.edu";
-            string passcode = "123456";
+            string passcode = "super man";
             bool log;
             log = Authenticate.Authen(email, passcode);
             Assert.True(log);
 
             string username = "mk";
-            string password = "Pas$word3";
+            string password = "Password!";
             int temp;
             temp = Validate.LoginUser(username, password);
             bool t = Evaluate.EvaluateBool(temp);
@@ -107,13 +107,13 @@ namespace AuthenticationTests
         public void IncorrectPasswordTest()
         {
             string email = "michael.kriesel@student.csulb.edu";
-            string passcode = "123456";
+            string passcode = "super man";
             bool log;
             log = Authenticate.Authen(email, passcode);
             Assert.True(log);
 
             string username = "mkriesel";
-            string password = "Pas$word1";
+            string password = "Password1";
             int temp;
             temp = Validate.LoginUser(username, password);
             bool t = Evaluate.EvaluateBool(temp);

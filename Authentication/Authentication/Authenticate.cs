@@ -15,6 +15,7 @@ namespace Authentication
             if (userExists == false)
             {
                 return false;
+
             }
             else
             {
