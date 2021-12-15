@@ -14,8 +14,8 @@ namespace DeleteTesting
 
 
             string user = "mkries";
-            bool t = UserManager.DeleteUser(user);
-            Assert.True(t);
+            bool isDeleted = UserManager.DeleteUser(user);
+            Assert.True(isDeleted);
 
 
         }
@@ -27,8 +27,8 @@ namespace DeleteTesting
 
 
             string user = "mkriesel";
-            bool t = UserManager.DeleteUser(user);
-            Assert.True(t);
+            bool isDeleted = UserManager.DeleteUser(user);
+            Assert.True(isDeleted);
 
 
         }

@@ -28,6 +28,28 @@ namespace UserManagement
             }
 
         }
+
+        public static bool EnableUser(string username)
+        {
+            bool userExist = Validate.userExist(username);
+            if(userExist == true)
+            {
+                bool isDisabled = Validate.CheckDisabled(username);
+                if (isDisabled == true)
+                {
+                    Update.UpdateEnable(username);
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 
     public class Authorize
@@ -61,6 +83,26 @@ namespace UserManagement
             }
         }
 
+        public static bool CheckDisabled(string username)
+        {
+            SqlConnection conn = new SqlConnection();
+            conn.ConnectionString = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING");
+            conn.Open();
+            SqlCommand cmd = new SqlCommand("SELECT active_status" + " from UserTable" + " WHERE UserTable.username = @username", conn);
+            cmd.Parameters.AddWithValue("@username", username);
+            cmd.ExecuteNonQuery();
+            bool active_status = (bool)cmd.ExecuteScalar();
+            if (active_status == false)
+            { 
+                return true;
+            }
+            else 
+            {
+                return false;
+
+            }
+
+        }
     }
 
     public class Update
@@ -81,6 +123,17 @@ namespace UserManagement
             count = (int)cmd2.ExecuteScalar();
             return count;
         }
+
+        public static void UpdateEnable(string username)
+        {
+            SqlConnection conn = new SqlConnection();
+            conn.ConnectionString = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING");
+            conn.Open();
+            SqlCommand cmd = new SqlCommand("UPDATE UserTable" + " SET active_status = @newStatus" + " WHERE username = @username", conn);
+            cmd.Parameters.AddWithValue("@newStatus", 1);
+            cmd.Parameters.AddWithValue("@username", username);
+            cmd.ExecuteNonQuery();
+         }
     }
 
     public class Evaluate
@@ -114,7 +167,8 @@ namespace UserManagement
 
         static void Main(string[] args)
         {
-
+           // string user = "bnickle";
+           // bool t = UserManager.EnableUser(user);
             
         }
     }

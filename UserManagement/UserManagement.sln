@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserManagement", "UserManag
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeleteTesting", "DeleteTesting\DeleteTesting.csproj", "{5C3C19F6-5B0F-42E5-86A3-AA0C2BC68A93}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EnableTests", "EnableTests\EnableTests.csproj", "{55F477CE-55E2-481F-A096-2DBAD42E1E18}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{5C3C19F6-5B0F-42E5-86A3-AA0C2BC68A93}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5C3C19F6-5B0F-42E5-86A3-AA0C2BC68A93}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5C3C19F6-5B0F-42E5-86A3-AA0C2BC68A93}.Release|Any CPU.Build.0 = Release|Any CPU
+		{55F477CE-55E2-481F-A096-2DBAD42E1E18}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55F477CE-55E2-481F-A096-2DBAD42E1E18}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55F477CE-55E2-481F-A096-2DBAD42E1E18}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{55F477CE-55E2-481F-A096-2DBAD42E1E18}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
