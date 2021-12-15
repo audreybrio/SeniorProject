@@ -37,7 +37,7 @@ namespace Rextester{
         static void Main(string[] args){
             string currentUsername = "abrio"
             if(GetUserRole(currentUsername) == "Admin"){
-                string fileName = "B_Operations.txt"
+                string fileName = "bulkops.txt"
                 string[] bulkOperLines = System.IO.File.ReadAllLines(@"C:\Users\Public\TestFolder\" + fileName);
                 for(int i = 0; i < bulkOperLines.Length; i++){
                     string[] singleOperation = bulkOperLines[i].Split(' '); // [0] = operation
