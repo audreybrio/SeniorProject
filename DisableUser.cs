@@ -1,8 +1,8 @@
 using System;
 using System.Data.SqlClient;
 
-namespace Enable{
-    public class EnableUser{
+namespace Disable{
+    public class DisableUser{
 
         public static string getUserRole(string username)
         {
@@ -32,7 +32,7 @@ namespace Enable{
             }
         }
 
-        public static bool isDisable(string username){
+        public static bool isEnable(string username){
             SqlConnection conn = new SqlConnection();
             conn.ConnectionString = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING");
             conn.Open();
@@ -41,10 +41,10 @@ namespace Enable{
             cmd.ExecuteNonQuery();
             int active_status = -1;
             active_status = (int)cmd.ExecuteScalar();
-            if(active_status == 0){
+            if(active_status == 1){
                 return true;
             }
-            else if(active_status == 1){
+            else if(active_status == 0){
                 return false;
             }
             else{
@@ -53,12 +53,12 @@ namespace Enable{
             }
         }
 
-        public static void userEnable(string username){
+        public static void userDisable(string username){
             SqlConnection conn = new SqlConnection();
             conn.ConnectionString = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING");
             conn.Open();
             SqlCommand cmd = new SqlCommand("UPDATE UserTable" + " SET active_status = @newStatus" + " WHERE username = @username", conn);
-            cmd.Parameters.AddWithValue("@newStatus", 1);
+            cmd.Parameters.AddWithValue("@newStatus", 0);
             cmd.Parameters.AddWithValue("@username", username);
             cmd.ExecuteNonQuery();
         }
@@ -70,15 +70,15 @@ namespace Enable{
                 SqlConnection conn = new SqlConnection();
                 conn.ConnectionString = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING");
                 conn.Open();
-                Console.WriteLine("Enter username to enable account: ");
+                Console.WriteLine("Enter username to disable account: ");
                 string userSelected = Console.ReadLine();
                 if(userExist(userSelected) == true){
-                    if(isDisable(userSelected)){
-                        userEnable(userSelected);
+                    if(isEnable(userSelected)){
+                        userDisable(userSelected);
                     }
                 }
                 else{
-                    Console.WriteLine("User status cannot be changed to ENABLE");
+                    Console.WriteLine("User status cannot be changed to DISABLE");
                 }
             }
         }
