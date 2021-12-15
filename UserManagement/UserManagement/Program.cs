@@ -7,7 +7,7 @@ namespace UserManagement
     {
         public static bool DeleteUser(string username)
         {
-            bool userExist = Validate.userExist(username);
+            bool userExist = Validate.UserExist(username);
             if (userExist == true)
             {
                 int temp;
@@ -31,7 +31,7 @@ namespace UserManagement
 
         public static bool EnableUser(string username)
         {
-            bool userExist = Validate.userExist(username);
+            bool userExist = Validate.UserExist(username);
             if(userExist == true)
             {
                 bool isDisabled = Validate.CheckDisabled(username);
@@ -54,7 +54,7 @@ namespace UserManagement
 
         public static bool DisableUser(string username)
         {
-            bool userExist = Validate.userExist(username);
+            bool userExist = Validate.UserExist(username);
             if (userExist == true)
             {
                 bool isEnabled = Validate.CheckEnabled(username);
@@ -75,6 +75,30 @@ namespace UserManagement
         }
 
 
+        public static bool UpdateRoleUser(string username, string role)
+        {
+            bool userExist = Validate.UserExist(username);
+            if (userExist == true)
+            {
+                bool isUpdated = Validate.UserRoleCheck(username, role);
+                if (isUpdated == true)
+                {
+                    Update.UpdateRole(username, role);
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+
+            else
+            {
+                return false;
+            }
+        }
+
+
     }
 
     public class Authorize
@@ -87,7 +111,7 @@ namespace UserManagement
     }
     public class Validate
     {
-        public static bool userExist(string username)
+        public static bool UserExist(string username)
         {
             SqlConnection conn = new SqlConnection();
             conn.ConnectionString = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING");
@@ -151,6 +175,28 @@ namespace UserManagement
         }
 
 
+        public static bool UserRoleCheck(string username, string role)
+        {
+            SqlConnection conn = new SqlConnection();
+            conn.ConnectionString = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING");
+            conn.Open();
+            SqlCommand cmd = new SqlCommand("SELECT COUNT (username)" + " from UserTable" + " WHERE UserTable.username = @username AND UserTable.role = @role", conn);
+            cmd.Parameters.AddWithValue("@username", username);
+            cmd.Parameters.AddWithValue("@role", role);
+            SqlDataReader reader = cmd.ExecuteReader();
+            reader.Close();
+            int count = (int)cmd.ExecuteScalar();
+            if (count == 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+
 
 
     }
@@ -196,6 +242,17 @@ namespace UserManagement
             cmd.ExecuteNonQuery();
         }
 
+        public static void UpdateRole(string username, string newRole)
+        {
+            SqlConnection conn = new SqlConnection();
+            conn.ConnectionString = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING");
+            conn.Open();
+            SqlCommand cmd = new SqlCommand("UPDATE UserTable" + " SET role = @role" + " WHERE username = @username", conn);
+            cmd.Parameters.AddWithValue("@role", newRole);
+            cmd.Parameters.AddWithValue("@username", username);
+            cmd.ExecuteNonQuery();
+        }
+
 
 
     }
@@ -231,8 +288,9 @@ namespace UserManagement
 
         static void Main(string[] args)
         {
-         //   string user = "jcutri";
-         //   bool t = UserManager.DisableUser(user);
+           // string user = "jcutri";
+            //string role = "student";
+            //bool t = UserManager.UpdateRoleUser(user,role);
             
         }
     }

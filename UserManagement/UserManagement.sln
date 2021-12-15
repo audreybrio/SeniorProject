@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EnableTests", "EnableTests\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DisableTesting", "DisableTesting\DisableTesting.csproj", "{DC175C41-E651-42CA-9EFD-C94DECAD3891}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UpdateTesting", "UpdateTesting\UpdateTesting.csproj", "{842CBA4D-D2E7-406D-9CBE-BCFB110E90EE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{DC175C41-E651-42CA-9EFD-C94DECAD3891}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DC175C41-E651-42CA-9EFD-C94DECAD3891}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DC175C41-E651-42CA-9EFD-C94DECAD3891}.Release|Any CPU.Build.0 = Release|Any CPU
+		{842CBA4D-D2E7-406D-9CBE-BCFB110E90EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{842CBA4D-D2E7-406D-9CBE-BCFB110E90EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{842CBA4D-D2E7-406D-9CBE-BCFB110E90EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{842CBA4D-D2E7-406D-9CBE-BCFB110E90EE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
