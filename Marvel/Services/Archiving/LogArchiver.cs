@@ -10,11 +10,15 @@ namespace Marvel.Services.Logging
 {
     public class LogArchiver
     {
+        private static string sql { get; set; }
 
-        private static readonly string sql = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING");
+        public static SqlConnection _connection { get; set; }
 
-        private static readonly SqlConnection _connection = new SqlConnection(sql);
-
+        public LogArchiver()
+        {
+            sql = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING");
+            _connection = new SqlConnection(sql);
+        }
 
         public async void run()
         {
