@@ -53,7 +53,7 @@ namespace Enable{
             }
         }
 
-        public static void userEnable(string username){
+        public static bool userEnable(string username){
             SqlConnection conn = new SqlConnection();
             conn.ConnectionString = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING");
             conn.Open();
@@ -61,6 +61,7 @@ namespace Enable{
             cmd.Parameters.AddWithValue("@newStatus", 1);
             cmd.Parameters.AddWithValue("@username", username);
             cmd.ExecuteNonQuery();
+            return true;
         }
 
         // Main 

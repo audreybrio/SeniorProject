@@ -53,7 +53,7 @@ namespace Disable{
             }
         }
 
-        public static void userDisable(string username){
+        public static bool userDisable(string username){
             SqlConnection conn = new SqlConnection();
             conn.ConnectionString = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING");
             conn.Open();
@@ -61,6 +61,7 @@ namespace Disable{
             cmd.Parameters.AddWithValue("@newStatus", 0);
             cmd.Parameters.AddWithValue("@username", username);
             cmd.ExecuteNonQuery();
+            return true;
         }
 
         // Main 
