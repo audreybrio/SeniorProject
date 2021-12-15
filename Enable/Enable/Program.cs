@@ -29,7 +29,16 @@ namespace Enable
             int count = (int)cmd.ExecuteScalar();
             if (count > 0)
             {
-                return true;
+                bool isDisabled = isDisable(username);
+                if (isDisabled == true)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+               
             }
             else
             {
@@ -48,6 +57,7 @@ namespace Enable
             bool active_status = (bool) cmd.ExecuteScalar();
             if (active_status == false)
             {
+                userEnable(username);
                 return true;
             }
             else if (active_status == true)
@@ -76,26 +86,7 @@ namespace Enable
         // Main 
         static void Main(string[] args)
         {
-            string CurrentUsername = "abrio";
-            if (getUserRole(CurrentUsername) == "admin")
-            {
-                SqlConnection conn = new SqlConnection();
-                conn.ConnectionString = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING");
-                conn.Open();
-                Console.WriteLine("Enter username to enable account: ");
-                string userSelected = Console.ReadLine();
-                if (userExist(userSelected) == true)
-                {
-                    if (isDisable(userSelected) == true)
-                    {
-                        userEnable(userSelected);
-                    }
-                }
-                else
-                {
-                    Console.WriteLine("User status cannot be changed to DISABLE");
-                }
-            }
+
         }
     }
 }
