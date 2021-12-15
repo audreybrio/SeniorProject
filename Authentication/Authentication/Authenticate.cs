@@ -1,15 +1,18 @@
 ﻿using System;
 using System.Data.SqlClient;
 
+// Authenticate a user to log into the system 
 namespace Authentication
 {
+
+    // Takes in email and passcode and returns true if the credentials are correct 
     class Authenticate
     {
         public static bool Authen(string email, string passcode)
         {
-            bool exists;
-            exists = Validate.UserExist(email, passcode);
-            if (exists == false)
+            bool userExists;
+            userExists = Validate.UserExist(email, passcode);
+            if (userExists == false)
             {
                 return false;
             }
@@ -21,7 +24,7 @@ namespace Authentication
         }
     }
 
-
+    // Validates user exists in the database
     class Validate
     {
         public static bool UserExist(string email, string passcode)
@@ -33,11 +36,11 @@ namespace Authentication
             cmd.Parameters.AddWithValue("@email", email);
             cmd.Parameters.AddWithValue("@passcode", passcode);
             SqlDataReader reader = cmd.ExecuteReader();
-            int count = 0;
+            int rowCount = 0;
             reader.Close();
-            count = (int)cmd.ExecuteScalar();
+            rowCount = (int)cmd.ExecuteScalar();
 
-            if (count > 0)
+            if (rowCount > 0)
             {
                 return true;
             }
@@ -47,7 +50,8 @@ namespace Authentication
             }
         }
 
-        public static int loginUser(string username, string password)
+        // Validates user has correct username and password to log into the system
+        public static int LoginUser(string username, string password)
         {
             SqlConnection conn = new SqlConnection();
             conn.ConnectionString = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING");
@@ -56,21 +60,21 @@ namespace Authentication
             cmd.Parameters.AddWithValue("@username", username);
             cmd.Parameters.AddWithValue("@password", password);
             SqlDataReader reader = cmd.ExecuteReader();
-            int count = 0;
+            int rowCount = 0;
             reader.Close();
-            count = (int)cmd.ExecuteScalar();
-            return count;
+            rowCount = (int)cmd.ExecuteScalar();
+            return rowCount;
 
         }
 
     }
 
-
+    // Evaluates the return types 
     class Evaluate
     {
 
-
-        public static bool Eval(int rowsAffected)
+        // Turns int into a bool
+        public static bool EvaluateBool(int rowsAffected)
         {
             if (rowsAffected > 0)
             {
@@ -82,86 +86,24 @@ namespace Authentication
             }
         }
 
-        public static string Eval(bool affected)
+        // Turns bool into string 
+        public static string EvaluateString(bool rowAffected)
         {
-            if (affected == true)
+            if (rowAffected == true)
             {
-                string a = "User Logged in Successfully.";
-                return a;
+                string successCase = "User Logged in Successfully.";
+                return successCase;
             }
             else
             {
-                string a = "Error. Username/Password Incorrect.";
-                return a;
+                string failureCase = "Error. Username/Password Incorrect.";
+                return failureCase;
             }
         }
 
+        // Main 
         static void Main(string[] args)
         {
-            SqlConnection conn = new SqlConnection();
-            conn.ConnectionString = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING");
-            conn.Open();
-            SqlCommand cmd = new SqlCommand("Insert into UserTable" + "(id, name, username, password, email, passcode, role, active_status) " + "values (@id, @name, @username, @password, @email, @passcode, @role, @active_status)", conn);
-            cmd.Parameters.AddWithValue("@id", 1);
-            cmd.Parameters.AddWithValue("@name", "Audrey Brio");
-            cmd.Parameters.AddWithValue("@username", "abrio");
-            cmd.Parameters.AddWithValue("@password", "Pas$word1");
-            cmd.Parameters.AddWithValue("@email", "audrey.brio@student.csulb.edu");
-            cmd.Parameters.AddWithValue("@passcode", "1234");
-            cmd.Parameters.AddWithValue("@role", "admin");
-            cmd.Parameters.AddWithValue("@active_status", 1);
-            SqlCommand cmd2 = new SqlCommand("Insert into UserTable" + "(id, name, username, password, email, passcode, role, active_status) " + "values (@id, @name, @username, @password, @email, @passcode, @role, @active_status)", conn);
-            cmd2.Parameters.AddWithValue("@id", 2);
-            cmd2.Parameters.AddWithValue("@name", "Bradly Nickle");
-            cmd2.Parameters.AddWithValue("@username", "bnickle");
-            cmd2.Parameters.AddWithValue("@password", "Pas$word2");
-            cmd2.Parameters.AddWithValue("@email", "bradly.nickle@student.csulb.edu");
-            cmd2.Parameters.AddWithValue("@passcode", "12345");
-            cmd2.Parameters.AddWithValue("@role", "student");
-            cmd2.Parameters.AddWithValue("@active_status", 1);
-            cmd.ExecuteNonQuery();
-            cmd2.ExecuteNonQuery();
-            Console.WriteLine("Enter email: ");
-            string email = Console.ReadLine();
-            Console.WriteLine("Enter passcode: ");
-            string passcode = Console.ReadLine();
-            bool log;
-            log = Authenticate.Authen(email, passcode);
-            if (log == true)
-            {
-                Console.WriteLine("Passcode correct, sending password to email.");
-                int count = 1;
-                while (count <= 5)
-                {
-                    Console.WriteLine("Enter username: ");
-                    string username = Console.ReadLine();
-                    Console.WriteLine("Enter password: ");
-                    string password = Console.ReadLine();
-                    int temp;
-                    temp = Validate.loginUser(username, password);
-                    bool t = Eval(temp);
-                    if (t == true)
-                    {
-                        string a = Eval(t);
-                        Console.WriteLine($"{a}");
-                        break;
-                    }
-                    else
-                    {
-                        string a = Eval(t);
-                        Console.WriteLine($"{a}");
-                        count++;
-                    }
-                }
-                if (count > 5)
-                {
-                    Console.WriteLine("Error: User attempted more than 5 tries. Account is disbled.");
-                }
-            }
-            else
-            {
-                Console.WriteLine("Email/Passcode Incorrect.");
-            }
 
         }
     }
