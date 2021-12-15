@@ -10,11 +10,15 @@ namespace Marvel.Services.Logging
 {
     public class LogArchiver
     {
+        private static string sql { get; set; }
 
-        private static readonly string sql = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING");
+        public static SqlConnection _connection { get; set; }
 
-        private static readonly SqlConnection _connection = new SqlConnection(sql);
-
+        public LogArchiver()
+        {
+            sql = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING");
+            _connection = new SqlConnection(sql);
+        }
 
         public async void run()
         {
@@ -65,14 +69,14 @@ namespace Marvel.Services.Logging
             return 0;
         }
 
-        private void deleteFromDB(List<int> ids)
+        public void deleteFromDB(List<int> ids)
         {
             string query = "DELETE FROM logs WHERE (logs.id IN " + String.Join(",", ids) + ")";
             SqlCommand cmd = new SqlCommand(query, _connection);
             cmd.ExecuteReader();
         }
 
-        private SqlDataReader readFromDb(DateTime cutoff)
+        public SqlDataReader readFromDb(DateTime cutoff)
         {
             string query = "SELECT * FROM logs WHERE (timestamp < " + cutoff.ToString() + ");";
             SqlCommand cmd = new SqlCommand(query, _connection);
