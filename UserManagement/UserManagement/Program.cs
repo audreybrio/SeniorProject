@@ -466,4 +466,55 @@ namespace UserManagement
             
         }
     }
+
+    // Bulk Operations 
+    public class BulkOperations
+    {
+        public static void BulkOps(string[] args)
+        {
+
+            string fileName = "bulkops.txt";
+            string[] bulkOperLines = System.IO.File.ReadAllLines(@"C:\Users\Public\TestFolder\" + fileName);
+            for (int i = 0; i < bulkOperLines.Length; i++)
+            {
+                string[] singleOperation = bulkOperLines[i].Split(' '); // [0] = operation
+                if (singleOperation[0] == "Create User")
+                {
+                    if (!Validate.UserExist(singleOperation[1]))
+                    {
+                        Console.WriteLine("User Created");
+                    }
+                }
+                else if (singleOperation[0] == "Delete User")
+                {
+                    if (Validate.UserExist(singleOperation[1]))
+                    {
+                        Console.WriteLine("User deleted");
+                    }
+                }
+                else if (singleOperation[0] == "Update Role")
+                {
+                    if (Validate.UserExist(singleOperation[1]))
+                    {
+                        Console.WriteLine("User's role updated");
+                    }
+                }
+                else if (singleOperation[0] == "Enable User")
+                {
+                    if (Validate.UserExist(singleOperation[1]))
+                    {
+                        Console.WriteLine("User Enabled");
+                    }
+                }
+                else if (singleOperation[0] == "Disable User")
+                {
+                    if (Validate.UserExist(singleOperation[1]))
+                    {
+                        Console.WriteLine("User Disabled");
+                    }
+                }
+
+            }
+        }
+    }
 }
