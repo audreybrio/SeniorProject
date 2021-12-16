@@ -1,0 +1,16 @@
+C:\Users\audre\OneDrive\Documents\GitHub\SeniorProject\UserAcc\UserAcc\bin\Debug\net5.0\UserAcc.exe
+C:\Users\audre\OneDrive\Documents\GitHub\SeniorProject\UserAcc\UserAcc\bin\Debug\net5.0\UserAcc.deps.json
+C:\Users\audre\OneDrive\Documents\GitHub\SeniorProject\UserAcc\UserAcc\bin\Debug\net5.0\UserAcc.runtimeconfig.json
+C:\Users\audre\OneDrive\Documents\GitHub\SeniorProject\UserAcc\UserAcc\bin\Debug\net5.0\UserAcc.runtimeconfig.dev.json
+C:\Users\audre\OneDrive\Documents\GitHub\SeniorProject\UserAcc\UserAcc\bin\Debug\net5.0\UserAcc.dll
+C:\Users\audre\OneDrive\Documents\GitHub\SeniorProject\UserAcc\UserAcc\bin\Debug\net5.0\ref\UserAcc.dll
+C:\Users\audre\OneDrive\Documents\GitHub\SeniorProject\UserAcc\UserAcc\bin\Debug\net5.0\UserAcc.pdb
+C:\Users\audre\OneDrive\Documents\GitHub\SeniorProject\UserAcc\UserAcc\obj\Debug\net5.0\UserAcc.csproj.AssemblyReference.cache
+C:\Users\audre\OneDrive\Documents\GitHub\SeniorProject\UserAcc\UserAcc\obj\Debug\net5.0\UserAcc.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\audre\OneDrive\Documents\GitHub\SeniorProject\UserAcc\UserAcc\obj\Debug\net5.0\UserAcc.AssemblyInfoInputs.cache
+C:\Users\audre\OneDrive\Documents\GitHub\SeniorProject\UserAcc\UserAcc\obj\Debug\net5.0\UserAcc.AssemblyInfo.cs
+C:\Users\audre\OneDrive\Documents\GitHub\SeniorProject\UserAcc\UserAcc\obj\Debug\net5.0\UserAcc.csproj.CoreCompileInputs.cache
+C:\Users\audre\OneDrive\Documents\GitHub\SeniorProject\UserAcc\UserAcc\obj\Debug\net5.0\UserAcc.dll
+C:\Users\audre\OneDrive\Documents\GitHub\SeniorProject\UserAcc\UserAcc\obj\Debug\net5.0\ref\UserAcc.dll
+C:\Users\audre\OneDrive\Documents\GitHub\SeniorProject\UserAcc\UserAcc\obj\Debug\net5.0\UserAcc.pdb
+C:\Users\audre\OneDrive\Documents\GitHub\SeniorProject\UserAcc\UserAcc\obj\Debug\net5.0\UserAcc.genruntimeconfig.cache
