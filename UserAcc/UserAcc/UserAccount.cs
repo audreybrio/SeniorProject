@@ -2,15 +2,15 @@
 
 namespace UserAcc
 {
-    class UserAccount
+    public class UserAccount
     {
-        private string name;
-        private string username;
-        private string password;
-        private string email;
-        private string passcode; 
-        private string role;
-        private bool active;
+        public string name;
+        public string username;
+        public string password;
+        public string email;
+        public string passcode; 
+        public string role;
+        public bool active;
  
 
         public UserAccount(string n, string u, string p, string e, string pass, string r, bool a)
@@ -36,11 +36,6 @@ namespace UserAcc
 
         static void Main(string[] args)
         {
-            UserAccount aud = new UserAccount("Audrey Brio", "abrio", "Pas$word1", "audrey.brio@student.csulb.edu", "1234", "Admin", true);
-            Console.WriteLine(aud.name + " " + aud.username + " " + aud.password + " " + aud.email + " " + aud.passcode+ " " + aud.role + " "+ aud.active);
-            aud.email = "michael.kriesel@student.csulb.edu";
-            aud.username = "bncikle";
-            Console.WriteLine(aud.name + " " + aud.username + " " + aud.password + " " + aud.email + " " + aud.passcode + " " + aud.role + " " + aud.active);
         }
     }
 }
