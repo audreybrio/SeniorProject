@@ -6,6 +6,7 @@ namespace UserManagement
     public class UserManager
     {
 
+        // Checks if user exists, if not validates username and passcode are valid and creates new user
         public static bool CreateUsers(string name, string username, string pass, string email, string passcode)
         {
 
@@ -40,7 +41,7 @@ namespace UserManagement
 
         }
 
-
+            // Checks if user exists, and if they do deletes them
             public static bool DeleteUser(string username)
         {
             bool userExist = Validate.UserExist(username);
@@ -65,6 +66,7 @@ namespace UserManagement
 
         }
 
+        // Checks if user exists, and if they do validates they are disabled, and enables user
         public static bool EnableUser(string username)
         {
             bool userExist = Validate.UserExist(username);
@@ -87,7 +89,7 @@ namespace UserManagement
             }
         }
 
-
+        // Checks if user exists, and if they do validates they are enabled, and disables user 
         public static bool DisableUser(string username)
         {
             bool userExist = Validate.UserExist(username);
@@ -110,7 +112,7 @@ namespace UserManagement
             }
         }
 
-
+        // Checks if user exists, and if they do validates their role, and updates user to new role
         public static bool UpdateRoleUser(string username, string role)
         {
             bool userExist = Validate.UserExist(username);
@@ -137,16 +139,35 @@ namespace UserManagement
 
     }
 
+    // Authorzies user is an admin 
     public class Authorize
     {
         static bool authorize(string username)
+        
         {
-            //authorize
-            return true;
+            SqlConnection conn = new SqlConnection();
+            conn.ConnectionString = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING");
+            conn.Open();
+            SqlCommand cmd = new SqlCommand("SELECT role" + " from UserTable " + "WHERE UserTable.role = role", conn);
+            cmd.ExecuteNonQuery();
+            string role = "";
+            role = (string)cmd.ExecuteScalar();
+
+            if (role == "admin" || role == "Admin")
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+            
         }
     }
+
     public class Validate
     {
+        // Checks if user exists in the database already
         public static bool UserExist(string username)
         {
             SqlConnection conn = new SqlConnection();
@@ -168,6 +189,7 @@ namespace UserManagement
             }
         }
 
+        // Checks is user is disabled (active status = 0)
         public static bool CheckDisabled(string username)
         {
             SqlConnection conn = new SqlConnection();
@@ -189,7 +211,7 @@ namespace UserManagement
 
         }
 
-
+        // Checks if user is enabled (active status =1)
         public static bool CheckEnabled(string username)
         {
             SqlConnection conn = new SqlConnection();
@@ -210,7 +232,7 @@ namespace UserManagement
           
         }
 
-
+        // Checks if user role is same as what trying to update to
         public static bool UserRoleCheck(string username, string role)
         {
             SqlConnection conn = new SqlConnection();
@@ -232,6 +254,7 @@ namespace UserManagement
             }
         }
 
+        // Checks if username is valid 
         public static bool ValidateUserName(string username)
         {
             int validCondition = 0;
@@ -266,6 +289,7 @@ namespace UserManagement
             }
         }
 
+        // Checks if passcode is valid 
         public static bool ValidatePassword(string password)
         {
             int validCondition = 0;
@@ -309,6 +333,7 @@ namespace UserManagement
 
     public class Update
     {
+        // Updates database to delete user 
         public static int UpdateDelete(string username)
         {
             SqlConnection conn = new SqlConnection();
@@ -326,6 +351,7 @@ namespace UserManagement
             return count;
         }
 
+        // Updates database to show user is enabled 
         public static void UpdateEnable(string username)
         {
             SqlConnection conn = new SqlConnection();
@@ -337,6 +363,7 @@ namespace UserManagement
             cmd.ExecuteNonQuery();
          }
 
+        // Updates database to show user is disabled 
         public static void UpdateDisable(string username)
         {
             SqlConnection conn = new SqlConnection();
@@ -348,6 +375,7 @@ namespace UserManagement
             cmd.ExecuteNonQuery();
         }
 
+        // Updates users role in the database
         public static void UpdateRole(string username, string newRole)
         {
             SqlConnection conn = new SqlConnection();
@@ -359,6 +387,7 @@ namespace UserManagement
             cmd.ExecuteNonQuery();
         }
 
+        // Updates database to create new user 
         public static void UpdateCreate(string name, string username, string password, string email, string passcode)
         {
             // inserts the created user into the database
@@ -378,6 +407,7 @@ namespace UserManagement
             cmd.ExecuteNonQuery();
         }
 
+        // Generates next ID number in database
         public static int generateID()
         {
             SqlConnection conn = new SqlConnection();
@@ -402,6 +432,7 @@ namespace UserManagement
 
     public class Evaluate
     {
+        // Evaluates rows affected to a bool value 
         public static bool Eval(int rowsAffected)
         {
             if (rowsAffected == 0)
@@ -414,16 +445,17 @@ namespace UserManagement
             }
         }
 
+        // evaluates bool value to string.
         public static string Eval(bool affected)
         {
             if (affected == true)
             {
-                string a = "successfully deleted.";
+                string a = "Successful Changes.";
                 return a;
             }
             else
             {
-                string a = "Error: ";
+                string a = "Error";
                 return a;
             }
         }
