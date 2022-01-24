@@ -88,5 +88,9 @@ namespace Tests
 
             Assert.Equal(1, await result);
         }
+
+        [Fact]
+        public async void MyNewestTest()
+        { }
     }
 }
