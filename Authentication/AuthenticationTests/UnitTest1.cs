@@ -34,7 +34,7 @@ namespace AuthenticationTests
             string passcode = "hello world";
             bool log;
             log = Authenticate.Authen(email, passcode);
-            Assert.True(log);
+            Assert.False(log);
 
 
             string username = "abrio";
@@ -53,7 +53,7 @@ namespace AuthenticationTests
             string passcode = "no";
             bool log;
             log = Authenticate.Authen(email, passcode);
-            Assert.True(log);
+            Assert.False(log);
 
             string username = "abrio";
             string password = "123456";
@@ -73,14 +73,8 @@ namespace AuthenticationTests
             string passcode = "marvel fan";
             bool log;
             log = Authenticate.Authen(email, passcode);
-            Assert.True(log);
+            Assert.False(log);
 
-            string username = "bnickle";
-            string password = "987654";
-            int temp;
-            temp = Validate.LoginUser(username, password);
-            bool t = Evaluate.EvaluateBool(temp);
-            Assert.True(t);
         }
 
         // Login Failure due to incorrect username
@@ -99,7 +93,7 @@ namespace AuthenticationTests
             int temp;
             temp = Validate.LoginUser(username, password);
             bool t = Evaluate.EvaluateBool(temp);
-            Assert.True(t);
+            Assert.False(t);
         }
 
         // Login failure due to incorrect password
@@ -117,7 +111,7 @@ namespace AuthenticationTests
             int temp;
             temp = Validate.LoginUser(username, password);
             bool t = Evaluate.EvaluateBool(temp);
-            Assert.True(t);
+            Assert.False(t);
         }
     }
 }

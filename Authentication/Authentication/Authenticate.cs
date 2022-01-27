@@ -33,9 +33,14 @@ namespace Authentication
             SqlConnection conn = new SqlConnection();
             conn.ConnectionString = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING");
             conn.Open();
-            SqlCommand cmd = new SqlCommand("SELECT COUNT (username)" + " from UserTable " + "WHERE UserTable.email = @email AND UserTable.passcode = @passcode", conn);
+
+            // deal with hashes
+
+
+            SqlCommand cmd = new SqlCommand("SELECT COUNT (username)" + " from UserTable " + "WHERE UserTable.email = @email AND UserTable.passcode = @passcode AND UserTable.active_status = @active", conn);
             cmd.Parameters.AddWithValue("@email", email);
             cmd.Parameters.AddWithValue("@passcode", passcode);
+            cmd.Parameters.AddWithValue("active", true);
             SqlDataReader reader = cmd.ExecuteReader();
             int rowCount = 0;
             reader.Close();
@@ -57,6 +62,9 @@ namespace Authentication
             SqlConnection conn = new SqlConnection();
             conn.ConnectionString = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING");
             conn.Open();
+            // deal with hashes
+
+
             SqlCommand cmd = new SqlCommand("SELECT COUNT (username)" + " from UserTable " + "WHERE UserTable.username = @username AND UserTable.password = @password", conn);
             cmd.Parameters.AddWithValue("@username", username);
             cmd.Parameters.AddWithValue("@password", password);
@@ -105,7 +113,17 @@ namespace Authentication
         // Main 
         static void Main(string[] args)
         {
-
+            string email = "audrey.brio@student.csulb.edu";
+            string passcode = "hello world";
+            bool log;
+            log = Authenticate.Authen(email, passcode);
+            
+            string username = "abrio";
+            string password = "12345";
+            int temp;
+            temp = Validate.LoginUser(username, password);
+            bool t = Evaluate.EvaluateBool(temp);
+            Console.WriteLine(t);
         }
     }
 }
