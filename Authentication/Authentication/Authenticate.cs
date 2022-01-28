@@ -113,13 +113,13 @@ namespace Authentication
         // Main 
         static void Main(string[] args)
         {
-            string email = "audrey.brio@student.csulb.edu";
-            string passcode = "hello world";
+            string email = "michael.kriesel@student.csulb.edu";
+            string passcode = "super man";
             bool log;
             log = Authenticate.Authen(email, passcode);
-            
-            string username = "abrio";
-            string password = "12345";
+
+            string username = "mkriesel";
+            string password = "Password1";
             int temp;
             temp = Validate.LoginUser(username, password);
             bool t = Evaluate.EvaluateBool(temp);
@@ -127,3 +127,5 @@ namespace Authentication
         }
     }
 }
+
+
