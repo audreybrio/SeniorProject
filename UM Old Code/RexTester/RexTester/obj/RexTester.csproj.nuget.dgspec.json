@@ -1,0 +1,68 @@
+{
+  "format": 1,
+  "restore": {
+    "C:\\Users\\audre\\OneDrive\\Documents\\GitHub\\SeniorProject\\RexTester\\RexTester\\RexTester.csproj": {}
+  },
+  "projects": {
+    "C:\\Users\\audre\\OneDrive\\Documents\\GitHub\\SeniorProject\\RexTester\\RexTester\\RexTester.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\audre\\OneDrive\\Documents\\GitHub\\SeniorProject\\RexTester\\RexTester\\RexTester.csproj",
+        "projectName": "RexTester",
+        "projectPath": "C:\\Users\\audre\\OneDrive\\Documents\\GitHub\\SeniorProject\\RexTester\\RexTester\\RexTester.csproj",
+        "packagesPath": "C:\\Users\\audre\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\audre\\OneDrive\\Documents\\GitHub\\SeniorProject\\RexTester\\RexTester\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\audre\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net5.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net5.0": {
+            "targetAlias": "net5.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net5.0": {
+          "targetAlias": "net5.0",
+          "dependencies": {
+            "System.Data.SqlClient": {
+              "target": "Package",
+              "version": "[4.8.3, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.100\\RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}
