@@ -34,7 +34,7 @@ namespace UpdateTesting
             string username = "abrio";
             string role = "admin";
             bool isUpdated = UserManager.UpdateRoleUser(username, role);
-            Assert.True(isUpdated);
+            Assert.False(isUpdated);
 
         }
 
@@ -45,7 +45,7 @@ namespace UpdateTesting
             string username = "jcutri";
             string role = "student";
             bool isUpdated = UserManager.UpdateRoleUser(username, role);
-            Assert.True(isUpdated);
+            Assert.False(isUpdated);
 
         }
 
@@ -56,7 +56,7 @@ namespace UpdateTesting
             string username = "mk";
             string role = "student";
             bool isUpdated = UserManager.UpdateRoleUser(username, role);
-            Assert.True(isUpdated);
+            Assert.False(isUpdated);
 
         }
     }

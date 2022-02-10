@@ -22,7 +22,7 @@ namespace EnableTests
         {
             string username = "bk";
             bool isEnabled = UserManager.EnableUser(username);
-            Assert.True(isEnabled);
+            Assert.False(isEnabled);
 
         }
 
@@ -32,7 +32,7 @@ namespace EnableTests
         {
             string username = "jcutri";
             bool isEnabled = UserManager.EnableUser(username);
-            Assert.True(isEnabled);
+            Assert.False(isEnabled);
 
         }
     }

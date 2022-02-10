@@ -31,7 +31,7 @@ namespace CreateTesting
             string email = "asb@edu";
             string password = "12345";
             bool isCreated = UserManager.CreateUsers(name, user, password, email, passcode);
-            Assert.True(isCreated);
+            Assert.False(isCreated);
 
         }
 
@@ -45,7 +45,7 @@ namespace CreateTesting
             string email = "asb@edu";
             string password = "12345";
             bool isCreated = UserManager.CreateUsers(name, user, password, email, passcode);
-            Assert.True(isCreated);
+            Assert.False(isCreated);
 
         }
 
@@ -59,7 +59,7 @@ namespace CreateTesting
             string email = "asb@edu";
             string password = "12345";
             bool isCreated = UserManager.CreateUsers(name, user, password, email, passcode);
-            Assert.True(isCreated);
+            Assert.False(isCreated);
 
         }
     }
