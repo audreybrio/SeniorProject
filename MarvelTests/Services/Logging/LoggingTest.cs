@@ -40,22 +40,24 @@ namespace Tests
             Assert.Equal(0, await result);
         }
 
-        [Fact]
-        public async void TestDbAddLog()
+        [Theory]
+        [InlineData("Test", "Test", 0, "TestDbAddLog()")]
+        public async void TestDbAddLog(string category, string level, int user, string description)
         {
             DbLogWriter logWriter = new DbLogWriter();
-            string category = "Test";
-            string level = "Test";
-            int user = 0;
-            string description = "TestDbAddLog()";
 
             // Act
-            Task<int> t = logWriter.AddLog(category, level, user, description);
             int? result = null;
-            result = t.Result;
-            while (result == null) { }
+            result = await logWriter.AddLog(category, level, user, description);
 
             // Assert
+            // Test that logWriter initialized
+            Assert.NotNull(logWriter);
+
+            // Test that AddLog returned a task with a non-null result
+            Assert.NotNull(result);
+
+            // Test that result == 1
             Assert.Equal(1, result);
         }
 
@@ -94,9 +96,5 @@ namespace Tests
 
             Assert.Equal(0, await result);
         }
-
-        [Fact]
-        public async void MyNewestTest()
-        { }
     }
 }
