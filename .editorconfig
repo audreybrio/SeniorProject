@@ -1,0 +1,4 @@
+﻿[*.cs]
+
+# CS8804: Cannot specify /main if there is a compilation unit with top-level statements.
+dotnet_diagnostic.CS8804.severity = silent
