@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using System.Data.SqlClient;
+using System.Collections;
 
 namespace Marvel.Services.Logging
 {
@@ -71,13 +72,13 @@ namespace Marvel.Services.Logging
     public class DbLogWriter : LogWriter
     {
         private Queue<Log> logs { get; }
-        public string dbConnectionString { get; set; } = "";
+        public string? dbConnectionString { get; set; } = "";
         public string tableName { get; set; } = "logs";
         public DbLogWriter()
         {
             try
             {
-                dbConnectionString = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING");
+                dbConnectionString = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING", EnvironmentVariableTarget.User);
             }
             catch (Exception ex)
             {
@@ -92,7 +93,7 @@ namespace Marvel.Services.Logging
         // Reference: https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/async/
         public override async Task<int> AddLog(string category, string level, int user, string description)
         {
-            int result = 0;
+            int result = -1;
             Log newLog = new Log(category, level, user, description);
             try
             {
@@ -122,17 +123,34 @@ namespace Marvel.Services.Logging
                     Log current = logs.Dequeue();
                     using (SqlConnection connection = new SqlConnection(dbConnectionString))
                     {
-                        string query = "INSERT INTO " + this.tableName + " (timestamp, category, level, username, description) "
-                                                 + "VALUES (@timestamp, @category, @level, @username, @description);";
+                        string query = "INSERT INTO " + this.tableName + " (timestamp, layer, category, userId, description) "
+                                                 + "VALUES (@timestamp, @layer, @category, @userId, @description);";
                         using (SqlCommand command = new SqlCommand(query, connection))
                         {
                             command.Parameters.AddWithValue("@timestamp", current.timestamp);
-                            command.Parameters.AddWithValue("@category", current.category);
                             command.Parameters.AddWithValue("@layer", current.level);
-                            command.Parameters.AddWithValue("@username", current.user);
-                            command.Parameters.AddWithValue("@message", current.description);
-                            connection.Open();
-                            command.ExecuteNonQuery();
+                            command.Parameters.AddWithValue("@category", current.category);
+                            command.Parameters.AddWithValue("@userId", current.user);
+                            command.Parameters.AddWithValue("@description", current.description);
+                            
+                            try
+                            {
+                                connection.Open();
+                                rowsAffected = command.ExecuteNonQuery();
+                                connection.Close();
+                            }
+                            catch (System.InvalidOperationException ex)
+                            {
+                                Console.WriteLine("The following exception has occurred: " +
+                                        ex.GetType().FullName);
+                                Console.WriteLine(ex.Message);
+                            }
+                            catch (SqlException ex)
+                            {
+                                Console.WriteLine("The following exception has occurred: " +
+                                        ex.GetType().FullName);
+                                Console.WriteLine(ex.Message);
+                            }
                         }
                     }
                 }
