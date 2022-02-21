@@ -5,45 +5,91 @@ using System.Data.SqlClient;
 namespace Authentication
 {
 
-    // Takes in email and passcode and returns true if the credentials are correct 
-     public class Authenticate
-     {
-        public static bool Authen(string email, string passcode)
+    public class Email
+    {
+        public static void sendEmail(string email, string otp)
         {
-            bool userExists;
-            userExists = Validate.UserExist(email, passcode);
-            if (userExists == false)
-            {
-                return false;
+            String from = "studentmultitool@outlook.com"; // change to your email address for the application
+            String subject = "OTP code for yourApp"; //rename yourApp to your application
+            String msg = otp;
+            String to = "success@simulator.amazonses.com";
+            MailMessage mail = new MailMessage(from, to, subject, msg);
+            SmtpClient client = new SmtpClient("email-smtp.us-east-1.amazonaws.com"); //set to your outgoing smtp server is gmail
+            client.Port = 25; //smtp port for SSL
+            client.Credentials = new System.Net.NetworkCredential("AKIA4LFTDFRCSQHGW2BL", "BMAUAXuLN+qSGL0QiezLwtqpfckzibBAwvJ/0AiDtrQa"); //change username and password to your email account username and password
+            client.EnableSsl = true; //for gmail SSL must be true
+            client.Send(mail);
+        }
+    }
 
-            }
-            else
-            {
-                return true;
-            }
+
+    public class Otp
+    {
+        public static string Randomize()
+        {
+            Random rand = new Random();
+            const string chars = "abcdefghijklmnopqrstuvwxyz0123456789";
+            return new string(Enumerable.Repeat(chars, 8).Select(s => s[rand.Next(s.Length)]).ToArray());
 
         }
     }
 
-    // Validates user exists in the database
-     public class Validate
-     {
+    public class Hash
+    {
+        public static string HashPass(string password)
+        {
+
+
+            string s = "teammarvel";
+            byte[] salt = Encoding.ASCII.GetBytes(s);
+
+            string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
+                password: password,
+                salt: salt,
+                prf: KeyDerivationPrf.HMACSHA256,
+                iterationCount: 100000,
+                numBytesRequested: 256 / 8));
+            return hashed;
+
+
+        }
+    }
+
+
+
+
+
+
+    public class Validate
+    {
+        // Checks users email and pass phrase 
         public static bool UserExist(string email, string passcode)
         {
+            string passphrase = Hash.HashPass(passcode);
+
+
             SqlConnection conn = new SqlConnection();
             conn.ConnectionString = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING");
             conn.Open();
             SqlCommand cmd = new SqlCommand("SELECT COUNT (username)" + " from UserTable " + "WHERE UserTable.email = @email AND UserTable.passcode = @passcode", conn);
             cmd.Parameters.AddWithValue("@email", email);
-            cmd.Parameters.AddWithValue("@passcode", passcode);
+            cmd.Parameters.AddWithValue("@passcode", passphrase);
             SqlDataReader reader = cmd.ExecuteReader();
-            int rowCount = 0;
+            int count = 0;
             reader.Close();
-            rowCount = (int)cmd.ExecuteScalar();
+            count = (int)cmd.ExecuteScalar();
 
-            if (rowCount > 0)
+            if (count > 0)
             {
-                return true;
+                bool isDiasbled = CheckDisabled(email);
+                if (isDiasbled == true)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
             else
             {
@@ -51,9 +97,23 @@ namespace Authentication
             }
         }
 
-        // Validates user has correct username and password to log into the system
-        public static int LoginUser(string username, string password)
+        // Checks is user is diasabled 
+        public static bool CheckDisabled(string email)
         {
+            SqlConnection conn = new SqlConnection();
+            conn.ConnectionString = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING");
+            conn.Open();
+            SqlCommand cmd = new SqlCommand("SELECT active_status" + " from UserTable " + "WHERE UserTable.email = @email", conn);
+            cmd.Parameters.AddWithValue("@email", email);
+            cmd.ExecuteNonQuery();
+            bool active_status = (bool)cmd.ExecuteScalar();
+            return active_status;
+        }
+
+        // Checks username and OTP
+        public static int loginUser(string username, string password)
+        {
+
             SqlConnection conn = new SqlConnection();
             conn.ConnectionString = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING");
             conn.Open();
@@ -61,21 +121,50 @@ namespace Authentication
             cmd.Parameters.AddWithValue("@username", username);
             cmd.Parameters.AddWithValue("@password", password);
             SqlDataReader reader = cmd.ExecuteReader();
-            int rowCount = 0;
+            int count = 0;
             reader.Close();
-            rowCount = (int)cmd.ExecuteScalar();
-            return rowCount;
+            count = (int)cmd.ExecuteScalar();
+            return count;
 
         }
 
     }
 
-    // Evaluates the return types 
+    public class UserManagement
+    {
+        public static void UpdateDisable(string username)
+        {
+            SqlConnection conn = new SqlConnection();
+            conn.ConnectionString = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING");
+            conn.Open();
+            SqlCommand cmd = new SqlCommand("UPDATE UserTable" + " SET active_status = @newStatus" + " WHERE username = @username", conn);
+            cmd.Parameters.AddWithValue("@newStatus", 0);
+            cmd.Parameters.AddWithValue("@username", username);
+            cmd.ExecuteNonQuery();
+        }
+    }
+
+
+
+
+    public partial class Login
+    {
+
+        private void check(object sender, EventArgs e)
+        {
+
+            string email;
+            string passphrase;
+
+        }
+    }
+
+    // Fix to start using 
     public class Evaluate
     {
 
-        // Turns int into a bool
-        public static bool EvaluateBool(int rowsAffected)
+
+        public static bool Eval(int rowsAffected)
         {
             if (rowsAffected > 0)
             {
@@ -87,25 +176,73 @@ namespace Authentication
             }
         }
 
-        // Turns bool into string 
-        public static string EvaluateString(bool rowAffected)
+        public static string Eval(bool affected)
         {
-            if (rowAffected == true)
+            if (affected == true)
             {
-                string successCase = "User Logged in Successfully.";
-                return successCase;
+                string a = "User Logged in Successfully.";
+                return a;
             }
             else
             {
-                string failureCase = "Error. Username/Password Incorrect.";
-                return failureCase;
+                string a = "Error. Username/Password Incorrect.";
+                return a;
             }
         }
 
-        // Main 
+
+
         static void Main(string[] args)
         {
+            string email = "audrey.brio@student.csulb.edu";
+            string passcode = "hello world";
+            bool log;
+            log = Validate.UserExist(email, passcode);
+            Console.WriteLine(log);
+
+            if (log == true)
+            {
+                int attempts = 1;
+                string username = "abrio";
+
+                while (attempts < 6)
+                {
+                    string otp = Otp.Randomize();
+                    Console.WriteLine(otp);
+
+                    //Email.sendEmail(email, otp);
+                    // send email 
+
+                    // start cookie 
+
+
+                    Console.WriteLine("Enter Password");
+                    string password = Console.ReadLine();
+                    int count = Validate.loginUser(username, password);
+                    if (count > 0)
+                    {
+                        Console.Write("Login Success");
+                        break;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Login Incorrect. Try again.");
+                        // log ip address
+
+                        attempts++;
+                    }
+                }
+
+                if (attempts >= 6)
+                {
+                    UserManagement.UpdateDisable(username);
+                }
+            }
+
 
         }
+
+
+
     }
 }
