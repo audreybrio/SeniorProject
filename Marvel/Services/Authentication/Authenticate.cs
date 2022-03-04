@@ -9,15 +9,15 @@ namespace Authentication
     {
         public static void sendEmail(string email, string otp)
         {
-            String from = "studentmultitool@outlook.com"; // change to your email address for the application
-            String subject = "OTP code for yourApp"; //rename yourApp to your application
+            String from = "studentmultitool@outlook.com"; 
+            String subject = "OTP code for yourApp"; 
             String msg = otp;
             String to = "success@simulator.amazonses.com";
             MailMessage mail = new MailMessage(from, to, subject, msg);
-            SmtpClient client = new SmtpClient("email-smtp.us-east-1.amazonaws.com"); //set to your outgoing smtp server is gmail
+            SmtpClient client = new SmtpClient("email-smtp.us-east-1.amazonaws.com"); 
             client.Port = 25; //smtp port for SSL
             client.Credentials = new System.Net.NetworkCredential("AKIA4LFTDFRCSQHGW2BL", "BMAUAXuLN+qSGL0QiezLwtqpfckzibBAwvJ/0AiDtrQa"); //change username and password to your email account username and password
-            client.EnableSsl = true; //for gmail SSL must be true
+            client.EnableSsl = true; 
             client.Send(mail);
         }
     }
