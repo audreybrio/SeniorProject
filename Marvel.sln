@@ -5,7 +5,7 @@ VisualStudioVersion = 17.0.32112.339
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests", "MarvelTests\Tests.csproj", "{29454BDA-CF0C-4789-98A2-6D1332EFF488}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Backend", "Backend\Backend.csproj", "{AE993BCF-1F30-4FF3-9B61-981ACF9D354E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StudentMultiTool", "Backend\StudentMultiTool.csproj", "{AE993BCF-1F30-4FF3-9B61-981ACF9D354E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
