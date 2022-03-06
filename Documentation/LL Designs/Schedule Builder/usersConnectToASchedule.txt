@@ -1,0 +1,107 @@
+title Users Connect To A Schedule
+
+actor Alice
+actor Bob
+participant UI
+participant Controller
+participant Hashset Intermediary
+participant ResourceConnector
+participant ScheduleManager
+participant Schedule
+participant ScheduleItem
+participant Schedule File
+database RDBMS
+
+seq
+activate Alice
+activate UI
+activate Hashset Intermediary
+Alice->UI:Alice selects\na schedule to\nview or edit
+UI-->Controller:Websocket\nrequest
+
+activate Controller
+Controller->Hashset Intermediary:getResource(userID,\n  scheduleID)
+Hashset Intermediary-->Controller:return null
+Controller->ScheduleManager:loadSchedule(scheduleID)
+
+activate ScheduleManager
+ScheduleManager->RDBMS:SELECT (*) FROM Schedules WHERE (user=userID, id=scheduleID);
+
+activate RDBMS
+RDBMS-->ScheduleManager:return Schedule;
+
+deactivate RDBMS
+ScheduleManager->ScheduleManager:string filepath =\n  getString(\n  QueryResult.filepath)
+alt
+box right of ScheduleManager:if file exists
+ScheduleManager->Schedule File:File.read()
+activate Schedule File
+Schedule File-->ScheduleManager:return JSON data
+deactivate Schedule File
+
+else
+box right of ScheduleManager:else
+ScheduleManager->Schedule File:File.create()
+activate Schedule File
+Schedule File-->ScheduleManager:
+deactivate Schedule File
+end
+
+ScheduleManager->Schedule:new Schedule()
+
+activate Schedule
+Schedule-->ScheduleManager:
+alt
+box right of ScheduleManager:if JSON data exists
+loop
+ScheduleManager->ScheduleManager:parse JSON and construct ScheduleItems
+ScheduleManager->Schedule:addScheduleItem(\n  new ScheduleItem(data))
+end
+else
+box right of ScheduleManager:else
+end
+ScheduleManager-->Controller:return Schedule
+
+Controller->Hashset Intermediary:addResource(new\n  ResourceConnector(userID,\n  scheduleID))
+activate ResourceConnector
+
+Controller->ResourceConnector:Establish connection
+loop
+box over Controller:while (Websocket.State == WebSocketState.Connecting)
+ResourceConnector-->Controller:return Websocket.State
+end
+
+alt
+box over Controller:if (Websocket.State == WebSocketState.Open)
+Controller-->UI:Http 201 Status
+UI-->Alice:Present the Schedule
+else
+box over Controller:else
+Controller-->UI:Http 4xx Status
+UI-->Alice:Show error message
+end 
+end
+
+space 
+seq
+activate Bob
+Bob->UI:Bob selects\na schedule to\nview or edit
+UI-->Controller:Websocket\nrequest
+Controller->Hashset Intermediary:getResource(userID,\n  scheduleID)
+Hashset Intermediary-->Controller:return ResourceConnector
+Controller->ResourceConnector:Establish connection
+loop
+box over Controller:while (Websocket.State == WebSocketState.Connecting)
+ResourceConnector-->Controller:return Websocket.State
+end
+
+alt
+box over Controller:if (Websocket.State == WebSocketState.Open)
+Controller-->UI:Http 201 Status
+UI-->Bob:Present the Schedule
+else
+box over Controller:else
+Controller-->UI:Http 4xx Status
+UI-->Bob:Show error message
+end
+end 

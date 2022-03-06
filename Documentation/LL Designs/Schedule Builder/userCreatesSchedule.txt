@@ -1,0 +1,75 @@
+title User Creates A Schedule
+
+actor Alice
+actor Bob
+participant UI
+participant Controller
+participant Hashset Intermediary
+participant ResourceConnector
+participant ScheduleManager
+participant ScheduleDAO
+participant Schedule
+participant ScheduleItem
+participant Schedule File
+database RDBMS
+
+seq
+activate Alice
+activate UI
+activate Hashset Intermediary
+Alice->UI:Alice creates a\nnew Schedule
+UI-->UI:Sanitize user input
+UI-->Controller:POST Request\nwith new data
+
+activate Controller
+Controller->ScheduleManager:createSchedule(userId, title, etc)
+
+activate ScheduleManager
+ScheduleManager->ScheduleManager:Generate file path for Schedule File
+ScheduleManager->Schedule File:Create Schedule File
+
+activate Schedule File
+Schedule File-->ScheduleManager:
+deactivate Schedule File
+
+ScheduleManager->ScheduleDAO:saveSchedule(userId, title, filepath)
+
+activate ScheduleDAO
+ScheduleDAO->ScheduleDAO:int totalRowsAffected = 0;
+ScheduleDAO->RDBMS:INSERT INTO Schedules (title, filepath);
+
+activate RDBMS
+RDBMS-->ScheduleDAO:return rowsAffected;
+deactivate RDBMS
+ScheduleDAO->ScheduleDAO:totalRowsAffected += rowsAffected;
+space 
+ScheduleDAO->RDBMS:INSERT INTO Collaborators VALUES (scheduleID, userID, 1);
+
+activate RDBMS
+RDBMS-->ScheduleDAO:return rowsAffected;
+deactivate RDBMS
+ScheduleDAO->ScheduleDAO:totalRowsAffected += rowsAffected;
+
+alt
+box left of ScheduleDAO:if totalRowsAffected != 2
+ScheduleDAO-->ScheduleManager:return totalRowsAffected
+ScheduleManager-->Controller:return "Could not insert Schedule or owner to database"
+Controller-->UI:Http 507 status
+UI-->Alice:Show error message:\n"Could not store\nSchedule or owner"
+else
+box left of ScheduleDAO:else if rowsAffected == 2
+ScheduleDAO-->ScheduleManager:return 2
+deactivate ScheduleDAO
+
+ScheduleManager->Schedule:new Schedule()
+
+activate Schedule
+Schedule-->ScheduleManager:
+deactivate Schedule
+ScheduleManager-->Controller:return Schedule
+deactivate ScheduleManager
+Controller-->UI:Http 201 status\nwith new Schedule data
+UI-->Alice:Show "created schedule"\nand update list of Alice's\nschedules
+deactivate Controller
+end
+end 
