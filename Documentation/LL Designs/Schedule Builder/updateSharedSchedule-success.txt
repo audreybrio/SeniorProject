@@ -1,0 +1,47 @@
+title Users Update A Shared Schedule
+
+actor Alice
+actor Bob
+participant UI
+participant Controller
+participant Hashset Intermediary
+participant ResourceConnector
+participant ScheduleManager
+participant Schedule
+participant ScheduleItem
+participant Schedule File
+database RDBMS
+
+activate Alice
+activate Bob
+activate UI
+activate Schedule
+activate Hashset Intermediary
+activate ResourceConnector
+activate ScheduleItem
+activate Schedule File
+
+Alice->UI:Alice updates schedule
+UI-->UI:Update data\nis sanitized
+UI-->Controller:PATCH? w/\nupdate data
+
+activate Controller
+Controller->Hashset Intermediary:getResource(userID,\nscheduleID)
+Hashset Intermediary-->Controller:return ResourceConnector
+Controller->ResourceConnector:Pass update data to the correct\nResourceConnector for the User-Schedule pair
+
+ResourceConnector->ResourceConnector:Pass update data\nto the Websocket
+ResourceConnector->ResourceConnector:Decode the update\ndata and update\nthe ScheduleItem
+ResourceConnector->ScheduleManager:Update data
+
+activate ScheduleManager
+ScheduleManager->Schedule:Update\nschedule\nproperties\nas needed
+Schedule-->ScheduleManager:
+ScheduleManager->ScheduleItem:Update ScheduleItems\n          as needed
+ScheduleItem-->ScheduleManager:|
+ScheduleManager-->ResourceConnector:return updated\nSchedule
+deactivate ScheduleManager
+
+ResourceConnector-->Controller: return Schedule
+Controller-->UI: pass updated\nSchedule to clients
+deactivate Controller
