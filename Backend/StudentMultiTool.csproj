@@ -15,11 +15,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Frontend\View\Login\LoginTS.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="System.Data.SqlClient" Version="4.8.3" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Frontend\" />
+    <TypeScriptCompile Include="Frontend\View\Login\LoginTS.ts" />
   </ItemGroup>
 
 </Project>
