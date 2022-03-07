@@ -6,6 +6,7 @@ namespace StudentMultiTool.Backend.Models.ScheduleBuilder
     // Represents a user's schedule.
     public class ScheduleFileAccessor
     {
+        public static string Success { get; } = "Success";
         public ScheduleFileAccessor()
         {}
 
@@ -40,7 +41,7 @@ namespace StudentMultiTool.Backend.Models.ScheduleBuilder
                         try
                         {
                             scheduleAsJson.WriteTo(writer);
-                            result = "Success";
+                            result = ScheduleFileAccessor.Success;
                         }
                         catch (Exception ex)
                         {
