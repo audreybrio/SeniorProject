@@ -35,10 +35,12 @@ namespace StudentMultiTool.Backend.Services.Logout
                 // Complete the appropriate action
                 switch (menuChoice)
                 {
+                    // Break right away
                     case 0:
                         Console.ForegroundColor = ConsoleColor.Cyan;
                         menuLoop = false;
                         break;
+                    // Logout - go back to login 
                     case 1:
                         Console.ForegroundColor = ConsoleColor.Cyan;
 

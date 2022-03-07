@@ -1,17 +1,12 @@
 ﻿using StudentMultiTool.Backend.Services.Authentication.Model;
 using StudentMultiTool.Backend.Services.Logout;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authentication;
 using System;
-using System.Configuration;
-using System.Web;
 using System.Net.Mail;
 using System.Data.SqlClient;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using System.Text;
 using System.Net;
-using System.Security.Claims;
-using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace StudentMultiTool.Backend.Services.Authentication.Controller
 {
@@ -34,20 +29,17 @@ namespace StudentMultiTool.Backend.Services.Authentication.Controller
             string passcode = Console.ReadLine();
             bool log;
             log = UserExist(email, passcode);
-
+            // If user exists
             if (log == true)
             {
-
+                // Get otp and send it
                 string otp = Randomize(email);
                 SendEmail(email, otp);
 
-
-
                 int attempts = 1;
-
+                // User has 5 attempts to log in 
                 while (attempts < 6)
                 {
-
 
                     Console.WriteLine("Enter Username");
                     string username = Console.ReadLine();
@@ -94,17 +86,10 @@ namespace StudentMultiTool.Backend.Services.Authentication.Controller
             {
                 Console.WriteLine("Incorrect Email or Passcode");
             }
-
-
-
-
-
             return new OkResult();
-
-
-
         }
 
+        // Checks if user exists in database
         public static bool UserExist(string email, string passcode)
         {
             string passphrase = HashPass(passcode);
@@ -123,6 +108,7 @@ namespace StudentMultiTool.Backend.Services.Authentication.Controller
 
             if (count > 0)
             {
+                // Checks is user is disabled
                 bool isDiasbled = CheckDisabled(email);
                 if (isDiasbled == true)
                 {
@@ -140,6 +126,7 @@ namespace StudentMultiTool.Backend.Services.Authentication.Controller
             }
         }
 
+        // Logs ip when make incorrect log in attempt
         public static void LogIP(string email)
         {
             string myIP = GetIP();
@@ -167,12 +154,14 @@ namespace StudentMultiTool.Backend.Services.Authentication.Controller
 
         }
 
+        // Gets ip address of user
         public static string GetIP()
         {
             string hostName = Dns.GetHostName();
             string myIP = Dns.GetHostEntry(hostName).AddressList[1].ToString();
             return myIP;
         }
+        // Hashes passcode
         public static string HashPass(string password)
         {
 
@@ -189,6 +178,7 @@ namespace StudentMultiTool.Backend.Services.Authentication.Controller
             return hashed;
         }
 
+        // Generates otp and inserts into db
         public static string Randomize(string email)
         {
             Random rand = new Random();
@@ -215,7 +205,8 @@ namespace StudentMultiTool.Backend.Services.Authentication.Controller
 
 
         }
-
+        
+        // Checks is user is disabled
         public static bool CheckDisabled(string email)
         {
             SqlConnection conn = new SqlConnection();
@@ -228,21 +219,22 @@ namespace StudentMultiTool.Backend.Services.Authentication.Controller
             return active_status;
         }
 
-
+        // Sends otp via email
         public static void SendEmail(string email, string otp)
         {
-            String from = "studentmultitool@outlook.com"; // change to your email address for the application
-            String subject = "OTP code for Student Multi-Tool"; //rename yourApp to your application
+            String from = "studentmultitool@outlook.com"; 
+            String subject = "OTP code for Student Multi-Tool"; 
             String msg = otp;
             String to = email;
             MailMessage mail = new MailMessage(from, to, subject, msg);
-            SmtpClient client = new SmtpClient("email-smtp.us-east-1.amazonaws.com"); //set to your outgoing smtp server is gmail
-            client.Port = 25; //smtp port for SSL
+            SmtpClient client = new SmtpClient("email-smtp.us-east-1.amazonaws.com");
+            client.Port = 25; 
             client.Credentials = new System.Net.NetworkCredential("AKIA4LFTDFRCSQHGW2BL", "BMAUAXuLN+qSGL0QiezLwtqpfckzibBAwvJ/0AiDtrQa"); //change username and password to your email account username and password
-            client.EnableSsl = true; //for gmail SSL must be true
+            client.EnableSsl = true; 
             client.Send(mail);
         }
 
+        // Validates user entered correct credentials to enter system
         public static int LoginUser(string username, string password)
         {
 
@@ -263,6 +255,7 @@ namespace StudentMultiTool.Backend.Services.Authentication.Controller
 
         }
 
+        // Checks is OTP is still valid
         public static int ValidTime(string email)
         {
             SqlConnection conn = new SqlConnection();
@@ -290,7 +283,7 @@ namespace StudentMultiTool.Backend.Services.Authentication.Controller
         }
 
 
-
+        // Disables a user if they exceed 5 incorrect login attempts
         public static void UpdateDisable(string email)
         {
             SqlConnection conn = new SqlConnection();
