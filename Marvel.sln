@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests", "MarvelTests\Tests.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StudentMultiTool", "Backend\StudentMultiTool.csproj", "{AE993BCF-1F30-4FF3-9B61-981ACF9D354E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FeatureDemo", "FeatureDemo\FeatureDemo.csproj", "{89AFF23E-81BF-4AA1-936C-08EE75A21220}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{AE993BCF-1F30-4FF3-9B61-981ACF9D354E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AE993BCF-1F30-4FF3-9B61-981ACF9D354E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AE993BCF-1F30-4FF3-9B61-981ACF9D354E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{89AFF23E-81BF-4AA1-936C-08EE75A21220}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89AFF23E-81BF-4AA1-936C-08EE75A21220}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89AFF23E-81BF-4AA1-936C-08EE75A21220}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89AFF23E-81BF-4AA1-936C-08EE75A21220}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
