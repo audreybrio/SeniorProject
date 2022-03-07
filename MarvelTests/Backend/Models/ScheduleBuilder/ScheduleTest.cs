@@ -5,7 +5,7 @@ using Marvel.Services;
 using Marvel.Services.Logging;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using StudentMultiTool.Backend.Models;
+using StudentMultiTool.Backend.Models.ScheduleBuilder;
 
 namespace Tests
 {
@@ -18,10 +18,11 @@ namespace Tests
             int ownerId = 0;
             DateTime created = DateTime.Now;
             DateTime modified = DateTime.Now;
-            string title = "TestSchedule";
+            String title = "TestSchedule";
+            String path = "./" + title + "Constructor1.json";
 
             // Act
-            Schedule test = new Schedule(ownerId, created, modified, title);
+            Schedule test = new Schedule(ownerId, created, modified, title, path);
 
             // Assert
             Assert.NotNull(test);
@@ -39,10 +40,11 @@ namespace Tests
             int scheduleId = 1;
             DateTime created = DateTime.Now;
             DateTime modified = DateTime.Now;
-            string title = "TestSchedule";
+            String title = "TestSchedule";
+            String path = "./" + title + "Constructor2.json";
 
             // Act
-            Schedule test = new Schedule(scheduleId, ownerId, created, modified, title);
+            Schedule test = new Schedule(scheduleId, ownerId, created, modified, title, path);
 
             // Assert
             Assert.NotNull(test);
