@@ -1,9 +1,18 @@
-﻿namespace StudentMultiTool.Backend.Services.BookSelling
+﻿using System.Data.SqlClient;
+
+namespace StudentMultiTool.Backend.Services.BookSelling
 {
     public class BookSellingController
     {
+        // Set up database variables
+        public string sql { get; set; }
+        public SqlConnection _connection { get; set; }
         public BookSellingController()
         {
+            
+            sql = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING");
+            _connection = new SqlConnection(sql);
+
             // Console customization
             // Change the look of the console
             Console.Title = "StudentMultiTool";
@@ -36,6 +45,8 @@
                         break;
                     // Create a Listing
                     case 1:
+                        // Get form text fields
+                        var form = BookListForm();
                         bool createList = CreateListing();
                         break;
                     // Update a Listing
@@ -46,6 +57,10 @@
                     case 3:
                         bool deleteList = DeleteListing();
                         break;
+                    // Search for a Listing by title
+                    case 4:
+                        bool searchTitleList = SearchTitleListing();
+                        break;
                     default:
                         Console.WriteLine("Invalid input.\nPlease enter a valid option.\n");
                         break;
@@ -53,15 +68,16 @@
             }
 
         }
+        // Create a Lisitng 
         public bool CreateListing(BookListings book)
         {
             try
             {
                 // Insert into users table
-                string sqlUser = $"INSERT INTO users (UserName, Password, Role, IsActive," +
-                    $"CreatedBy, CreatedDate, Email) VALUES ('{newUser.username}', " +
-                    $"'{newUser.password}','{newUser.role}', 1," +
-                    $"'{CreatedBy}', NOW(),{newUser.email});";
+                string sqlUser = $"INSERT INTO bookListings (UserName,BookTitle, BookDescription, BookEdition, BookIsbn, Contact, ListDate, IsActive)" +
+                    $"VALUES ('{book.username}', " +
+                    $"'{book.bookTitle}','{book.bookDes}','{book.bookEdition}'," +
+                    $"'{book.isbn}', '{book.contactInfo}', NOW(), 1);";
 
                 bool insertNewUser = dbSource.WriteData(sqlUser);
                 return insertNewUser;
@@ -71,14 +87,43 @@
                 return false;
             }
         }
+        // update a Listing
+        public bool UpdateListing(BookListings book)
+        {
+            try
+            {
+                // Insert into users table
+                string sqlUser = $"INSERT INTO bookListings (UserName,BookTitle, BookDescription, BookEdition, BookIsbn, Contact, ListDate, IsActive)" +
+                    $"VALUES ('{book.username}', " +
+                    $"'{book.bookTitle}','{book.bookDes}','{book.bookEdition}'," +
+                    $"'{book.isbn}', '{book.contactInfo}', NOW(), 1);";
 
-        public bool UpdateListing()
+                bool insertNewUser = dbSource.WriteData(sqlUser);
+                return insertNewUser;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            return false;
+        }
+        // Delete a Listing
+        public bool DeleteListing(BookListings book)
         {
             return false;
         }
-        public bool DeleteListing()
+        public bool SearchTitleListing()
         {
             return false;
+        }
+        // 
+        public BookListings BookListForm()
+        {
+            BookListings newListing = new BookListings();
+            Console.WriteLine("Please provide your username.\n");
+            string username = Console.ReadLine();
+
+            return newListing;
         }
     }
     public class BookListings
@@ -90,7 +135,6 @@
         private string _bookIsbn;
         private DateTime _listDate;
         private string _sellerInfo;
-        private int _activePost;
 
 
         public BookListings(string un, string bTitle, int bEd, string isbnTen, string bStat, string cInfo)
@@ -102,7 +146,6 @@
             _bookIsbn = isbnTen;
             _listDate = DateTime.UtcNow;
             _sellerInfo = cInfo;
-            _activePost = 1;
         }
         // If nothing is passed, then set all string values to "information missing"
         // Ask user to redo form
@@ -115,8 +158,8 @@
             _bookIsbn = "Information missing";
             _listDate = DateTime.UtcNow;
             _sellerInfo = "Information missing";
-            _activePost = 0;
         }
+        // Initialize public variables for class objects
         public string username { get { return _userName; } }
         public string bookTitle { get { return _bookTitle; } }
         public string bookDes { get { return _bookDescription; } }
@@ -124,7 +167,6 @@
         public int bookEdition { get { return _bookEdition; } }
         public DateTime listDate { get { return _listDate; } }
         public string contactInfo { get { return _sellerInfo; } }
-        public int listStatus { get { return _activePost; } }
 
     }
 }
