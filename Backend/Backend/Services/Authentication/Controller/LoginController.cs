@@ -34,7 +34,7 @@ namespace StudentMultiTool.Backend.Services.Authentication.Controller
             {
                 // Get otp and send it
                 string otp = Randomize(email);
-                SendEmail(email, otp);
+                //SendEmail(email, otp);
 
                 int attempts = 1;
                 // User has 5 attempts to log in 
