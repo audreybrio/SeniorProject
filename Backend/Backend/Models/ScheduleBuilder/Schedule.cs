@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Nodes;
 
-namespace StudentMultiTool.Backend.Models
+namespace StudentMultiTool.Backend.Models.ScheduleBuilder
 {
     // Represents a user's schedule and details about who can access it.
     // Daily and/or weekly events are stored as ScheduleItems.

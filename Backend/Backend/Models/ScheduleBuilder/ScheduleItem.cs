@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Nodes;
 
-namespace StudentMultiTool.Backend.Models
+namespace StudentMultiTool.Backend.Models.ScheduleBuilder
 {
     // Represents a single, reoccurring daily or weekly event
     public class ScheduleItem
