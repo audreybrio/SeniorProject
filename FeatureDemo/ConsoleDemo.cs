@@ -1,4 +1,4 @@
-﻿
+﻿using StudentMultiTool.Backend.Services.Authentication.Controller;
 
 namespace ConsoleDemo
 {
@@ -39,6 +39,8 @@ namespace ConsoleDemo
                         break;
                     // Login/Logout
                     case 2:
+                        LoginController loginController = new LoginController();
+                        loginController.Authorize();
                         break;
                     // Schedule Builder
                     case 3:
