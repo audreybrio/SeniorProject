@@ -46,9 +46,9 @@ namespace Tests
             Assert.NotEqual(testItem.Notes, string.Empty);
             Assert.NotEqual(result, string.Empty);
 
-            // testString and result should be different lengths and different strings
-            Assert.NotEqual(testString.Length, result.Length);
-            Assert.NotEqual(testString, result);
+            // testString and result should be same lengths and same strings
+            Assert.Equal(testString.Length, result.Length);
+            Assert.Equal(testString, result);
         }
     }
 }
