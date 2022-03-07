@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Marvel.UserAcc
+namespace UserAcc
 {
     public class UserAccount
     {
@@ -35,44 +35,42 @@ namespace Marvel.UserAcc
         public string Passcode { get => passcode; set => passcode = value; }
     }
 
-
-
-    [Table("ROLES")]
-    public partial class ROLE
+    public class ROLE
     {
-        public ROLE()
+        private string roleName;
+        private string roleDetail;
+        private bool isAdmin;
+        private bool isStudent;
+
+        public ROLE(string rn, string rd, bool a, bool s)
         {
-            PERMISSIONS = new HashSet<PERMISSION>();
-            UserAccounts = new HashSet<UserAccount>();
+            this.RoleName = rn;
+            this.RoleDetail = rd;
+            this.isAdmin = a;
+            this.isStudent = s;
+
+            PERMISSION = new HashSet<PERMISSION>();
+            UserAccount = new HashSet<UserAccount>();
         }
-
-        [Key]
-        public int RoleId { get; set; }
-
-        [Required]
-        public string RoleName { get; set; }
-        public string RoleDetail { get; set; }
-        public bool IsAdmin { get; set; }
-        public bool IsStudent { get; set; }
-        public virtual ICollection<PERMISSION> PERMISSIONS { get; set; }
-        public virtual ICollection<UserAccount> UserAccounts { get; set; }
+        public string RoleName { get => roleName; set => roleName = value; }
+        public string RoleDetail { get => roleDetail; set => roleDetail = value; }
+        public bool IsAdmin { get => isAdmin; set => isAdmin = value; }
+        public bool IsStudent { get => isStudent; set => isStudent = value; }
+        public virtual ICollection<PERMISSION> PERMISSION { get; set; }
+        public virtual ICollection<UserAccount> UserAccount { get; set; }
     }
-
-
-    [Table("PERMISSIONS")]
-    public partial class PERMISSION
+    public class PERMISSION
     {
-        public PERMISSION()
+        private string permissionDetails;
+
+        public PERMISSION(string pd)
         {
-            ROLES = new HashSet<ROLE>();
+            this.PermissionDetails = pd;
+            ROLE = new HashSet<ROLE>();
         }
 
-        [Key]
-        public int PermissionId { get; set; }
+        public string PermissionDetails { get => permissionDetails; set => permissionDetails = value; }
 
-        [Required]
-        [StringLength(50)]
-        public string PermissionDetails { get; set; }
-
-        public virtual ICollection<ROLE> ROLES { get; set; }
-    }}
+        public virtual ICollection<ROLE> ROLE { get; set; }
+    }
+}

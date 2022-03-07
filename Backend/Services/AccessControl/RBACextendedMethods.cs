@@ -1,7 +1,8 @@
 ﻿using System;
+using UserAcc;
 using System.Collections.Generic;
 using System.Web;
-using System.Web.Mvc;
+using Microsoft.AspNetCore.Mvc;
 
 //Get requesting user's roles/permissions from database tables...      
 public static class RBACextendedMethods

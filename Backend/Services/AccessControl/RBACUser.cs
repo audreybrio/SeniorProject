@@ -1,4 +1,4 @@
-﻿using Marvel.UserAcc;
+﻿using UserAcc;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -6,7 +6,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
-using System.Web.Mvc;
+using Microsoft.AspNetCore.Mvc;
 
 
 // An ‘Action Filter’ is an ideal candidate for checking a user’s authorization for the invoked functionality
@@ -35,20 +35,19 @@ public class RBACUser // actions class for RBAC user to check for permission
     {         
         // need to get user data from database table
 
-        using (Marvel.UserAcc data = new Marvel.UserAcc())
+        /*using ( )
         {
             UserAccount user = data.UserAccount.Where(x => x.UserName == this.UserName).FirstOrDefault();
             if (user != null)
             {
-                this.UserId = user.Id;
-                foreach (Role role in user.Roles)
+                this.UserName = user.Username;
+                foreach (ROLE role in user.Role)
                 {
-                    UserRole userRole = new UserRole { RoleId = role.Id, RoleName = role.RoleName };
-                    foreach (Permission permission in role.Permissions)
+                    UserRole userRole = new UserRole { RoleName = role.RoleName };
+                    foreach (PERMISSION permission in role.PERMISSION)
                     {
                         userRole.Permissions.Add(new RolePermission
                         {
-                            PermissionId = permission.Id,
                             PermissionDetails = permission.PermissionDetails
                         });
                     }
@@ -63,7 +62,7 @@ public class RBACUser // actions class for RBAC user to check for permission
                     }
                 }
             }
-        }
+        }*/
     }
 
     public bool CheckPermission(string rPermission)
@@ -88,7 +87,7 @@ public class RBACUser // actions class for RBAC user to check for permission
     public bool CheckRoles(string roles)
     {
         bool result = false;
-        string[] roles = roles.ToLower().Split(';');
+        _ = roles.ToLower().Split(';');
         foreach (UserRole role in this.Roles)
         {
             try
@@ -109,13 +108,12 @@ public class RBACUser // actions class for RBAC user to check for permission
 
 public class UserRole
 {
-    public int RoleId { get; set; }
+   
     public string RoleName { get; set; }
     public List<RolePermission> Permissions = new List<RolePermission>();
 }
 
 public class RolePermission
 {
-    public int PermissionId { get; set; }
     public string PermissionDetails{ get; set; }
 }
