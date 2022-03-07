@@ -30,7 +30,7 @@ namespace Tests
             // Arrange
             LogArchiver testArchiver = new LogArchiver();
             string connectionString = null;
-            connectionString = Environment.GetEnvironmentVariable("MARVELTESTCONNECTIONSTRING");
+            connectionString = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING");
             Assert.NotNull(connectionString);
             testArchiver._connection = new SqlConnection(connectionString);
             SqlDataReader testReader = null;
@@ -46,11 +46,11 @@ namespace Tests
         public void TestDeleteFromDB()
         {
             // Arrange
-            string connectionString = Environment.GetEnvironmentVariable("MARVELTESTCONNECTIONSTRING");
+            string connectionString = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING");
             Assert.NotNull(connectionString);
             Assert.True(connectionString != "");
 
-            string insertQuery = "INSERT INTO logs VALUES (@timestamp, @category, @level, @user, @description);";
+            string insertQuery = "INSERT INTO logs VALUES (@timestamp, @category, @layer, @user, @description);";
             string selectQuery = "SELECT logs.id FROM logs WHERE (logs.timestamp >= @cutoff);";
             string testCategory = "TEST";
             string testLevel = "TEST";
@@ -80,7 +80,7 @@ namespace Tests
                         {
                             command.Parameters.AddWithValue("@timestamp", current.timestamp);
                             command.Parameters.AddWithValue("@category", current.category);
-                            command.Parameters.AddWithValue("@level", current.level);
+                            command.Parameters.AddWithValue("@layer", current.level);
                             command.Parameters.AddWithValue("@user", current.user);
                             command.Parameters.AddWithValue("@description", current.description);
                             connection.Open();
