@@ -1,5 +1,5 @@
 ﻿using StudentMultiTool.Backend.Services.Authentication.Model;
-
+using StudentMultiTool.Backend.Services.Logout;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -61,6 +61,8 @@ namespace StudentMultiTool.Backend.Services.Authentication.Controller
                         if (count > 0)
                         {
                             Console.Write("Login Success");
+                            LogoutController logout = new LogoutController();
+                            logout.Logout();
                             string ip = GetIP();
 
                             break;
