@@ -1,16 +1,17 @@
 ﻿using StudentMultiTool.Backend.Services.Authentication.Model;
 using StudentMultiTool.Backend.Services.Logout;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authentication;
 using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Configuration;
+using System.Web;
 using System.Net.Mail;
 using System.Data.SqlClient;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
-using System.Threading.Tasks;
-using System.Web;
 using System.Text;
 using System.Net;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace StudentMultiTool.Backend.Services.Authentication.Controller
 {
@@ -21,7 +22,7 @@ namespace StudentMultiTool.Backend.Services.Authentication.Controller
         {
             return new OkResult();
         }
-        public ActionResult Authorize()
+        public  IActionResult Authorize()
         {
 
 
@@ -61,10 +62,10 @@ namespace StudentMultiTool.Backend.Services.Authentication.Controller
                         if (count > 0)
                         {
                             Console.Write("Login Success");
+
                             LogoutController logout = new LogoutController();
                             logout.Logout();
-                            string ip = GetIP();
-
+                           
                             break;
                         }
                         else

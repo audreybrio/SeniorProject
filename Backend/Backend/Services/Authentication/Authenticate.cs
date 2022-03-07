@@ -178,7 +178,7 @@ namespace Authentication
         }
 
         // Checks username and OTP
-        public static int loginUser(string username, string password)
+        public static int LoginUser(string username, string password)
         {
 
             SqlConnection conn = new SqlConnection();
@@ -263,7 +263,7 @@ namespace Authentication
     {
 
 
-/*        public static bool Eval(int rowsAffected)
+        public static bool Eval(int rowsAffected)
         {
             if (rowsAffected > 0)
             {
@@ -287,7 +287,7 @@ namespace Authentication
                 string a = "Error. Username/Password Incorrect.";
                 return a;
             }
-        }*/
+        }
 
 
 
@@ -322,7 +322,7 @@ namespace Authentication
 
                     Console.WriteLine("Enter OTP");
                     string password = Console.ReadLine();
-                    int count = Validate.loginUser(username, password);
+                    int count = Validate.LoginUser(username, password);
                     int compare = Validate.ValidTime(email);
                     if (compare >= 0)
                     {

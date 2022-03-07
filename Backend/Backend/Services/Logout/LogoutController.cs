@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Mvc;
 using StudentMultiTool.Backend.Services.Authentication.Controller;
 
 namespace StudentMultiTool.Backend.Services.Logout
@@ -10,12 +12,12 @@ namespace StudentMultiTool.Backend.Services.Logout
         {
             return new OkResult();
         }
-        public ActionResult Logout()
+        public  IActionResult Logout()
         {
             Console.WriteLine("Welcome to Student Multi-Tool Home Page");
             Console.Title = "StudentMultiTool Home";
             // Change console text color
-            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.ForegroundColor = ConsoleColor.Green;
             // Change terminal height
             Console.WindowHeight = 40;
 
@@ -34,9 +36,12 @@ namespace StudentMultiTool.Backend.Services.Logout
                 switch (menuChoice)
                 {
                     case 0:
+                        Console.ForegroundColor = ConsoleColor.Cyan;
                         menuLoop = false;
                         break;
                     case 1:
+                        Console.ForegroundColor = ConsoleColor.Cyan;
+
                         LoginController login = new LoginController();
                         login.Authorize();
                         menuLoop = false;

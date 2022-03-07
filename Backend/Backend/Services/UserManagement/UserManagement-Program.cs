@@ -7,7 +7,7 @@ namespace UserManagement
     {
 
         // Checks if user exists, if not validates username and passcode are valid and creates new user
-        public static bool CreateUsers(string name, string username, string pass, string email, string passcode)
+        public static bool CreateUsers(string name, string username, string email, string passcode, string school)
         {
 
             bool userExist = Validate.UserExist(username);
@@ -26,7 +26,7 @@ namespace UserManagement
                 }
                 if(validUsername == true && validPasscode == true)
                 {
-                    Update.UpdateCreate(name, username, pass, email, passcode);
+                    Update.UpdateCreate(name, username, email, passcode, school);
                     return true;
                 }
                 else
@@ -148,7 +148,7 @@ namespace UserManagement
             SqlConnection conn = new SqlConnection();
             conn.ConnectionString = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING");
             conn.Open();
-            SqlCommand cmd = new SqlCommand("SELECT role" + " from UserTable " + "WHERE UserTable.role = role", conn);
+            SqlCommand cmd = new SqlCommand("SELECT role" + " from UserAccounts " + "WHERE UserAccounts.role = role", conn);
             cmd.ExecuteNonQuery();
             string role = "";
             role = (string)cmd.ExecuteScalar();
@@ -173,7 +173,7 @@ namespace UserManagement
             SqlConnection conn = new SqlConnection();
             conn.ConnectionString = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING");
             conn.Open();
-            SqlCommand cmd3 = new SqlCommand("SELECT COUNT (username)" + " from UserTable " + "WHERE UserTable.username = @username", conn);
+            SqlCommand cmd3 = new SqlCommand("SELECT COUNT (username)" + " from UserAccounts " + "WHERE UserAccounts.username = @username", conn);
             cmd3.Parameters.AddWithValue("@username", username);
             SqlDataReader reader = cmd3.ExecuteReader();
             int count = 1;
@@ -195,7 +195,7 @@ namespace UserManagement
             SqlConnection conn = new SqlConnection();
             conn.ConnectionString = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING");
             conn.Open();
-            SqlCommand cmd = new SqlCommand("SELECT active_status" + " from UserTable" + " WHERE UserTable.username = @username", conn);
+            SqlCommand cmd = new SqlCommand("SELECT active_status" + " from UserAccounts" + " WHERE UserAccounts.username = @username", conn);
             cmd.Parameters.AddWithValue("@username", username);
             cmd.ExecuteNonQuery();
             bool active_status = (bool)cmd.ExecuteScalar();
@@ -217,7 +217,7 @@ namespace UserManagement
             SqlConnection conn = new SqlConnection();
             conn.ConnectionString = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING");
             conn.Open();
-            SqlCommand cmd = new SqlCommand("SELECT active_status" + " from UserTable" + " WHERE UserTable.username = @username", conn);
+            SqlCommand cmd = new SqlCommand("SELECT active_status" + " from UserAccounts" + " WHERE UserAccounts.username = @username", conn);
             cmd.Parameters.AddWithValue("@username", username);
             cmd.ExecuteNonQuery();
             bool active_status = (bool)cmd.ExecuteScalar();
@@ -238,7 +238,7 @@ namespace UserManagement
             SqlConnection conn = new SqlConnection();
             conn.ConnectionString = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING");
             conn.Open();
-            SqlCommand cmd = new SqlCommand("SELECT COUNT (username)" + " from UserTable" + " WHERE UserTable.username = @username AND UserTable.role = @role", conn);
+            SqlCommand cmd = new SqlCommand("SELECT COUNT (username)" + " from UserAccounts" + " WHERE UserAccounts.username = @username AND UserAccounts.role = @role", conn);
             cmd.Parameters.AddWithValue("@username", username);
             cmd.Parameters.AddWithValue("@role", role);
             SqlDataReader reader = cmd.ExecuteReader();
@@ -339,10 +339,10 @@ namespace UserManagement
             SqlConnection conn = new SqlConnection();
             conn.ConnectionString = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING");
             conn.Open();
-            SqlCommand cmd = new SqlCommand("DELETE FROM UserTable WHERE UserTable.username = @username", conn);
+            SqlCommand cmd = new SqlCommand("DELETE FROM UserAccounts WHERE UserAccounts.username = @username", conn);
             cmd.Parameters.AddWithValue("@username", username);
             cmd.ExecuteNonQuery();
-            SqlCommand cmd2 = new SqlCommand("SELECT COUNT (username)" + " from UserTable " + "WHERE UserTable.username = @username", conn);
+            SqlCommand cmd2 = new SqlCommand("SELECT COUNT (username)" + " from UserAccounts " + "WHERE UserAccounts.username = @username", conn);
             cmd2.Parameters.AddWithValue("@username", username);
             SqlDataReader reader = cmd2.ExecuteReader();
             int count = 1;
@@ -357,7 +357,7 @@ namespace UserManagement
             SqlConnection conn = new SqlConnection();
             conn.ConnectionString = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING");
             conn.Open();
-            SqlCommand cmd = new SqlCommand("UPDATE UserTable" + " SET active_status = @newStatus" + " WHERE username = @username", conn);
+            SqlCommand cmd = new SqlCommand("UPDATE UserAccounts" + " SET active_status = @newStatus" + " WHERE username = @username", conn);
             cmd.Parameters.AddWithValue("@newStatus", 1);
             cmd.Parameters.AddWithValue("@username", username);
             cmd.ExecuteNonQuery();
@@ -369,7 +369,7 @@ namespace UserManagement
             SqlConnection conn = new SqlConnection();
             conn.ConnectionString = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING");
             conn.Open();
-            SqlCommand cmd = new SqlCommand("UPDATE UserTable" + " SET active_status = @newStatus" + " WHERE username = @username", conn);
+            SqlCommand cmd = new SqlCommand("UPDATE UserAccounts" + " SET active_status = @newStatus" + " WHERE username = @username", conn);
             cmd.Parameters.AddWithValue("@newStatus", 0);
             cmd.Parameters.AddWithValue("@username", username);
             cmd.ExecuteNonQuery();
@@ -381,29 +381,28 @@ namespace UserManagement
             SqlConnection conn = new SqlConnection();
             conn.ConnectionString = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING");
             conn.Open();
-            SqlCommand cmd = new SqlCommand("UPDATE UserTable" + " SET role = @role" + " WHERE username = @username", conn);
+            SqlCommand cmd = new SqlCommand("UPDATE UserAccounts" + " SET role = @role" + " WHERE username = @username", conn);
             cmd.Parameters.AddWithValue("@role", newRole);
             cmd.Parameters.AddWithValue("@username", username);
             cmd.ExecuteNonQuery();
         }
 
         // Updates database to create new user 
-        public static void UpdateCreate(string name, string username, string password, string email, string passcode)
+        public static void UpdateCreate(string name, string username, string email, string passcode, string school)
         {
             // inserts the created user into the database
             SqlConnection conn = new SqlConnection();
             conn.ConnectionString = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING");
             conn.Open();
-            int id = (int) generateID();
-            SqlCommand cmd = new SqlCommand("INSERT INTO UserTable " + "(id, name, username, password, email, passcode, role, active_status) " + "  values (@id, @name, @username, @password, @email, @passcode, @role, @active_status)", conn);
-            cmd.Parameters.AddWithValue("@id", id);
+            //int id = (int) generateID();
+            SqlCommand cmd = new SqlCommand("INSERT INTO UserAccounts " + "(name, username, email, passcode, role, school, active_status) " + "  values (@name, @username, @email, @passcode, @role, @school, @active_status)", conn);
             cmd.Parameters.AddWithValue("@name", name);
             cmd.Parameters.AddWithValue("@username", username);
-            cmd.Parameters.AddWithValue("@password", password);
             cmd.Parameters.AddWithValue("@email", email);
             cmd.Parameters.AddWithValue("@passcode", passcode);
             cmd.Parameters.AddWithValue("@role", "student");
-            cmd.Parameters.AddWithValue("@active_status", 1);
+            cmd.Parameters.AddWithValue("@school", school);
+            cmd.Parameters.AddWithValue("@active_status", 0);
             cmd.ExecuteNonQuery();
         }
 
@@ -413,7 +412,7 @@ namespace UserManagement
             SqlConnection conn = new SqlConnection();
             conn.ConnectionString = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING");
             conn.Open();
-            SqlCommand cmd = new SqlCommand("SELECT MAX(id) AS ID" + " FROM UserTable", conn);
+            SqlCommand cmd = new SqlCommand("SELECT MAX(id) AS ID" + " FROM UserAccounts", conn);
             cmd.ExecuteNonQuery();
             int id = (int)cmd.ExecuteScalar();
             if (id != null)
