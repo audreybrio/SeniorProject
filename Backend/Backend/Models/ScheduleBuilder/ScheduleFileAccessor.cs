@@ -7,8 +7,11 @@ namespace StudentMultiTool.Backend.Models.ScheduleBuilder
     public class ScheduleFileAccessor
     {
         public static string Success { get; } = "Success";
-        public ScheduleFileAccessor()
-        {}
+        public bool Indentation { get; set; }
+        public ScheduleFileAccessor(bool Indentation = false)
+        {
+            this.Indentation = Indentation;
+        }
 
         // Writes all ScheduleItems in a given Schedule to a .json file.
         // The "schedule" argument is simply the Schedule whose ScheduleItems
@@ -18,7 +21,7 @@ namespace StudentMultiTool.Backend.Models.ScheduleBuilder
         // file should be indented. Indentation should only be used for demonstrative
         // or testing purposes. When deployed, indentation should not be used, to save
         // storage space.
-        public String WriteScheduleItems(Schedule schedule, bool indented = false)
+        public String WriteScheduleItems(Schedule schedule)
         {
             try
             {
@@ -27,7 +30,7 @@ namespace StudentMultiTool.Backend.Models.ScheduleBuilder
                 {
                     // Configure writer to indent the .json file, or not.
                     JsonWriterOptions options = new JsonWriterOptions();
-                    options.Indented = indented;
+                    options.Indented = this.Indentation;
 
                     using (Utf8JsonWriter writer = new Utf8JsonWriter(stream, options))
                     {
