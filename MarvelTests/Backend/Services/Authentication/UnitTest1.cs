@@ -6,6 +6,12 @@ namespace AuthenticationTests
 {
     public class UnitTest1
     {
+        // TODO: These are integration tests that will not pass
+        // without some setup (inserting values into the database).
+        // They should be updated in some way to accommodate this,
+        // and/or a test database should be configured with these
+        // specific test values.
+
         // Login Successful
         [Fact]
         public void LoginSuccessfulTest()
@@ -28,7 +34,6 @@ namespace AuthenticationTests
         [Fact]
         public void IncorrectEmailTest()
         {
-
 
             string email = "abrio@student.csulb.edu";
             string passcode = "hello world";
