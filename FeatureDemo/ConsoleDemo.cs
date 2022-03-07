@@ -1,4 +1,6 @@
-﻿namespace ConsoleDemo
+﻿
+
+namespace ConsoleDemo
 {
     public class ConsoleDemo
     {
@@ -6,7 +8,7 @@
         {
             // Console customization
             // Change the look of the console
-            Console.Title = "HobbyProjectGenerator";
+            Console.Title = "StudentMultiTool";
             // Change console text color
             Console.ForegroundColor = ConsoleColor.Cyan;
             // Change terminal height
@@ -33,6 +35,7 @@
                         break;
                     // Registration
                     case 1:
+
                         break;
                     // Login/Logout
                     case 2:
