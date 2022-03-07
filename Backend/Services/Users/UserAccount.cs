@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace UserAcc
+namespace Marvel.UserAcc
 {
     public class UserAccount
     {
@@ -34,4 +34,45 @@ namespace UserAcc
         public string Password { get => password; set => password = value; }
         public string Passcode { get => passcode; set => passcode = value; }
     }
-}
+
+
+
+    [Table("ROLES")]
+    public partial class ROLE
+    {
+        public ROLE()
+        {
+            PERMISSIONS = new HashSet<PERMISSION>();
+            UserAccounts = new HashSet<UserAccount>();
+        }
+
+        [Key]
+        public int RoleId { get; set; }
+
+        [Required]
+        public string RoleName { get; set; }
+        public string RoleDetail { get; set; }
+        public bool IsAdmin { get; set; }
+        public bool IsStudent { get; set; }
+        public virtual ICollection<PERMISSION> PERMISSIONS { get; set; }
+        public virtual ICollection<UserAccount> UserAccounts { get; set; }
+    }
+
+
+    [Table("PERMISSIONS")]
+    public partial class PERMISSION
+    {
+        public PERMISSION()
+        {
+            ROLES = new HashSet<ROLE>();
+        }
+
+        [Key]
+        public int PermissionId { get; set; }
+
+        [Required]
+        [StringLength(50)]
+        public string PermissionDetails { get; set; }
+
+        public virtual ICollection<ROLE> ROLES { get; set; }
+    }}
