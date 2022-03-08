@@ -54,7 +54,7 @@ namespace StudentMultiTool.Backend.Services.Authentication.Controller
                         if (count > 0)
                         {
                             Console.Write("Login Success");
-
+                            // Changed out for redirct to homepage
                             LogoutController logout = new LogoutController();
                             logout.Logout();
                            
