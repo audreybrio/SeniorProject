@@ -1,0 +1,19 @@
+{
+  "profiles": {
+    "MarvelTests": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "MARVELCONNECTIONSTRING": "Data Source=LAPTOP-S1MIT52E\\SQLEXPRESS;Initial Catalog=Marvel;Integrated Security=True",
+        "MARVELARCHIVEPATH": "./"
+      }
+    },
+    "WSL": {
+      "commandName": "WSL2",
+      "environmentVariables": {
+        "MARVELCONNECTIONSTRING": "Data Source=LAPTOP-S1MIT52E\\SQLEXPRESS;Initial Catalog=Marvel;Integrated Security=True",
+        "MARVELARCHIVEPATH": "./"
+      },
+      "distributionName": ""
+    }
+  }
+}
