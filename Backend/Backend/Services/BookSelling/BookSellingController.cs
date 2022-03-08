@@ -6,12 +6,11 @@ namespace StudentMultiTool.Backend.Services.BookSelling
     {
         // Set up database variables
         public string sql { get; set; }
-        public SqlConnection _connection { get; set; }
+        public string? dbConnectionString { get; set; } = "";
         public BookSellingController()
         {
             
-            sql = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING");
-            _connection = new SqlConnection(sql);
+            dbConnectionString = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING");
 
             // Console customization
             // Change the look of the console
@@ -46,19 +45,24 @@ namespace StudentMultiTool.Backend.Services.BookSelling
                     // Create a Listing
                     case 1:
                         // Get form text fields
-                        var form = BookListForm();
-                        bool createList = CreateListing();
+                        var formCreate = BookListForm(userN);
+                        bool createList = CreateListing(formCreate);
                         break;
                     // Update a Listing
                     case 2:
-                        bool updateList = UpdateListing();
+                        // Get form text fields
+                        var formUpdate = BookListForm(userN);
+                        bool updateList = UpdateListing(formUpdate);
                         break;
                     // Remove a Listing
                     case 3:
-                        bool deleteList = DeleteListing();
+                        // Get form text fields
+                        var formDelete = BookListForm(userN);
+                        bool deleteList = DeleteListing(formDelete);
                         break;
                     // Search for a Listing by title
                     case 4:
+                        // Search for book based on title given
                         bool searchTitleList = SearchTitleListing();
                         break;
                     default:
@@ -73,59 +77,170 @@ namespace StudentMultiTool.Backend.Services.BookSelling
         {
             try
             {
-                // Insert into users table
-                string sqlUser = $"INSERT INTO bookListings (UserName,BookTitle, BookDescription, BookEdition, BookIsbn, Contact, ListDate, IsActive)" +
+                using (SqlConnection connection = new SqlConnection(dbConnectionString))
+                {
+                    string query = $"INSERT INTO BookListings (UserName,BookTitle, BookDescription, BookEdition, BookIsbn, Contact, ListDate, IsActive)" +
                     $"VALUES ('{book.username}', " +
                     $"'{book.bookTitle}','{book.bookDes}','{book.bookEdition}'," +
-                    $"'{book.isbn}', '{book.contactInfo}', NOW(), 1);";
+                    $"'{book.isbn}', '{book.contactInfo}', '{DateTime.UtcNow}', 1);";
 
-                bool insertNewUser = dbSource.WriteData(sqlUser);
-                return insertNewUser;
+                    int rowsAffected = 0;
+
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        try
+                        {
+                            connection.Open();
+                            rowsAffected = command.ExecuteNonQuery();
+                            connection.Close();
+                            return true;
+                        }
+                        catch (System.InvalidOperationException ex)
+                        {
+                            return false;
+                            Console.WriteLine("The following exception has occurred: " +
+                                    ex.GetType().FullName);
+                            Console.WriteLine(ex.Message);
+                        }
+                        catch (SqlException ex)
+                        {
+                            return false;
+                            Console.WriteLine("The following exception has occurred: " +
+                                    ex.GetType().FullName);
+                            Console.WriteLine(ex.Message);
+                        }
+                    }
+                }
             }
             catch (Exception ex)
             {
                 return false;
             }
         }
-        // update a Listing
+        // Update a Listing
         public bool UpdateListing(BookListings book)
         {
             try
             {
-                // Insert into users table
-                string sqlUser = $"INSERT INTO bookListings (UserName,BookTitle, BookDescription, BookEdition, BookIsbn, Contact, ListDate, IsActive)" +
-                    $"VALUES ('{book.username}', " +
-                    $"'{book.bookTitle}','{book.bookDes}','{book.bookEdition}'," +
-                    $"'{book.isbn}', '{book.contactInfo}', NOW(), 1);";
+                using (SqlConnection connection = new SqlConnection(dbConnectionString))
+                {
+                    string query = $"UPDATE BookListings SET UserName = '{book.username}',BookTitle = '{book.bookTitle}', " +
+                    $"BookDescription = '{book.bookDes}', BookEditio = '{book.bookEdition}', " +
+                    $"BookIsbn = '{book.isbn}', Contact = '{book.contactInfo}'" +
+                    $"Where UserName = '{book.username}' AND BookTitle = '{book.bookTitle}'";
 
-                bool insertNewUser = dbSource.WriteData(sqlUser);
-                return insertNewUser;
+                    int rowsAffected = 0;
+
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        try
+                        {
+                            connection.Open();
+                            rowsAffected = command.ExecuteNonQuery();
+                            connection.Close();
+                            return true;
+                        }
+                        catch (System.InvalidOperationException ex)
+                        {
+                            return false;
+                            Console.WriteLine("The following exception has occurred: " +
+                                    ex.GetType().FullName);
+                            Console.WriteLine(ex.Message);
+                        }
+                        catch (SqlException ex)
+                        {
+                            return false;
+                            Console.WriteLine("The following exception has occurred: " +
+                                    ex.GetType().FullName);
+                            Console.WriteLine(ex.Message);
+                        }
+                    }
+                }
             }
             catch (Exception ex)
             {
                 return false;
             }
-            return false;
         }
         // Delete a Listing
         public bool DeleteListing(BookListings book)
         {
-            return false;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(dbConnectionString))
+                {
+                    string query = $"DELETE FROM BookListings " +
+                    $"Where UserName = '{book.username}' AND BookTitle = '{book.bookTitle}'";
+
+                    int rowsAffected = 0;
+
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        try
+                        {
+                            connection.Open();
+                            rowsAffected = command.ExecuteNonQuery();
+                            connection.Close();
+                            return true;
+                        }
+                        catch (System.InvalidOperationException ex)
+                        {
+                            return false;
+                            Console.WriteLine("The following exception has occurred: " +
+                                    ex.GetType().FullName);
+                            Console.WriteLine(ex.Message);
+                        }
+                        catch (SqlException ex)
+                        {
+                            return false;
+                            Console.WriteLine("The following exception has occurred: " +
+                                    ex.GetType().FullName);
+                            Console.WriteLine(ex.Message);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
         }
+        // Search for a listing
         public bool SearchTitleListing()
         {
-            return false;
+            Console.WriteLine("Please enter the title of the book to search for:");
+            string searchTitle = Console.ReadLine();
+
+            SqlConnection conn = new SqlConnection();
+            conn.ConnectionString = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING");
+            conn.Open();
+            SqlCommand cmd = new SqlCommand($"SELECT * from BookListings WHERE BookTitle = '{searchTitle}';", conn);
+            SqlDataReader reader = cmd.ExecuteReader();
+            int rowCounts = 0;
+            reader.Close();
+            rowCounts = (int)cmd.ExecuteScalar();
+
+            if (rowCounts > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
-        // 
-        public BookListings BookListForm()
+        // Get Form information
+        public BookListings BookListForm(string userName)
         {
-            BookListings newListing = new BookListings();
-            Console.WriteLine("Please provide your username.\n");
-            string username = Console.ReadLine();
+/*            BookListings newListing = new BookListings();*/
+            // Get Form text fields
+            BookSellingUi ui = new BookSellingUi();
+            var newListing = ui.BookFormMenu(userName);
 
             return newListing;
         }
     }
+    // Create Listing objects
     public class BookListings
     {
         private string _userName;   // Username of seller
