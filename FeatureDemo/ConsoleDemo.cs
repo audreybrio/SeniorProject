@@ -44,6 +44,8 @@ namespace ConsoleDemo
                         break;
                     // Schedule Builder
                     case 3:
+                        ScheduleBuilderDemo demo = new ScheduleBuilderDemo();
+                        demo.Demo();
                         break;
                     // Book Selling
                     case 4:
