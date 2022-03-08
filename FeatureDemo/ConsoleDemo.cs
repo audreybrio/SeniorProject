@@ -1,5 +1,7 @@
 ﻿
 
+using StudentMultiTool.Backend.Services.BookSelling;
+
 namespace ConsoleDemo
 {
     public class ConsoleDemo
@@ -47,6 +49,7 @@ namespace ConsoleDemo
                         break;
                     // Book Selling
                     case 4:
+                        BookSellingController bookList = new BookSellingController();
                         break;
                     // Automated Moderating
                     case 5:
