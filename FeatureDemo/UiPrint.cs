@@ -11,6 +11,13 @@ namespace ConsoleDemo
     {
         public void SystemAccountMenu()
         {
+            // Console customization
+            // Change the look of the console
+            Console.Title = "StudentMultiTool";
+            // Change console text color
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            // Change terminal height
+            Console.WindowHeight = 40;
             // Menu for all UserManagement options
             int menu = 0;
             Console.WriteLine("This menu is for the purpose of demonstrating the features.\n");

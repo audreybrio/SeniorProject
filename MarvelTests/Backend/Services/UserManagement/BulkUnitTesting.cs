@@ -4,6 +4,9 @@ using UserManagement;
 
 namespace BulkOperationsTesting
 {
+    // All of these tests fail with the following exception:
+    // System.IO.FileNotFoundException, re: C:\Users\Public\TestFolder\bulkops.txt
+    // For these tests to pass, that file must exist exist on your system.
     public class BulkUnitTesting
     {
         [Fact]

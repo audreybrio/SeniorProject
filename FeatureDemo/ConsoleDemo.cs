@@ -1,5 +1,7 @@
 ﻿using StudentMultiTool.Backend.Services.Authentication.Controller;
 
+using StudentMultiTool.Backend.Services.BookSelling;
+
 namespace ConsoleDemo
 {
     public class ConsoleDemo
@@ -44,9 +46,12 @@ namespace ConsoleDemo
                         break;
                     // Schedule Builder
                     case 3:
+                        ScheduleBuilderDemo demo = new ScheduleBuilderDemo();
+                        demo.Demo();
                         break;
                     // Book Selling
                     case 4:
+                        BookSellingController bookList = new BookSellingController();
                         break;
                     // Automated Moderating
                     case 5:

@@ -5,7 +5,7 @@ namespace UserManagement
 {
     public class UserManager
     {
-
+        // TODO: Update password/passcode fields to accurately reflect database schema.
         // Checks if user exists, if not validates username and passcode are valid and creates new user
         public static bool CreateUsers(string name, string username, string email, string passcode, string school)
         {
@@ -333,6 +333,7 @@ namespace UserManagement
 
     public class Update
     {
+        // TODO: Update password/passcode fields to accurately reflect database schema.
         // Updates database to delete user 
         public static int UpdateDelete(string username)
         {
@@ -412,12 +413,12 @@ namespace UserManagement
             SqlConnection conn = new SqlConnection();
             conn.ConnectionString = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING");
             conn.Open();
-            SqlCommand cmd = new SqlCommand("SELECT MAX(id) AS ID" + " FROM UserAccounts", conn);
+            SqlCommand cmd = new SqlCommand("SELECT MAX(userId) AS ID" + " FROM UserAccounts", conn);
             cmd.ExecuteNonQuery();
-            int id = (int)cmd.ExecuteScalar();
-            if (id != null)
+            int userId = (int)cmd.ExecuteScalar();
+            if (userId != null)
             {
-                return id + 1;
+                return userId + 1;
             }
             else
             {
