@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Services\Authorization\" />
+    <Folder Include="Backend\Services\Authorization\" />
   </ItemGroup>
 
   <ItemGroup>

@@ -84,7 +84,7 @@ namespace Tests
             Task<int> result = logWriter.AddLog(category, level, user, description);
 
             // Assert
-            Assert.Equal(1, await result);
+            Assert.Equal(0, await result);
         }
 
         [Fact]
