@@ -7,7 +7,7 @@ namespace UserManagement
     {
         // TODO: Update password/passcode fields to accurately reflect database schema.
         // Checks if user exists, if not validates username and passcode are valid and creates new user
-        public static bool CreateUsers(string name, string username, string pass, string email, string passcode)
+        public static bool CreateUsers(string name, string username, string email, string passcode, string school)
         {
 
             bool userExist = Validate.UserExist(username);
@@ -26,7 +26,7 @@ namespace UserManagement
                 }
                 if(validUsername == true && validPasscode == true)
                 {
-                    Update.UpdateCreate(name, username, pass, email, passcode);
+                    Update.UpdateCreate(name, username, email, passcode, school);
                     return true;
                 }
                 else
@@ -389,22 +389,21 @@ namespace UserManagement
         }
 
         // Updates database to create new user 
-        public static void UpdateCreate(string name, string username, string password, string email, string passcode)
+        public static void UpdateCreate(string name, string username, string email, string passcode, string school)
         {
             // inserts the created user into the database
             SqlConnection conn = new SqlConnection();
             conn.ConnectionString = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING");
             conn.Open();
-            int userId = (int) generateID();
-            SqlCommand cmd = new SqlCommand("INSERT INTO UserAccounts " + "(userId, name, username, password, email, passcode, role, active_status) " + "  values (@userId, @name, @username, @password, @email, @passcode, @role, @active_status)", conn);
-            cmd.Parameters.AddWithValue("@userId", userId);
+            //int id = (int) generateID();
+            SqlCommand cmd = new SqlCommand("INSERT INTO UserAccounts " + "(name, username, email, passcode, role, school, active_status) " + "  values (@name, @username, @email, @passcode, @role, @school, @active_status)", conn);
             cmd.Parameters.AddWithValue("@name", name);
             cmd.Parameters.AddWithValue("@username", username);
-            cmd.Parameters.AddWithValue("@password", password);
             cmd.Parameters.AddWithValue("@email", email);
             cmd.Parameters.AddWithValue("@passcode", passcode);
             cmd.Parameters.AddWithValue("@role", "student");
-            cmd.Parameters.AddWithValue("@active_status", 1);
+            cmd.Parameters.AddWithValue("@school", school);
+            cmd.Parameters.AddWithValue("@active_status", 0);
             cmd.ExecuteNonQuery();
         }
 

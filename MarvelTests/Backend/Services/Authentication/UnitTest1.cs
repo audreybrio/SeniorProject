@@ -19,15 +19,15 @@ namespace AuthenticationTests
             string email = "audrey.brio@student.csulb.edu";
             string passcode = "hello world";
             bool log;
-            log = Authenticate.Authen(email, passcode);
+            log = Authentication.Validate.UserExist(email, passcode);
             Assert.True(log);
 
             string username = "abrio";
             string password = "123456";
             int temp;
-            temp = Validate.LoginUser(username, password);
-            bool t = Evaluate.EvaluateBool(temp);
-            Assert.True(t);
+            temp = Authentication.Validate.LoginUser(username, password);
+            bool t = Authentication.Evaluate.Eval(temp);
+            Assert.False(t);
         }
 
         // Login failed due to incorrect email 
@@ -38,16 +38,8 @@ namespace AuthenticationTests
             string email = "abrio@student.csulb.edu";
             string passcode = "hello world";
             bool log;
-            log = Authenticate.Authen(email, passcode);
-            Assert.True(log);
-
-
-            string username = "abrio";
-            string password = "123456";
-            int temp;
-            temp = Validate.LoginUser(username, password);
-            bool t = Evaluate.EvaluateBool(temp);
-            Assert.True(t);
+            log = Authentication.Validate.UserExist(email, passcode);
+            Assert.False(log);
         }
 
         // Login failed due to incorrect passcode
@@ -57,15 +49,10 @@ namespace AuthenticationTests
             string email = "audrey.brio@student.csulb.edu";
             string passcode = "no";
             bool log;
-            log = Authenticate.Authen(email, passcode);
-            Assert.True(log);
+            log = Authentication.Validate.UserExist(email, passcode);
+            Assert.False(log);
 
-            string username = "abrio";
-            string password = "123456";
-            int temp;
-            temp = Validate.LoginUser(username, password);
-            bool t = Evaluate.EvaluateBool(temp);
-            Assert.True(t);
+
         }
 
         // Login failed due to account being disabled
@@ -77,15 +64,9 @@ namespace AuthenticationTests
             string email = "bradley.nickle@student.csulb.edu";
             string passcode = "marvel fan";
             bool log;
-            log = Authenticate.Authen(email, passcode);
-            Assert.True(log);
+            log = Authentication.Validate.UserExist(email, passcode);
+            Assert.False(log);
 
-            string username = "bnickle";
-            string password = "987654";
-            int temp;
-            temp = Validate.LoginUser(username, password);
-            bool t = Evaluate.EvaluateBool(temp);
-            Assert.True(t);
         }
 
         // Login Failure due to incorrect username
@@ -93,36 +74,36 @@ namespace AuthenticationTests
         public void IncorrectUsernameTest()
         {
 
-            string email = "michael.kriesel@student.csulb.edu";
+            string email = "jacob.delgado01@student.csulb.edu";
             string passcode = "super man";
             bool log;
-            log = Authenticate.Authen(email, passcode);
+            log = Authentication.Validate.UserExist(email, passcode);
             Assert.True(log);
 
-            string username = "mk";
+            string username = "jd";
             string password = "Password!";
             int temp;
             temp = Validate.LoginUser(username, password);
-            bool t = Evaluate.EvaluateBool(temp);
-            Assert.True(t);
+            bool t = Authentication.Evaluate.Eval(temp);
+            Assert.False(t);
         }
 
         // Login failure due to incorrect password
         [Fact]
         public void IncorrectPasswordTest()
         {
-            string email = "michael.kriesel@student.csulb.edu";
+            string email = "jacob.delgado01@student.csulb.edu";
             string passcode = "super man";
             bool log;
-            log = Authenticate.Authen(email, passcode);
+            log = Authentication.Validate.UserExist(email, passcode);
             Assert.True(log);
 
-            string username = "mkriesel";
+            string username = "jdelgado";
             string password = "Password1";
             int temp;
             temp = Validate.LoginUser(username, password);
-            bool t = Evaluate.EvaluateBool(temp);
-            Assert.True(t);
+            bool t = Authentication.Evaluate.Eval(temp);
+            Assert.False(t);
         }
     }
 }

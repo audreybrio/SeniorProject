@@ -15,8 +15,8 @@ namespace CreateTesting
             string user = "jmann";
             string passcode = "spiderman";
             string email = "asb@edu";
-            string password = "12345";
-            bool isCreated = UserManager.CreateUsers(name, user, password, email, passcode);
+            string school = "CSULB";
+            bool isCreated = UserManager.CreateUsers(name, user, email, passcode, school);
             Assert.True(isCreated);
 
         }
@@ -29,9 +29,10 @@ namespace CreateTesting
             string user = "bnickle";
             string passcode = "spiderman";
             string email = "asb@edu";
-            string password = "12345";
-            bool isCreated = UserManager.CreateUsers(name, user, password, email, passcode);
-            Assert.True(isCreated);
+            string school = "CSULB";
+
+            bool isCreated = UserManager.CreateUsers(name, user, email, passcode, school);
+            Assert.False(isCreated);
 
         }
 
@@ -43,9 +44,9 @@ namespace CreateTesting
             string user = "jb";
             string passcode = "spider man";
             string email = "asb@edu";
-            string password = "12345";
-            bool isCreated = UserManager.CreateUsers(name, user, password, email, passcode);
-            Assert.True(isCreated);
+            string school = "CSULB";
+            bool isCreated = UserManager.CreateUsers(name, user, email, passcode, school);
+            Assert.False(isCreated);
 
         }
 
@@ -57,9 +58,9 @@ namespace CreateTesting
             string user = "spidy";
             string passcode = "no";
             string email = "asb@edu";
-            string password = "12345";
-            bool isCreated = UserManager.CreateUsers(name, user, password, email, passcode);
-            Assert.True(isCreated);
+            string school = "CSULB";
+            bool isCreated = UserManager.CreateUsers(name, user, email, passcode, school);
+            Assert.False(isCreated);
 
         }
     }

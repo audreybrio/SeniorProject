@@ -20,9 +20,9 @@ namespace DisableTesting
         [Fact]
         public void DisableDisabledUser()
         {
-            string username = "bnickle";
+            string username = "jmann";
             bool isDisabled = UserManager.DisableUser(username);
-            Assert.True(isDisabled);
+            Assert.False(isDisabled);
         }
 
         // Disable User that doesnt Exist
@@ -31,7 +31,7 @@ namespace DisableTesting
         {
             string username = "kms";
             bool isDisabled = UserManager.DisableUser(username);
-            Assert.True(isDisabled);
+            Assert.False(isDisabled);
         }
     }
 }
