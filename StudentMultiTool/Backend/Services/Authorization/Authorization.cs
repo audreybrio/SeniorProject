@@ -16,7 +16,7 @@ namespace Authorization{
             return role;
         }
 
-    static void Main(string[] args)
+  /*  static void Main(string[] args)
         {
             SqlConnection conn = new SqlConnection();
             conn.ConnectionString = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING");
@@ -38,6 +38,6 @@ namespace Authorization{
                 Console.WriteLine("Error: Current user is an unauthorized user.");
             }
 
-        }
+        }*/
     }
 }

@@ -1,4 +1,5 @@
-﻿using StudentMultiTool.Backend.Services.Authentication.Controller;
+﻿using FeatureDemo;
+using StudentMultiTool.Backend.Services.Authentication.Controller;
 
 using StudentMultiTool.Backend.Services.BookSelling;
 
@@ -37,7 +38,7 @@ namespace ConsoleDemo
                         break;
                     // Registration
                     case 1:
-
+                        RegistrationDemo registration = new RegistrationDemo();
                         break;
                     // Login/Logout
                     case 2:
