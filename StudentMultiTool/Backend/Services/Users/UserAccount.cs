@@ -11,18 +11,19 @@ namespace UserAcc
         public string passcode; 
         public string role;
         public bool active;
+        public string school;
  
 
-        public UserAccount(string n, string u, string p, string e, string pass, string r, bool a)
+        public UserAccount(string email, string password, string userName, string school)
         {
-            this.name = n;
-            this.username = u;
-            this.password = p;
-            this.email = e;
-            this.passcode = pass;
-            this.role = r;
-            this.active = a;
-
+            this.email = email;
+            this.name = "";
+            this.username = userName;
+            this.password = password;
+            this.passcode = "";
+            this.role = "student";
+            this.active = false;
+            this.school = school;
 
         }
 

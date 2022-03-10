@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UserAcc;
+using UserManagement;
 
 namespace FeatureDemo
 {
@@ -14,7 +16,7 @@ namespace FeatureDemo
             string userName;
             string password;
             string email;
-            string university;
+            string school;
             InputValidation input = new InputValidation();
 
             System.Console.WriteLine("\tRegistration\n");
@@ -40,11 +42,12 @@ namespace FeatureDemo
             do
             {
                 System.Console.Write("University: ");
-                university = System.Console.ReadLine();
-            } while (!input.validateSchool(university));
+                school = System.Console.ReadLine();
+            } while (!input.validateSchool(school));
 
-            //UserAccount userAcc = new UserAccount(userName, password, email, university);
-            System.Console.ReadLine();
+            UserAccount userAcc = new UserAccount(email, password, userName, school);
+            Update usertoDB = new Update();
+            usertoDB.UpdateCreate(email, password, userName, school);
         }
     }
 }
