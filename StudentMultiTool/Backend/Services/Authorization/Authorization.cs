@@ -16,7 +16,7 @@ namespace Authorization{
             return role;
         }
 
-    static void Main(string[] args)
+    public void demo()
         {
             SqlConnection conn = new SqlConnection();
             conn.ConnectionString = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING");

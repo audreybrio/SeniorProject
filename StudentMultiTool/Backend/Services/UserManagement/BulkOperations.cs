@@ -34,7 +34,7 @@ namespace Rextester{
             }
         }
 
-        static void Main(string[] args)
+        public void demo()
         {
             string currentUsername = "abrio";
             if(GetUserRole(currentUsername) == "Admin"){
