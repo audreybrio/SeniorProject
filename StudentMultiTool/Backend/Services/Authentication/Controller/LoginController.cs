@@ -1,4 +1,4 @@
-﻿using StudentMultiTool.Backend.Services.Authentication.Model;
+﻿using StudentMultiTool.Backend.Services.Authentication;
 using StudentMultiTool.Backend.Services.Logout;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -17,74 +17,85 @@ namespace StudentMultiTool.Backend.Services.Authentication.Controller
         {
             return new OkResult();
         }
-        public  IActionResult Authorize()
+        public IActionResult Authorize()
         {
-
-
 
             Console.WriteLine("Welcome to Student Multi-Tool, Please log in.");
             Console.WriteLine("Enter Email.");
             string email = Console.ReadLine();
             Console.WriteLine("Enter Passphrase");
             string passcode = Console.ReadLine();
-            bool log;
-            log = UserExist(email, passcode);
-            // If user exists
-            if (log == true)
+
+            bool doesExist, valPasscode, valEmail;
+            Validate val = new Validate();
+            valPasscode = val.ValidatePasscode(passcode);
+            valEmail = val.ValidateEmail(email);
+
+            if (valPasscode && valEmail)
             {
-                // Get otp and send it
-                string otp = Randomize(email);
-                //SendEmail(email, otp);
-
-                int attempts = 1;
-                // User has 5 attempts to log in 
-                while (attempts < 6)
+                doesExist = UserExist(email, passcode);
+                // If user exists
+                if (doesExist == true)
                 {
+                    // Get otp and send it
+                    string otp = Randomize(email);
+                    //SendEmail(email, otp);
 
-                    Console.WriteLine("Enter Username");
-                    string username = Console.ReadLine();
-
-                    Console.WriteLine("Enter OTP");
-                    string password = Console.ReadLine();
-                    int count = LoginUser(username, password);
-                    int compare = ValidTime(email);
-                    if (compare >= 0)
+                    int attempts = 1;
+                    // User has 5 attempts to log in 
+                    while (attempts < 6)
                     {
 
-                        if (count > 0)
+                        Console.WriteLine("Enter Username");
+                        string username = Console.ReadLine();
+
+                        Console.WriteLine("Enter OTP");
+                        string password = Console.ReadLine();
+                        int count = LoginUser(username, password);
+                        int compare = ValidTime(email);
+                        if (compare >= 0)
                         {
-                            Console.Write("Login Success");
-                            // Changed out for redirct to homepage
-                            LogoutController logout = new LogoutController();
-                            logout.Logout();
-                           
-                            break;
+
+                            if (count > 0)
+                            {
+                                Console.Write("Login Success");
+                                // Changed out for redirct to homepage
+                                LogoutController logout = new LogoutController();
+                                logout.Logout();
+
+                                break;
+                            }
+                            else
+                            {
+                                Console.WriteLine("Login Incorrect. Try again.");
+                                // Log ip address
+                                LogIP(email);
+                                attempts++;
+                                continue;
+                            }
                         }
                         else
                         {
-                            Console.WriteLine("Login Incorrect. Try again.");
-                            // Log ip address
-                            LogIP(email);
-                            attempts++;
-                            continue;
+                            Console.WriteLine("Invalid OTP");
+                            break;
                         }
                     }
-                    else
+
+                    if (attempts >= 6)
                     {
-                        Console.WriteLine("Invalid OTP");
-                        break;
+                        Console.WriteLine("Too many incorrect attempts. Account Disabled");
+                        UpdateDisable(email);
                     }
                 }
 
-                if (attempts >= 6)
+                else
                 {
-                    Console.WriteLine("Too many incorrect attempts. Account Disabled");
-                    UpdateDisable(email);
+                    Console.WriteLine("Incorrect Email or Passcode");
                 }
             }
             else
             {
-                Console.WriteLine("Incorrect Email or Passcode");
+                Console.WriteLine("Not Valid Email or Passcode");
             }
             return new OkResult();
         }
