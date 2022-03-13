@@ -52,33 +52,31 @@ namespace StudentMultiTool.Backend.Services.Authentication.Controller
                         Console.WriteLine("Enter OTP");
                         string password = Console.ReadLine();
                         int count = LoginUser(username, password);
-                        int compare = ValidTime(email);
-                        if (compare >= 0)
-                        {
-
-                            if (count > 0)
-                            {
-                                Console.Write("Login Success");
-                                // Changed out for redirct to homepage
-                                LogoutController logout = new LogoutController();
-                                logout.Logout();
-
-                                break;
-                            }
-                            else
-                            {
-                                Console.WriteLine("Login Incorrect. Try again.");
-                                // Log ip address
-                                LogIP(email);
-                                attempts++;
-                                continue;
-                            }
-                        }
-                        else
+                        bool isValid = ValidTime(email);
+                        if (!isValid)
                         {
                             Console.WriteLine("Invalid OTP");
                             break;
                         }
+                        if (count > 0)
+                        {
+                            Console.Write("Login Success");
+                            // Changed out for redirct to homepage
+                            LogoutController logout = new LogoutController();
+                            logout.Logout();
+
+                            break;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Login Incorrect. Try again.");
+                            // Log ip address
+                            LogIP log = new LogIP();
+                            log.LoggingIP(email);
+                            attempts++;
+                            continue;
+                        }
+
                     }
 
                     if (attempts >= 6)
@@ -137,41 +135,41 @@ namespace StudentMultiTool.Backend.Services.Authentication.Controller
             }
         }
 
-        // Logs ip when make incorrect log in attempt
-        public static void LogIP(string email)
-        {
-            string myIP = GetIP();
+        //// Logs ip when make incorrect log in attempt
+        //public static void LogIP(string email)
+        //{
+        //    string myIP = GetIP();
 
-            SqlConnection conn = new SqlConnection();
-            conn.ConnectionString = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING");
-            conn.Open();
-            SqlCommand c = new SqlCommand("SELECT id FROM UserAccounts WHERE UserAccounts.email = @email", conn);
-            c.Parameters.AddWithValue("@email", email);
-            SqlDataReader reader = c.ExecuteReader();
-            int id = 0;
-            reader.Close();
-            id = (int)c.ExecuteScalar();
-            DateTime timeStamp = DateTime.Now;
-
-
-            SqlCommand cmd = new SqlCommand("INSERT INTO Logs (timestamp, layer, category, userID, description) VALUES (@timeStamp, @layer, @category, @userID, @description)", conn);
-            cmd.Parameters.AddWithValue("@timeStamp", timeStamp);
-            cmd.Parameters.AddWithValue("@layer", "Security");
-            cmd.Parameters.AddWithValue("@category", "Error");
-            cmd.Parameters.AddWithValue("@userID", id);
-            cmd.Parameters.AddWithValue("@description", "Invalid login attempt at " + myIP);
-            cmd.ExecuteNonQuery();
+        //    SqlConnection conn = new SqlConnection();
+        //    conn.ConnectionString = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING");
+        //    conn.Open();
+        //    SqlCommand c = new SqlCommand("SELECT id FROM UserAccounts WHERE UserAccounts.email = @email", conn);
+        //    c.Parameters.AddWithValue("@email", email);
+        //    SqlDataReader reader = c.ExecuteReader();
+        //    int id = 0;
+        //    reader.Close();
+        //    id = (int)c.ExecuteScalar();
+        //    DateTime timeStamp = DateTime.Now;
 
 
-        }
+        //    SqlCommand cmd = new SqlCommand("INSERT INTO Logs (timestamp, layer, category, userID, description) VALUES (@timeStamp, @layer, @category, @userID, @description)", conn);
+        //    cmd.Parameters.AddWithValue("@timeStamp", timeStamp);
+        //    cmd.Parameters.AddWithValue("@layer", "Security");
+        //    cmd.Parameters.AddWithValue("@category", "Error");
+        //    cmd.Parameters.AddWithValue("@userID", id);
+        //    cmd.Parameters.AddWithValue("@description", "Invalid login attempt at " + myIP);
+        //    cmd.ExecuteNonQuery();
 
-        // Gets ip address of user
-        public static string GetIP()
-        {
-            string hostName = Dns.GetHostName();
-            string myIP = Dns.GetHostEntry(hostName).AddressList[1].ToString();
-            return myIP;
-        }
+
+        //}
+
+        //// Gets ip address of user
+        //public static string GetIP()
+        //{
+        //    string hostName = Dns.GetHostName();
+        //    string myIP = Dns.GetHostEntry(hostName).AddressList[1].ToString();
+        //    return myIP;
+        //}
         // Hashes passcode
         public static string HashPass(string password)
         {
@@ -267,7 +265,7 @@ namespace StudentMultiTool.Backend.Services.Authentication.Controller
         }
 
         // Checks is OTP is still valid
-        public static int ValidTime(string email)
+        public static bool ValidTime(string email)
         {
             SqlConnection conn = new SqlConnection();
             conn.ConnectionString = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING");
@@ -290,7 +288,11 @@ namespace StudentMultiTool.Backend.Services.Authentication.Controller
             DateTime validTime = time.AddHours(24);
 
             int compare = (validTime.CompareTo(localTime));
-            return compare;
+            if(compare >= 0)
+            {
+                return true;
+            }
+            else { return false; }
         }
 
 
