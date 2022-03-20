@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using System.Text;
 using System.Security.Principal;
 
+
 namespace StudentMultiTool.Backend.Services.Authentication.Controller
 {
     public class LoginController : ControllerBase
@@ -215,7 +216,7 @@ namespace StudentMultiTool.Backend.Services.Authentication.Controller
 
 
         }
-        
+
         // Checks is user is disabled
         public static bool CheckDisabled(string email)
         {
@@ -232,15 +233,15 @@ namespace StudentMultiTool.Backend.Services.Authentication.Controller
         // Sends otp via email
         public static void SendEmail(string email, string otp)
         {
-            String from = "studentmultitool@outlook.com"; 
-            String subject = "OTP code for Student Multi-Tool"; 
+            String from = "studentmultitool@outlook.com";
+            String subject = "OTP code for Student Multi-Tool";
             String msg = otp;
             String to = email;
             MailMessage mail = new MailMessage(from, to, subject, msg);
             SmtpClient client = new SmtpClient("email-smtp.us-east-1.amazonaws.com");
-            client.Port = 25; 
+            client.Port = 25;
             client.Credentials = new System.Net.NetworkCredential("AKIA4LFTDFRCSQHGW2BL", "BMAUAXuLN+qSGL0QiezLwtqpfckzibBAwvJ/0AiDtrQa"); //change username and password to your email account username and password
-            client.EnableSsl = true; 
+            client.EnableSsl = true;
             client.Send(mail);
         }
 
@@ -289,7 +290,7 @@ namespace StudentMultiTool.Backend.Services.Authentication.Controller
             DateTime validTime = time.AddHours(24);
 
             int compare = (validTime.CompareTo(localTime));
-            if(compare >= 0)
+            if (compare >= 0)
             {
                 return true;
             }
@@ -348,6 +349,9 @@ namespace StudentMultiTool.Backend.Services.Authentication.Controller
                 }
             }
         }
+
+
+
 
 
     }
