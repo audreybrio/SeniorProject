@@ -1,23 +1,25 @@
-﻿using StudentMultiTool.Backend.Services.Authentication;
-using StudentMultiTool.Backend.Services.Logout;
+﻿using StudentMultiTool.Backend.Services.Logout;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Net.Mail;
 using System.Data.SqlClient;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using System.Text;
-using System.Net;
+using System.Security.Principal;
 
 namespace StudentMultiTool.Backend.Services.Authentication.Controller
 {
     public class LoginController : ControllerBase
     {
+        const string connectionString = "MARVELCONNECTIONSTRING";
+        //AppDomain.CurrentDomain.SetPrincipalPolicy(PrincipalPolicy.WindowsPrincipal); 
+        //WindowsPrincipal myPrincipal = (WindowsPrincipal)Thread.CurrentPrincipal;
+
         [HttpGet]
         public IActionResult Login()
         {
             return new OkResult();
         }
-        public IActionResult Authorize()
+        public IActionResult Authenticate()
         {
 
             Console.WriteLine("Welcome to Student Multi-Tool, Please log in.");
@@ -105,7 +107,7 @@ namespace StudentMultiTool.Backend.Services.Authentication.Controller
 
 
             SqlConnection conn = new SqlConnection();
-            conn.ConnectionString = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING");
+            conn.ConnectionString = Environment.GetEnvironmentVariable(connectionString);
             conn.Open();
             SqlCommand cmd = new SqlCommand("SELECT COUNT (username)" + " from UserAccounts " + "WHERE UserAccounts.email = @email AND UserAccounts.passcode = @passcode", conn);
             cmd.Parameters.AddWithValue("@email", email);
@@ -194,7 +196,7 @@ namespace StudentMultiTool.Backend.Services.Authentication.Controller
             const string chars = "abcdefghijklmnopqrstuvwxyz0123456789";
             string otp = new string(Enumerable.Repeat(chars, 8).Select(s => s[rand.Next(s.Length)]).ToArray());
             SqlConnection conn = new SqlConnection();
-            conn.ConnectionString = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING");
+            conn.ConnectionString = Environment.GetEnvironmentVariable(connectionString);
             conn.Open();
 
             SqlCommand c = new SqlCommand("SELECT id FROM UserAccounts WHERE UserAccounts.email = @email", conn);
@@ -219,7 +221,7 @@ namespace StudentMultiTool.Backend.Services.Authentication.Controller
         public static bool CheckDisabled(string email)
         {
             SqlConnection conn = new SqlConnection();
-            conn.ConnectionString = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING");
+            conn.ConnectionString = Environment.GetEnvironmentVariable(connectionString);
             conn.Open();
             SqlCommand cmd = new SqlCommand("SELECT active_status" + " from UserAccounts " + "WHERE UserAccounts.email = @email", conn);
             cmd.Parameters.AddWithValue("@email", email);
@@ -248,7 +250,7 @@ namespace StudentMultiTool.Backend.Services.Authentication.Controller
         {
 
             SqlConnection conn = new SqlConnection();
-            conn.ConnectionString = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING");
+            conn.ConnectionString = Environment.GetEnvironmentVariable(connectionString);
             conn.Open();
 
 
@@ -268,7 +270,7 @@ namespace StudentMultiTool.Backend.Services.Authentication.Controller
         public static bool ValidTime(string email)
         {
             SqlConnection conn = new SqlConnection();
-            conn.ConnectionString = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING");
+            conn.ConnectionString = Environment.GetEnvironmentVariable(connectionString);
             conn.Open();
 
             SqlCommand c = new SqlCommand("SELECT id FROM UserAccounts WHERE UserAccounts.email = @email", conn);
@@ -300,7 +302,7 @@ namespace StudentMultiTool.Backend.Services.Authentication.Controller
         public static void UpdateDisable(string email)
         {
             SqlConnection conn = new SqlConnection();
-            conn.ConnectionString = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING");
+            conn.ConnectionString = Environment.GetEnvironmentVariable(connectionString);
             conn.Open();
             SqlCommand cmd = new SqlCommand("UPDATE UserAccounts" + " SET active_status = @newStatus" + " WHERE email = @email", conn);
             cmd.Parameters.AddWithValue("@newStatus", 0);
@@ -308,6 +310,15 @@ namespace StudentMultiTool.Backend.Services.Authentication.Controller
             cmd.ExecuteNonQuery();
         }
 
+        public void Logout()
+        {
+
+        }
+
 
     }
+
+
+
+
 }
