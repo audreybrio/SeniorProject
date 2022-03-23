@@ -22,7 +22,7 @@ namespace UserAcc
             this.password = password;
             this.passcode = "";
             this.role = "student";
-            this.active = false;
+            this.active = true;
             this.school = school;
 
         }
