@@ -37,13 +37,15 @@ namespace UserAcc
 
     public class ROLE
     {
-        private string roleName;
-        private string roleDetail;
-        private bool isAdmin;
-        private bool isStudent;
+        public int roleId;
+        public string roleName;
+        public string roleDetail;
+        public bool isAdmin;
+        public bool isStudent;
 
-        public ROLE(string rn, string rd, bool a, bool s)
+        public ROLE(int ri, string rn, string rd, bool a, bool s)
         {
+            this.roleId = ri;
             this.RoleName = rn;
             this.RoleDetail = rd;
             this.isAdmin = a;
@@ -52,6 +54,7 @@ namespace UserAcc
             PERMISSION = new HashSet<PERMISSION>();
             UserAccount = new HashSet<UserAccount>();
         }
+        public int RoleId { get => roleId; set => roleId = value; }
         public string RoleName { get => roleName; set => roleName = value; }
         public string RoleDetail { get => roleDetail; set => roleDetail = value; }
         public bool IsAdmin { get => isAdmin; set => isAdmin = value; }
@@ -61,14 +64,17 @@ namespace UserAcc
     }
     public class PERMISSION
     {
-        private string permissionDetails;
+        public int permissionId;
+        public string permissionDetails;
 
-        public PERMISSION(string pd)
+        public PERMISSION(int pr, string pd)
         {
+            this.PermissionId = pr;
             this.PermissionDetails = pd;
             ROLE = new HashSet<ROLE>();
         }
 
+        public int PermissionId {get => permissionId; set => permissionId = value;}
         public string PermissionDetails { get => permissionDetails; set => permissionDetails = value; }
 
         public virtual ICollection<ROLE> ROLE { get; set; }

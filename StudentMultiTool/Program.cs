@@ -3,7 +3,7 @@ static class Program
 {
     static void Main(string[] args)
     {
- /*       var builder = WebApplication.CreateBuilder(args);
+        var builder = WebApplication.CreateBuilder(args);
 
         // Add services to the container.
         builder.Services.AddRazorPages();
@@ -35,6 +35,6 @@ static class Program
 
         app.MapRazorPages();
 
-        app.Run();*/
+        app.Run();
     }
 }
