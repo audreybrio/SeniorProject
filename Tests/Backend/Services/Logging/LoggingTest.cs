@@ -1,8 +1,7 @@
 using System;
 using System.Data.SqlClient;
 using Xunit;
-using Marvel.Services;
-using Marvel.Services.Logging;
+using StudentMultiTool.Backend.Services.Logging;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

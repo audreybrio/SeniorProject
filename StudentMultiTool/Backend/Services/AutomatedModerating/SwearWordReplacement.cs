@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Automated_Moderating_demo
+namespace StudentMultiTool.Backend.Services.AutomatedModerating
 {
     public sealed class SwearWordReplacement
     {

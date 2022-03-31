@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 using System.Data.SqlClient;
 using System.IO.Compression;
 using System.Threading;
+using StudentMultiTool.Backend.Services.Logging;
 
-namespace Marvel.Services.Logging
+namespace StudentMultiTool.Backend.Services.Archiving
 {
     public class LogArchiver
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Data.SqlClient;
 
-namespace CreateUser
+namespace StudentMultiTool.Backend.Services.UserManagement
 {
     class CreateUserProgram
     {

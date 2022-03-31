@@ -1,9 +1,11 @@
 ﻿using System;
-
-namespace UserAcc
+using System.ComponentModel.DataAnnotations;
+using StudentMultiTool.Backend.Models.AccessModel;
+namespace StudentMultiTool.Backend.Services.Users
 {
     public class UserAccount
     {
+        
         public string name;
         public string username;
         public string password;
@@ -11,21 +13,22 @@ namespace UserAcc
         public string passcode; 
         public string role;
         public bool active;
- 
-
-        public UserAccount(string n, string u, string p, string e, string pass, string r, bool a)
+        
+        public UserAccount( string name, string username, string password, string email, string passcode, string role, bool active )
         {
-            this.name = n;
-            this.username = u;
-            this.password = p;
-            this.email = e;
-            this.passcode = pass;
-            this.role = r;
-            this.active = a;
-
+           
+            this.name = name;
+            this.username = username;
+            this.password = password;
+            this.email = email;
+            this.passcode = passcode;
+            this.role = role;
+            this.active = active;
 
         }
 
+        [Key]
+        public int User_Id { get; set; }
         public string Name { get => name; set => name = value; }
         public string Username { get => username; set => username = value; }
         public string Role { get => role; set => role = value; }
@@ -33,9 +36,13 @@ namespace UserAcc
         public string Email { get => email; set => email = value; }
         public string Password { get => password; set => password = value; }
         public string Passcode { get => passcode; set => passcode = value; }
+
+
+        public Role Roles { get; set; }
+
     }
 
-    public class ROLE
+    /*public class ROLE
     {
         public int roleId;
         public string roleName;
@@ -78,5 +85,5 @@ namespace UserAcc
         public string PermissionDetails { get => permissionDetails; set => permissionDetails = value; }
 
         public virtual ICollection<ROLE> ROLE { get; set; }
-    }
+    }*/
 }

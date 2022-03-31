@@ -1,7 +1,8 @@
 using System;
 using System.Data.SqlClient;
 
-namespace Authorization{
+namespace StudentMultiTool.Backend.Services.Authorization
+{
     
     class authorize{
         

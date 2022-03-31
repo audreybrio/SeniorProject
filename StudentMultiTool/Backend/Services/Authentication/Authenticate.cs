@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using System.Text;
 using Microsoft.AspNetCore.Http;
 
-namespace Authentication
+namespace StudentMultiTool.Backend.Services.Authentication.Model
 {
     public class Email
     {

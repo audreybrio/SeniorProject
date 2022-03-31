@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Data.SqlClient;
 
-namespace UserManagement
+namespace StudentMultiTool.Backend.Services.UserManagement
 {
     public class UserManager
     {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace Automated_Moderating_demo
+namespace StudentMultiTool.Backend.Services.AutomatedModerating
 {
     public struct SwearWord
     {

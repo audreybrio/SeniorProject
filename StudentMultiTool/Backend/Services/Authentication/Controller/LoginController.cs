@@ -1,5 +1,4 @@
-﻿using StudentMultiTool.Backend.Services.Authentication.Model;
-using StudentMultiTool.Backend.Services.Logout;
+﻿using StudentMultiTool.Backend.Services.Logout;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Net.Mail;

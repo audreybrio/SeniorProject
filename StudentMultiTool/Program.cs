@@ -1,4 +1,7 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.EntityFrameworkCore;
+using StudentMultiTool.Backend.Models.AccessModel;
+
 static class Program
 {
     static void Main(string[] args)
@@ -7,8 +10,11 @@ static class Program
 
         // Add services to the container.
         builder.Services.AddRazorPages();
-
-        var app = builder.Build();
+        builder.Services.AddControllersWithViews();
+        builder.Services.AddDbContext<RBACContext>(options =>
+        {
+            options.UseSqlServer(builder.Configuration.GetConnectionString("MARVELCONNECTIONSTRING"));
+        });
 
         builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
         .AddCookie(options =>
@@ -18,11 +24,12 @@ static class Program
             options.AccessDeniedPath = "/Forbidden/";
         });
 
+        var app = builder.Build();
+
         // Configure the HTTP request pipeline.
         if (!app.Environment.IsDevelopment())
         {
             app.UseExceptionHandler("/Error");
-            // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
             app.UseHsts();
         }
 
