@@ -1,0 +1,82 @@
+title User Compares 2 to 5 Schedules (2 of 2)
+
+// Assumes the user has already entered the selection view and is currently viewing their 2 or more schedules that are available to them
+actor User
+participant Selection View
+participant Comparison View
+participant Controller
+participant ScheduleComparator
+participant ScheduleFileAccessor
+participant ComparisonFileAccessor
+participant DAO
+participant Disk
+database RDBMS
+
+// Start
+activate User
+activate Selection View
+activate Controller
+
+group #green granted == true (User selected 2 to 5 schedules that are available to them)
+Controller->Controller:ScheduleComparator comparator;\ncomparator.add(schedules);
+Controller->ScheduleComparator:comparator.compare()
+
+// Comparison setup
+activate ScheduleComparator
+ScheduleComparator->ScheduleComparator:ScheduleFileAccessor\nscheduleAccessor;
+group #green foreach (Schedule s in schedules)
+ScheduleComparator->ScheduleFileAccessor:s.ScheduleItems = scheduleAccessor\n  .ReadScheduleItems(s.path);
+
+activate ScheduleFileAccessor
+ScheduleFileAccessor->Disk:read from s.path
+
+activate Disk
+Disk-->ScheduleFileAccessor:
+deactivate Disk
+ScheduleFileAccessor->ScheduleFileAccessor:translate Json data\ninto C# objects
+ScheduleFileAccessor-->ScheduleComparator:return results
+deactivate ScheduleFileAccessor
+end
+
+// Comparison algorithm
+group #green Comparison algorithm
+ScheduleComparator->ScheduleComparator:Comparison result\n  = new Comparison();
+ScheduleComparator->ScheduleComparator:Execute comparison algorithm\n  (see Pseudocode section)
+end
+
+ScheduleComparator->ScheduleComparator:DAO dao;\ndao.query =\n"INSERT INTO Comparisons\n  (dateCreated, filePath)\n  VALUES (created, path);"\ndao.params.add(DateTime.Now);\ndao.params.add(path);
+ScheduleComparator->DAO:dao.execute();
+
+activate DAO
+DAO->RDBMS:this.query
+
+activate RDBMS
+RDBMS-->DAO:return rowsAffected;
+deactivate RDBMS
+
+DAO-->ScheduleComparator:return rowsAffected;
+deactivate DAO
+
+ScheduleComparator->ScheduleComparator:ComparisonFileAccessor\ncomparisonAccessor;
+ScheduleComparator->ComparisonFileAccessor:Store the comparison for later\ncomparisonAccessor.WriteScheduleItems(c.path);
+
+activate ComparisonFileAccessor
+ComparisonFileAccessor->Disk:Write contents of\ncomparison to file\nat c.path
+
+activate Disk
+Disk-->ComparisonFileAccessor:finish
+deactivate Disk
+
+ComparisonFileAccessor-->ScheduleComparator:
+deactivate ComparisonFileAccessor
+
+ScheduleComparator-->Controller:return result
+deactivate ScheduleComparator
+
+// Return result
+deactivate Selection View
+Controller-->Comparison View:return ComparisonView(\n  comparison);
+activate Comparison View
+Comparison View-->User:Redirect user to ComparisonView
+Comparison View-->User:Display comparison results to the user
+end
