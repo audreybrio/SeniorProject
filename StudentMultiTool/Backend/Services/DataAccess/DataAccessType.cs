@@ -9,13 +9,13 @@ namespace StudentMultiTool.Backend.Services.DataAccess
     public class DataAccessType
     {
         // Mehthod to create a specific data source suitable to the need
-        public DataSource<string> getDataSource(string name, string info)
+        public DataSource<string> getDataSource(string name)
         {
             try
             {
                 if (String.Equals(name, "SQL", StringComparison.OrdinalIgnoreCase))
                 {
-                    return new SQLServerDAO(info);
+                    return new SQLServerDAO();
                 }
                 return null;
             }
