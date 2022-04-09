@@ -21,11 +21,11 @@ namespace StudentMultiTool.Backend.Models.ScheduleBuilder
         // file should be indented. Indentation should only be used for demonstrative
         // or testing purposes. When deployed, indentation should not be used, to save
         // storage space.
-        public String WriteScheduleItems(Schedule schedule)
+        public string WriteScheduleItems(Schedule schedule)
         {
             try
             {
-                String result = "";
+                string result = "";
                 using (FileStream stream = File.Create(schedule.Path))
                 {
                     // Configure writer to indent the .json file, or not.
@@ -63,7 +63,7 @@ namespace StudentMultiTool.Backend.Models.ScheduleBuilder
         }
 
         // Reads all ScheduleItems in a given .json file.
-        public List<ScheduleItem> ReadScheduleItems(String path)
+        public List<ScheduleItem> ReadScheduleItems(string path)
         {
             // Set up the List to store the results
             List<ScheduleItem> result = new List<ScheduleItem>();
@@ -75,10 +75,19 @@ namespace StudentMultiTool.Backend.Models.ScheduleBuilder
                 return result;
             }
 
+            //// Check that the file extension is "json". This isn't foolproof
+            //// in terms of security but the file needs to be a .json for
+            //// the ScheduleFileAccessor to work.
+            string extension = Path.GetExtension(path.ToLower()).ToLower();
+            if (!extension.Equals("json"))
+            {
+                return result;
+            }
+
             try
             {
                 // Get the contents of the file as a string
-                String contents = File.ReadAllText(path);
+                string contents = File.ReadAllText(path);
 
                 // Parse the contents
                 JsonNode? jsonContents = JsonNode.Parse(contents)!;
@@ -110,10 +119,10 @@ namespace StudentMultiTool.Backend.Models.ScheduleBuilder
                         currentItem.Creator = (int) currentNode!["creator"]!;
 
                         // Set the Title, Location, Contact, and Notes
-                        currentItem.Title = (String) currentNode!["title"]!;
-                        currentItem.Location = (String) currentNode!["location"]!;
-                        currentItem.Contact = (String) currentNode!["contact"]!;
-                        currentItem.Notes = (String) currentNode!["notes"]!;
+                        currentItem.Title = (string) currentNode!["title"]!;
+                        currentItem.Location = (string) currentNode!["location"]!;
+                        currentItem.Contact = (string) currentNode!["contact"]!;
+                        currentItem.Notes = (string) currentNode!["notes"]!;
 
                         // Set the days of the week
                         currentItem.DaysOfWeek = new List<bool>
