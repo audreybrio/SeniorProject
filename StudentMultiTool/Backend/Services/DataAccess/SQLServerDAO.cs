@@ -7,12 +7,12 @@ namespace StudentMultiTool.Backend.Services.DataAccess
     {
         private SqlConnection _conn;
 
-        public SQLServerDAO(string dbConnectionString)
+        public SQLServerDAO()
         {
             try
             {
                 //Console.WriteLine("Establising Connection...");
-                _conn = new SqlConnection(dbConnectionString);
+                _conn = new SqlConnection(Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING", EnvironmentVariableTarget.User));
                 //Console.WriteLine("Connection established.");
             }
             catch

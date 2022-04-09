@@ -1,6 +1,7 @@
 ﻿using StudentMultiTool.Backend.Services.Authentication.Controller;
 
 using StudentMultiTool.Backend.Services.BookSelling;
+using StudentMultiTool.Backend.Services.DataAccess;
 
 namespace ConsoleDemo
 {
@@ -37,7 +38,7 @@ namespace ConsoleDemo
                         break;
                     // Registration
                     case 1:
-
+                        
                         break;
                     // Login/Logout
                     case 2:
@@ -62,11 +63,23 @@ namespace ConsoleDemo
                     // Usage Analysis Dashboard
                     case 7:
                         break;
+                    // DAL Example
+                    case 8:
+                        //dalTest();
+                        break;
                     default:
                         Console.WriteLine("Invalid input.\nPlease enter a valid option.\n");
                         break;
                 }
             }
+        }
+        // Test method, for illustration only, put your actual method within
+        // you feature controller
+        private static void dalTest()
+        {
+            SQLServerDAO dal = new SQLServerDAO();
+            string test = "INSERT INTO Table2 (name, num) VALUES ('text', 2);";
+            dal.WriteData(test);
         }
     }
 }
