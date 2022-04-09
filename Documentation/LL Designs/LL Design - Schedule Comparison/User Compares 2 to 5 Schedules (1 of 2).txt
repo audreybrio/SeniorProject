@@ -1,0 +1,54 @@
+title User Compares 2 to 5 Schedules (1 of 2)
+
+// Assumes the user has already entered the selection view and is currently viewing their 2 or more schedules that are available to them
+actor User
+participant Selection View
+participant Comparison View
+participant Controller
+participant ScheduleComparator
+participant ScheduleFileAccessor
+participant Disk
+database RDBMS
+
+// Start
+activate User
+activate Selection View
+activate Controller
+group While user is making their selection
+User-->Selection View:User selects schedules, or\nuser deselects schedules
+Selection View-->User:Select or deselect schedules
+
+// User Clicks "Compare"
+User-->Selection View:User clicks "Compare" button
+Selection View-->Selection View:Check that 2 to 5\nschedules were selected
+
+// frontend validation is enough for these two cases, seems good to me
+group #red User selected 0 or 1 schedules
+Selection View-->User:Prompt user to select\nmore schedules
+end
+group #red User selected 6 or more schedules
+Selection View-->User:Prompt user to\ndeselect schedules\nuntil they have\nselected 2 to 5
+end
+end
+Selection View-->Controller:Comparison?(schedules, userId);
+Controller->Controller:SchedulePermissionValidator validator;\nbool granted = true;
+group foreach (Schedule s in schedules)
+Controller->SchedulePermissionValidator:granted = granted &&\n  validator.UserHasPermmission(\n  permission, scheduleId, userId);
+
+activate SchedulePermissionValidator
+SchedulePermissionValidator-->Controller:
+deactivate SchedulePermissionValidator
+end
+group #red granted == false (User selected a schedule that is no longer unavailable to them)
+Controller-->Selection View:return "You no longer have\naccess to that schedule";
+Selection View-->User:Display error alert with redirect button
+User-->Selection View:User clicks redirect button
+Selection View-->Controller:Page refreshes
+end
+group #green granted == true (User selected 2 to 5 schedules that are available to them)
+Controller->Controller:ScheduleComparator comparator;\ncomparator.add(schedules);
+Controller->ScheduleComparator:comparator.compare()
+
+activate ScheduleComparator
+ScheduleComparator->ScheduleComparator:Continued on next diagram
+end
