@@ -18,7 +18,7 @@ namespace StudentMultiTool.Backend.Models.ScheduleBuilder
         public List<int> Collaborators { get; set; } = new List<int>();
         
         // The owner-assigned title of the schedule
-        public String Title { get; set; }
+        public string Title { get; set; }
 
         // The user ID of the owner/original creator of the schedule
         public int OwnerId { get; set; }
@@ -26,9 +26,9 @@ namespace StudentMultiTool.Backend.Models.ScheduleBuilder
         public DateTime Modified { get; set; }
         
         // The relative file path used for schedule items
-        public String Path { get; set; }
+        public string Path { get; set; }
 
-        public Schedule(int OwnerId, DateTime Created, DateTime Modified, String Title, String Path)
+        public Schedule(int OwnerId, DateTime Created, DateTime Modified, string Title, string Path)
         {
             this.OwnerId = OwnerId;
             this.Created = Created;
@@ -37,7 +37,7 @@ namespace StudentMultiTool.Backend.Models.ScheduleBuilder
             this.Path = Path;
         }
 
-        public Schedule(int Id, int OwnerId, DateTime Created, DateTime Modified, String Title, String Path)
+        public Schedule(int Id, int OwnerId, DateTime Created, DateTime Modified, string Title, string Path)
         {
             this.Id = Id;
             this.OwnerId = OwnerId;
