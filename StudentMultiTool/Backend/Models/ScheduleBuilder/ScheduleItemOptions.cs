@@ -5,6 +5,7 @@
         // Options for all ScheduleItems. These are maximum
         // string lengths, intended to preserve storage space.
         // See ScheduleItem.shorten() for usage.
+        // TODO: Move the hardcoded values into a config file.
         public static int maxContactLength { get; } = 64;
         public static int maxLocationLength { get; } = 64;
         public static int maxNotesLength { get; } = 64;
@@ -12,6 +13,7 @@
 
         // Default JSON keys for all ScheduleItems.
         // See ScheduleItem.ToJson() for usage.
+        // TODO: Move the hardcoded values into a config file.
         public static string JsonTitle { get; } = "title";
         public static string JsonDays { get; } = "days";
         public static string JsonSunday { get; } = "sun";
