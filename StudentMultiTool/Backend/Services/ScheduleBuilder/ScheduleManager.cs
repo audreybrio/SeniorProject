@@ -19,15 +19,15 @@ namespace StudentMultiTool.Backend.Services.ScheduleBuilder
             // Ensure that ScheduleManager.BaseFilePath
             set
             {
-                string input = (string)value;
-                int lastIndex = input.Length - 1;
+                _baseFilePath = (string)value;
+                int lastIndex = value.Length - 1;
                 if (!_baseFilePath[lastIndex].Equals("/"))
                 {
-                    _baseFilePath = input + "/";
+                    _baseFilePath = value + "/";
                 }
                 else
                 {
-                    _baseFilePath = input;
+                    _baseFilePath = value;
                 }
             }
         }
@@ -342,6 +342,87 @@ namespace StudentMultiTool.Backend.Services.ScheduleBuilder
                 }
             }
             return result;
+        }
+
+        // Creates a ScheduleItem and adds it to a given Schedule
+        public bool CreateScheduleItem(ref Schedule s, ref ScheduleItem si)
+        {
+            bool created = false;
+            try
+            {
+                // If there are items in the Schedule, assign si an ID
+                // equal to its index in the list s.Items
+                // First, add si to s
+                s.AddScheduleItem(si);
+
+                // Then, generate its ID based on its index
+                int id = s.Items.Count - 1;
+
+                // Finally, assign its ID
+                s.Items[id].Id = id;
+                created = true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("The following exception has occurred: " +
+                                ex.GetType().FullName);
+                Console.WriteLine(ex.Message);
+            }
+            return created;
+        }
+        // Updates a ScheduleItem si for a given Schedule s
+        public bool UpdateScheduleItem(ref Schedule s, ref ScheduleItem si)
+        {
+            int i = 0;
+            bool updated = false;
+
+            while (i < s.Items.Count || !updated)
+            {
+                // Check that the ID of the ScheduleItems match. Since we don't
+                // know what fields in si have changed, we can only rely on the ID
+                // being the same.
+                if (s.Items[i].Id == si.Id)
+                {
+                    try
+                    {
+                        s.Items[i] = si;
+                        updated = true;
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("The following exception has occurred: " +
+                                ex.GetType().FullName);
+                        Console.WriteLine(ex.Message);
+                    }
+                }
+                i++;
+            }
+            return updated;
+        }
+        // Deletes a ScheduleItem si from a given Schedule s
+        public bool DeleteScheduleItem(ref Schedule s, ScheduleItem si)
+        {
+            int i = 0;
+            bool deleted = false;
+            while (i <= s.Items.Count || !deleted)
+            {
+                if (s.Items[i] == si)
+                {
+                    try
+                    {
+                        s.Items.RemoveAt(i);
+                        deleted = true;
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("The following exception has occurred: " +
+                                ex.GetType().FullName);
+                        Console.WriteLine(ex.Message);
+                    }
+                }
+                i++;
+            }
+            return deleted;
         }
     }
 }
