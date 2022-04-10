@@ -7,8 +7,9 @@ namespace StudentMultiTool.Backend.Services.ScheduleBuilder
     // Manages CRUD operations for Schedules.
     public class ScheduleManager
     {
-        string? dbConnectionString { get; set; } = null;
+        public string? dbConnectionString { get; set; } = null;
         private string _baseFilePath = string.Empty;
+        private ScheduleFileAccessor _fileAccessor = new ScheduleFileAccessor();
         public string BaseFilePath
         {
             get
@@ -94,7 +95,6 @@ namespace StudentMultiTool.Backend.Services.ScheduleBuilder
                         {
                             connection.Open();
                             SqlDataReader reader = command.ExecuteReader();
-                            //newId = reader.GetInt32(0);
                             while (reader.Read())
                             {
                                 IDataRecord row = (IDataRecord)reader;
@@ -163,7 +163,7 @@ namespace StudentMultiTool.Backend.Services.ScheduleBuilder
             return rowsAffected;
         }
 
-        // TODO: Delete Schedule
+        // Delete Schedule
         public int DeleteSchedule(int scheduleId)
         {
             int collaboratorsDeleted = this.DeleteAllCollaborators(scheduleId);
@@ -264,6 +264,8 @@ namespace StudentMultiTool.Backend.Services.ScheduleBuilder
 
                         // Unpack query results. This loop should have at most one iteration
                         // due to the primary key uniqueness constraint on the id attribute.
+                        // If there were no query results, then this loop will have zero
+                        // iterations and the result will be null.
                         while (reader.Read())
                         {
                             IDataRecord row = reader;
@@ -273,6 +275,7 @@ namespace StudentMultiTool.Backend.Services.ScheduleBuilder
                             DateTime? modified = (DateTime?)row[3];
                             string? path = (string?)row[4];
 
+                            // If the results aren't null, then the Schedule can be constructed
                             if (id != null && !string.IsNullOrEmpty(title) &&
                                 created != null && modified != null &&
                                 !string.IsNullOrEmpty(path))
@@ -327,12 +330,12 @@ namespace StudentMultiTool.Backend.Services.ScheduleBuilder
             // check.
             if (result != null)
             {
-                // Load ScheduleItems for the given schedule
-                ScheduleFileAccessor accessor = new ScheduleFileAccessor();
+                //// Load ScheduleItems for the given schedule
+                //ScheduleFileAccessor accessor = new ScheduleFileAccessor();
 
                 // Set up the file path
                 string path = this.BaseFilePath + result.Path;
-                List<ScheduleItem> items = accessor.ReadScheduleItems(result.Path);
+                List<ScheduleItem> items = _fileAccessor.ReadScheduleItems(result.Path);
                 foreach (ScheduleItem item in items)
                 {
                     result.AddScheduleItem(item);

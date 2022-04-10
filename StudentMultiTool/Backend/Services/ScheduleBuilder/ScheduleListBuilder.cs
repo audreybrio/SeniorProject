@@ -6,7 +6,7 @@ namespace StudentMultiTool.Backend.Services.ScheduleBuilder
 {
     public class ScheduleListBuilder
     {
-        string? dbConnectionString { get; set; } = null;
+        public string? dbConnectionString { get; set; } = null;
         public ScheduleListBuilder()
         {
             dbConnectionString = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING", EnvironmentVariableTarget.User);
