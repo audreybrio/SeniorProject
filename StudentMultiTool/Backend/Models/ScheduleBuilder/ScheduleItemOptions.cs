@@ -31,5 +31,22 @@
         public static string JsonContact { get; } = "contact";
         public static string JsonNotes { get; } = "notes";
         public static string JsonCreator { get; } = "creator";
+        public static string JsonId { get; } = "id";
+        // Keys & values used in CRUD operations from web requests.
+        // Pairs send by web requests should look like operation:create, etc.
+        // Key
+        public static string item { get; } = "item";
+        // Key
+        public static string operation { get; } = "op";
+        // Value
+        public static string create { get; } = "create";
+        // Value
+        public static string update { get; } = "update";
+        // Value
+        public static string delete { get; } = "delete";
+        public static List<string> CRUD { get; } = new List<string>
+        {
+            create, update, delete
+        };
     }
 }
