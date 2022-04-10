@@ -24,8 +24,4 @@
     <ProjectReference Include="..\StudentMultiTool\StudentMultiTool.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Backend\Services\ScheduleBuilder\" />
-  </ItemGroup>
-
 </Project>
