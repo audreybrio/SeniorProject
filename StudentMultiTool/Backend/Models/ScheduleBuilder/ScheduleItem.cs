@@ -5,14 +5,6 @@ namespace StudentMultiTool.Backend.Models.ScheduleBuilder
     // Represents a single, reoccurring daily or weekly event
     public class ScheduleItem
     {
-        // Options for all ScheduleItems. These are maximum
-        // string lengths, intended to preserve storage space.
-        // See ScheduleItem.shorten() for usage.
-        public static int maxContactLength { get; } = 64;
-        public static int maxLocationLength { get; } = 64;
-        public static int maxNotesLength { get; } = 64;
-        public static int maxTitleLength { get; } = 64;
-
         public int Id { get; set; }
         
         // The user who created the ScheduleItem
@@ -30,7 +22,7 @@ namespace StudentMultiTool.Backend.Models.ScheduleBuilder
             }
             set
             {
-                _Contact = shorten(value, ScheduleItem.maxContactLength);
+                _Contact = shorten(value, ScheduleItemOptions.maxContactLength);
             }
         }
 
@@ -61,7 +53,7 @@ namespace StudentMultiTool.Backend.Models.ScheduleBuilder
             }
             set
             {
-                _Location = shorten(value, ScheduleItem.maxLocationLength);
+                _Location = shorten(value, ScheduleItemOptions.maxLocationLength);
             }
         }
 
@@ -75,7 +67,7 @@ namespace StudentMultiTool.Backend.Models.ScheduleBuilder
             }
             set
             {
-                _Notes = shorten(value, ScheduleItem.maxNotesLength);
+                _Notes = shorten(value, ScheduleItemOptions.maxNotesLength);
             }
         }
 
@@ -90,7 +82,7 @@ namespace StudentMultiTool.Backend.Models.ScheduleBuilder
             }
             set
             {
-                _Title = shorten(value, ScheduleItem.maxTitleLength);
+                _Title = shorten(value, ScheduleItemOptions.maxTitleLength);
             }
         }
 
@@ -105,31 +97,31 @@ namespace StudentMultiTool.Backend.Models.ScheduleBuilder
         {
             JsonObject result = new JsonObject
             {
-                ["title"] = Title,
-                ["days"] = new JsonObject
+                [ScheduleItemOptions.JsonTitle] = Title,
+                [ScheduleItemOptions.JsonDays] = new JsonObject
                 {
-                    ["sun"] = DaysOfWeek[0],
-                    ["mon"] = DaysOfWeek[1],
-                    ["tue"] = DaysOfWeek[2],
-                    ["wed"] = DaysOfWeek[3],
-                    ["thu"] = DaysOfWeek[4],
-                    ["fri"] = DaysOfWeek[5],
-                    ["sat"] = DaysOfWeek[6]
+                    [ScheduleItemOptions.JsonSunday] = DaysOfWeek[0],
+                    [ScheduleItemOptions.JsonMonday] = DaysOfWeek[1],
+                    [ScheduleItemOptions.JsonTuesday] = DaysOfWeek[2],
+                    [ScheduleItemOptions.JsonWednesday] = DaysOfWeek[3],
+                    [ScheduleItemOptions.JsonThursday] = DaysOfWeek[4],
+                    [ScheduleItemOptions.JsonFriday] = DaysOfWeek[5],
+                    [ScheduleItemOptions.JsonSaturday] = DaysOfWeek[6]
                 },
-                ["start"] = new JsonObject
+                [ScheduleItemOptions.JsonStart] = new JsonObject
                 {
-                    ["hour"] = StartTime.Hour,
-                    ["minute"] = StartTime.Minute
+                    [ScheduleItemOptions.JsonHour] = StartTime.Hour,
+                    [ScheduleItemOptions.JsonMinute] = StartTime.Minute
                 },
-                ["end"] = new JsonObject
+                [ScheduleItemOptions.JsonEnd] = new JsonObject
                 {
-                    ["hour"] = EndTime.Hour,
-                    ["minute"] = EndTime.Minute
+                    [ScheduleItemOptions.JsonHour] = EndTime.Hour,
+                    [ScheduleItemOptions.JsonMinute] = EndTime.Minute
                 },
-                ["location"] = Location,
-                ["contact"] = Contact,
-                ["notes"] = Notes,
-                ["creator"] = Creator
+                [ScheduleItemOptions.JsonLocation] = Location,
+                [ScheduleItemOptions.JsonContact] = Contact,
+                [ScheduleItemOptions.JsonNotes] = Notes,
+                [ScheduleItemOptions.JsonCreator] = Creator
             };
             return result;
         }
