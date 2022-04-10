@@ -1,5 +1,4 @@
-﻿
-using System.Data.SqlClient;
+﻿using System.Data.SqlClient;
 
 namespace StudentMultiTool.Backend.Services.DataAccess
 {

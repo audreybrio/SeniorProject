@@ -6,10 +6,11 @@ namespace StudentMultiTool.Backend.Services.AccessControl
 {
     public class RBACController : Controller //MVC - controller class is responsible for processing and responding to browser requests
     {
-         RBACContext db;
+         RBACContext db = new RBACContext();
         public IActionResult Index()
         {
-            return View(db.Users.Where(r=> r.active == false || r.active == null).OrderBy(r => r.username).ThenBy(r => r.role).ToList());
+            ViewBag.Message = db.RoleGet();
+            return View();
         }
 
 

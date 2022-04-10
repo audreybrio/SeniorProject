@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.EntityFrameworkCore;
 using StudentMultiTool.Backend.Models.AccessModel;
 
 static class Program
@@ -11,10 +10,6 @@ static class Program
         // Add services to the container.
         builder.Services.AddRazorPages();
         builder.Services.AddControllersWithViews();
-        builder.Services.AddDbContext<RBACContext>(options =>
-        {
-            options.UseSqlServer(builder.Configuration.GetConnectionString("MARVELCONNECTIONSTRING"));
-        });
 
         builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
         .AddCookie(options =>

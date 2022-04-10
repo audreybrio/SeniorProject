@@ -1,30 +1,37 @@
-﻿using Microsoft.EntityFrameworkCore;
-using StudentMultiTool.Backend.Services.Users;
+﻿using StudentMultiTool.Backend.Services.DataAccess;
+using System.Data.SqlClient;
 
 namespace StudentMultiTool.Backend.Models.AccessModel
 {
-    public class RBACContext: DbContext
+    public class RBACContext
     {
-
-        public RBACContext(DbContextOptions<RBACContext> options) : base(options)
+        public string RoleGet()
         {
-            
+            string value = " "; 
+            SQLServerDAO roles = new SQLServerDAO();
+            List<Role> r = new List<Role>();
+            string qurey = "Select * From [ROLES]";
+
+            SqlDataReader rd = (SqlDataReader) roles.ReadData(qurey);
+            while (rd.Read())
+            {
+                r.Add(new Role
+                {
+                    RoleName = rd["RoleName"].ToString(),
+                    RoleDescription = rd["RoleDetail"].ToString(),
+                    IsSysAdmin = (bool)rd["IsAdmin"]
+                });
+            }
+
+            return value;
+
         }
 
-        public DbSet<UserAccount> Users { get; set; }
-
-        public DbSet<Role> Roles { get; set; }
-
-        public DbSet<Permission> Permissions { get; set; }
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        public void upload()
         {
-            modelBuilder.Entity<Permission>()
-                .HasOne(e => e.Roles)
-                .WithMany(e => e.Permissions);
-            modelBuilder.Entity<Role>()
-                .HasMany(e => e.Users)
-                .WithOne(e => e.Roles);
+
         }
+
+
     }
 }
