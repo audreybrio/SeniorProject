@@ -1,5 +1,5 @@
 ﻿using StudentMultiTool.Backend.Services.Authentication.Controller;
-using Microsoft.EntityFrameworkCore.Design;
+
 using StudentMultiTool.Backend.Services.BookSelling;
 using StudentMultiTool.Backend.Services.DataAccess;
 

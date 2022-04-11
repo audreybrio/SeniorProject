@@ -1,6 +1,6 @@
 using System;
 using Xunit;
-using StudentMultiTool.Backend.Services.Users;
+using UserAcc;
 
 namespace UserAccTest
 {
