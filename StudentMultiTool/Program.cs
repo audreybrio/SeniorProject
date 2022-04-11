@@ -8,6 +8,8 @@ static class Program
         // Add services to the container.
         builder.Services.AddRazorPages();
 
+        
+
         builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
         .AddCookie(options =>
         {
@@ -15,8 +17,9 @@ static class Program
             options.SlidingExpiration = true;
             options.AccessDeniedPath = "/Forbidden/";
         });
-
+        
         var app = builder.Build();
+
         // Configure the HTTP request pipeline.
         if (!app.Environment.IsDevelopment())
         {

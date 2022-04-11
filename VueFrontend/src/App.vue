@@ -1,5 +1,6 @@
 <template>
     <h1>test</h1>
+<<<<<<< HEAD
     <RegistrationForm />
 </template>
 
@@ -9,6 +10,15 @@ export default {
   name: 'App',
         components: {
             RegistrationForm
+=======
+</template>
+
+<script>
+
+export default {
+  name: 'App',
+  components: {
+>>>>>>> main
   }
 }
 </script>
