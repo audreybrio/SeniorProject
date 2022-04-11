@@ -3,7 +3,8 @@ import RegistrationForm from '../components/Registration/RegistrationForm.vue'
 import EmailVue from '../components/Authentication/EmailVue.vue'
 import LoginVue from '../components/Authentication/LoginVue.vue'
 import HomePage from '../Views/HomePage.vue'
-
+import ScheduleBuilder from '../components/ScheduleBuilder/ScheduleBuilder'
+import ScheduleSelection from '../components/ScheduleBuilder/ScheduleSelection'
 
 const routes = [
     {
@@ -27,6 +28,16 @@ const routes = [
         path: '/registration',
         name: 'RegistrationForm',
         component: RegistrationForm
+    },
+    {
+        path: '/schedulebuilder',
+        name: 'ScheduleBuilder',
+        component: ScheduleBuilder
+    },
+    {
+        path: '/scheduleselection',
+        name: 'ScheduleSelection',
+        component: ScheduleSelection
     }
     // add more here 
 ]
