@@ -27,6 +27,10 @@
                 <input name="university" v-model="university" placeholder="University">
             </div>
             <input type="submit" value="register">
+
+            <div>
+                <router-link to="/">Login</router-link>
+            </div>
         </form>
     </div>
 </template>
