@@ -1,21 +1,22 @@
 <template>
     <td>
         <div v-for="item in Items" :key="item.id">
-            <Item :item="item" />
+            <Items :item="item" />
         </div>
     </td>
 </template>
 
 <script>
-import Item from "./Item"
+import Items from "./Items"
 export default {
+    name: "ScheduleDays",
     props: {
         name: String,
         fullName: String,
         index: Number,
     },
     components:{
-        Item,
+        Items,
     },
     methods: {
         compareStartTimes(a, b)

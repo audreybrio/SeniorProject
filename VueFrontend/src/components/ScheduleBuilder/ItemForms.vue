@@ -56,14 +56,14 @@
 </template>
 
 <script>
-import Time from "./Time"
+//import Times from "./Times"
 import * as $ from 'jquery'
 export default {
     props: {
         Time: Object,
     },
     components:{
-        Time,
+        //Times,
     },
     created(){
     },

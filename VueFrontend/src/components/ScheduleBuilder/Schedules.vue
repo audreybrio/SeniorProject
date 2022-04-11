@@ -11,7 +11,7 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <Day v-for="day in days" :key="day" :items="items" :index="this.days.indexOf(day)"/>
+                        <Days v-for="day in days" :key="day" :items="items" :index="this.days.indexOf(day)"/>
                     </tr>
                 </tbody>
             </table>
@@ -20,14 +20,14 @@
 </template>
 
 <script>
-import Day from "./Day"
+import Days from "./Days"
 export default {
-    name: "Schedule",
+    name: "ScheduleBuilderSchedules",
     props: {
         items: Array,
     },
     components:{
-        Day,
+        Days,
     },
     data() {
         return {

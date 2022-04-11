@@ -2,19 +2,19 @@
     
 
     <div class="container">
-        <Schedule :items="items" />
+        <Schedules :items="items" />
     </div>
 </template>
 
 <script>
     import * as $ from 'jquery'
-    import Schedule from './Schedule'
-    import ItemForm from './ItemForm'
+    import Schedules from './Schedules'
+    //import ItemForms from './ItemForms'
     export default {
         name: 'ScheduleBuilder',
         components: {
-            Schedule,
-            ItemForm,
+            Schedules,
+            //ItemForms,
         },
         data() {
             return {

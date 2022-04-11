@@ -95,13 +95,14 @@
 </template>
 
 <script>
-import Time from "./Time"
+//import Times from "./Times"
 export default {
+    name: "ScheduleItems",
     props: {
         Time: Object,
     },
     components:{
-        Time,
+        //Times,
     },
     created(){
     },
