@@ -11,12 +11,17 @@ namespace StudentMultiTool.Backend.Controllers
     [Route("schedule")]
     public class ScheduleController : Controller
     {
+        // Return a "list" (enumerable) of schedules for a given user.
+        // Only returns a list of schedules that the user is listed as a
+        // collaborator for.
+        // Will always return a list, but there's always the possibility
+        // that the list will be empty.
         [HttpGet("getlist/{username}")]
         public IEnumerable<Schedule> GetList(string username)
         {
             // TODO: check that the user is authenticated
             // TODO: convert WL's to logs
-            Console.WriteLine("Firing ScheduleController.GetList");
+            Console.WriteLine("Running ScheduleController.GetList");
             // Get user hash so we know who to get schedules for
             string? userHash = null;
             Console.WriteLine("Getting user hash for user \"" + username + "\"");
@@ -37,13 +42,38 @@ namespace StudentMultiTool.Backend.Controllers
             }
             return list;
         }
+
+        // Return a schedule and its contents based on the ID of the schedule.
+        // Always returns an enumerable, but the enumerable may be empty.
+        [HttpGet("getschedule/{scheduleId}")]
+        public IEnumerable<ScheduleItem> GetSchedule(int scheduleId)
+        {
+            Console.WriteLine("Running ScheduleController.GetSchedule with ID \"" + scheduleId + "\"");
+            IEnumerable<ScheduleItem> items = Enumerable.Empty<ScheduleItem>();
+
+            ScheduleManager manager = new ScheduleManager();
+            Schedule? schedule = manager.SelectScheduleWithItems(scheduleId);
+            if (schedule != null)
+            {
+                foreach (ScheduleItem si in schedule.Items)
+                {
+                    Console.WriteLine(si.Title);
+                    items.Append(si);
+                }
+            }
+            Console.WriteLine("Request finished");
+            return items;
+        }
+
+        // Create a new schedule for a user.
+        // Returns the status of the operation.
         [HttpPost]
         [HttpPost("newschedule/{title}/{username}")]
         public string NewSchedule(string title, string username)
         {
             // TODO: check that the user is authenticated
             // TODO: convert WL's to logs
-            Console.WriteLine("Firing ScheduleController.NewSchedule with args: " + title + ", " + username);
+            Console.WriteLine("Running ScheduleController.NewSchedule with args: " + title + ", " + username);
             int rowsAffected = 0;
             string? userHash = null;
 
@@ -78,6 +108,7 @@ namespace StudentMultiTool.Backend.Controllers
             {
                 return "Success";
             }
+            // TODO: make a better default return value
             return "Oops";
         }
 
