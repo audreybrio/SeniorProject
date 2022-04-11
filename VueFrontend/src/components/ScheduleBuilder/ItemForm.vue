@@ -1,97 +1,63 @@
 <template>
     <div>
-        <form id="itemForm">
-            <table>
-                <tbody>
-                    <tr>
-                        <td>
-                            <!-- Title -->
-                            <label for="titleField">Title</label>
-                            <input v-bind="title" id="titleField" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <!-- Contact -->
-                            <label for="contactField">Contact</label>
-                            <input v-bind="contact" id="contactField" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <!-- Location -->
-                            <label for="locationField">Location</label>
-                            <input v-bind="location" id="locationField" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <!-- Notes -->
-                            <label for="notesField">Notes</label>
-                            <input v-bind="notes" id="notesField" />
-                        </td>
-                    </tr>
-                    <!-- Days -->
-                    <tr>
-                        <label for="sundayField">Sunday</label>
-                        <input v-bind="days.sunday" id="sundayField" type="checkbox" />
-                    </tr>
-                    <tr>
-                        <label for="mondayField">Monday</label>
-                        <input v-bind="days.monday" id="mondayField" type="checkbox" />
-                    </tr>
-                    <tr>
-                        <label for="tuesdayField">Tuesday</label>
-                        <input v-bind="days.tuesday" id="tuesdayField" type="checkbox" />
-                    </tr>
-                    <tr>
-                        <label for="wednesdayField">Wednesday</label>
-                        <input v-bind="days.wednesday" id="wednesdayField" type="checkbox" />
-                    </tr>
-                    <tr>
-                        <label for="thursdayField">Thursday</label>
-                        <input v-bind="days.thursday" id="thursdayField" type="checkbox" />
-                    </tr>
-                    <tr>
-                        <label for="fridayField">Friday</label>
-                        <input v-bind="days.friday" id="fridayField" type="checkbox" />
-                    </tr>
-                    <tr>
-                        <label for="saturdayField">Saturday</label>
-                        <input v-bind="days.saturday" id="saturdayField" type="checkbox" />
-                    </tr>
-                    <tr>
-                        <td>
-                            <!-- Start Time -->
-                            <label for="Field">Start</label>
-                            <input v-bind="startInput" id="Field" type="time" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <!-- End Time -->
-                            <label for="Field"></label>
-                            <input v-bind="endInput" id="Field" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <!-- create button -->
-                            <button @click="create()">Create</button>
-                        </td>
-                        <td>
-                            <!-- clear button -->
-                            <button @click="clear()">Clear</button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </form>
+        <div>
+            <!-- Title -->
+            <label for="titleField">Title</label>
+            <input v-model="title" id="titleField" required />
+
+            <!-- Contact -->
+            <label for="contactField">Contact</label>
+            <input v-model="contact" id="contactField" />
+
+            <!-- Location -->
+            <label for="locationField">Location</label>
+            <input v-model="location" id="locationField" />
+
+            <!-- Notes -->
+            <label for="notesField">Notes</label>
+            <input v-model="notes" id="notesField" />
+        </div>
+
+        <!-- Days -->
+        <div>
+            <label for="sundayField">Sunday</label>
+            <input v-model="days.sunday" id="sundayField" type="checkbox" />
+            <label for="mondayField">Monday</label>
+            <input v-model="days.monday" id="mondayField" type="checkbox" />
+            <label for="tuesdayField">Tuesday</label>
+            <input v-model="days.tuesday" id="tuesdayField" type="checkbox" />
+            <label for="wednesdayField">Wednesday</label>
+            <input v-model="days.wednesday" id="wednesdayField" type="checkbox" />
+            <label for="thursdayField">Thursday</label>
+            <input v-model="days.thursday" id="thursdayField" type="checkbox" />
+            <label for="fridayField">Friday</label>
+            <input v-model="days.friday" id="fridayField" type="checkbox" />
+            <label for="saturdayField">Saturday</label>
+            <input v-model="days.saturday" id="saturdayField" type="checkbox" />
+        </div>
+
+        <div>
+            <!-- Start Time -->
+            <label for="Field">Start Time</label>
+            <input v-model="startInput" id="Field" type="time" min="00:00" max="23:59" required />
+
+            <!-- End Time -->
+            <label for="Field">End Time</label>
+            <input v-model="endInput" id="Field" type="time" min="00:00" max="23:59" required />
+        </div>
+
+        <div>
+            <!-- create button -->
+            <button @click="createItem">Create</button>
+            <!-- clear button -->
+            <button @click="clear">Clear</button>
+        </div>
     </div>
 </template>
 
 <script>
 import Time from "./Time"
+import * as $ from 'jquery'
 export default {
     props: {
         Time: Object,
@@ -117,32 +83,70 @@ export default {
                 friday: false,
                 saturday: false
             },
-            start: {
+            startInput: {
                 hour: 0,
                 minute: 0
             },
-            end: {
+            endInput: {
                 hour: 0,
                 minute: 0
             },
+            creatorId: -1
         };
     },
     methods: {
-        create() {
-            // TODO: Grab title from form
-            // TODO: Grab contact from form
-            // TODO: Grab location from form
-            // TODO: Grab notes from form
-            // TODO: Grab days from form
-            // TODO: Translate days into JSON array
-            // TODO: Grab start time from form
-            // TODO: Translate start time into JSON object
-            // TODO: Grab end time from form
-            // TODO: Translate end time into JSON object
+        createItem() {
+            console.log("Form submitted")
+            let newTitle = this.title;
+            let newContact = this.contact;
+            let newLocation = this.location;
+            let newNotes = this.notes;
+            let newDays = [
+                this.days.sunday,
+                this.days.monday,
+                this.days.tuesday,
+                this.days.wednesday,
+                this.days.thursday,
+                this.days.friday,
+                this.days.saturday
+            ];
+            // TODO: translate times into separate ints
+            let newStart = this.startInput;
+            let newEnd = this.endInput;
+            console.log(newTitle);
+            console.log(newContact);
+            console.log(newLocation);
+            console.log(newNotes);
+            console.log(newDays);
+            console.log(newStart);
+            console.log(newEnd);
+            // TODO: make request to submit
+            $.ajax({
+                url: '',
+                context: this,
+                method: 'POST',
+                data: {
+                    title: newTitle,
+                    contact: newContact,
+                    location: newLocation,
+                    notes: newNotes,
+                    days: newDays,
+                    startTime: newStart,
+                    endTime: newEnd,
+                    creator: this.creatorId
+                },
+                success: function (data) {
+                    console.log(data);
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
             // Clear the form for the next use
             this.clear();
         },
         clear() {
+            console.log("Clear");
             this.itemId = -1;
             this.title = "";
             this.contact = "";
@@ -157,11 +161,11 @@ export default {
                 friday: false,
                 saturday: false
             };
-            this.start = {
+            this.startInput = {
                 hour: 0,
                 minute: 0
             };
-            this.end = {
+            this.endInput = {
                 hour: 0,
                 minute: 0
             };
