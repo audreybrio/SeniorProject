@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Backend\StudentMultiTool.csproj" />
+    <ProjectReference Include="..\StudentMultiTool\StudentMultiTool.csproj" />
   </ItemGroup>
 
 </Project>

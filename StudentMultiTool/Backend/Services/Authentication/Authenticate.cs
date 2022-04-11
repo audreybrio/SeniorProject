@@ -291,10 +291,8 @@ namespace Authentication
 
 
 
-        static void Main(string[] args)
+        public void demo()
         {
-
-
             Console.WriteLine("Welcome to Student Multi-Tool, Please log in.");
             Console.WriteLine("Enter Email.");
             string email = Console.ReadLine();

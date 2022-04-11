@@ -16,4 +16,13 @@ namespace WebApplication14.Entities
         public int No_login { get; set; }
         public int No_reg { get; set; }
     }
+
+    public class ConnectDB
+    {
+        SqlConnection conn = new SqlConnection();
+        conn.ConnectionString = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING");
+        conn.Open();
+        SqlCommand cmd = new SqlCommand("SELECT MAX(userId) AS ID" + " FROM UserAccounts", conn);
+    
+    }
 }

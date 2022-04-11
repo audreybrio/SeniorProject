@@ -5,7 +5,7 @@ namespace Marvel.Services.Logging.Demo
 {
     public class Demo
     {
-        public static void Main(string[] args)
+        public void demo()
         {
             Console.WriteLine("Logging Demo");
             DbLogWriter logWriter = new DbLogWriter();

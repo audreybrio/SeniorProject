@@ -21,11 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Backend\Services\Authorization\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Backend\StudentMultiTool.csproj" />
+    <ProjectReference Include="..\StudentMultiTool\StudentMultiTool.csproj" />
   </ItemGroup>
 
 </Project>
