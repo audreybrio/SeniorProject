@@ -1,0 +1,61 @@
+title User Visits Schedule Selection View
+
+actor User
+participant Selection View
+participant Controller
+participant ScheduleListBuilder
+participant DAO
+database RDBMS
+
+// Start
+activate User
+User->Controller:User visits selection page's URL
+
+activate Controller
+Controller->Controller:Validate user/session authenticity
+group #red User is not authenticated
+Controller-->User:redirect to login page
+end
+group #green User is authenticated
+Controller->ScheduleListBuilder:ScheduleListBuilder\n.GetSchedulesForUser(userId);
+
+// Getting the list
+activate ScheduleListBuilder
+ScheduleListBuilder->ScheduleListBuilder:DAO dao = new DAO();\ndao.query =\n  "SELECT Schedules.id,\n    Schedules.title,\n    Schedules.dateCreated,\n    Schedules.dateModified,\n    Collaborators.canWrite,\n    Collaborators.isOwner,\n    Users.username\n  FROM Schedules\n  INNER JOIN Collaborators ON\n    Schedules.id = Collaborators.schedule\n  INNER JOIN Users ON\n    Collaborators.user = Users.id\n  WHERE Collaborators.user = userId;";\ndao.params.add(userId);
+ScheduleListBuilder->DAO:dao.execute();
+
+activate DAO
+DAO->RDBMS:this.query
+
+activate RDBMS
+RDBMS-->DAO:return query results
+deactivate RDBMS
+
+DAO-->ScheduleListBuilder:return query results
+deactivate DAO
+ScheduleListBuilder->ScheduleListBuilder:Set up a list to store & unpack query\nresults\nList<Schedule> scheduleList\n= new List<Schedule>();
+
+group #green foreach (result r in dao.results)
+ScheduleListBuilder->ScheduleListBuilder:Schedule current = new Schedule();\ncurrent.id = r.id;\ncurrent.title = r.title;\ncurrent.dateCreated = r.dateCreated;\ncurrent.dateModified = r.dateModified;\ncurrent.owner = r.owner;\nscheduleList.add(current);
+end
+ScheduleListBuilder-->Controller:return scheduleList;
+deactivate ScheduleListBuilder
+
+Controller-->Selection View:return SelectionView(scheduleList);
+
+// User Selects Schedules
+activate Selection View
+Selection View-->User:Present the list\nof schedules\nthe user can\ncompare
+// Case: 0 or 1 schedules
+group #red User has 0 or 1 schedules available (they need 2 or more to compare)
+Selection View-->User:Instruct them to\ncreate a schedule\nand/or ask another user\nto add them as a\ncollaborator on a\nschedule
+end
+
+// User Clicks "Compare"
+
+// Comparison steps
+
+// Return result
+//deactivate Selection View
+//activate Comparison View
+end

@@ -1,0 +1,70 @@
+title User Loads a Schedule Into a View
+
+actor User
+participant View
+participant Controller
+participant SchedulePermissionValidator
+participant ScheduleFileAccessor
+participant Disk
+participant DAO
+database RDBMS
+
+activate User
+activate View
+activate Controller
+User-->View:User tries to view a schedule
+View-->Controller:GetScheduleForUser(\n  ScheduleId,UserID);
+Controller->SchedulePermissionValidator:bool granted  = UserHasPermission(\n  permission, scheduleId, userId);
+
+activate SchedulePermissionValidator
+SchedulePermissionValidator->SchedulePermissionValidator:DAO dao;\ndao.query = "SELECT * FROM Collaborators\n  WHERE schedule=ScheduleId AND\n  user=UserId;"\ndao.params.add(ScheduleId);\ndao.params.add(UserId);
+SchedulePermissionValidator->DAO:dao.execute();
+activate DAO
+DAO->RDBMS:this.query
+RDBMS-->DAO:return query results
+deactivate RDBMS
+DAO-->SchedulePermissionValidator:return results;
+deactivate DAO
+
+SchedulePermissionValidator->SchedulePermissionValidator:List<string> permissions;\nif (schedule != null && user != null)\n  { permissions.add("View"); }\nif (canWrite != null && canWrite == 1)\n  { permissions.add("Write"); }\nif (canWrite != null && isOwner == 1)\n  { permissions.add("Own"); }\nbool result = false;
+group foreach (string s in permissions)
+SchedulePermissionValidator->SchedulePermissionValidator:if (s == permission)\n  { result = true; }
+end
+SchedulePermissionValidator-->Controller:return result;
+deactivate SchedulePermissionValidator
+
+group #red granted == false
+Controller-->View:return "You no longer\nhave the permission \\""\n  + permission + "\\" for\n that schedule";
+View-->User:Display error message
+end
+
+group #green granted == true
+Controller->Controller:DAO dao;\nSchedule s = new Schedule(ScheduleId);\ndao.Query = "SELECT * FROM\n Schedules WHERE id = scheduleId;";
+Controller->DAO:s = dao.Execute();
+activate DAO
+DAO->RDBMS:this.query;
+activate RDBMS
+RDBMS-->DAO:return query results
+deactivate RDBMS
+DAO-->Controller:
+deactivate DAO
+
+Controller->ScheduleFileAccessor:s.ScheduleItems = ScheduleFileAccessor.ReadScheduleItems(s.path);
+activate ScheduleFileAccessor
+ScheduleFileAccessor->ScheduleFileAccessor:List<ScheduleItem> results;
+ScheduleFileAccessor->Disk:String contents = File.ReadAllText(path);
+activate Disk
+Disk-->ScheduleFileAccessor:return file contents
+deactivate Disk
+ScheduleFileAccessor->ScheduleFileAccessor:JsonNode? jsonContents;\nJsonArray items =  jsonContents["scheduleItems"];\nList<ScheduleItem> result;\nint count = 0;
+group #green foreach (JsonNode jn in items)
+group #green if (jn != null)
+ScheduleFileAccessor->ScheduleFileAccessor:Translate Json data into C# objects:\nScheduleItem currentItem;\ncurrentItem.Creator = (int) jn["creator"];\ncurrentItem.Title = jn["title"];\ncurrentItem.Location = jn["location"];\ncurrentItem.Contact = jn["contact"];\ncurrentItem.Notes = jn["notes"];\ncurrentItem.DaysOfWeek = new List<bool>\n  { (bool) jn["days"][day] for day in jn["days"]};\ncurrentItem.StartTime = new TimeOnly\n  (jn["start"]["hour"], jn["start"]["minute"]);\ncurrentItem.EndTime = new TimeOnly\n  (jn["start"]["hour"], jn["start"]["minute"]);
+ScheduleFileAccessor->ScheduleFileAccessor:result.add(currentItem);\ncount = count + 1;
+end
+end
+ScheduleFileAccessor-->Controller:return result;
+deactivate ScheduleFileAccessor
+Controller-->View:return Schedule\ndata to view
+View-->User:Visually present\nSchedule to User
+end
