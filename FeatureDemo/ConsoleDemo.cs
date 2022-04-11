@@ -43,7 +43,7 @@ namespace ConsoleDemo
                     // Login/Logout
                     case 2:
                         LoginController loginController = new LoginController();
-                        loginController.Authorize();
+                        loginController.Authenticate();
                         break;
                     // Schedule Builder
                     case 3:
