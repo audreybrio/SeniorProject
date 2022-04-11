@@ -68,7 +68,7 @@ namespace StudentMultiTool.Backend.Services.AccessControl
             {
                 if (db.DeleteRole(id))
                 {
-                    ViewBag.AlertMsg = "Role details deleted successfully"
+                    ViewBag.AlertMsg = "Role details deleted successfully";
 
                 }
 
