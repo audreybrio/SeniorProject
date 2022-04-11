@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace StudentMultiTool.Backend.Services.Logging
+namespace Marvel.Services.Logging
 {
 	public class Log
 	{

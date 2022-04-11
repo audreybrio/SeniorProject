@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using System.Data.SqlClient;
 using System.Collections;
 
-namespace StudentMultiTool.Backend.Services.Logging
+namespace Marvel.Services.Logging
 {
     // Writes logs to the console. Intended to be overridden by DbLogWriter &
     // FileLogWriter.

@@ -9,7 +9,7 @@ namespace StudentMultiTool.Backend.Services.DataAccess
     public interface DataSource<T>
     {
         // Method for reading data, return 0 for sucessful operation
-        Object? ReadData(T model);
+        Object ReadData(T model);
 
         // Method for Writing data to a data source
         bool WriteData(T model);

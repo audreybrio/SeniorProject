@@ -4,8 +4,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Data.SqlClient;
 
-namespace StudentMultiTool.Backend.Services.UserManagement
-{
+namespace Rextester{
     public class Program{
         public static string GetUserRole(string username)
         {
