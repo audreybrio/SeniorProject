@@ -67,7 +67,7 @@
                 router.push({ name: "EmailVue" });
             },
             onBS() {
-                router.push({ name: "EmailVue" });
+                router.push({ name: "bookSelling" });
             },
             onUSD() {
                 router.push({ name: "EmailVue" });
