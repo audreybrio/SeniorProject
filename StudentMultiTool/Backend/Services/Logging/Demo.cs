@@ -5,11 +5,11 @@ namespace Marvel.Services.Logging.Demo
 {
     public class Demo
     {
-        public void demo()
+        /*public static void Main(string[] args)
         {
             Console.WriteLine("Logging Demo");
             DbLogWriter logWriter = new DbLogWriter();
             _ = logWriter.AddLog("Demo", "Demo", 2, "Logging demo!");
-        }
+        }*/
     }
 }

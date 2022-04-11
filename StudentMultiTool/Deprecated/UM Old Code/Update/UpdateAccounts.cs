@@ -41,7 +41,7 @@ namespace Rextester
             }
         }
 
-        public static void updateUserRole(string username, string newRole)
+        public static bool updateUserRole(string username, string newRole)
         {
             SqlConnection conn = new SqlConnection();
             conn.ConnectionString = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING");
@@ -50,6 +50,7 @@ namespace Rextester
             cmd.Parameters.AddWithValue("@newRole", newRole);
             cmd.Parameters.AddWithValue("@username", username);
             cmd.ExecuteNonQuery();
+            return true;
         }
 
         // Main 

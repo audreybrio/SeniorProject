@@ -9,7 +9,7 @@ namespace UserAccTest
         [Fact]
         public void Success()
         {
-            UserAccount aud = new UserAccount("Audrey Brio", "abrio", "Pas$word1", "audrey.brio@student.csulb.edu", "1234", "Admin", true);
+            UserAccount aud = new UserAccount("audrey.brio@student.csulb.edu", "Pas$word1", "abrio", "csulb");
             aud.email = "michael.kriesel@student.csulb.edu";
             aud.username = "bncikle";
             string expectedEmail = "michael.kriesel@student.csulb.edu";
