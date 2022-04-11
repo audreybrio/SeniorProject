@@ -1,4 +1,4 @@
-﻿namespace StudentMultiTool.Backend.Services.Logout
+﻿namespace StudentMultiTool.Backend.Services.Authentication
 {
     public class UIPrint
     {
