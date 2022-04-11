@@ -1,7 +1,7 @@
 ﻿using System;
-using Marvel.Services.Logging;
+using StudentMultiTool.Backend.Services.Logging;
 
-namespace Marvel.Services.Logging.Demo
+namespace StudentMultiTool.Backend.Services.Logging
 {
     public class Demo
     {

@@ -1,6 +1,6 @@
 using System;
 using Xunit;
-using UserManagement;
+using StudentMultiTool.Backend.Services.UserManagement;
 
 namespace EnableTests
 {

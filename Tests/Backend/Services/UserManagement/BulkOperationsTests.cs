@@ -1,6 +1,6 @@
 using System;
 using Xunit;
-using Authentication;
+using StudentMultiTool.Backend.Services.Authentication;
 
 namespace OperationsTests{
     public class BulkOperationsTests{
