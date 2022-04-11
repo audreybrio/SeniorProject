@@ -34,7 +34,7 @@ namespace StudentMultiTool.Backend.Services.ScheduleBuilder
         public ScheduleManager()
         {
             dbConnectionString = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING", EnvironmentVariableTarget.User);
-            BaseFilePath = "./";
+            BaseFilePath = "C:/Users/Public/DemoSchedules/";
         }
         public ScheduleManager(string dbConnectionString, string BaseFilePath)
         {
