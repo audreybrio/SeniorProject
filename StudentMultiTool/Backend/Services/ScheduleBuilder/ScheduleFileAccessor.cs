@@ -116,36 +116,36 @@ namespace StudentMultiTool.Backend.Models.ScheduleBuilder
                         ScheduleItem currentItem = new ScheduleItem(count, 0);
 
                         // Update the Creator property
-                        currentItem.Creator = (int) currentNode!["creator"]!;
+                        currentItem.Creator = (int) currentNode![ScheduleItemOptions.JsonCreator]!;
 
                         // Set the Title, Location, Contact, and Notes
-                        currentItem.Title = (string) currentNode!["title"]!;
-                        currentItem.Location = (string) currentNode!["location"]!;
-                        currentItem.Contact = (string) currentNode!["contact"]!;
-                        currentItem.Notes = (string) currentNode!["notes"]!;
+                        currentItem.Title = (string) currentNode![ScheduleItemOptions.JsonTitle]!;
+                        currentItem.Location = (string) currentNode![ScheduleItemOptions.JsonLocation]!;
+                        currentItem.Contact = (string) currentNode![ScheduleItemOptions.JsonContact]!;
+                        currentItem.Notes = (string) currentNode![ScheduleItemOptions.JsonNotes]!;
 
                         // Set the days of the week
                         currentItem.DaysOfWeek = new List<bool>
                         {
-                            (bool) currentNode!["days"]!["sun"]!,
-                            (bool) currentNode!["days"]!["mon"]!,
-                            (bool) currentNode!["days"]!["tue"]!,
-                            (bool) currentNode!["days"]!["wed"]!,
-                            (bool) currentNode!["days"]!["thu"]!,
-                            (bool) currentNode!["days"]!["fri"]!,
-                            (bool) currentNode!["days"]!["sat"]!
+                            (bool) currentNode![ScheduleItemOptions.JsonDays]![ScheduleItemOptions.JsonSunday]!,
+                            (bool) currentNode![ScheduleItemOptions.JsonDays]![ScheduleItemOptions.JsonMonday]!,
+                            (bool) currentNode![ScheduleItemOptions.JsonDays]![ScheduleItemOptions.JsonTuesday]!,
+                            (bool) currentNode![ScheduleItemOptions.JsonDays]![ScheduleItemOptions.JsonWednesday]!,
+                            (bool) currentNode![ScheduleItemOptions.JsonDays]![ScheduleItemOptions.JsonThursday]!,
+                            (bool) currentNode![ScheduleItemOptions.JsonDays]![ScheduleItemOptions.JsonFriday]!,
+                            (bool) currentNode![ScheduleItemOptions.JsonDays]![ScheduleItemOptions.JsonSaturday]!
                         };
 
                         // Set the start and end times
                         currentItem.StartTime = new TimeOnly
                         (
-                            (int) currentNode!["start"]!["hour"]!,
-                            (int) currentNode!["start"]!["minute"]!
+                            (int) currentNode![ScheduleItemOptions.JsonStart]![ScheduleItemOptions.JsonHour]!,
+                            (int) currentNode![ScheduleItemOptions.JsonStart]![ScheduleItemOptions.JsonMinute]!
                         );
                         currentItem.EndTime = new TimeOnly
                         (
-                            (int) currentNode!["end"]!["hour"]!,
-                            (int) currentNode!["end"]!["minute"]!
+                            (int) currentNode![ScheduleItemOptions.JsonEnd]![ScheduleItemOptions.JsonHour]!,
+                            (int) currentNode![ScheduleItemOptions.JsonEnd]![ScheduleItemOptions.JsonMinute]!
                         );
 
                         // Add the unpacked ScheduleItem to the results
