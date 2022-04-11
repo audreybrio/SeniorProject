@@ -407,6 +407,24 @@ namespace UserManagement
             cmd.ExecuteNonQuery();
         }
 
+        public void UpdateCreate(string email, string password, string username, string school)
+        {
+            // inserts the created user into the database
+            SqlConnection conn = new SqlConnection();
+            conn.ConnectionString = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING");
+            conn.Open();
+            //int id = (int) generateID();
+            SqlCommand cmd = new SqlCommand("INSERT INTO UserAccounts " + "(username, email, password, school) " + "  values (@username, @email, @password, @school)", conn);
+            cmd.Parameters.AddWithValue("@name", "");
+            cmd.Parameters.AddWithValue("@username", username);
+            cmd.Parameters.AddWithValue("@email", email);
+            cmd.Parameters.AddWithValue("@password", password);
+            cmd.Parameters.AddWithValue("@role", "student");
+            cmd.Parameters.AddWithValue("@school", school);
+            cmd.Parameters.AddWithValue("@active_status", 0);
+            cmd.ExecuteNonQuery();
+            System.Console.WriteLine("New User Account created successfully.\n");
+        }
         // Generates next ID number in database
         public static int generateID()
         {

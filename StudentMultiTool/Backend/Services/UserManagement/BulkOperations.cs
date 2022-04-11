@@ -34,7 +34,7 @@ namespace Rextester{
             }
         }
 
-        public void demo()
+       /* static void Main(string[] args)
         {
             string currentUsername = "abrio";
             if(GetUserRole(currentUsername) == "Admin"){
@@ -69,6 +69,6 @@ namespace Rextester{
                     }
                 }
             }
-        }
+        }*/
     }
 }
