@@ -1,7 +1,6 @@
 <template>
-    <div class="container">
-        <ItemForm />
-    </div>
+    
+
     <div class="container">
         <Schedule :items="items" />
     </div>
@@ -21,10 +20,84 @@
             return {
                 loading: false,
                 items: [],
+                demo: true
             }
         },
         created() {
-            this.loadSchedule();
+            if (!this.demo) {
+                this.loadSchedule();
+            }
+            else {
+                console.log("Demo");
+                this.items = [
+                    {
+                        id: 1,
+                        title: "{title}",
+                        contact: "{Contact}",
+                        location: "{location}",
+                        notes: "{notes}",
+                        days: [false, false, false, false, false, true, false],
+                        startHour: 17,
+                        startMinute: 30,
+                        endHour: 18,
+                        endMinute: 45,
+                        editing: false
+                    },
+                    {
+                        id: 2,
+                        title: "CECS 277",
+                        contact: "Cleary",
+                        location: "ECS 407",
+                        notes: "rocks",
+                        days: [false, false, true, false, true, false, false],
+                        startHour: 19,
+                        startMinute: 0,
+                        endHour: 21,
+                        endMinute: 45,
+                        editing: false
+                    },
+                    {
+                        id: 3,
+                        title: "CECS 228",
+                        contact: "Nguyen",
+                        location: "ECS 308",
+                        notes: "is rough",
+                        days: [false, true, false, true, false, false, false],
+                        startHour: 9,
+                        startMinute: 0,
+                        endHour: 11,
+                        endMinute: 15,
+                        editing: false
+                    },
+                    {
+                        id: 4,
+                        title: "CECS 282",
+                        contact: "Nguyen",
+                        location: "ECS 308",
+                        notes: "is ok",
+                        days: [false, true, false, true, false, false, false],
+                        startHour: 13,
+                        startMinute: 0,
+                        endHour: 15,
+                        endMinute: 15,
+                        editing: false
+                    },
+                    {
+                        id: 5,
+                        title: "CWL 305",
+                        contact: "DeSuza",
+                        location: "LA 305",
+                        notes: "is fun",
+                        days: [false, true, false, true, false, false, false],
+                        startHour: 17,
+                        startMinute: 0,
+                        endHour: 18,
+                        endMinute: 15,
+                        editing: false
+                    },
+                ]
+                console.log(this.items);
+            }
         },
         methods: {
             // Make an AJAX request to get items on page load
@@ -77,12 +150,4 @@
 </script>
 
 <style>
-    #app {
-    font-family: Avenir, Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-align: center;
-    color: #2c3e50;
-    margin-top: 60px;
-    }
 </style>
