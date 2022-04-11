@@ -1,6 +1,6 @@
 using System;
 using Xunit;
-using StudentMultiTool.Backend.Services.UserManagement;
+using UserManagement;
 
 namespace DisableTesting
 {

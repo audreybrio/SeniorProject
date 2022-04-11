@@ -1,6 +1,6 @@
 using System;
 using Xunit;
-using StudentMultiTool.Backend.Services.Authentication.Model;
+using Authentication;
 
 namespace AuthenticationTests
 {
@@ -19,14 +19,14 @@ namespace AuthenticationTests
             string email = "audrey.brio@student.csulb.edu";
             string passcode = "hello world";
             bool log;
-            log = Validate.UserExist(email, passcode);
+            log = Authentication.Validate.UserExist(email, passcode);
             Assert.True(log);
 
             string username = "abrio";
             string password = "123456";
             int temp;
-            temp = Validate.LoginUser(username, password);
-            bool t = Evaluate.Eval(temp);
+            temp = Authentication.Validate.LoginUser(username, password);
+            bool t = Authentication.Evaluate.Eval(temp);
             Assert.False(t);
         }
 
@@ -38,7 +38,7 @@ namespace AuthenticationTests
             string email = "abrio@student.csulb.edu";
             string passcode = "hello world";
             bool log;
-            log = Validate.UserExist(email, passcode);
+            log = Authentication.Validate.UserExist(email, passcode);
             Assert.False(log);
         }
 
@@ -49,7 +49,7 @@ namespace AuthenticationTests
             string email = "audrey.brio@student.csulb.edu";
             string passcode = "no";
             bool log;
-            log = Validate.UserExist(email, passcode);
+            log = Authentication.Validate.UserExist(email, passcode);
             Assert.False(log);
 
 
@@ -64,7 +64,7 @@ namespace AuthenticationTests
             string email = "bradley.nickle@student.csulb.edu";
             string passcode = "marvel fan";
             bool log;
-            log = Validate.UserExist(email, passcode);
+            log = Authentication.Validate.UserExist(email, passcode);
             Assert.False(log);
 
         }
@@ -77,14 +77,14 @@ namespace AuthenticationTests
             string email = "jacob.delgado01@student.csulb.edu";
             string passcode = "super man";
             bool log;
-            log = Validate.UserExist(email, passcode);
+            log = Authentication.Validate.UserExist(email, passcode);
             Assert.True(log);
 
             string username = "jd";
             string password = "Password!";
             int temp;
             temp = Validate.LoginUser(username, password);
-            bool t = Evaluate.Eval(temp);
+            bool t = Authentication.Evaluate.Eval(temp);
             Assert.False(t);
         }
 
@@ -95,14 +95,14 @@ namespace AuthenticationTests
             string email = "jacob.delgado01@student.csulb.edu";
             string passcode = "super man";
             bool log;
-            log = Validate.UserExist(email, passcode);
+            log = Authentication.Validate.UserExist(email, passcode);
             Assert.True(log);
 
             string username = "jdelgado";
             string password = "Password1";
             int temp;
             temp = Validate.LoginUser(username, password);
-            bool t = Evaluate.Eval(temp);
+            bool t = Authentication.Evaluate.Eval(temp);
             Assert.False(t);
         }
     }

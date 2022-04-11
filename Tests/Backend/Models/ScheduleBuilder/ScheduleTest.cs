@@ -1,8 +1,8 @@
 using System;
 using System.Data.SqlClient;
 using Xunit;
-using StudentMultiTool.Backend.Services;
-using StudentMultiTool.Backend.Services.Logging;
+using Marvel.Services;
+using Marvel.Services.Logging;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using StudentMultiTool.Backend.Models.ScheduleBuilder;
