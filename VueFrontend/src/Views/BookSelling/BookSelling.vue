@@ -9,7 +9,7 @@
   <div class="vx-row">
             <div class="vx-col">
                 <div class="card">
-                    <img class="card-img-top" src="../static/browse.jpg" height="400px" width="450px" alt="Card image cap">
+                    <img class="card-img-top" src="browse.jpg" height="400px" width="450px" alt="Card image cap">
                     <div class="card-body">
                         <h3 class="card-title">Browse</h3>
                         <p class="card-text">Search the collection of books.</p>
@@ -19,7 +19,7 @@
             </div>
             <div class="vx-col">
                 <div class="card">
-                    <img class="card-img-top" src="../static/sell.jpg" height="400px" width="450px" alt="Card image cap">
+                    <img class="card-img-top" src="sell.jpg" height="400px" width="450px" alt="Card image cap">
                     <div class="card-body">
                         <h3 class="card-title">Sell</h3>
                         <p class="card-text">Book collection beginning to take up space? Rare book collector? Sell books
