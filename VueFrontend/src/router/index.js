@@ -38,6 +38,21 @@ const routes = [
         path: '/scheduleselection',
         name: 'ScheduleSelection',
         component: ScheduleSelection
+    },
+    {
+        path: '/bookSelling',
+        name: 'bookSelling',
+        component: () => import('../views/BookSelling.vue')
+    },
+    {
+        path: '/bookDisplay',
+        name: 'bookDisplay',
+        component: () => import('../views/BookDisplay.vue')
+    },
+    {
+        path: '/bookPost',
+        name: 'bookPost',
+        component: () => import('../views/PostBook.vue')
     }
     // add more here 
 ]
