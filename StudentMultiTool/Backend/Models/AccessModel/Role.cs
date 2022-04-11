@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
-using StudentMultiTool.Backend.Services.Users;
 using System.ComponentModel.DataAnnotations;
 
 namespace StudentMultiTool.Backend.Models.AccessModel
@@ -18,7 +17,7 @@ namespace StudentMultiTool.Backend.Models.AccessModel
         public bool IsSysAdmin { get; set; }
 
         public List<Permission> Permissions { get; set; }
-        public List<UserAccount> Users { get; set; }
+        //public List<UserAccount> Users { get; set; }
 
 
     }
