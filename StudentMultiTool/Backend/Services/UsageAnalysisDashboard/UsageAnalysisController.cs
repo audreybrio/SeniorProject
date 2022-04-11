@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Data.SqlClient;
-using Newtonsoft.Json.Serialization;
 using System.Data;
 
 namespace StudentMultiTool.Backend.Services.UsageAnalysisDashboard
@@ -15,29 +14,28 @@ namespace StudentMultiTool.Backend.Services.UsageAnalysisDashboard
         {
             _configuration = configuration;
         }
+        
         [HttpGet]
-        public JsonResult Get()
+        public JsonResult Getdata()
         {
             string query = @"
                            select View_name,No_view from dbo.t2
                             ";
             DataTable table = new DataTable();
-            string sqlDataSource = _configuration.GetConnectionString("EmployeeAppCon");
             SqlDataReader myReader;
-            using (SqlConnection myCon = new SqlConnection(sqlDataSource))
+            using (SqlConnection conn = new SqlConnection())
             {
-                myCon.Open();
-                using (SqlCommand myCommand = new SqlCommand(query, myCon))
+                conn.ConnectionString = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING");
+                conn.Open();
+                using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
-                    myReader = myCommand.ExecuteReader();
+                    myReader = cmd.ExecuteReader();
                     table.Load(myReader);
                     myReader.Close();
-                    myCon.Close();
+                    conn.Close();
                 }
             }
-
             return new JsonResult(table);
-
         }
     }
 }
