@@ -44,6 +44,16 @@ const routes = [
         name: 'bookSelling',
         component: () => import('../Views/BookSelling/BookSelling.vue')
     },
+    {
+        path: '/bookDisplay',
+        name: 'bookDisplay',
+        component: () => import('../Views/BookSelling/BookDisplay.vue')
+    },
+    {
+        path: '/bookPost',
+        name: 'bookPost',
+        component: () => import('../Views/BookSelling/PostBook.vue')
+    },
     // add more here 
 ]
 
