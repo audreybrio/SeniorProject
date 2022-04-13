@@ -8,6 +8,7 @@
         <button @click="onAM">Automated Moderating</button>
         <button @click="onBS">Book Selling</button>
         <button @click="onUSD">User Analysis Dashboard</button>
+        <button @click="onSD">Student Discounts</button>
         <button @click="onSubmit">Logout</button>
     </div>
     <router-view />
@@ -71,6 +72,9 @@
             },
             onUSD() {
                 router.push({ name: "EmailVue" });
+            },
+            onSD() {
+                router.push({ name: "studentDiscounts" });
             },
 
         },
