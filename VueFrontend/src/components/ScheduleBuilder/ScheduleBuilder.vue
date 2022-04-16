@@ -12,7 +12,11 @@
     </div>
     <br />
     <div class="container">
-        <Schedules :items="items" @item-updated="updateItem" />
+        <Schedules
+                   :items="items"
+                   :editableItems="true"
+                   @item-updated="updateItem"
+                   @item-deleted="deleteItem" />
     </div>
 </template>
 
@@ -31,6 +35,7 @@
                 loading: false,
                 items: this.items,
                 demo: true,
+                baseUrl: "",
                 createButtonText: "Create"
             }
         },
@@ -124,7 +129,7 @@
                 console.log("ajax time (SB)");
                 $.ajax({
                     // set the HTTP request URL
-                    url: 'schedule/getschedule/1',
+                    url: this.baseUrl + 'schedule/getschedule/1',
 
                     // set the context object to the vue component
                     // this line tells vue to update its components
@@ -164,17 +169,74 @@
                 console.log("Adding item");
                 this.items.push(newItem);
                 console.log("Item added");
+                // TODO: make ajax request
+                $.ajax({
+                    url: this.baseUrl + 'schedules/createItem/' + this.schedule + "/" + newItem.id,
+                    context: this,
+                    method: 'POST',
+                    data: newItem,
+                    success: function (data) {
+                        console.log(data);
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    }
+                });
             },
             // Updates a schedule item
             updateItem(updatedItem) {
                 console.log("ScheduleBuilder.updateItem()");
-                for (let i = 0; i < this.items.length; i++) {
+                let updated = false;
+                for (let i = 0; i < this.items.length && !updated; i++) {
                     if (this.items[i].id === updatedItem.id) {
                         this.items[i] = updatedItem;
+                        updated = true;
+                        console.log("Successfully updated");
                     }
                 }
+                // Make ajax request to update the item
+                $.ajax({
+                    url: this.baseUrl + 'schedules/updateItem/' + this.schedule + "/" + updatedItem.id,
+                    context: this,
+                    method: 'POST',
+                    data: updatedItem,
+                    success: function (data) {
+                        console.log(data);
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    }
+                });
             },
-            // TODO: delete schedule item
+            // Deletes a schedule item based on ID.
+            deleteItem(deleteableItem) {
+                console.log("ScheduleBuilder.deleteItem()");
+                console.log("Deleting item with id " + deleteableItem.id);
+                let deleted = false;
+                for (let i = 0; i < this.items.length && !deleted; i++) {
+                    if (this.items[i].id === deleteableItem.id) {
+                        this.items = this.items.filter(item => (item.id !== this.items[i].id));
+                        deleted = true;
+                        console.log("Successfully deleted");
+                    }
+                }
+                if (!deleted) {
+                    console.log("Could not delete");
+                }
+                // Make AJAX request to delete the item.
+                $.ajax({
+                    url: this.baseUrl + 'schedules/deleteItem/' + this.schedule + "/" + deleteableItem.id,
+                    context: this,
+                    method: 'POST',
+                    data: deleteableItem,
+                    success: function (data) {
+                        console.log(data);
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    }
+                });
+            }
         },
     }
 </script>
