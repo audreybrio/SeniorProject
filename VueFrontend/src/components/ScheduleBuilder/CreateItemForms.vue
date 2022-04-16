@@ -56,7 +56,6 @@
 </template>
 
 <script>
-    import * as $ from 'jquery'
     const defaultStart = "00:00";
     const defaultEnd = "00:01";
         export default {
@@ -70,15 +69,6 @@
                 contact: "",
                 location: "",
                 notes: "",
-                //days: {
-                //    sunday: false,
-                //    monday: false,
-                //    tuesday: false,
-                //    wednesday: false,
-                //    thursday: false,
-                //    friday: false,
-                //    saturday: false
-                //},
                 days: [false, false, false, false, false, false, false],
                 startInput: defaultStart,
                 endInput: defaultEnd,
@@ -177,19 +167,7 @@
                 console.log(newItem);
                 console.log("Emitting new item");
                 this.$emit("item-added", newItem);
-                // TODO: make request to submit
-                $.ajax({
-                    url: '',
-                    context: this,
-                    method: 'POST',
-                    data: newItem,
-                    success: function (data) {
-                        console.log(data);
-                    },
-                    error: function (error) {
-                        console.log(error);
-                    }
-                });
+
                 // Clear the form for the next use
                 this.clear();
             },
