@@ -10,7 +10,15 @@
             </thead>
             <tbody>
                 <tr>
-                    <Days v-for="day in days" :key="day" :items="items" :index="this.days.indexOf(day)" @item-updated="updateItem"/>
+                    <Days
+                          v-for="day in days"
+                          :key="day"
+                          :items="items"
+                          :index="this.days.indexOf(day)"
+                          :editableItems="editableItems"
+                          @item-updated="updateItem"
+                          @item-deleted="deleteItem"
+                     />
                 </tr>
             </tbody>
         </table>
@@ -23,6 +31,7 @@
         name: "ScheduleBuilderSchedules",
         props: {
             items: Array,
+            editableItems: Boolean
         },
         components: {
             Days,
@@ -32,14 +41,6 @@
                 days: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
             };
         },
-        computed: {
-            indexOfDay(day) {
-                return this.days.indexOf(day)
-            },
-            getItemsForDay(index) {
-                return this.items.filter(item => (item.days[index]));
-            },
-        },
         created() {
             this.days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
         },
@@ -47,11 +48,11 @@
             updateItem(updatedItem) {
                 console.log("Schedules.updateItem()");
                 this.$emit("item-updated", updatedItem);
+            },
+            deleteItem(deleteableItem) {
+                console.log("Schedules.deleteItem()");
+                this.$emit("item-deleted", deleteableItem);
             }
-                // getItemsForDay(day){
-                //     results = this.items.filter(item => item.days[day] === true)
-                //     return results
-                // }
         }
     }
 </script>
