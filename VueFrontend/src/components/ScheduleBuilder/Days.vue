@@ -1,7 +1,12 @@
 <template>
     <td>
         <div v-for="item in Items" :key="item.id">
-            <Items :item="item" @item-updated="updateItem" />
+            <Items
+                   :item="item"
+                   @item-updated="updateItem"
+                   @item-deleted="deleteItem"
+                   :editable="editableItems"
+            />
         </div>
     </td>
 </template>
@@ -15,6 +20,7 @@
             fullName: String,
             items: Array,
             index: Number,
+            editableItems: Boolean
         },
         components:{
             Items,
@@ -52,6 +58,10 @@
             updateItem(updatedItem) {
                 console.log("Days.updateItem()");
                 this.$emit('item-updated', updatedItem);
+            },
+            deleteItem(deleteableItem) {
+                console.log("Days.deleteItem()");
+                this.$emit("item-deleted", deleteableItem);
             }
         },
         computed: {
@@ -66,11 +76,7 @@
             Items(){
                 return this.getSortedItems;
             }
-        },
-        data() {
-            return {
-            };
-        },
+        }
     }
 </script>
 
