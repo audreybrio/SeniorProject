@@ -61,6 +61,8 @@
         </div>
 
         <div>
+            <!-- delete button -->
+            <button type="button" @click="onDelete">Delete</button>
             <!-- create button -->
             <button type="submit">{{ submitText }}</button>
             <!-- clear button -->
@@ -70,7 +72,6 @@
 </template>
 
 <script>
-    import * as $ from 'jquery'
     export default {
         props: {
             nextId: Number,
@@ -79,7 +80,8 @@
             editing: Boolean
         },
         emits: [
-            'update:item',
+            'item-updated',
+            'item-deleted',
             'cancel'
         ],
         data() {
@@ -200,19 +202,14 @@
                 console.log(newItem);
                 console.log("Emitting new item");
                 this.$emit("item-updated", newItem);
-                // TODO: make request to submit
-                $.ajax({
-                    url: '',
-                    context: this,
-                    method: 'POST',
-                    data: newItem,
-                    success: function (data) {
-                        console.log(data);
-                    },
-                    error: function (error) {
-                        console.log(error);
-                    }
-                });
+            },
+            onDelete() {
+                let userChoice = confirm("Are you sure you want to delete?\nThis is irreversible.");
+                if (userChoice) {
+                    console.log("Executing delete sequence for ");
+                    console.log(this.item);
+                    this.$emit("item-deleted", this.item);
+                }
             },
             onCancel() {
                 console.log("Cancelling");
