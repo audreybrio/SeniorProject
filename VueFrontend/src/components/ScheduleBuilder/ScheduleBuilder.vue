@@ -1,29 +1,46 @@
 <template>
-    
-
+    <h2>
+        Schedule Builder
+    </h2>
+    <div>
+        <CreateItemForms
+                   @item-added="addItem"
+                   :nextId="nextId"
+                   :submitText="createButtonText"
+                   >
+        </CreateItemForms>
+    </div>
+    <br />
     <div class="container">
-        <Schedule :items="items" />
+        <Schedules :items="items" @item-updated="updateItem" />
     </div>
 </template>
 
 <script>
     import * as $ from 'jquery'
-    import Schedule from './Schedule'
-    import ItemForm from './ItemForm'
+    import Schedules from './Schedules'
+    import CreateItemForms from './CreateItemForms'
     export default {
         name: 'ScheduleBuilder',
         components: {
-            Schedule,
-            ItemForm,
+            Schedules,
+            CreateItemForms,
         },
         data() {
             return {
                 loading: false,
-                items: [],
-                demo: true
+                items: this.items,
+                demo: true,
+                createButtonText: "Create"
             }
         },
+        computed: {
+            nextId() {
+                return this.items.length + 1;
+            },
+        },
         created() {
+            this.items = [];
             if (!this.demo) {
                 this.loadSchedule();
             }
@@ -142,8 +159,21 @@
                     }
                 });
             },
-            // TODO: create schedule item
-            // TODO: update schedule item
+            // Creates a schedule item and adds it to this.items.
+            addItem(newItem) {
+                console.log("Adding item");
+                this.items.push(newItem);
+                console.log("Item added");
+            },
+            // Updates a schedule item
+            updateItem(updatedItem) {
+                console.log("ScheduleBuilder.updateItem()");
+                for (let i = 0; i < this.items.length; i++) {
+                    if (this.items[i].id === updatedItem.id) {
+                        this.items[i] = updatedItem;
+                    }
+                }
+            },
             // TODO: delete schedule item
         },
     }

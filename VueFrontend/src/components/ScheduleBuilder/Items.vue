@@ -1,6 +1,15 @@
 <template>
     <div v-if="editing" id="editdiv">
-        <table>
+        <UpdateItemForms
+                   @item-updated="updateItem"
+                   @cancel="cancel"
+                   :nextId="item.id"
+                   :item="item"
+                   :editing="editing"
+                   :submitText="updateButtonText"
+                   >
+        </UpdateItemForms>
+        <!--<table>
             <thead>
                 <tr>
                     <td>
@@ -9,21 +18,21 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>
+                    <td>-->
                         <!-- TODO: form for start time -->
-                        <input v-model="tempItem.startHour">
+                        <!--<input v-model="tempItem.startHour">
                         <input v-model="tempItem.startMinute">
                     </td>
                 </tr>
                 <tr>
-                    <td>
+                    <td>-->
                         <!-- TODO: form for end time -->
-                        <input v-model="tempItem.endHour">
+                        <!--<input v-model="tempItem.endHour">
                         <input v-model="tempItem.endMinute">
                     </td>
-                </tr>
+                </tr>-->
                 <!-- TODO: form for days -->
-                <tr>
+                <!--<tr>
                     <td v-for="(day, index) in item.days" :key="day">
                         <input v-model="tempItem.days[index]" type="checkbox" v-if="day" checked>
                         <input v-model="tempItem.days[index]" type="checkbox" v-else>
@@ -32,35 +41,35 @@
             </thead>
             <tbody>
                 <tr>
-                    <td>
+                    <td>-->
                         <!-- TODO: form for title -->
-                        <label for="titleEditField">Title</label>
+                        <!--<label for="titleEditField">Title</label>
                         <input v-model="tempItem.title" id="titleEditField">
                     </td>
                 </tr>
                 <tr>
-                    <td>
+                    <td>-->
                         <!-- TODO: form for contact -->
-                        <label for="contactEditField">Contact</label>
+                        <!--<label for="contactEditField">Contact</label>
                         <input v-model="tempItem.contact" id="contactEditField">
                     </td>
                 </tr>
                 <tr>
-                    <td>
+                    <td>-->
                         <!-- TODO: form for location -->
-                        <label for="locationEditField">Location</label>
+                        <!--<label for="locationEditField">Location</label>
                         <input v-model="tempItem.location" id="locationEditField">
                     </td>
                 </tr>
                 <tr>
-                    <td>
+                    <td>-->
                         <!-- TODO: form for notes -->
-                        <label for="notesEditField">Notes</label>
+                        <!--<label for="notesEditField">Notes</label>
                         <textarea v-model="tempItem.notes" id="notesEditField" />
                     </td>
                 </tr>
             </tbody>
-        </table>
+        </table>-->
     </div>
     <div v-else id="noeditdiv">
         <table>
@@ -72,7 +81,12 @@
                 </tr>
                 <tr>
                     <td>
-                        <Time :startHour="item.startHour" :startMinute="item.startMinute" :endHour="item.endHour" :endMinute="item.endMinute" />
+                        <Times
+                               :startHour="item.startHour"
+                               :startMinute="item.startMinute"
+                               :endHour="item.endHour"
+                               :endMinute="item.endMinute"
+                         />
                     </td>
                 </tr>
             </thead>
@@ -95,63 +109,78 @@
 </template>
 
 <script>
-import Time from "./Time"
-export default {
-    props: {
-        Time: Object,
-    },
-    components:{
-        Time,
-    },
-    created(){
-    },
-    data(){
-        return {
-            editing: false,
-            tempItem: {}
-        };
-    },
-    methods: {
-        edit(){
-            this.editing = true;
+    import UpdateItemForms from "./UpdateItemForms"
+    import Times from "./Times"
+    export default {
+        name: "ScheduleItems",
+        props: {
+            item: Object,
+            Time: Object,
+        },
+        components: {
+            UpdateItemForms,
+            Times,
+        },
+        created(){
+            this.editing = false;
+            this.tempItem = {};
+        },
+        data(){
+            return {
+                editing: this.editing,
+                tempItem: this.tempItem,
+                updateButtonText: "Save"
+            };
+        },
+        methods: {
+            edit(){
+                this.editing = true;
 
-            // Set up tempItem to hold values while editing
-            this.tempItem = {
-                id: this.item.id,
-                title: this.item.title,
-                contact: this.item.contact,
-                location: this.item.location,
-                notes: this.item.notes,
-                days: this.item.days,
-                startHour: this.item.startHour,
-                startMinute: this.item.startMinute,
-                endHour: this.item.endHour,
-                endMinute: this.item.endMinute
-            };
-            this.item.editing = true;
-        },
-        saveEdit(){
-            // Update the vaules
-            this.item = {
-                id: this.item.id,
-                title: this.tempItem.title,
-                contact: this.tempItem.contact,
-                location: this.tempItem.location,
-                notes: this.tempItem.notes,
-                days: this.tempItem.days,
-                startHour: this.tempItem.startHour,
-                startMinute: this.tempItem.startMinute,
-                endHour: this.tempItem.endHour,
-                endMinute: this.tempItem.endMinute
-            };
-            this.item.editing = false;
-            this.editing = false;
-        },
-        cancelEdit(){
-            this.item.editing = false;
-            this.editing = false;
-            // Don't update this.item's values
+                // Set up tempItem to hold values while editing
+                this.tempItem = {
+                    id: this.item.id,
+                    title: this.item.title,
+                    contact: this.item.contact,
+                    location: this.item.location,
+                    notes: this.item.notes,
+                    days: this.item.days,
+                    startHour: this.item.startHour,
+                    startMinute: this.item.startMinute,
+                    endHour: this.item.endHour,
+                    endMinute: this.item.endMinute
+                };
+                //this.item.editing = true;
+            },
+            //saveEdit(){
+            //    // Update the vaules
+            //    this.item = {
+            //        id: this.item.id,
+            //        title: this.tempItem.title,
+            //        contact: this.tempItem.contact,
+            //        location: this.tempItem.location,
+            //        notes: this.tempItem.notes,
+            //        days: this.tempItem.days,
+            //        startHour: this.tempItem.startHour,
+            //        startMinute: this.tempItem.startMinute,
+            //        endHour: this.tempItem.endHour,
+            //        endMinute: this.tempItem.endMinute
+            //    };
+            //    //this.item.editing = false;
+            //    this.editing = false;
+            //},
+            cancelEdit(){
+                //this.item.editing = false;
+                this.editing = false;
+                // Don't update this.item's values
+            },
+            updateItem(updatedItem) {
+                // TODO: emit to days
+                //this.item = newItem;
+                this.$emit("item-updated", updatedItem);
+            },
+            cancel() {
+                this.editing = false;
+            }
         }
     }
-}
 </script>
