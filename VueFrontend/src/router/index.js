@@ -30,12 +30,12 @@ const routes = [
         component: RegistrationForm
     },
     {
-        path: '/schedulebuilder',
+        path: '/schedulebuilder/:user/:scheduleId',
         name: 'ScheduleBuilder',
         component: ScheduleBuilder
     },
     {
-        path: '/scheduleselection',
+        path: '/scheduleselection/:user',
         name: 'ScheduleSelection',
         component: ScheduleSelection
     }
