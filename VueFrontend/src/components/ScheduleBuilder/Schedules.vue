@@ -9,7 +9,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
+                <tr v-if="items.length > 0">
                     <Days
                           v-for="day in days"
                           :key="day"
@@ -19,6 +19,11 @@
                           @item-updated="updateItem"
                           @item-deleted="deleteItem"
                      />
+                </tr>
+                <tr v-else>
+                    <td v-for="day in days" :key="day">
+                        Use the form above to add items to your schedule!
+                    </td>
                 </tr>
             </tbody>
         </table>
