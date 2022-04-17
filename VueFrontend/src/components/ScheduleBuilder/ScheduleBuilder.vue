@@ -11,7 +11,7 @@
         </CreateItemForms>
     </div>
     <br />
-    <div class="container">
+    <div>
         <Schedules
                    :items="items"
                    :editableItems="true"
@@ -24,6 +24,7 @@
     import * as $ from 'jquery'
     import Schedules from './Schedules'
     import CreateItemForms from './CreateItemForms'
+    const baseURL = "https://localhost:5002";
     export default {
         name: 'ScheduleBuilder',
         components: {
@@ -33,9 +34,8 @@
         data() {
             return {
                 loading: false,
-                items: this.items,
-                demo: true,
-                baseUrl: "",
+                items: [],
+                demo: false,
                 createButtonText: "Create"
             }
         },
@@ -43,9 +43,13 @@
             nextId() {
                 return this.items.length + 1;
             },
+            ajaxContext() {
+                return this;
+            }
         },
         created() {
-            this.items = [];
+            this.user = this.$route.params.user;
+            this.scheduleId = this.$route.params.scheduleId;
             if (!this.demo) {
                 this.loadSchedule();
             }
@@ -125,11 +129,10 @@
             // Make an AJAX request to get items on page load
             loadSchedule() {
                 this.loading = true;
-
                 console.log("ajax time (SB)");
                 $.ajax({
                     // set the HTTP request URL
-                    url: this.baseUrl + 'schedule/getschedule/1',
+                    url: `${baseURL}/api/schedule/getschedule/${this.user}/${this.scheduleId}`,
 
                     // set the context object to the vue component
                     // this line tells vue to update its components
@@ -169,12 +172,20 @@
                 console.log("Adding item");
                 this.items.push(newItem);
                 console.log("Item added");
-                // TODO: make ajax request
+                // let sendable = $(newItem).serialize();
+                newItem.creator = String(this.user);
+                newItem.scheduleId = Number(this.scheduleId);
+                let sendable = JSON.stringify(newItem);
+                // make ajax request
                 $.ajax({
-                    url: this.baseUrl + 'schedules/createItem/' + this.schedule + "/" + newItem.id,
-                    context: this,
+                    // url: this.baseUrl + 'schedule/createItem/' + this.schedule + "/" + newItem.id,
+                    url: `${baseURL}/api/schedule/createItem/${this.user}/${this.scheduleId}`,
+                    // url: `${baseURL}/api/schedule/CreateItem/`,
+                    context: this.ajaxContext,
+                    contentType: 'application/json',
                     method: 'POST',
-                    data: newItem,
+                    data: sendable,
+                    dataType: 'json',
                     success: function (data) {
                         console.log(data);
                     },
@@ -196,7 +207,8 @@
                 }
                 // Make ajax request to update the item
                 $.ajax({
-                    url: this.baseUrl + 'schedules/updateItem/' + this.schedule + "/" + updatedItem.id,
+                    // url: this.baseUrl + 'schedule/updateItem/' + this.schedule + "/" + updatedItem.id,
+                    url: `${baseURL}/api/schedule/updateItem/${this.user}/${this.scheduleId}`,
                     context: this,
                     method: 'POST',
                     data: updatedItem,
@@ -225,9 +237,10 @@
                 }
                 // Make AJAX request to delete the item.
                 $.ajax({
-                    url: this.baseUrl + 'schedules/deleteItem/' + this.schedule + "/" + deleteableItem.id,
+                    // url: this.baseUrl + 'schedule/deleteItem/' + this.schedule + "/" + deleteableItem.id,
+                    url: `${baseURL}/api/schedule/deleteItem/${this.user}/${this.scheduleId}/${deleteableItem.id}`,
                     context: this,
-                    method: 'POST',
+                    method: 'DELETE',
                     data: deleteableItem,
                     success: function (data) {
                         console.log(data);
