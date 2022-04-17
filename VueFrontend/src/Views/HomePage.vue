@@ -4,7 +4,7 @@
             Hello {{ id }}! :)
         </div>
         <button @click="onAC">Access Control</button>
-        <button @click="onSB">Schedule Builder</button>
+        <button @click="onScheduleBuilder">Schedule Builder</button>
         <button @click="onAM">Automated Moderating</button>
         <button @click="onBS">Book Selling</button>
         <button @click="onUSD">User Analysis Dashboard</button>
@@ -60,8 +60,8 @@
              onAC() {
                 router.push({ name: "EmailVue" });
             },
-            onSB() {
-                router.push({ name: "EmailVue" });
+            onScheduleBuilder() {
+                router.push({ name: `ScheduleSelection`, params: { user: this.id }});
             },
             onAM() {
                 router.push({ name: "EmailVue" });
