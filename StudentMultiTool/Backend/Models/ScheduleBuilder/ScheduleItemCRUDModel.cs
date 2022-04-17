@@ -2,7 +2,8 @@
 
 namespace StudentMultiTool.Backend.Models.ScheduleBuilder
 {
-    // Represents a single, reoccurring daily or weekly event
+    // Represents a ScheduleItem and any additional data that may be needed
+    // to perform CRUD operations. Intended for use within the ScheduleController class.
     public class ScheduleItemCRUDModel
     {
         public int Id { get; set; }
@@ -54,40 +55,6 @@ namespace StudentMultiTool.Backend.Models.ScheduleBuilder
                 this.Notes = Notes;
             }
             this.Title = Title;
-        }
-
-        // Returns the ScheduleItem as a JsonObject.
-        public JsonObject ToJson()
-        {
-            JsonObject result = new JsonObject
-            {
-                [ScheduleItemOptions.JsonTitle] = Title,
-                [ScheduleItemOptions.JsonDays] = new JsonObject
-                {
-                    [ScheduleItemOptions.JsonSunday] = DaysOfWeek[0],
-                    [ScheduleItemOptions.JsonMonday] = DaysOfWeek[1],
-                    [ScheduleItemOptions.JsonTuesday] = DaysOfWeek[2],
-                    [ScheduleItemOptions.JsonWednesday] = DaysOfWeek[3],
-                    [ScheduleItemOptions.JsonThursday] = DaysOfWeek[4],
-                    [ScheduleItemOptions.JsonFriday] = DaysOfWeek[5],
-                    [ScheduleItemOptions.JsonSaturday] = DaysOfWeek[6]
-                },
-                [ScheduleItemOptions.JsonStart] = new JsonObject
-                {
-                    [ScheduleItemOptions.JsonHour] = StartHour,
-                    [ScheduleItemOptions.JsonMinute] = StartMinute
-                },
-                [ScheduleItemOptions.JsonEnd] = new JsonObject
-                {
-                    [ScheduleItemOptions.JsonHour] = EndHour,
-                    [ScheduleItemOptions.JsonMinute] = EndMinute
-                },
-                [ScheduleItemOptions.JsonLocation] = Location,
-                [ScheduleItemOptions.JsonContact] = Contact,
-                [ScheduleItemOptions.JsonNotes] = Notes,
-                [ScheduleItemOptions.JsonCreator] = Creator
-            };
-            return result;
         }
     }
 }
