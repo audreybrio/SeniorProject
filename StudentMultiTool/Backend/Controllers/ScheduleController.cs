@@ -12,6 +12,7 @@ namespace StudentMultiTool.Backend.Controllers
     [Route("api/" + "schedule")]
     public class ScheduleController : Controller
     {
+        public ScheduleManager manager { get; } = new ScheduleManager();
         // Return a "list" (enumerable) of schedules for a given user.
         // Only returns a list of schedules that the user is listed as a
         // collaborator for.
@@ -131,9 +132,15 @@ namespace StudentMultiTool.Backend.Controllers
                 int scheduleId = newItem.ScheduleId;
                 Console.WriteLine("\tuser: \"" + user + "\"");
                 Console.WriteLine("\tscheduleId: \"" + scheduleId + "\"");
-                // TODO: if the schedule's not in the list, load it
-                // TODO: find the schedule in the list
-                // TODO: add the item to the schedule
+                // Load the schedule
+                Schedule? schedule = manager.SelectScheduleWithItems(scheduleId);
+                if (schedule != null)
+                {
+                    ScheduleItem item = new ScheduleItem(newItem);
+
+                    // add the item to the schedule
+                    manager.CreateScheduleItem(ref schedule, ref item);
+                }
                 // TODO: return error message if the item couldn't be added
             }
             // TODO: return error message if null
@@ -155,10 +162,15 @@ namespace StudentMultiTool.Backend.Controllers
                 int scheduleId = updatedItem.ScheduleId;
                 Console.WriteLine("\tuser: \"" + user + "\"");
                 Console.WriteLine("\tscheduleId: \"" + scheduleId + "\"");
-                // TODO: if the schedule's not in the list, load it
-                // TODO: find the schedule in the list
-                // TODO: find the item in the schedule
-                // TODO: update the item
+                // Load the schedule
+                Schedule? schedule = manager.SelectScheduleWithItems(scheduleId);
+                if (schedule != null)
+                {
+                    ScheduleItem item = new ScheduleItem(updatedItem);
+
+                    // update the item
+                    manager.UpdateScheduleItem(ref schedule, ref item);
+                }
                 // TODO: return error message if the item couldn't be updated
             }
             // TODO: return error message if null
@@ -180,10 +192,15 @@ namespace StudentMultiTool.Backend.Controllers
                 int scheduleId = deleteableItem.ScheduleId;
                 Console.WriteLine("\tuser: \"" + user + "\"");
                 Console.WriteLine("\tscheduleId: \"" + scheduleId + "\"");
-                // TODO: if the schedule's not in the list, load it
-                // TODO: find the schedule in the list
-                // TODO: find the item in the schedule
-                // TODO: delete the item from the schedule
+                // Load the schedule
+                Schedule? schedule = manager.SelectScheduleWithItems(scheduleId);
+                if (schedule != null)
+                {
+                    ScheduleItem item = new ScheduleItem(deleteableItem);
+
+                    // delete the item from the schedule
+                    manager.DeleteScheduleItem(ref schedule, item);
+                }
                 // TODO: return error message if the item couldn't be deleted
             }
             // TODO: return error message if null
