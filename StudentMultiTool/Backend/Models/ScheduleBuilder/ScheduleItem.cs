@@ -91,6 +91,18 @@ namespace StudentMultiTool.Backend.Models.ScheduleBuilder
             this.Id = Id;
             this.Creator = Creator;
         }
+        public ScheduleItem(ScheduleItemCRUDModel model)
+        {
+            this.Id = model.Id;
+            this.Creator = int.Parse(model.Creator); // TODO: fix the inconsistency between datatypes
+            this.Contact = model.Contact;
+            this.DaysOfWeek = model.DaysOfWeek;
+            this.EndTime = new TimeOnly(model.EndHour, model.EndMinute);
+            this.Location = model.Location;
+            this.Notes = model.Notes;
+            this.StartTime = new TimeOnly(model.StartHour, model.StartMinute);
+            this.Title = model.Title;
+        }
 
         // Returns the ScheduleItem as a JsonObject.
         public JsonObject ToJson()
