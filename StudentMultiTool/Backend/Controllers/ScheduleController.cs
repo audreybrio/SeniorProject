@@ -4,11 +4,12 @@ using StudentMultiTool.Backend.Models.ScheduleBuilder;
 using StudentMultiTool.Backend.Services.ScheduleBuilder;
 using System.Data;
 using System.Data.SqlClient;
+using System.Text.Json.Nodes;
 
 namespace StudentMultiTool.Backend.Controllers
 {
     [ApiController]
-    [Route("schedule")]
+    [Route("api/" + "schedule")]
     public class ScheduleController : Controller
     {
         // Return a "list" (enumerable) of schedules for a given user.
@@ -21,7 +22,8 @@ namespace StudentMultiTool.Backend.Controllers
         {
             // TODO: check that the user is authenticated
             // TODO: convert WL's to logs
-            Console.WriteLine("Running ScheduleController.GetList");
+            Console.WriteLine("ScheduleController.GetList with args");
+            Console.WriteLine("\tusername: \"" + username + "\"");
             // Get user hash so we know who to get schedules for
             string? userHash = null;
             Console.WriteLine("Getting user hash for user \"" + username + "\"");
@@ -45,10 +47,12 @@ namespace StudentMultiTool.Backend.Controllers
 
         // Return a schedule and its contents based on the ID of the schedule.
         // Always returns an enumerable, but the enumerable may be empty.
-        [HttpGet("getschedule/{scheduleId}")]
-        public IEnumerable<ScheduleItem> GetSchedule(int scheduleId)
+        [HttpGet("getschedule/{user}/{scheduleId}")]
+        public IEnumerable<ScheduleItem> GetSchedule(string user, int scheduleId)
         {
-            Console.WriteLine("Running ScheduleController.GetSchedule with ID \"" + scheduleId + "\"");
+            Console.WriteLine("ScheduleController.GetSchedule with args");
+            Console.WriteLine("\tuser: \"" + user + "\"");
+            Console.WriteLine("\tscheduleId: \"" + scheduleId + "\"");
             IEnumerable<ScheduleItem> items = Enumerable.Empty<ScheduleItem>();
 
             ScheduleManager manager = new ScheduleManager();
@@ -68,18 +72,20 @@ namespace StudentMultiTool.Backend.Controllers
         // Create a new schedule for a user.
         // Returns the status of the operation.
         [HttpPost]
-        [HttpPost("newschedule/{title}/{username}")]
-        public string NewSchedule(string title, string username)
+        [HttpPost("newschedule/{user}/{title}")]
+        public string NewSchedule(string user, string title)
         {
             // TODO: check that the user is authenticated
             // TODO: convert WL's to logs
-            Console.WriteLine("Running ScheduleController.NewSchedule with args: " + title + ", " + username);
+            Console.WriteLine("ScheduleController.NewSchedule with args");
+            Console.WriteLine("\tuser: \"" + user + "\"");
+            Console.WriteLine("\ttitle: \"" + title + "\"");
             int rowsAffected = 0;
             string? userHash = null;
 
-            Console.WriteLine("Getting user hash for user \"" + username + "\"");
+            Console.WriteLine("Getting user hash for user \"" + user + "\"");
             ScheduleListBuilder builder = new ScheduleListBuilder();
-            userHash = builder.GetUserHash(username);
+            userHash = builder.GetUserHash(user);
             if (userHash == null)
             {
                 return "Could not get userHash";
@@ -112,82 +118,78 @@ namespace StudentMultiTool.Backend.Controllers
             return "Oops";
         }
 
-        //[HttpPost("schedule/newitem/")]
-        //public string NewItem
+        [HttpPost]
+        [HttpPost("{user}/{scheduleId}/{newItem}")]
+        //public string CreateItem(string user, int scheduleId, JsonObject newItem)
+        public string CreateItem(ScheduleItemCRUDModel newItem)
+        {
+            Console.WriteLine("ScheduleController.CreateItem with args");
+            Console.WriteLine("\tnewItem: \"" + newItem + "\"");
+            if (newItem != null)
+            {
+                string user = newItem.Creator;
+                int scheduleId = newItem.ScheduleId;
+                Console.WriteLine("\tuser: \"" + user + "\"");
+                Console.WriteLine("\tscheduleId: \"" + scheduleId + "\"");
+                // TODO: if the schedule's not in the list, load it
+                // TODO: find the schedule in the list
+                // TODO: add the item to the schedule
+                // TODO: return error message if the item couldn't be added
+            }
+            // TODO: return error message if null
+            // TODO: make a better default return value
+            Console.WriteLine("Returning");
+            return "Oops";
+        }
 
-        //// GET: ScheduleSelectionController
-        //public ActionResult Index()
-        //{
-        //    return View();
-        //}
+        [HttpPost]
+        [HttpPost("updateItem/{user}/{scheduleId}")]
+        //public string UpdateItem(string user, int scheduleId)
+        public string UpdateItem(ScheduleItemCRUDModel updatedItem)
+        {
+            Console.WriteLine("ScheduleController.UpdateItem with args");
+            Console.WriteLine("\tnewItem: \"" + updatedItem + "\"");
+            if (updatedItem != null)
+            {
+                string user = updatedItem.Creator;
+                int scheduleId = updatedItem.ScheduleId;
+                Console.WriteLine("\tuser: \"" + user + "\"");
+                Console.WriteLine("\tscheduleId: \"" + scheduleId + "\"");
+                // TODO: if the schedule's not in the list, load it
+                // TODO: find the schedule in the list
+                // TODO: find the item in the schedule
+                // TODO: update the item
+                // TODO: return error message if the item couldn't be updated
+            }
+            // TODO: return error message if null
+            // TODO: make a better default return value
+            Console.WriteLine("Returning");
+            return "Oops";
+        }
 
-        //// GET: ScheduleSelectionController/Details/5
-        //public ActionResult Details(int id)
-        //{
-        //    return View();
-        //}
-
-        //// GET: ScheduleSelectionController/Create
-        //public ActionResult Create()
-        //{
-        //    return View();
-        //}
-
-        //// POST: ScheduleSelectionController/Create
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Create(IFormCollection collection)
-        //{
-        //    try
-        //    {
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    catch
-        //    {
-        //        return View();
-        //    }
-        //}
-
-        //// GET: ScheduleSelectionController/Edit/5
-        //public ActionResult Edit(int id)
-        //{
-        //    return View();
-        //}
-
-        //// POST: ScheduleSelectionController/Edit/5
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Edit(int id, IFormCollection collection)
-        //{
-        //    try
-        //    {
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    catch
-        //    {
-        //        return View();
-        //    }
-        //}
-
-        //// GET: ScheduleSelectionController/Delete/5
-        //public ActionResult Delete(int id)
-        //{
-        //    return View();
-        //}
-
-        //// POST: ScheduleSelectionController/Delete/5
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Delete(int id, IFormCollection collection)
-        //{
-        //    try
-        //    {
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    catch
-        //    {
-        //        return View();
-        //    }
-        //}
+        [HttpDelete]
+        [HttpDelete("deleteItem/{user}/{scheduleId}/{deleteableItemId}")]
+        //public string DeleteItem(string user, int scheduleId, int deleteableItemId)
+        public string DeleteItem(ScheduleItemCRUDModel deleteableItem)
+        {
+            Console.WriteLine("ScheduleController.DeleteItem with args");
+            Console.WriteLine("\tnewItem: \"" + deleteableItem + "\"");
+            if (deleteableItem != null)
+            {
+                string user = deleteableItem.Creator;
+                int scheduleId = deleteableItem.ScheduleId;
+                Console.WriteLine("\tuser: \"" + user + "\"");
+                Console.WriteLine("\tscheduleId: \"" + scheduleId + "\"");
+                // TODO: if the schedule's not in the list, load it
+                // TODO: find the schedule in the list
+                // TODO: find the item in the schedule
+                // TODO: delete the item from the schedule
+                // TODO: return error message if the item couldn't be deleted
+            }
+            // TODO: return error message if null
+            // TODO: make a better default return value
+            Console.WriteLine("Returning");
+            return "Oops";
+        }
     }
 }
