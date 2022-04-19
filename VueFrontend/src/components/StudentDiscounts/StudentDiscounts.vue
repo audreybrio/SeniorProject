@@ -1,53 +1,29 @@
-<!--<script setup>
-  import PostDiscounts from './components/PostDiscounts.vue'
-  import SearchDiscounts from './components/SearchDiscounts.vue'
-    // import HelloWorld from './components/HelloWorld.vue'
-</script>-->
-
 <template>
-    <div class="page">
-        <div class="header">
-            <h1>Student Discounts</h1>
-            <br />
-        </div>
-        <!--<HelloWorld />-->
-
-        <div>
-            Please select the the action you want to perform for Student Discounts:
-            <br />
-            <div class="action">
-                <div :class="[isSearch ? 'active' : 'deactive']">
-                    <button class="btn" @click="searchSwitch" :class="{active:isSearch, }">Search</button>
-                </div>
-                <div :class="[isPost ? 'active' : 'deactive']">
-                    <button class="btn" @click="postSwitch" :class="{active:isPost}"> Post </button>
-                </div>
-            </div>
-            <PostDiscounts v-if="isPost" />
-            <SearchDiscounts v-if="isSearch" />
-        </div>
-        <!-- <EmployeeList /> -->
+    <div>
+        <h2 class="row1">Student Discounts</h2>
     </div>
-    <router-view />
+    <div class="flex-container row2">
+        Please select the the action you want to perform for Student Discounts:
+        <div class="action">
+            <div>
+                <router-link to="/studentDiscounts/SearchDiscount" class="ui button">Search</router-link>
+            </div>
+            <div>
+                <router-link to="/studentDiscounts/PostDiscount" class="ui button">Post</router-link>
+            </div>
+        </div>
+    </div>
+    <router-view class="row3"/>
 </template>
 
 <script>
-    import PostDiscounts from './components/PostDiscounts.vue';
-    import SearchDiscounts from './components/SearchDiscounts.vue';
 
     export default {
-        name: 'App',
+        name: 'StudentDiscounts',
         data(){
           return{
-            // showDialog: false,
-            // showDialogUser: false,
             isSearch: false,
             isPost: true
-            // form:{
-            //     name: '',
-            //     email: '',
-            //     gender: '',
-            // }
           }
 
         },
@@ -68,42 +44,21 @@
           }
 
         },
-        Components: {
-          PostDiscounts,
-          SearchDiscounts,
-          // HelloWorld
-        }
     }</script>
 
 
-<style>
-    .page {
-        margin: auto;
-    }
-
-    .header {
-        font-size: large;
-        text-align: center;
-    }
-
-    .btn {
-        width: 5em;
-        text-align: center;
-    }
-
-    .active {
-        background-color: teal;
-    }
-
-    .deactive {
-        background-color: silver;
-    }
-
+<style scoped>
     .action {
+        align-content: center;
         display: flex;
         align-items: center;
         justify-content: center;
         border: 5mm;
-        padding-bottom: 0.5em;
+    }
+
+    .ui.button,
+    .dot.circle.icon {
+        background-color: teal;
+        color: white;
     }
 </style>

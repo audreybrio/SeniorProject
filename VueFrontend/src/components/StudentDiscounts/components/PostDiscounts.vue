@@ -1,5 +1,5 @@
 <template >
-  <div class="box">
+  <div>
     <div class="form-group">
       <label for="formControlRange">Post Discount:</label><br/>
       <div class="form-check form-check-inline">
