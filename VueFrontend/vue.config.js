@@ -1,5 +1,9 @@
 const fs = require('fs')
 const path = require('path')
+const { defineConfig } = require('@vue/cli-service')
+module.exports = defineConfig({
+lintOnSave:false
+})
 
 const baseFolder =
     process.env.APPDATA !== undefined && process.env.APPDATA !== ''

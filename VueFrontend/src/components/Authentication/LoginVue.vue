@@ -7,10 +7,12 @@
         <input v-model="otp" placeholder="OTP">
         <button @click="onLogin">Login</button>
     </div>
+    <router-view/>
 </template>
 
 <script lang="js">
     import router from '@/router'
+    
     export default ({
         data() {
             return {
@@ -80,7 +82,7 @@
                     router.push({ name: "HomePage" });
 
                 }
-                else if (this.username == "dpatel" && this.otp == "1xm6lavf") {
+                else if (this.username == "dpatel" && this.otp == "123measd") {
                     window.sessionStorage.setItem("token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiRGV2YXJzaCBQYXRlbCIsInVzZXJuYW1lIjoiZHBhdGVsIiwiZW1haWwiOiJkZXZhcnNoLnBhdGVsQHN0dWRlbnQuY3N1bGIuZWR1IiwicGFzc2NvZGUiOiJwaXp6YSBndXkiLCJyb2xlIjoic3R1ZGVudCIsInNjaG9vbCI6IkNTVUxCIn0.qwmUc9bhYScOvskSxu0J8KX39tsKJzVGROW-j-F46hI");
 
                     router.push({ name: "HomePage" });

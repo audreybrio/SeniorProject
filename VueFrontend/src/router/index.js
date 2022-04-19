@@ -1,9 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import RegistrationForm from '../components/Registration/RegistrationForm.vue'
+import HomePage from '../Views/HomePage.vue'
 import EmailVue from '../components/Authentication/EmailVue.vue'
 import LoginVue from '../components/Authentication/LoginVue.vue'
-import HomePage from '../Views/HomePage.vue'
-
+import RegistrationForm from '../components/Registration/RegistrationForm.vue'
+import Administration from '../components/AccessControl/AdminRole.vue'
+import MyRecipe from '../components/RecipeSharing/RecipeMainPage.vue'
 
 const routes = [
     {
@@ -12,23 +13,33 @@ const routes = [
         component: EmailVue
     },
     {
-        path: '/login',
-        name: 'LoginVue',
-        component: LoginVue
-
-    },
-    {
-        path: '/home',
-        name: 'HomePage',
-        component: HomePage
+        path: '/LoginVue',
+        name:'LoginVue',
+        component:LoginVue
 
     },
     {
         path: '/registration',
         name: 'RegistrationForm',
         component: RegistrationForm
-    }
-    // add more here 
+    },
+    {
+        path: '/HomePage',
+        name: 'HomePage',
+        component: HomePage
+    },
+    {
+        path: '/Admin',
+        name: 'Administration',
+        component: Administration
+    },
+    {
+        path: '/MyRecipe',
+        name: 'MyRecipe',
+        component: MyRecipe
+
+    },
+
 ]
 
 const router = createRouter({

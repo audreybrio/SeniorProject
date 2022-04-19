@@ -1,4 +1,4 @@
-<template>
+npm<template>
     <div id="app">
         <h2>Registration Form</h2>
         <form @submit.prevent="login">
