@@ -1,21 +1,21 @@
 <template>
     <div class="post">
         <div v-if="loading" class="loading">
-            <p> Hello {{ id }}! :) </p>
+            Hello {{ id }}! :)
         </div>
         <button @click="onAC">Access Control</button>
         <button @click="onSB">Schedule Builder</button>
         <button @click="onAM">Automated Moderating</button>
         <button @click="onBS">Book Selling</button>
         <button @click="onUSD">User Analysis Dashboard</button>
+        <button @click="onSD">Student Discounts</button>
         <button @click="onSubmit">Logout</button>
-        <button @click="onRecipe">Recipe</button>
     </div>
     <router-view />
 </template>
 
 <script lang="js">
-    import router from '@/router'
+    import router from '../router'
     import jwt_decode from "jwt-decode"
 
     export default ({
@@ -49,8 +49,17 @@
                     });
 
             },
-            onAC() {
-                router.push({ name: "Administration" });
+            onSubmit() {
+                const token = window.sessionStorage.getItem("token");
+                var isJWT = jwt_decode(token);
+                console.log(isJWT);
+                window.sessionStorage.removeItem("token");
+                router.push({ name: "EmailVue" });
+
+            },
+
+             onAC() {
+                router.push({ name: "EmailVue" });
             },
             onSB() {
                 router.push({ name: "EmailVue" });
@@ -59,23 +68,16 @@
                 router.push({ name: "EmailVue" });
             },
             onBS() {
-                router.push({ name: "EmailVue" });
+                router.push({ name: "bookSelling" });
             },
             onUSD() {
                 router.push({ name: "EmailVue" });
             },
-            onRecipe(){
-                router.push({name: "MyRecipe"});
-            },onSubmit() 
-            {
-                const token = window.sessionStorage.getItem("token");
-                var isJWT = jwt_decode(token);
-                console.log(isJWT);
-                window.sessionStorage.removeItem("token");
-                router.push({ name: "EmailVue" });
-            }
+            onSD() {
+                router.push({ name: "studentDiscounts" });
+            },
 
-        }
+        },
     });
 </script>
 <style scoped>

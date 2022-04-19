@@ -1,11 +1,11 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import HomePage from '../Views/HomePage.vue'
+import RegistrationForm from '../components/Registration/RegistrationForm.vue'
 import EmailVue from '../components/Authentication/EmailVue.vue'
 import LoginVue from '../components/Authentication/LoginVue.vue'
-import RegistrationForm from '../components/Registration/RegistrationForm.vue'
-import Administration from '../components/AccessControl/AdminRole.vue'
-import MyRecipe from '../components/RecipeSharing/RecipeMainPage.vue'
-
+import HomePage from '../Views/HomePage.vue'
+import ScheduleBuilder from '../components/ScheduleBuilder/ScheduleBuilder.vue'
+import ScheduleSelection from '../components/ScheduleBuilder/ScheduleSelection.vue'
+import StudentDiscounts from '../components/StudentDiscounts/StudentDiscounts.vue'
 const routes = [
     {
         path: '/',
@@ -13,9 +13,15 @@ const routes = [
         component: EmailVue
     },
     {
-        path: '/LoginVue',
-        name:'LoginVue',
-        component:LoginVue
+        path: '/login',
+        name: 'LoginVue',
+        component: LoginVue
+
+    },
+    {
+        path: '/home',
+        name: 'HomePage',
+        component: HomePage
 
     },
     {
@@ -24,22 +30,36 @@ const routes = [
         component: RegistrationForm
     },
     {
-        path: '/HomePage',
-        name: 'HomePage',
-        component: HomePage
+        path: '/schedulebuilder',
+        name: 'ScheduleBuilder',
+        component: ScheduleBuilder
     },
     {
-        path: '/Admin',
-        name: 'Administration',
-        component: Administration
+        path: '/scheduleselection',
+        name: 'ScheduleSelection',
+        component: ScheduleSelection
     },
     {
-        path: '/MyRecipe',
-        name: 'MyRecipe',
-        component: MyRecipe
-
+        path: '/bookSelling',
+        name: 'bookSelling',
+        component: () => import('../Views/BookSelling/BookSelling.vue')
     },
-
+    {
+        path: '/bookDisplay',
+        name: 'bookDisplay',
+        component: () => import('../Views/BookSelling/BookDisplay.vue')
+    },
+    {
+        path: '/bookPost',
+        name: 'bookPost',
+        component: () => import('../Views/BookSelling/PostBook.vue')
+    },
+    {
+        path: '/studentDiscounts',
+        name: 'studentDiscounts',
+        component: StudentDiscounts
+    },
+    // add more here 
 ]
 
 const router = createRouter({
