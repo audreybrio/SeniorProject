@@ -1,0 +1,85 @@
+<template>
+    <div class="post">
+        <div v-if="loading" class="loading">
+            <p> Hello {{ id }}! :) </p>
+        </div>
+        <button @click="onAC">Access Control</button>
+        <button @click="onSB">Schedule Builder</button>
+        <button @click="onAM">Automated Moderating</button>
+        <button @click="onBS">Book Selling</button>
+        <button @click="onUSD">User Analysis Dashboard</button>
+        <button @click="onSubmit">Logout</button>
+        <button @click="onRecipe">Recipe</button>
+    </div>
+    <router-view />
+</template>
+
+<script lang="js">
+    import router from '@/router'
+    import jwt_decode from "jwt-decode"
+
+    export default ({
+        data() {
+            return {
+                loading: false,
+                post: null,
+                id: jwt_decode(window.sessionStorage.getItem("token")).username
+            };
+        },
+        created() {
+            // fetch the data when the view is created and the data is
+            // already being observed
+            this.fetchData();
+        },
+        watch: {
+            // call again the method if the route changes
+            '$route': 'fetchData'
+        },
+        methods: {
+            fetchData() {
+                this.post = null;
+                this.loading = true;
+
+                fetch('weatherforecast')
+                    .then(r => r.json())
+                    .then(json => {
+                        this.post = json;
+                        this.loading = false;
+                        return;
+                    });
+
+            },
+            onAC() {
+                router.push({ name: "Administration" });
+            },
+            onSB() {
+                router.push({ name: "EmailVue" });
+            },
+            onAM() {
+                router.push({ name: "EmailVue" });
+            },
+            onBS() {
+                router.push({ name: "EmailVue" });
+            },
+            onUSD() {
+                router.push({ name: "EmailVue" });
+            },
+            onRecipe(){
+                router.push({name: "MyRecipe"});
+            },onSubmit() 
+            {
+                const token = window.sessionStorage.getItem("token");
+                var isJWT = jwt_decode(token);
+                console.log(isJWT);
+                window.sessionStorage.removeItem("token");
+                router.push({ name: "EmailVue" });
+            }
+
+        }
+    });
+</script>
+<style scoped>
+    button {
+        font-weight: bold;
+    }
+</style>
