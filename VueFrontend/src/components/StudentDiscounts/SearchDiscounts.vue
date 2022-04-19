@@ -1,6 +1,6 @@
 <template>
   <div class="box">
-    <div class="form-group">
+    <div class="alignLeft">
       <label for="formControlRange">Search Discount:</label><br/>
       <div class="form-check form-check-inline">
         <input class="form-check-input" type="radio" name="searchType" id="type-establishment" value="establishment" v-model="form.searchType">
@@ -43,6 +43,11 @@ export default {
 
 
 <style scoped>
+    .alignLeft {
+        text-align: left;
+        margin-left: 50px;
+        font-weight: bold;
+    }
   .box{
     background-color:rgb(212, 200, 210);
   }

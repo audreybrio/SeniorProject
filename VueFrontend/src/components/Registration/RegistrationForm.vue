@@ -1,10 +1,10 @@
 <template>
     <div id="app">
         <h2>Registration Form</h2>
-        <form @submit.prevent="login">
+        <form @submit.prevent="postData">
             <div>
                 <label for="username"></label>
-                <input name="username" v-model="username" placeholder="Username">
+                <input name="username" v-model="username" placeholder="Username" >
             </div>
             <div>
                 <label for="password"></label>
@@ -48,6 +48,10 @@
             };
         },
         methods: {
+            postData() {
+                console.log('posting data...')
+            },
+
             async login() {
                 const { username, password, retype_password, email, retype_email, university } = this;
                 let res = await fetch(

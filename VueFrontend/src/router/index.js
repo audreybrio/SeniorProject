@@ -6,11 +6,13 @@ import HomePage from '../Views/HomePage.vue'
 import ScheduleBuilder from '../components/ScheduleBuilder/ScheduleBuilder.vue'
 import ScheduleSelection from '../components/ScheduleBuilder/ScheduleSelection.vue'
 import StudentDiscounts from '../components/StudentDiscounts/StudentDiscounts.vue'
-import PostDiscount from '../components/StudentDiscounts/components/PostEstablishment.vue'
-import SearchDiscount from '../components/StudentDiscounts/components/SearchEstablishment.vue'
+/*import PostDiscount from '../components/StudentDiscounts/components/PostDiscounts.vue'
+import SearchDiscount from '../components/StudentDiscounts/components/SearchDiscounts.vue'*/
+/*import PostEstablishment from '../components/StudentDiscounts/components/PostEstablishment.vue'
+import SearchEstablishment from '../components/StudentDiscounts/components/SearchEstablishment.vue'*/
 const routes = [
     {
-        // path: '/',
+        // path: '/', I changed it
         path: '/emailvue',
         name: 'EmailVue',
         component: EmailVue
@@ -28,7 +30,8 @@ const routes = [
 
     },
     {
-        path: '/registration',
+        // path: '/registration', I changed it
+        path: '/',
         name: 'RegistrationForm',
         component: RegistrationForm
     },
@@ -58,11 +61,11 @@ const routes = [
         component: () => import('../Views/BookSelling/PostBook.vue')
     },
     {
-        // path: '/studentDiscounts',
-        path: '/',
+        path: '/studentDiscounts',
+        // path: '/',
         name: 'studentDiscounts',
         component: StudentDiscounts,
-        children: [
+        /*children: [
             {
                 path: 'studentDiscounts/PostDiscount',
                 component: PostDiscount
@@ -71,7 +74,7 @@ const routes = [
                 path: 'studentDiscounts/SearchDiscount',
                 component: SearchDiscount
             }
-        ]
+        ]*/
     },
     // add more here 
 ]

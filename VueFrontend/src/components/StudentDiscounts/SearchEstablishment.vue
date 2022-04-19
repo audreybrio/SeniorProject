@@ -34,7 +34,7 @@
 
 <script>
 // import axios from 'axios'
-import Map1 from './Map1.vue'
+import Map1 from './ShowMap.vue'
 
 export default {
   data () {
@@ -123,6 +123,7 @@ export default {
               }
             }).then((error_message) => {
               // console.log('error message');
+              this.error = error_message;
               this.spinner = false;
             })
 
@@ -164,11 +165,17 @@ export default {
 </script>
 
 <style scoped>
-  .ui.button,
-  .dot.circle.icon{
+    .ui.button,
+    .dot.circle.icon{
     background-color: #ff5a5f;
     color:white;
-  }
+    }
+
+    .alignLeft {
+        text-align: left;
+        margin-left: 50px;
+        font-weight: bold;
+    }
 /* #map{
   position:absolute;
   top: 0;

@@ -1,6 +1,6 @@
 <template >
-  <div>
-    <div class="form-group">
+  <div class="box">
+    <div class="alignLeft">
       <label for="formControlRange">Post Discount:</label><br/>
       <div class="form-check form-check-inline">
         <input class="form-check-input" type="radio" name="postType" id="type-establishment" value="establishment" v-model="form.postType">
@@ -20,13 +20,6 @@
       <PostWebsite/>
     </div>
     
-    <!-- <div class="row">
-      <div id="app" class="form-group">
-        <label for="name">Name</label>
-        <br />
-        <input type="text" class="form-control" id="name" placeholder="Your name" v-model="form.name">
-      </div>
-    </div> -->
   </div>
 </template>
 
@@ -34,7 +27,6 @@
 import PostEstablishment from "./PostEstablishment.vue"
 import PostWebsite from "./PostWebsite.vue"
 export default {
-  // props: ['product', 'index', 'addToCart'],
   data () {
     return {
       form: {
@@ -50,6 +42,11 @@ export default {
 </script>
 
 <style scoped>
+    .alignLeft{
+        text-align:left;
+        margin-left:50px;
+        font-weight:bold;
+    }
   .box{
     background-color:rgb(212, 200, 210);
   }

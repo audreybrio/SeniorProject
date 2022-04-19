@@ -2,24 +2,32 @@
     <div>
         <h2 class="row1">Student Discounts</h2>
     </div>
-    <div class="flex-container row2">
+    <div>
         Please select the the action you want to perform for Student Discounts:
+        <br />
         <div class="action">
-            <div>
-                <router-link to="/studentDiscounts/SearchDiscount" class="ui button">Search</router-link>
+            <div :class="[isSearch ? 'active' : 'deactive']">
+                <button class="btn" @click="searchSwitch" :class="{active:isSearch, }">Search</button>
             </div>
-            <div>
-                <router-link to="/studentDiscounts/PostDiscount" class="ui button">Post</router-link>
+            <div :class="[isPost ? 'active' : 'deactive']">
+                <button class="btn" @click="postSwitch" :class="{active:isPost}"> Post </button>
             </div>
         </div>
+        <PostDiscounts v-if="isPost" />
+        <SearchDiscounts v-if="isSearch" />
     </div>
-    <router-view class="row3"/>
+        <router-view class="row3" />
 </template>
 
 <script>
-
+    import PostDiscounts from './PostDiscounts.vue'
+    import SearchDiscounts from './SearchDiscounts.vue'
     export default {
         name: 'StudentDiscounts',
+        components: {
+            PostDiscounts,
+            SearchDiscounts
+        },
         data(){
           return{
             isSearch: false,
@@ -48,17 +56,61 @@
 
 
 <style scoped>
+    .page {
+        margin: auto;
+    }
+
+    .header {
+        font-size: large;
+        text-align: center;
+    }
+
+    .btn {
+        width: 5em;
+        text-align: center;
+    }
+
+    .active {
+        background-color: teal;
+    }
+
+    .deactive {
+        background-color: silver;
+    }
+
+    .action {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 5mm;
+        padding-bottom: 0.5em;
+    }
+
+    /*#topButtons{
+        padding: 30px;
+    }
+    #topButtons a {
+        font-weight: bold;
+        color: #2c3e50;
+    }
+    #topButtons a.router-link-exact-active{
+        color: white;
+        background-color: crimson;
+        padding: 10px;
+        border-radius: 5px;
+    }
     .action {
         align-content: center;
         display: flex;
         align-items: center;
         justify-content: center;
-        border: 5mm;
+        border: 10mm;
     }
 
     .ui.button,
     .dot.circle.icon {
-        background-color: teal;
+        background-color: silver;
         color: white;
-    }
+        width: 20mm;
+    }*/
 </style>
