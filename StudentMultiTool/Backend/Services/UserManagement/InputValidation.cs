@@ -113,7 +113,7 @@ namespace StudentMultiTool.Backend.Services.UserManagement
                 }
                 if (usernamelExists(username))
                 {
-                    System.Console.WriteLine(username + " already exist. Try a different username.");
+                    Console.WriteLine(username + " already exist. Try a different username.");
                     return false;
                 }
 

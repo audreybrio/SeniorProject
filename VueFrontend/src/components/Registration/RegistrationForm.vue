@@ -1,7 +1,7 @@
 <template>
     <div id="app">
         <h2>Registration Form</h2>
-        <form @submit.prevent="postData">
+        <form @submit.prevent="validateUserName">
             <div>
                 <label for="username"></label>
                 <input name="username" v-model="username" placeholder="Username" >
@@ -35,21 +35,101 @@
     </div>
 </template>
 <script>
+    import * as $ from 'jquery'
+    const baseURL = "https://localhost:5002";
     export default {
         // name: "App",
         data() {
             return {
-                username: "",
-                password: "",
-                retype_password: "",
-                email: "",
-                retype_email: "",
-                university: ""
+                username: '',
+                password: '',
+                retype_password: '',
+                email: '',
+                retype_email: '',
+                university: '',
+                items: [],
+                validate: {
+                    username: false
+                }
             };
         },
         methods: {
+            validateUserName() {
+                console.log('validating name...');
+                $.ajax({
+                    // set the HTTP request URL
+                    url: `${baseURL}/api/registration/validation/${this.username}/${this.password}/${this.email}/${this.university}`,
+                    // set the context object to the vue component
+                    // this line tells vue to update its components
+                    // when the success or error objects complete!
+                    // if it's not set, the components don't update!
+                    context: this,
+                    // HTTP method
+                    method: 'GET',
+                    // On a successful AJAX request:
+                    success: function (data) {
+                        //this.validate.username = data;
+                        console.log(data)
+                        // log that we've completed
+                        console.log("ajax Success")
+                        return true;
+                    },
+                    // On an unsuccessful AJAX request:
+                    error: function (error) {
+                        // log the error
+                        console.log(error);
+                        this.items = null;
+                        return false;
+                    }
+                });
+            },
             postData() {
-                console.log('posting data...')
+                console.log('posting data...');
+                $.ajax({
+                    url: `${baseURL}/api/registration/newRegistration/${this.username}/${this.password}/${this.email}/${this.university}`,
+                    context: this,
+                    processData: true,
+                    method: 'POST',
+                    success: function (data) {
+                        console.log(data);
+                        // this.loading = false;
+                        return;
+                    },
+                    error: function (error) {
+                        console.log(error);
+                        // this.loading = false;
+                        return;
+                    }
+                });
+            },
+            getData() {
+                console.log('getting data...');
+                $.ajax({
+                    // set the HTTP request URL
+                    url: `${baseURL}/api/registration`,
+                    // set the context object to the vue component
+                    // this line tells vue to update its components
+                    // when the success or error objects complete!
+                    // if it's not set, the components don't update!
+                    context: this,
+                    // HTTP method
+                    method: 'GET',
+                    // On a successful AJAX request:
+                    success: function (data) {
+                        this.items = data;
+                        console.log(this.items)
+                        // log that we've completed
+                        console.log("ajax Success")
+                        return true;
+                    },
+                    // On an unsuccessful AJAX request:
+                    error: function (error) {
+                        // log the error
+                        console.log(error);
+                        this.items = null;
+                        return false;
+                    }
+                });
             },
 
             async login() {
