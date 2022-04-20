@@ -30,19 +30,54 @@ namespace StudentMultiTool.Backend.Controllers
         }
 
         [HttpGet("validation/{username}/{password}/{email}/{university}")]
-        public IEnumerable<Registration> validateInput()
+        public IEnumerable<Registration> validateInput(string username, string password, string email, string university)
         {
             bool localUsername = false;
             bool localPassword = false;
             bool localEmail = false;
             bool localUniversity = false;
+            bool localEmailExist = false;
+            bool localUsernameExist = false;
 
-            return Enumerable.Range(1, 2).Select(index => new Registration
+            InputValidation inputValidation = new InputValidation();
+            if (inputValidation.validateUsername(username))
+            {
+                localUsername = true;
+            }
+
+            if (inputValidation.validatePassword(password))
+            {
+                localPassword = true;
+            }
+
+            if (inputValidation.validateEmail(email))
+            {
+                localEmail = true;
+            }
+            
+            if (inputValidation.validateSchool(university))
+            {
+                localUniversity = true;
+            }
+
+            if (inputValidation.emailExists(email))
+            {
+                localEmailExist = true;
+            }
+
+            if (inputValidation.usernameExists(username))
+            {
+                localUsernameExist = true;
+            }
+
+            return Enumerable.Range(1, 1).Select(index => new Registration
             {
                 Username = localUsername,
                 Password = localPassword,
                 Email = localEmail,
-                University = localUniversity
+                University = localUniversity,
+                EmailExist = localEmailExist,
+                UsernameExist = localUsernameExist,
             })
             .ToArray();
         }

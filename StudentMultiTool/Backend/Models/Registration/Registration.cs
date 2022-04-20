@@ -6,5 +6,7 @@
         public bool Password { get; set; }
         public bool Email { get; set; }
         public bool University { get; set; }
+        public bool EmailExist { get; set; }
+        public bool UsernameExist { get; set; }
     }
 }
