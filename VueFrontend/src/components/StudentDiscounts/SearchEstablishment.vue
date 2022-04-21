@@ -9,7 +9,6 @@
          <form >
            <!--<div  v-show="error">{{ error }}</div>-->
             <div >
-               <div">
                   <input
                      type="text"
                      placeholder="Enter the address"

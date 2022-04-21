@@ -3,7 +3,7 @@
         <h2 class="row1">Student Discounts</h2>
     </div>
     <div>
-        Please select the the action you want to perform for Student Discounts:
+        Please select a type of Student Discounts:
         <br />
         <div class="action">
             <div :class="[isSearch ? 'active' : 'deactive']">

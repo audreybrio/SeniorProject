@@ -1,43 +1,54 @@
 <template>
-        <section>
-            <h2>CREATE ACCOUNT</h2>
+    <section>
+        <h2>CREATE ACCOUNT</h2>
+        <br />
+        <div class="warning">
+            <div v-for="(error, index) in errors" :key="index" class="warning">{{index + 1}}. {{error}}</div>
+        </div>
 
+        <div>
             <form @submit.prevent="validateUserInput">
-                <div class="warning">
-                    <div v-for="(error, index) in errors" :key="index">{{index + 1}}. {{error}}</div>
-                </div>
 
-                <div>
-                    <label for="username"></label>
-                    <input type="text" name="username" v-model="username" placeholder="Username" required>
-                </div>
-                <div>
-                    <label for="password"></label>
-                    <input name="password" v-model="password" placeholder="password" type="password" required>
-                </div>
-                <div>
-                    <label for="retype_password"></label>
-                    <input name="retype_password" v-model="retype_password" placeholder="Re-type password" type="password">
-                </div>
-                <div>
-                    <label for="email"></label>
-                    <input name="email" v-model="email" placeholder="email" type="email" required>
-                </div>
-                <div>
-                    <label for="retype_email"></label>
-                    <input name="retype_email" v-model="retype_email" placeholder="Re-type email" type="email">
-                </div>
-                <div>
-                    <label for="university"></label>
-                    <input type="text" name="university" v-model="university" placeholder="University" required>
-                </div>
-                <input type="submit" value="register" formnovalidate>
+                
+                <div style="padding-left:25px">
+                    <label for="username">Username:</label>
+                    <br />
+                    <input type="text" name="username" v-model="username" placeholder="yourusername12" maxlength="64" required>
+                    <br />
 
-                <div>
+                    <label for="password">Password:</label>
+                    <br />
+                    <input type="password" name="Password" v-model="password" placeholder="YourPassword12" maxlength="64" required>
+                    <br />
+
+                    <label for="retype_password">Re-type password:</label>
+                    <br />
+                    <input type="password" name="Password" v-model="retype_password" placeholder="YourPassword12" maxlength="64" required>
+                    <br />
+
+                    <label for="email">Email:</label>
+                    <br />
+                    <input type="email" name="email" v-model="email" placeholder="Example@student.csulb.edu" maxlength="64" required>
+                    <br />
+
+                    <label for="retype_email">Re-type email:</label>
+                    <br />
+                    <input type="email" name="retype_email" v-model="retype_email" placeholder="Re-type email" maxlength="64" required>
+                    <br />
+
+                    <label for="university">University:</label>
+                    <br />
+                    <input type="text" name="university" v-model="university" placeholder="CSULB" maxlength="64" required>
+                    <br />
+
+                    <input type="submit" value="register">
+
+
                     <router-link to="/">Login</router-link>
                 </div>
             </form>
-        </section>
+        </div>
+    </section>
     </template>
 
 <script>
@@ -64,15 +75,50 @@
                 }
             };
         },
+        computed: {
+            resetValidateValues() {
+                this.validate.username = false;
+                this.validate.password = false;
+                this.validate.email = false;
+                this.validate.university = false;
+                this.validate.usernameExist = true;
+                this.validate.emailExist = true;
+            },
+            areValidInputs() {
+                if (this.validate.username == true && this.validate.password == true && this.validate.email == true
+                    && this.validate.university == true && this.validate.usernameExist == false
+                    && this.validate.emailExist == false) {
+                    return true
+                }
+                else {
+                    return false
+                }
+                    
+            },
+            postData() {
+                console.log('posting data...');
+                $.ajax({
+                    url: `${baseURL}/api/registration/newRegistration/${this.username}/${this.password}/${this.email}/${this.university}`,
+                    context: this,
+                    processData: true,
+                    method: 'POST',
+                    success: function (data) {
+                        console.log(data);
+                        return;
+                    },
+                    error: function (error) {
+                        console.log(error);
+                        return;
+                    }
+                });
+            }
+        },
         methods: {
-            signUpButtonPressed() {
-                console.log("Sign up button pressed!")
+            errorMessages() {
                 this.errors = []
-                console.log("after validateUserInput")
-                console.log(this.validate)
 
                 if (this.validate.username == false) {
-                    this.errors.push("Username must be 8 or more int and lowercase characters");
+                    this.errors.push("Username: must be 8 or more charactes and no lowercase/special characters allowed");
                 }
 
                 if (this.password != this.retype_password) {
@@ -93,10 +139,25 @@
                     this.errors.push("Invalid value for university")
                 }
 
+                if (this.validate.emailExist == true) {
+                    this.errors.push("Email already exists")
+                }
+                else {
+                    this.emailExist = false;
+                }
+
+                if (this.validate.usernameExist == true) {
+                    this.errors.push("Username already exists")
+                }
+                else {
+                    this.usernameExist = false;
+                }
+
 
 
             },
             validateUserInput() {
+                this.resetValidateValues;
                 console.log('validating name...');
                 $.ajax({
                     // set the HTTP request URL
@@ -117,10 +178,13 @@
                         this.validate.university = data[0].university;
                         this.validate.usernameExist = data[0].usernameExist;
                         this.validate.emailExist = data[0].emailExist;
-                        console.log(this.validate)
                         // log that we've completed
                         console.log("ajax Success")
-                        this.signUpButtonPressed()
+                        this.errorMessages()
+                        if (this.areValidInputs) {
+                            // Creates a new user account if user inputs are valid
+                            this.postData
+                        }
                         return true;
                     },
                     // On an unsuccessful AJAX request:
@@ -129,25 +193,6 @@
                         console.log(error);
                         this.items = null;
                         return false;
-                    }
-                });
-            },
-            postData() {
-                console.log('posting data...');
-                $.ajax({
-                    url: `${baseURL}/api/registration/newRegistration/${this.username}/${this.password}/${this.email}/${this.university}`,
-                    context: this,
-                    processData: true,
-                    method: 'POST',
-                    success: function (data) {
-                        console.log(data);
-                        // this.loading = false;
-                        return;
-                    },
-                    error: function (error) {
-                        console.log(error);
-                        // this.loading = false;
-                        return;
                     }
                 });
             },
@@ -179,51 +224,37 @@
                         return false;
                     }
                 });
-            },
-
-            async login() {
-                const { username, password, retype_password, email, retype_email, university } = this;
-                let res = await fetch(
-                    "https://SomberHandsomePhysics--five-nine.repl.co/register",
-                    {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json"
-                        },
-                        body: JSON.stringify({
-                            username,
-                            password,
-                            retype_password,
-                            email,
-                            retype_email,
-                            university
-                        })
-                    }
-                )
-                const data = await res.json();
-                console.log(data);
             }
         }
     };
 </script>
 
-<style>
+<style scoped>
+    form {
+        margin: auto;
+        width: 200px;
+        text-align:left;
+        border:2px solid;
+        border-color:dimgray;
+        box-shadow:2px 2px;
+        padding:7px;
+    }
     .warning {
         color:red;
+        margin:auto;
+        width: 440px;
+        text-align:left;
+        font-size:11px;
     }
 
     section {
-        /*height: 100vh;*/
-        background-color: #ececec;
-        /*display: flex;*/
-        align-items: center;
-        justify-content: center;
+        margin: auto;
+        background-color:#ececec;
     }
 
     input[type=text]:focus, input[type=password]:focus, input[type=email]:focus {
         background-color: lightblue;
         border: 2px solid red;
         border-radius: 4px;
-        text-align:left;
     }
 </style>
