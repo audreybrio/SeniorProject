@@ -42,7 +42,7 @@ namespace StudentMultiTool.Backend.Services.UserManagement
             }
         }
 
-        // username must be 8 or more characters, but it can include integers and uppercase and lowercase characters
+        // password must be 8 or more characters, but it can include integers and uppercase and lowercase characters
         public bool validatePassword(string password)
         {
             bool validPassword = true;

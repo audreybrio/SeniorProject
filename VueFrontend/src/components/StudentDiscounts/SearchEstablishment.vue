@@ -4,27 +4,25 @@
     direction: {{this.address}}
   </div>
   
-  <section class="ui one column centered grid" style="position:relative; z-index:1;">
+  <section style="position:relative; z-index:1;">
       <div class="column">
-         <form class="ui segment large form">
-           <div class="ui message red" v-show="error">{{ error }}</div>
-            <div class="field">
-               <div class="ui right icon input large" :class="{loading:spinner}">
+         <form >
+           <!--<div  v-show="error">{{ error }}</div>-->
+            <div >
+               <div">
                   <input
                      type="text"
                      placeholder="Enter the address"
                      v-model="address"
                      ref="autocomplete"
                      />
-                  <i class="dot circle link icon" @click="locatorButtonPressed"></i>
+                  <button  @click="locatorButtonPressed"></button>
                </div>
-            </div>
-
          </form>
       </div>
    </section>
   <section id="map"></section>
-    <button @click="getGeocode(this.address); displayMap=true" class="ui button">Go</button>
+    <button @click="getGeocode(this.address); displayMap=true">Go</button>
     address: {{this.location}}
         
     <dev v-if="displayMap">
