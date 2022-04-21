@@ -10,7 +10,7 @@ namespace StudentMultiTool.Backend.Controllers
 {
     [ApiController]
     [Route("api/" + "schedule")]
-    public class ScheduleController : Controller
+    public class ScheduleBuilderController : Controller
     {
         public ScheduleManager manager { get; } = new ScheduleManager();
         // Return a "list" (enumerable) of schedules for a given user.
