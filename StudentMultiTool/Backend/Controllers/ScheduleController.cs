@@ -9,8 +9,14 @@ namespace StudentMultiTool.Backend.Controllers
 {
     [ApiController]
     [Route("schedule")]
-    public class ScheduleController : Controller
+    //public class ScheduleController : Controller
+    public class ScheduleController : ControllerBase
     {
+        [HttpGet]
+        public IActionResult Get()
+        {
+            return Ok("Schedules");
+        }
         // Return a "list" (enumerable) of schedules for a given user.
         // Only returns a list of schedules that the user is listed as a
         // collaborator for.
