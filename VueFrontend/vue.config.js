@@ -18,7 +18,16 @@ const certFilePath = path.join(baseFolder, `${certificateName}.pem`);
 const keyFilePath = path.join(baseFolder, `${certificateName}.key`);
 
 module.exports = {
-    devServer: {
+    publicPath: process.env.NODE_ENV === 'production' // assuming both should be '/'. default is '/'
+        ? '/'  // production
+        : '/', // development 
+    assetsDir: process.env.NODE_ENV === 'production' // prod & dev can differ. default is ''
+        ? ''  // production
+        : '', // development 
+    indexPath: process.env.NODE_ENV === 'production' // probably can be different. default is 'index.html'
+        ? 'index.html' // production
+        : 'index.html', // development
+    devServer: { // development only
         https: {
             key: fs.readFileSync(keyFilePath),
             cert: fs.readFileSync(certFilePath),
@@ -28,8 +37,11 @@ module.exports = {
         // Without this, those requests get blocked due to this CORS error:
         // https://developer/mozilla.org/en-US/docs/Web/HTTP/CORS/Errors/CORSMissingAllowOrigin
         proxy: {
+            '^/weatherforecast': {
+                target: 'http://localhost:5000/'
+            },
             '^/api': {
-                target: 'https://localhost:5001/'
+                target: 'http://localhost:5000/'
             }
         },
         port: 5002

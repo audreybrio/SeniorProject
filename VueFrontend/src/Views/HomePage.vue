@@ -8,6 +8,7 @@
         <button @click="onAM">Automated Moderating</button>
         <button @click="onBS">Book Selling</button>
         <button @click="onUSD">User Analysis Dashboard</button>
+        <button @click="onSD">Student Discounts</button>
         <button @click="onSubmit">Logout</button>
     </div>
     <router-view />
@@ -39,7 +40,7 @@
                 this.post = null;
                 this.loading = true;
 
-                fetch('weatherforecast')
+                fetch('https://studentmultitool.me:5001/weatherforecast')
                     .then(r => r.json())
                     .then(json => {
                         this.post = json;
@@ -67,10 +68,13 @@
                 router.push({ name: "EmailVue" });
             },
             onBS() {
-                router.push({ name: "EmailVue" });
+                router.push({ name: "bookSelling" });
             },
             onUSD() {
                 router.push({ name: "EmailVue" });
+            },
+            onSD() {
+                router.push({ name: "studentDiscounts" });
             },
 
         },

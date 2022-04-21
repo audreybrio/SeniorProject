@@ -14,7 +14,8 @@
     <Folder Include="src\components\AutomatedModerating\" />
     <Folder Include="src\components\Logout\" />
     <Folder Include="src\components\UserManagement\" />
-    <Folder Include="src\Views\" />
+    <Folder Include="src\static\" />
+    <Folder Include="src\Views\BookSelling\" />
   </ItemGroup>
   <!-- This target is copied from the ASP.NET SPA template in order to ensure node_modules are in place. -->
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

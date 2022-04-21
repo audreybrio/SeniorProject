@@ -3,9 +3,9 @@ import RegistrationForm from '../components/Registration/RegistrationForm.vue'
 import EmailVue from '../components/Authentication/EmailVue.vue'
 import LoginVue from '../components/Authentication/LoginVue.vue'
 import HomePage from '../Views/HomePage.vue'
-import ScheduleBuilder from '../components/ScheduleBuilder/ScheduleBuilder'
-import ScheduleSelection from '../components/ScheduleBuilder/ScheduleSelection'
-
+import ScheduleBuilder from '../components/ScheduleBuilder/ScheduleBuilder.vue'
+import ScheduleSelection from '../components/ScheduleBuilder/ScheduleSelection.vue'
+import StudentDiscounts from '../components/StudentDiscounts/StudentDiscounts.vue'
 const routes = [
     {
         path: '/',
@@ -38,7 +38,27 @@ const routes = [
         path: '/scheduleselection/:user',
         name: 'ScheduleSelection',
         component: ScheduleSelection
-    }
+    },
+    {
+        path: '/bookSelling',
+        name: 'bookSelling',
+        component: () => import('../Views/BookSelling/BookSelling.vue')
+    },
+    {
+        path: '/bookDisplay',
+        name: 'bookDisplay',
+        component: () => import('../Views/BookSelling/BookDisplay.vue')
+    },
+    {
+        path: '/bookPost',
+        name: 'bookPost',
+        component: () => import('../Views/BookSelling/PostBook.vue')
+    },
+    {
+        path: '/studentDiscounts',
+        name: 'studentDiscounts',
+        component: StudentDiscounts
+    },
     // add more here 
 ]
 
