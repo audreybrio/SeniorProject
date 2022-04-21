@@ -45,6 +45,8 @@
 
 
                     <router-link to="/">Login</router-link>
+
+                    <div v-if="isAccountCreated" class="accountCreatedStyle">NEW USER ACCOUNT CREATED SUCCESSFULLY</div>
                 </div>
             </form>
         </div>
@@ -57,6 +59,7 @@
     export default {
         data() {
             return {
+                isAccountCreated: false,
                 username: "",
                 password: "",
                 retype_password: "",
@@ -84,6 +87,12 @@
                 this.validate.usernameExist = true;
                 this.validate.emailExist = true;
             },
+            resetInputValues() {
+                this.username = "";
+                this.password = "";
+                this.email = "";
+                this.university = "";
+            },
             areValidInputs() {
                 if (this.validate.username == true && this.validate.password == true && this.validate.email == true
                     && this.validate.university == true && this.validate.usernameExist == false
@@ -103,7 +112,9 @@
                     processData: true,
                     method: 'POST',
                     success: function (data) {
-                        console.log(data);
+                        this.isAccountCreated = true;
+                        // resets user input values
+                        this.resetInputValues
                         return;
                     },
                     error: function (error) {
@@ -157,6 +168,7 @@
 
             },
             validateUserInput() {
+                this.isAccountCreated = false;
                 this.resetValidateValues;
                 console.log('validating name...');
                 $.ajax({
@@ -230,6 +242,13 @@
 </script>
 
 <style scoped>
+    .accountCreatedStyle{
+        font-size:11px;
+        background-color:gold;
+        border: 1px solid gold;
+        border-radius: 5px 4px;
+
+    }
     form {
         margin: auto;
         width: 200px;
