@@ -40,7 +40,7 @@
                 this.post = null;
                 this.loading = true;
 
-                fetch('weatherforecast')
+                fetch('https://studentmultitool.me:5001/weatherforecast')
                     .then(r => r.json())
                     .then(json => {
                         this.post = json;
@@ -62,7 +62,7 @@
                 router.push({ name: "EmailVue" });
             },
             onSB() {
-                router.push({ name: "EmailVue" });
+                router.push({ name: "ScheduleSelection" });
             },
             onAM() {
                 router.push({ name: "EmailVue" });
