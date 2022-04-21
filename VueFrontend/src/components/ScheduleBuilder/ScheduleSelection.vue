@@ -80,7 +80,7 @@
                 console.log("ajax time");
                 $.ajax({
                     // set the HTTP request URL
-                    url: 'schedule/getlist/aloafofbrad',
+                    url: 'https://localhost:5001/' + 'schedule/getlist/aloafofbrad',
 
                     // set the context object to the vue component
                     // this line tells vue to update its components
@@ -119,7 +119,7 @@
                 this.loading = true;
                 let username = "aloafofbrad";
                 $.ajax({
-                    url: "schedule/newschedule/" + this.newScheduleTitle + "/" + username,
+                    url: 'https://localhost:5001/' + "schedule/newschedule/" + this.newScheduleTitle + "/" + username,
                     context: this,
                     //contentType: "application/json; charset=utf-8",
                     //data: {
