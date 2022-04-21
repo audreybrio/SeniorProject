@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Mvc.Formatters;
+
 static class Program
 {
     static void Main(string[] args)
@@ -6,9 +8,12 @@ static class Program
         var builder = WebApplication.CreateBuilder(args);
 
         // Add services to the container.
-        builder.Services.AddRazorPages();
-
-        
+        builder.Services.AddControllers(options =>
+        {
+            options.OutputFormatters.RemoveType<HttpNoContentOutputFormatter>();
+            var jsonInputFormatter = options.InputFormatters.OfType<SystemTextJsonInputFormatter>().Single();
+            jsonInputFormatter.SupportedMediaTypes.Add("application/json");
+        });
 
         builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
         .AddCookie(options =>
@@ -35,7 +40,7 @@ static class Program
 
         app.UseAuthorization();
 
-        app.MapRazorPages();
+        app.MapControllers();
 
         app.Run();
     }
