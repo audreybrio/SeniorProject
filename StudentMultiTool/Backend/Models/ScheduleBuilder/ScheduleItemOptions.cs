@@ -32,6 +32,19 @@
         public static string JsonNotes { get; } = "notes";
         public static string JsonCreator { get; } = "creator";
         public static string JsonId { get; } = "id";
+
+        // Shorthand for the days
+        public static string Sunday { get { return JsonSunday; } }
+        public static string Monday { get { return JsonMonday; } }
+        public static string Tuesday { get { return JsonTuesday; } }
+        public static string Wednesday { get { return JsonWednesday; } }
+        public static string Thursday { get { return JsonThursday; } }
+        public static string Friday { get { return JsonFriday; } }
+        public static string Saturday { get { return JsonSaturday; } }
+
+
+        // Ordering of days (does the week start with Sunday or Monday?
+        public static List<string> Days { get; } = new List<string> { Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday };
         // Keys & values used in CRUD operations from web requests.
         // Pairs send by web requests should look like operation:create, etc.
         // Key
