@@ -6,10 +6,7 @@ import HomePage from '../Views/HomePage.vue'
 import ScheduleBuilder from '../components/ScheduleBuilder/ScheduleBuilder.vue'
 import ScheduleSelection from '../components/ScheduleBuilder/ScheduleSelection.vue'
 import StudentDiscounts from '../components/StudentDiscounts/StudentDiscounts.vue'
-/*import PostDiscount from '../components/StudentDiscounts/components/PostDiscounts.vue'
-import SearchDiscount from '../components/StudentDiscounts/components/SearchDiscounts.vue'*/
-/*import PostEstablishment from '../components/StudentDiscounts/components/PostEstablishment.vue'
-import SearchEstablishment from '../components/StudentDiscounts/components/SearchEstablishment.vue'*/
+import EmailVerification from '../components/Registration/EmailVerification.vue'
 const routes = [
     {
         // path: '/', I changed it
@@ -30,10 +27,16 @@ const routes = [
 
     },
     {
-        // path: '/registration', I changed it
+        //path: '/registration', I changed it
         path: '/',
-        name: 'RegistrationForm',
+        name: 'Registrationform',
         component: RegistrationForm
+    },
+    {
+        // path: '/emailverification',
+        path: '/Registrationform/:username/:token',
+        name: 'EmailVerification',
+        component: EmailVerification
     },
     {
         path: '/schedulebuilder',

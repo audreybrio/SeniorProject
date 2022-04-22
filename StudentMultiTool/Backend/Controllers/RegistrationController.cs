@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using StudentMultiTool.Backend.Models.Registration;
+using StudentMultiTool.Backend.Services.Authentication;
 using StudentMultiTool.Backend.Services.UserManagement;
 using System.Data;
 using System.Data.SqlClient;
@@ -91,8 +92,14 @@ namespace StudentMultiTool.Backend.Controllers
         {
             try
             {
+                // Generates Unique ID token to verify user email
+                String token = Guid.NewGuid().ToString();
+
                 Update usertoDB = new Update();
-                usertoDB.UpdateCreate(email, password, username, university);
+                usertoDB.UpdateCreate(email, password, username, university, token);
+
+                EmailVerification emailVerifycation = new EmailVerification();
+                emailVerifycation.SendEmail(username, email, token);
                 return "Success";
             }catch(Exception ex)
             {

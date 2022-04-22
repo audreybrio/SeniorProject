@@ -92,6 +92,8 @@
                 this.password = "";
                 this.email = "";
                 this.university = "";
+                this.retype_email = "";
+                this.retype_password = "";
             },
             areValidInputs() {
                 if (this.validate.username == true && this.validate.password == true && this.validate.email == true

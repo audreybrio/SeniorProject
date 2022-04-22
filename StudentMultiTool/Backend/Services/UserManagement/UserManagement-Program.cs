@@ -26,7 +26,8 @@ namespace UserManagement
                 }
                 if(validUsername == true && validPasscode == true)
                 {
-                    updateDB.UpdateCreate(email, passcode, username, school);
+                    String token = Guid.NewGuid().ToString();
+                    updateDB.UpdateCreate(email, passcode, username, school, token);
                     return true;
                 }
                 else
@@ -388,21 +389,24 @@ namespace UserManagement
             cmd.ExecuteNonQuery();
         }
 
-        public void UpdateCreate(string email, string password, string username, string school)
+        public void UpdateCreate(string email, string password, string username, string school, string token)
         {
             // inserts the created user into the database
+            
             SqlConnection conn = new SqlConnection();
             conn.ConnectionString = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING");
             conn.Open();
-            SqlCommand cmd = new SqlCommand("INSERT INTO UserAccounts " + "(email, name, username,  passcode, role, school, active_status) " +
-                                                               "  values (@email, @name, @username, @passcode, @role, @school, @active_status)", conn);
+            SqlCommand cmd = new SqlCommand("INSERT INTO UserAccounts " + "(email, name, username,  password, role, school, active_status, token, verified_email) " +
+                                                               "  values (@email, @name, @username, @password, @role, @school, @active_status, @token, @verified_email)", conn);
             cmd.Parameters.AddWithValue("@email", email);
             cmd.Parameters.AddWithValue("@name", "");
             cmd.Parameters.AddWithValue("@username", username);
-            cmd.Parameters.AddWithValue("@passcode", password);
+            cmd.Parameters.AddWithValue("@password", password);
             cmd.Parameters.AddWithValue("@role", "student");
             cmd.Parameters.AddWithValue("@school", school);
-            cmd.Parameters.AddWithValue("@active_status", 1);
+            cmd.Parameters.AddWithValue("@active_status", 0);
+            cmd.Parameters.AddWithValue("@token", token);
+            cmd.Parameters.AddWithValue("@verified_email", 0);
             cmd.ExecuteNonQuery();
             conn.Close();
             System.Console.WriteLine("New User Account created successfully.\n");

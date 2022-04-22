@@ -6,16 +6,15 @@ namespace StudentMultiTool.Backend.Services.Authentication
     {
         public EmailVerification() { }
 
-        public void SendEmail(string email, string uniqueIDcode)
+        public void SendEmail(string username, string email, string token)
         {
-            String msg = uniqueIDcode;
             MailMessage mail = new MailMessage();
             mail.From = new MailAddress("studentmultitool@outlook.com");
             mail.To.Add(new MailAddress(email));
-            mail.Subject = "Email verification for Student Multi-Tool";
+            mail.Subject = "Email verification for Student Multi-Tool new account";
             string body = "We are excited to tell you that your account is " +
-                          "successfully created. Please click on the link below to verify your account.\n" +
-                          "www.google.com";// we have to add our URL + uniqueIDcode
+                          "successfully created. Please click on the link below to verify and activate your account.\n" +
+                          "https://localhost:5002/RegistrationForm/" + username + "/" + token;// we have to add our URL + uniqueIDcode
             mail.Body = body;
             mail.Priority = MailPriority.Normal;
             using (SmtpClient client = new SmtpClient("email-smtp.us-west-1.amazonaws.com", 587))
