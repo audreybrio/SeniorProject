@@ -99,7 +99,7 @@ namespace StudentMultiTool.Backend.Controllers
                 usertoDB.UpdateCreate(email, password, username, university, token);
 
                 EmailVerification emailVerifycation = new EmailVerification();
-                emailVerifycation.SendEmail(username, email, token);
+                emailVerifycation.SendEmail(username, email, token, password);
                 return "Success";
             }catch(Exception ex)
             {
@@ -117,7 +117,7 @@ namespace StudentMultiTool.Backend.Controllers
             try
             {
                 Update manageAccount = new Update();
-                if(manageAccount.ActivateAccount(username, token))
+                if (manageAccount.ActivateAccount(username, token))
                 {
                     return "Success";
                 }
@@ -125,11 +125,12 @@ namespace StudentMultiTool.Backend.Controllers
                 {
                     return "Error updating account";
                 }
-                
-            }catch(Exception ex)
+
+            }
+            catch (Exception ex)
             {
                 return "Error activating user's account: " + ex.Message;
             }
-}
+        }
     }
 }

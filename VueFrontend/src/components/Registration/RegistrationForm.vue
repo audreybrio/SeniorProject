@@ -5,12 +5,10 @@
         <div class="warning">
             <div v-for="(error, index) in errors" :key="index" class="warning">{{index + 1}}. {{error}}</div>
         </div>
-
+        <div v-if="isAccountCreated" class="accountCreatedStyle">NEW USER ACCOUNT CREATED SUCCESSFULLY</div>
         <div>
             <form @submit.prevent="validateUserInput">
-
-                
-                <div style="padding-left:25px">
+                <div>
                     <label for="username">Username:</label>
                     <br />
                     <input type="text" name="username" v-model="username" placeholder="yourusername12" maxlength="64" required>
@@ -36,19 +34,20 @@
                     <input type="email" name="retype_email" v-model="retype_email" placeholder="Re-type email" maxlength="64" required>
                     <br />
 
-                    <label for="university">University:</label>
+                    <select v-model="university" required>
+                        <option disabled value="">Please select a university</option>
+                        <option>CSULB</option>
+                        <option>Other CSU</option>
+                        <option>Any CSU</option>
+                    </select>
                     <br />
-                    <input type="text" name="university" v-model="university" placeholder="CSULB" maxlength="64" required>
-                    <br />
 
-                    <input type="submit" value="register">
-
-
-                    <router-link to="/">Login</router-link>
-
-                    <div v-if="isAccountCreated" class="accountCreatedStyle">NEW USER ACCOUNT CREATED SUCCESSFULLY</div>
+                    <input type="submit" value="REGISTER" class="button">
                 </div>
             </form>
+            <div class="signin">
+                Already have an account? <router-link to="/">Login</router-link>
+            </div>
         </div>
     </section>
     </template>
@@ -115,7 +114,10 @@
                     success: function (data) {
                         this.isAccountCreated = true;
                         // resets user input values
+                        alert("We have sent an email to " + this.email + " \n \n You need to verify your email to activate"
+                        + " your account. If you have not received it, please check your spam or junk email.")
                         this.resetInputValues
+                        
                         return;
                     },
                     error: function (error) {
@@ -130,14 +132,14 @@
                 this.errors = []
 
                 if (this.validate.username == false) {
-                    this.errors.push("Username: must be 8 or more charactes and no lowercase/special characters allowed");
+                    this.errors.push("Username: must be 8 or more charactes and no uppercase/special characters allowed");
                 }
 
                 if (this.password != this.retype_password) {
                     this.errors.push("Passwords do not match")
                 }
                 else if (this.validate.password == false) {
-                    this.errors.push("Password must be 8 or more int and upper/lowercase characters");
+                    this.errors.push("Password: must be 8 or more characters and no special characters allowed");
                 }
 
                 if (this.email != this.retype_email) {
@@ -164,14 +166,10 @@
                 else {
                     this.usernameExist = false;
                 }
-
-
-
             },
             validateUserInput() {
                 this.isAccountCreated = false;
                 this.resetValidateValues;
-                console.log('validating name...');
                 $.ajax({
                     // set the HTTP request URL
                     url: `${baseURL}/api/registration/validation/${this.username}/${this.password}/${this.email}/${this.university}`,
@@ -224,7 +222,6 @@
                     // On a successful AJAX request:
                     success: function (data) {
                         this.items = data;
-                        console.log(this.items)
                         // log that we've completed
                         console.log("ajax Success")
                         return true;
@@ -243,6 +240,38 @@
 </script>
 
 <style scoped>
+    .signin {
+        margin:auto;
+        margin-top: 7px;
+        margin-bottom: 7px;
+        width: 295px;
+        border: 2px solid;
+        border-color: dimgray;
+        background-color: beige;
+        border-radius: 5px;
+        height:45px;
+        padding-top:20px;
+        align-content:center;
+    }
+    select {
+        text-align:left;
+        height:30px;
+        font-size:15px;
+        margin-bottom:7px;
+    }
+    .button {
+        color: white;
+        width: 100%;
+        background-color: red;
+        font-size:15px;
+        border-radius:10px;
+    }
+    input{
+        font-size:15px;
+        height:30px;
+        width:95%;
+        margin-bottom:7px;
+    }
     .accountCreatedStyle{
         font-size:11px;
         background-color:gold;
@@ -252,12 +281,12 @@
     }
     form {
         margin: auto;
-        width: 200px;
+        width: 270px;
         text-align:left;
         border:2px solid;
         border-color:dimgray;
         box-shadow:2px 2px;
-        padding:7px;
+        padding:10px;
     }
     .warning {
         color:red;
@@ -265,6 +294,7 @@
         width: 440px;
         text-align:left;
         font-size:11px;
+
     }
 
     section {

@@ -1,44 +1,53 @@
 <template>
     <h1>This is the email verification page</h1>
-    the user name is {{$route.params.username}} and token: {{$route.params.token}}
+    <div class="congrates">
+        Congratulations {{this.username }}.
+    </div>
+    Your Account is activated.
 </template>
 
 <script>
+    import * as $ from 'jquery'
+    const baseURL = "https://localhost:5002";
     export default {
-        //props: ["name"],
         data() {
             return {
-                username: "",
-                token: "",
-
+                username: this.$route.params.username,
+                token: this.$route.params.token,
 
             }
         },
-        created{
-        this.username = $route.params.username;
-        this.token = $route.params.token;
-
-    }
+        created() {
+            this.isVerified
+        },
         computed: {
-            postData() {
+            isVerified() {
                 console.log('posting data...');
-                $.ajax({
+                var validaded = $.ajax({
                     url: `${baseURL}/api/registration/emailVerification/${this.username}/${this.token}`,
                     context: this,
                     processData: true,
                     method: 'POST',
                     success: function (data) {
-                        this.isAccountCreated = true;
+                        //this.isAccountCreated = true;
                         // resets user input values
-                        this.resetInputValues
-                        return;
+                        //this.isVerified = true;
+                        return true;
                     },
                     error: function (error) {
                         console.log(error);
-                        return;
+                        //this.isVerified = false;
+                        return false;
                     }
                 });
+                return validated;
             }
         }
     }
 </script>
+
+<style>
+    .congrates{
+        font-size:30px;
+    }
+</style>
