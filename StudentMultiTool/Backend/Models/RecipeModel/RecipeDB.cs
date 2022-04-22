@@ -51,7 +51,5 @@ namespace StudentMultiTool.Backend.Models.RecipeModel
             return customerRecipe;
         }
 
-
-
     }
 }
