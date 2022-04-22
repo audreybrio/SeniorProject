@@ -12,7 +12,7 @@ namespace StudentMultiTool.Backend.Services.DataAccess
             try
             {
                 //Console.WriteLine("Establising Connection...");
-                _conn = new SqlConnection(Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING", EnvironmentVariableTarget.User));
+                _conn = new SqlConnection(Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING"));
                 //Console.WriteLine("Connection established.");
             }
             catch
