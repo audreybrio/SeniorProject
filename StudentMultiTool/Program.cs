@@ -38,6 +38,8 @@ static class Program
 
         //app.UseRouting();
 
+        // Map controllers for URL routing. Since we aren't using Razor Pages, we don't need
+        // to call app.MapRazorPages().
         app.MapControllers();
 
         app.Run();

@@ -37,6 +37,8 @@ module.exports = {
         // Without this, those requests get blocked due to this CORS error:
         // https://developer/mozilla.org/en-US/docs/Web/HTTP/CORS/Errors/CORSMissingAllowOrigin
         proxy: {
+            '^/api': {
+                target: 'https://localhost:5001/'
             '^/weatherforecast': {
                 target: 'http://localhost:5000/'
             },

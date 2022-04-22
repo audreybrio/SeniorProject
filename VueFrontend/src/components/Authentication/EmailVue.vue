@@ -10,10 +10,10 @@
             <router-link to="/registration">Registration</router-link>
         </div>
     </div>
-    <router-view />
+    <!--<router-view />--> <!--I changed it-->
 </template>
 
-<script lang="js">
+<script> // <!--lang="js"-->
     import router from '@/router'
 
     export default ({

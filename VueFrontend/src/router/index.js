@@ -6,6 +6,7 @@ import RegistrationForm from '../components/Registration/RegistrationForm.vue'
 import EmailVue from '../components/Authentication/EmailVue.vue'
 import LoginVue from '../components/Authentication/LoginVue.vue'
 import HomePage from '../Views/HomePage.vue'
+import EmailVerification from '../components/Registration/EmailVerification.vue'
 
 // Application features
 // StudentDiscounts
@@ -33,8 +34,13 @@ const routes = [
     },
     {
         path: '/registration',
-        name: 'RegistrationForm',
+        name: 'Registrationform',
         component: RegistrationForm
+    },
+    {
+        path: '/Registrationform/:username/:token',
+        name: 'EmailVerification',
+        component: EmailVerification
     },
 
     // ScheduleBuilder & ScheduleComparison
@@ -81,8 +87,9 @@ const routes = [
     // StudentDiscounts
     {
         path: '/studentDiscounts',
+        // path: '/',
         name: 'studentDiscounts',
-        component: StudentDiscounts
+        component: StudentDiscounts,
     },
     // add more here
 
