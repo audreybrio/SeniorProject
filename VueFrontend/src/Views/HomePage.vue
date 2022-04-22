@@ -5,6 +5,7 @@
         </div>
         <button @click="onAC">Access Control</button>
         <button @click="onScheduleBuilder">Schedule Builder</button>
+        <button @click="onScheduleComparison">Schedule Comparison</button>
         <button @click="onAM">Automated Moderating</button>
         <button @click="onBS">Book Selling</button>
         <button @click="onUSD">User Analysis Dashboard</button>
@@ -27,28 +28,12 @@
             };
         },
         created() {
-            // fetch the data when the view is created and the data is
-            // already being observed
-            this.fetchData();
         },
         watch: {
             // call again the method if the route changes
             '$route': 'fetchData'
         },
         methods: {
-            fetchData() {
-                this.post = null;
-                this.loading = true;
-
-                fetch('https://studentmultitool.me:5001/weatherforecast')
-                    .then(r => r.json())
-                    .then(json => {
-                        this.post = json;
-                        this.loading = false;
-                        return;
-                    });
-
-            },
             onSubmit() {
                 const token = window.sessionStorage.getItem("token");
                 var isJWT = jwt_decode(token);
@@ -59,19 +44,22 @@
             },
 
              onAC() {
-                router.push({ name: "EmailVue" });
+                router.push({ name: "not-found" });
             },
             onScheduleBuilder() {
-                router.push({ name: `ScheduleSelection`, params: { user: this.id }});
+                router.push({ name: "SelectForBuilder", params: { user: this.id }});
+            },
+            onScheduleSelection() {
+                router.push({ name: "SelectForComparison", params: { user: this.id }});
             },
             onAM() {
-                router.push({ name: "EmailVue" });
+                router.push({ name: "not-found" });
             },
             onBS() {
                 router.push({ name: "bookSelling" });
             },
             onUSD() {
-                router.push({ name: "EmailVue" });
+                router.push({ name: "not-found" });
             },
             onSD() {
                 router.push({ name: "studentDiscounts" });
