@@ -9,8 +9,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StudentMultiTool", "Student
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests", "Tests\Tests.csproj", "{5BFB8F51-6E4F-4FBF-891D-7C94E49047E2}"
 EndProject
-Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "vuefrontend", "VueFrontend\vuefrontend.esproj", "{1672ED17-FAB1-4C66-A27E-5AF68E6449FC}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,12 +27,6 @@ Global
 		{5BFB8F51-6E4F-4FBF-891D-7C94E49047E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5BFB8F51-6E4F-4FBF-891D-7C94E49047E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5BFB8F51-6E4F-4FBF-891D-7C94E49047E2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1672ED17-FAB1-4C66-A27E-5AF68E6449FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1672ED17-FAB1-4C66-A27E-5AF68E6449FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1672ED17-FAB1-4C66-A27E-5AF68E6449FC}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
-		{1672ED17-FAB1-4C66-A27E-5AF68E6449FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1672ED17-FAB1-4C66-A27E-5AF68E6449FC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1672ED17-FAB1-4C66-A27E-5AF68E6449FC}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
