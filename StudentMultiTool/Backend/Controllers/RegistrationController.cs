@@ -123,7 +123,7 @@ namespace StudentMultiTool.Backend.Controllers
                 }
                 else
                 {
-                    return "Error updating account";
+                    return "Error";
                 }
 
             }

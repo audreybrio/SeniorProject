@@ -9,8 +9,7 @@ import StudentDiscounts from '../components/StudentDiscounts/StudentDiscounts.vu
 import EmailVerification from '../components/Registration/EmailVerification.vue'
 const routes = [
     {
-        // path: '/', I changed it
-        path: '/emailvue',
+        path: '/',
         name: 'EmailVue',
         component: EmailVue
     },
@@ -27,13 +26,11 @@ const routes = [
 
     },
     {
-        //path: '/registration', I changed it
-        path: '/',
+        path: '/registration',
         name: 'Registrationform',
         component: RegistrationForm
     },
     {
-        // path: '/emailverification',
         path: '/Registrationform/:username/:token',
         name: 'EmailVerification',
         component: EmailVerification
@@ -68,16 +65,6 @@ const routes = [
         // path: '/',
         name: 'studentDiscounts',
         component: StudentDiscounts,
-        /*children: [
-            {
-                path: 'studentDiscounts/PostDiscount',
-                component: PostDiscount
-            },
-            {
-                path: 'studentDiscounts/SearchDiscount',
-                component: SearchDiscount
-            }
-        ]*/
     },
     // add more here 
 ]

@@ -1,53 +1,77 @@
 <template>
-    <h1>This is the email verification page</h1>
-    <div class="congrates">
-        Congratulations {{this.username }}.
+    <div class="container">
+        <h1>This is the email verification page</h1>
+
+        <div v-if="this.isVerified">
+            <div class="congrates">
+                Congratulations {{this.username }}.
+                <br />
+            </div>
+            Your Account is activated. Please log in to your Student Multi-Tool account.
+        </div>
+        <div v-else>
+            <div class="error">
+                Error.
+                <br />
+            </div>
+            There is an error in the email verification proccess.
+        </div>
+        <div class="action">
+            <router-link to="/" class="link">Login</router-link>
+        </div>
+        
     </div>
-    Your Account is activated.
 </template>
 
 <script>
     import * as $ from 'jquery'
-    const baseURL = "https://localhost:5002";
     export default {
         data() {
             return {
                 username: this.$route.params.username,
                 token: this.$route.params.token,
-
+                isVerified: false
             }
         },
         created() {
-            this.isVerified
-        },
-        computed: {
-            isVerified() {
-                console.log('posting data...');
-                var validaded = $.ajax({
-                    url: `${baseURL}/api/registration/emailVerification/${this.username}/${this.token}`,
-                    context: this,
-                    processData: true,
-                    method: 'POST',
-                    success: function (data) {
-                        //this.isAccountCreated = true;
-                        // resets user input values
-                        //this.isVerified = true;
-                        return true;
-                    },
-                    error: function (error) {
-                        console.log(error);
-                        //this.isVerified = false;
-                        return false;
+            const baseURL = "https://localhost:5002";
+            $.ajax({
+                url: `${baseURL}/api/registration/emailVerification/${this.username}/${this.token}`,
+                context: this,
+                processData: true,
+                method: 'POST',
+                success: function (data) {
+                    if (data == "Success") {
+                        this.isVerified = true;
                     }
-                });
-                return validated;
-            }
+                    else {
+                        this.isVerified = false;
+                    }
+                    
+                    return true;
+                },
+                error: function (error) {
+                    console.log(error);
+                    
+                    return false;
+                }
+            });
+
         }
     }
 </script>
 
-<style>
+<style scope>
+    .error {
+        color: red;
+        font-size: 30px;
+    }
+    .container {
+        margin: auto;
+        background-color: #ececec;
+    }
     .congrates{
         font-size:30px;
     }
+
 </style>
