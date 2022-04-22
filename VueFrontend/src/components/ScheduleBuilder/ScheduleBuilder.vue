@@ -24,7 +24,7 @@
     import * as $ from 'jquery'
     import Schedules from './Schedules'
     import CreateItemForms from './CreateItemForms'
-    const baseURL = "https://localhost:5002";
+    import URLS from '../../variables'
     export default {
         name: 'ScheduleBuilder',
         components: {
@@ -132,7 +132,8 @@
                 console.log("ajax time (SB)");
                 $.ajax({
                     // set the HTTP request URL
-                    url: `${baseURL}/api/schedule/getschedule/${this.user}/${this.scheduleId}`,
+                    // url: `${baseURL}/schedule/getschedule/${this.user}/${this.scheduleId}`,
+                    url: `${URLS.api.scheduleBuilder.getSchedule}/${this.user}/${this.scheduleId}`,
 
                     // set the context object to the vue component
                     // this line tells vue to update its components
@@ -179,7 +180,8 @@
                 // make ajax request
                 $.ajax({
                     // url: this.baseUrl + 'schedule/createItem/' + this.schedule + "/" + newItem.id,
-                    url: `${baseURL}/api/schedule/createItem/${this.user}/${this.scheduleId}`,
+                    // url: `${baseURL}/schedule/createItem/${this.user}/${this.scheduleId}`,
+                    url: `${URLS.api.scheduleBuilder.createItem}/${this.user}/${this.scheduleId}`,
                     // url: `${baseURL}/api/schedule/CreateItem/`,
                     context: this.ajaxContext,
                     contentType: 'application/json',
@@ -208,7 +210,8 @@
                 // Make ajax request to update the item
                 $.ajax({
                     // url: this.baseUrl + 'schedule/updateItem/' + this.schedule + "/" + updatedItem.id,
-                    url: `${baseURL}/api/schedule/updateItem/${this.user}/${this.scheduleId}`,
+                    // url: `${baseURL}/schedule/updateItem/${this.user}/${this.scheduleId}`,
+                    url: `${URLS.api.scheduleBuilder.updateItem}/${this.user}/${this.scheduleId}`,
                     context: this,
                     method: 'POST',
                     data: updatedItem,
@@ -229,7 +232,7 @@
                     if (this.items[i].id === deleteableItem.id) {
                         this.items = this.items.filter(item => (item.id !== this.items[i].id));
                         deleted = true;
-                        console.log("Successfully deleted");
+                        console.log("Successfully deleted from list");
                     }
                 }
                 if (!deleted) {
@@ -238,15 +241,18 @@
                 // Make AJAX request to delete the item.
                 $.ajax({
                     // url: this.baseUrl + 'schedule/deleteItem/' + this.schedule + "/" + deleteableItem.id,
-                    url: `${baseURL}/api/schedule/deleteItem/${this.user}/${this.scheduleId}/${deleteableItem.id}`,
+                    // url: `${baseURL}/api/schedule/deleteItem/${this.user}/${this.scheduleId}/${deleteableItem.id}`,
+                    url: `${URLS.api.scheduleBuilder.deleteItem}/${this.user}/${this.scheduleId}/${deleteableItem.id}`,
                     context: this,
                     method: 'DELETE',
                     data: deleteableItem,
                     success: function (data) {
                         console.log(data);
+                        console.log("Successfully deleted everywhere");
                     },
                     error: function (error) {
                         console.log(error);
+                        console.log("Could not delete everywhere");
                     }
                 });
             }
