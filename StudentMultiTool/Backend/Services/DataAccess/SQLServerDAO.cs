@@ -5,6 +5,9 @@ namespace StudentMultiTool.Backend.Services.DataAccess
 {
     public class SQLServerDAO : DataSource<string>
     {
+
+        // Getter and setter for Odbc
+        //public SqlConnection Connection { get; set; }
         private SqlConnection _conn;
 
         public SQLServerDAO()
@@ -19,12 +22,9 @@ namespace StudentMultiTool.Backend.Services.DataAccess
             {
                 //_conn = null;
                 Console.WriteLine("Error when creating a connection");
-                throw;
+                _conn = new SqlConnection();
             }
         }
-
-        // Getter and setter for Odbc
-        public SqlConnection Connection { get; set; }
 
         public SqlConnection GetConnection()
         {
