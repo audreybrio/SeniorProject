@@ -12,7 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="src\components\AutomatedModerating\" />
-    <Folder Include="src\components\Logout\" />
+    <Folder Include="src\components\Matching\" />
     <Folder Include="src\components\UserManagement\" />
     <Folder Include="src\static\" />
     <Folder Include="src\Views\BookSelling\" />

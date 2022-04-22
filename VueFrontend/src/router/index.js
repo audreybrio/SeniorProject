@@ -6,6 +6,9 @@ import HomePage from '../Views/HomePage.vue'
 import ScheduleBuilder from '../components/ScheduleBuilder/ScheduleBuilder.vue'
 import ScheduleSelection from '../components/ScheduleBuilder/ScheduleSelection.vue'
 import StudentDiscounts from '../components/StudentDiscounts/StudentDiscounts.vue'
+import MatchingMain from '../components/Matching/MatchingMain.vue'
+import ActivityProfile from '../components/Matching/ActivityProfile.vue'
+import TutoringProfile from '../components/Matching/TutoringProfile.vue'
 const routes = [
     {
         path: '/',
@@ -58,6 +61,24 @@ const routes = [
         path: '/studentDiscounts',
         name: 'studentDiscounts',
         component: StudentDiscounts
+    },
+
+    {
+        path: '/matchingMain',
+        name: 'matchingMain',
+        component: MatchingMain
+    },
+
+    {
+        path: '/activityprofile',
+        name: 'activityProfile',
+        component: ActivityProfile
+    },
+
+    {
+        path: '/tutoringprofile',
+        name: 'tutoringProfile',
+        component: TutoringProfile
     },
     // add more here 
 ]

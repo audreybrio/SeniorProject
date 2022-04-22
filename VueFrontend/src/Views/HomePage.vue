@@ -3,13 +3,20 @@
         <div v-if="loading" class="loading">
             Hello {{ id }}! :)
         </div>
+        <div>
         <button @click="onAC">Access Control</button>
         <button @click="onSB">Schedule Builder</button>
         <button @click="onAM">Automated Moderating</button>
         <button @click="onBS">Book Selling</button>
-        <button @click="onUSD">User Analysis Dashboard</button>
-        <button @click="onSD">Student Discounts</button>
+        </div>
+        <div>
+            <button @click="onUSD">User Analysis Dashboard</button>
+            <button @click="onSD">Student Discounts</button>
+            <button @click="onMatching">Matching</button>
+            <button @click="onEP">Event Planning</button>
+        </div>
         <button @click="onSubmit">Logout</button>
+
     </div>
     <router-view />
 </template>
@@ -76,6 +83,10 @@
             onSD() {
                 router.push({ name: "studentDiscounts" });
             },
+            onMatching() {
+                router.push({ name: "matchingMain" })
+            },
+
 
         },
     });
