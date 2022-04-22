@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace StudentMultiTool.Backend.Controllers
 {
     [ApiController]
-    [Route("api/" + "comparison")]
+    [Route("comparison")]
     public class ScheduleComparisonController : Controller
     {
         // GET: ScheduleComparisonController
