@@ -103,9 +103,33 @@ namespace StudentMultiTool.Backend.Controllers
                 return "Success";
             }catch(Exception ex)
             {
-                return "Error creating new User" + ex.Message;
+                return "Error creating new User: " + ex.Message;
             }
 
         }
+
+        // Activates user account if username and token matches.
+        // Returns the status of the operation.
+        [HttpPost]
+        [HttpPost("emailVerification/{username}/{token}")]
+        public string activateUserAccount(string username, string token)
+        {
+            try
+            {
+                Update manageAccount = new Update();
+                if(manageAccount.ActivateAccount(username, token))
+                {
+                    return "Success";
+                }
+                else
+                {
+                    return "Error updating account";
+                }
+                
+            }catch(Exception ex)
+            {
+                return "Error activating user's account: " + ex.Message;
+            }
+}
     }
 }

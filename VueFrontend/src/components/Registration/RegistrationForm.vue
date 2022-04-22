@@ -107,7 +107,6 @@
                     
             },
             postData() {
-                console.log('posting data...');
                 $.ajax({
                     url: `${baseURL}/api/registration/newRegistration/${this.username}/${this.password}/${this.email}/${this.university}`,
                     context: this,

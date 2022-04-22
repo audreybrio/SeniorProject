@@ -388,6 +388,45 @@ namespace UserManagement
             cmd.Parameters.AddWithValue("@username", username);
             cmd.ExecuteNonQuery();
         }
+        public bool ActivateAccount(string username, string token)
+        {
+            if(UserTokenMatched(username, token))
+            {
+                SqlConnection conn = new SqlConnection();
+                conn.ConnectionString = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING");
+                conn.Open();
+                SqlCommand cmd = new SqlCommand("UPDATE UserAccounts" + " SET active_status = 1, verified_email = 1" + 
+                                                " WHERE username = @username", conn);
+                cmd.Parameters.AddWithValue("@username", username);
+                cmd.ExecuteNonQuery();
+                conn.Close();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+            
+        }
+        public bool UserTokenMatched(string username, string token)
+        {
+            SqlConnection conn = new SqlConnection();
+            conn.ConnectionString = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING");
+            conn.Open();
+
+            SqlCommand cmd = new SqlCommand("SELECT COUNT(username) FROM UserAccounts WHERE username = @username AND token = @token AND verified_email = 0", conn);
+            cmd.Parameters.AddWithValue("@username", username);
+            cmd.Parameters.AddWithValue("@token", token);
+            cmd.ExecuteNonQuery();
+            int numberOfMatchedAccounts = (int)cmd.ExecuteScalar();
+            conn.Close();
+            if (numberOfMatchedAccounts == 1)
+            {
+                return true;
+            }
+            else { return false; }
+            
+        }
 
         public void UpdateCreate(string email, string password, string username, string school, string token)
         {
