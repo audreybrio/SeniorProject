@@ -27,7 +27,7 @@ namespace StudentMultiTool.Backend.Controllers
         {
             return Ok(text);
         }
-        [HttpGet("[action]")]
+        [HttpGet("schools")]
         public async Task<IActionResult> SchoolsAsync()
         {
             string result = string.Empty;
