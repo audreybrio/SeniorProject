@@ -4,34 +4,41 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Data;
+using System.Data.SqlClient;
+using StudentMultiTool.Backend.Services.DataAccess;
 
 namespace StudentMultiTool.Backend.Services.AidEligibility
 {
-
-    public class AidController : Controller
+    [ApiController]
+    [Route("api/aid")]
+    public class AidController : ControllerBase
     {
         // GET: AidController
-        public ActionResult Index()
+        public IActionResult SelectScholarships()
         {
-            return View();
+            SQLServerDAO sqlServerDAO = new SQLServerDAO();
+
+
+            return Ok();
         }
 
         // GET: AidController/Details/5
-        public ActionResult Details(int id)
+        public IActionResult Details(int id)
         {
-            return View();
+            return Ok();
         }
 
         // GET: AidController/Create
-        public ActionResult Create()
+        public IActionResult Create()
         {
-            return View();
+            return Ok();
         }
 
         // POST: AidController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public IActionResult Create(IFormCollection collection)
         {
             try
             {
@@ -39,20 +46,20 @@ namespace StudentMultiTool.Backend.Services.AidEligibility
             }
             catch
             {
-                return View();
+                return Ok();
             }
         }
 
         // GET: AidController/Edit/5
-        public ActionResult Edit(int id)
+        public IActionResult Edit(int id)
         {
-            return View();
+            return Ok();
         }
 
         // POST: AidController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public IActionResult Edit(int id, IFormCollection collection)
         {
             try
             {
@@ -60,20 +67,20 @@ namespace StudentMultiTool.Backend.Services.AidEligibility
             }
             catch
             {
-                return View();
+                return Ok();
             }
         }
 
         // GET: AidController/Delete/5
-        public ActionResult Delete(int id)
+        public IActionResult Delete(int id)
         {
-            return View();
+            return Ok();
         }
 
         // POST: AidController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public IActionResult Delete(int id, IFormCollection collection)
         {
             try
             {
@@ -81,7 +88,7 @@ namespace StudentMultiTool.Backend.Services.AidEligibility
             }
             catch
             {
-                return View();
+                return Ok();
             }
         }
     }
