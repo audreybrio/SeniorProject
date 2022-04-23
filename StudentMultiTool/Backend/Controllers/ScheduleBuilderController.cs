@@ -9,7 +9,7 @@ using System.Text.Json.Nodes;
 namespace StudentMultiTool.Backend.Controllers
 {
     [ApiController]
-    [Route("schedule")]
+    [Route("api/schedule")]
     public class ScheduleBuilderController : Controller
     {
         public ScheduleManager manager { get; } = new ScheduleManager();

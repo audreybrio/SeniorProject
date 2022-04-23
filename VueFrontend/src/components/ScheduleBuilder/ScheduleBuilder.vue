@@ -129,7 +129,8 @@
             // Make an AJAX request to get items on page load
             loadSchedule() {
                 this.loading = true;
-                console.log("ajax time (SB)");
+                let requestName = "LoadSchedule";
+                console.log(requestName);
                 $.ajax({
                     // set the HTTP request URL
                     // url: `${baseURL}/schedule/getschedule/${this.user}/${this.scheduleId}`,

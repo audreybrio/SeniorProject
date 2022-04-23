@@ -49,6 +49,7 @@
 <script lang="js">
     import * as $ from 'jquery'
     import router from '../../router'
+    import URLS from '../../variables'
     const baseURL = "https://localhost:5002";
     export default ({
         data() {
@@ -72,11 +73,14 @@
         methods: {
             getList() {
                 this.loading = true;
-
-                console.log("ajax time");
+                let requestName = "schedule/getList";
+                console.log(requestName);
                 $.ajax({
                     // set the HTTP request URL
-                    url: `${baseURL}/api/schedule/getlist/${this.user}`,
+                    //url: `${baseURL}/schedule/getlist/${this.user}`, // won't work; gives 404 in dev
+                    //url: `${baseURL}/api/schedule/getlist/${this.user}`, // works in dev
+                    // should work in prod, gives CORS in dev w/o adding cors middleware to program.cs
+                    url: `${URLS.api.scheduleBuilder.getList}/${this.user}`, 
 
                     // set the context object to the vue component
                     // this line tells vue to update its components
@@ -92,18 +96,19 @@
                         this.list = data;
                         this.loading = false;
                         // TODO: delete console.logs
-                        console.log("this.list:")
-                        console.log(this.list)
-                        console.log("this.loading:")
-                        console.log(this.loading)
+                        console.log("this.list:");
+                        console.log(this.list);
+                        console.log("this.loading:");
+                        console.log(this.loading);
                         // log that we've completed
-                        console.log("ajax Success")
+                        console.log(requestName + "- Success");
                         return true;
                     },
 
                     // On an unsuccessful AJAX request:
                     error: function (error) {
                         // log the error
+                        console.log(requestName + "- Error");
                         console.log(error);
                         this.list = null;
                         this.loading = false;
@@ -114,7 +119,8 @@
             PostSchedule() {
                 this.loading = true;
                 $.ajax({
-                    url: `${baseURL}/api/schedule/newschedule/${this.newScheduleTitle}/${this.user}`,
+                    //url: `${baseURL}/api/schedule/newschedule/${this.newScheduleTitle}/${this.user}`,
+                    url: `${URLS.api.scheduleBuilder.newSchedule}/${this.user}/${this.newScheduleTitle}`,
                     context: this,
                     processData: true,
                     method: 'POST',
