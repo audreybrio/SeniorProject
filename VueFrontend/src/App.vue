@@ -4,18 +4,6 @@
     <router-view/>
 </template>
 
-<!--<script>
-    import EmailVue from '@/components/Authentication/EmailVue.vue'
-    export default {
-        name: 'App',
-        components: {
-            EmailVue
-
-        }
-    }
-
-</script>-->
-
 <style>
     #app {
         font-family: Avenir, Helvetica, Arial, sans-serif;

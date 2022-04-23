@@ -14,7 +14,7 @@
     <router-view />
 </template>
 
-<script lang="js">
+<script> // <!--lang="js"-->
     import router from '@/router'
     // import * as $ from 'jquery'
 

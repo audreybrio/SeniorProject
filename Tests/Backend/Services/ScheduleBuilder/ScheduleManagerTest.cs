@@ -12,7 +12,7 @@ namespace Tests.Backend.Services.ScheduleBuilder
 {
     public class ScheduleManagerTest
     {
-        private string testConnectionString = Environment.GetEnvironmentVariable("MARVELTESTCONNECTIONSTRING", EnvironmentVariableTarget.User);
+        private string testConnectionString = Environment.GetEnvironmentVariable("MARVELTESTCONNECTIONSTRING");
         private string testBaseFilePath = "./";
 
         [Fact]

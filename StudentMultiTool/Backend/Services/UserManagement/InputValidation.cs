@@ -6,21 +6,15 @@ namespace StudentMultiTool.Backend.Services.UserManagement
     public class InputValidation
     {
         public InputValidation() { }
+
+        // email must contaion @ and .edu extension
         public bool validateEmail(string email)
         {
             if (email.Contains("@") && email.Count(f => (f == '@')) == 1)
             {
                 if (email.Length > 4 && email.Substring(email.Length - 4) == ".edu")
                 {
-                    if (emailExists(email))
-                    {
-                        System.Console.WriteLine(email + " already exist. Try again");
-                        return false;
-                    }
-                    else
-                    {
-                        return true;
-                    }
+                    return true;
                 }
                     
             }
@@ -48,6 +42,7 @@ namespace StudentMultiTool.Backend.Services.UserManagement
             }
         }
 
+        // password must be 8 or more characters, but it can include integers and uppercase and lowercase characters
         public bool validatePassword(string password)
         {
             bool validPassword = true;
@@ -87,6 +82,7 @@ namespace StudentMultiTool.Backend.Services.UserManagement
             return validPassword;
         }
 
+        // username must be 8 or more characters, and at least one lowercase characters and a number
         public bool validateUsername(string username)
         {
             bool validUsername = true;
@@ -111,11 +107,6 @@ namespace StudentMultiTool.Backend.Services.UserManagement
                         validUsername = false;
                     }
                 }
-                if (usernamelExists(username))
-                {
-                    System.Console.WriteLine(username + " already exist. Try a different username.");
-                    return false;
-                }
 
             }
             else
@@ -129,7 +120,7 @@ namespace StudentMultiTool.Backend.Services.UserManagement
             return validUsername;
         }
 
-        public bool usernamelExists(string username)
+        public bool usernameExists(string username)
         {
             SqlConnection conn = new SqlConnection();
             conn.ConnectionString = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING");

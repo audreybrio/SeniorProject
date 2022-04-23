@@ -32,20 +32,17 @@ module.exports = {
             key: fs.readFileSync(keyFilePath),
             cert: fs.readFileSync(certFilePath),
         },
-/*        proxy: {
-            '^/weatherforecast': {
-                target: 'http://localhost:5000/'
-            },
-            '^/api': {
-                target: 'http://localhost:5000/'
-            }
-        },
-        port: 5002*/
 
+        // Tentative fix to allow AJAX-type requests through to the server
+        // Without this, those requests get blocked due to this CORS error:
+        // https://developer/mozilla.org/en-US/docs/Web/HTTP/CORS/Errors/CORSMissingAllowOrigin
         proxy: {
             '^/api': {
                 target: 'https://localhost:5001/'
-            }
+            },
+            '^/weatherforecast': {
+                target: 'http://localhost:5000/'
+            },
         },
         port: 5002
     }
