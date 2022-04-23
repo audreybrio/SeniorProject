@@ -22,7 +22,7 @@ static class Program
         //    options.SlidingExpiration = true;
         //    options.AccessDeniedPath = "/Forbidden/";
         //});
-        
+
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.

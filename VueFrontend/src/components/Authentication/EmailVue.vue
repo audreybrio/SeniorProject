@@ -16,6 +16,7 @@
 
 <script lang="js">
     import router from '@/router'
+    // import * as $ from 'jquery'
 
     export default ({
         data() {
@@ -51,7 +52,7 @@
             },
             onSubmit() {
                 if (this.email == "audrey.brio@student.csulb.edu" && this.passcode == "hello world") {
-                    router.push({name: "LoginVue"});
+                    router.push({ name: "LoginVue" });
 
                 }
                 else if (this.email == "bradley.nickle@student.csulb.edu" && this.passcode == "marvel fan") {
@@ -83,10 +84,30 @@
                 }
             },
 
+            //skip() {
+            //    console.log("ajax time")
+            //    $.ajax({
+            //        url: `${baseURL}/api/login`,
+            //        context: this,
+            //        method: 'login',
+            //        success: function (data) {
+            //            console.log("ajax suxcess")
+            //            window.sessionStorage.setItem("token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiQXVkcmV5IEJyaW8iLCJ1c2VybmFtZSI6ImFicmlvIiwiZW1haWwiOiJhdWRyZXkuYnJpb0BzdHVkZW50LmNzdWxiLmVkdSIsInBhc3Njb2RlIjoiaGVsbG8gd29ybGQiLCJyb2xlIjoiYWRtaW4iLCJzY2hvb2wiOiJDU1VMQiJ9.O9qyhghpLVvFIurYuDaAzLV6r9HVpO0DrXBhTbB-3Yo");
+            //            router.push({ name: "HomePage" })
+
+            //        },
+            //        erro: function (error) {
+            //            console.log("error")
+            //        }
+
+            //    })
+        // }
             skip() {
                 window.sessionStorage.setItem("token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiQXVkcmV5IEJyaW8iLCJ1c2VybmFtZSI6ImFicmlvIiwiZW1haWwiOiJhdWRyZXkuYnJpb0BzdHVkZW50LmNzdWxiLmVkdSIsInBhc3Njb2RlIjoiaGVsbG8gd29ybGQiLCJyb2xlIjoiYWRtaW4iLCJzY2hvb2wiOiJDU1VMQiJ9.O9qyhghpLVvFIurYuDaAzLV6r9HVpO0DrXBhTbB-3Yo");
                 router.push({ name: "HomePage" })
-            }
+            },
+                 
+            
 
         },
     });
