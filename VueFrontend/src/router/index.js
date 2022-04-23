@@ -91,14 +91,12 @@ const routes = [
         name: 'studentDiscounts',
         component: StudentDiscounts,
     },
-    // add more here
-
-    // Not found; don't move this one or place anything after it
     {
-        path: '/:pathMatch(.*)*',
-        name: 'not-found',
-        component: () => import('../Views/NotFound')
+        path: '/aidEligibility/info',
+        name: 'studentInformation',
+        component: () => import('../Views/AidEligibility/Info.vue')
     }
+    // add more here 
 ]
 
 const router = createRouter({
