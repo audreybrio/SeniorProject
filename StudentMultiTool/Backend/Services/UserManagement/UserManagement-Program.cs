@@ -428,19 +428,19 @@ namespace UserManagement
             
         }
 
-        public void UpdateCreate(string email, string password, string username, string school, string token)
+        public void UpdateCreate(string email, string passcode, string username, string school, string token)
         {
             // inserts the created user into the database
             
             SqlConnection conn = new SqlConnection();
             conn.ConnectionString = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING");
             conn.Open();
-            SqlCommand cmd = new SqlCommand("INSERT INTO UserAccounts " + "(email, name, username,  password, role, school, active_status, token, verified_email) " +
-                                                               "  values (@email, @name, @username, @password, @role, @school, @active_status, @token, @verified_email)", conn);
+            SqlCommand cmd = new SqlCommand("INSERT INTO UserAccounts " + "(email, name, username,  passcode, role, school, active_status, token, verified_email) " +
+                                                               "  values (@email, @name, @username, @passcode, @role, @school, @active_status, @token, @verified_email)", conn);
             cmd.Parameters.AddWithValue("@email", email);
             cmd.Parameters.AddWithValue("@name", "");
             cmd.Parameters.AddWithValue("@username", username);
-            cmd.Parameters.AddWithValue("@password", password);
+            cmd.Parameters.AddWithValue("@passcode", passcode);
             cmd.Parameters.AddWithValue("@role", "student");
             cmd.Parameters.AddWithValue("@school", school);
             cmd.Parameters.AddWithValue("@active_status", 0);

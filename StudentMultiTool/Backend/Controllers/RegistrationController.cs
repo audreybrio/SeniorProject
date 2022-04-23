@@ -1,11 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using StudentMultiTool.Backend.Models.Registration;
 using StudentMultiTool.Backend.Services.Authentication;
 using StudentMultiTool.Backend.Services.UserManagement;
 using System.Data;
-using System.Data.SqlClient;
-using System.Text.Json.Nodes;
 using UserManagement;
 
 namespace StudentMultiTool.Backend.Controllers
@@ -30,6 +27,8 @@ namespace StudentMultiTool.Backend.Controllers
             .ToArray();
         }
 
+        // validateInput method returns an array of IEnumerable with the valid or invalid
+        // values for the user's input
         [HttpGet("validation/{username}/{password}/{email}/{university}")]
         public IEnumerable<Registration> validateInput(string username, string password, string email, string university)
         {
@@ -40,6 +39,7 @@ namespace StudentMultiTool.Backend.Controllers
             bool localEmailExist = false;
             bool localUsernameExist = false;
 
+            // If statements to verify each user's input
             InputValidation inputValidation = new InputValidation();
             if (inputValidation.validateUsername(username))
             {
@@ -71,6 +71,7 @@ namespace StudentMultiTool.Backend.Controllers
                 localUsernameExist = true;
             }
 
+            // Returns the array of valid or invalid input values
             return Enumerable.Range(1, 1).Select(index => new Registration
             {
                 Username = localUsername,
@@ -84,26 +85,28 @@ namespace StudentMultiTool.Backend.Controllers
         }
 
 
-        // Create a new user.
+        // Create a new user and sends email verification.
         // Returns the status of the operation.
         [HttpPost]
         [HttpPost("newRegistration/{username}/{password}/{email}/{university}")]
-        public string registerNewUser(string username, string password, string email, string university)
+        public IActionResult registerNewUser(string username, string password, string email, string university)
         {
             try
             {
                 // Generates Unique ID token to verify user email
                 String token = Guid.NewGuid().ToString();
 
+                // Creates a new user account in the UserAccounts table
                 Update usertoDB = new Update();
                 usertoDB.UpdateCreate(email, password, username, university, token);
 
+                // Sends the email verification to the user's email address
                 EmailVerification emailVerifycation = new EmailVerification();
                 emailVerifycation.SendEmail(username, email, token, password);
-                return "Success";
+                return Ok("Success");
             }catch(Exception ex)
             {
-                return "Error creating new User: " + ex.Message;
+                return NotFound();
             }
 
         }
@@ -112,24 +115,26 @@ namespace StudentMultiTool.Backend.Controllers
         // Returns the status of the operation.
         [HttpPost]
         [HttpPost("emailVerification/{username}/{token}")]
-        public string activateUserAccount(string username, string token)
+        public IActionResult activateUserAccount(string username, string token)
         {
             try
             {
+                // the username and token matches with our database values
+                // the new user account is activated
                 Update manageAccount = new Update();
                 if (manageAccount.ActivateAccount(username, token))
                 {
-                    return "Success";
+                    return Ok("Success");
                 }
                 else
                 {
-                    return "Error";
+                    return Ok("Error");
                 }
 
             }
             catch (Exception ex)
             {
-                return "Error activating user's account: " + ex.Message;
+                return NotFound();
             }
         }
     }
