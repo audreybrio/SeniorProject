@@ -1,55 +1,29 @@
 <template>
-    <h2>
-        Schedule Builder
-    </h2>
-    <div>
-        <CreateItemForms
-                   @item-added="addItem"
-                   :nextId="nextId"
-                   :submitText="createButtonText"
-                   >
-        </CreateItemForms>
-    </div>
-    <br />
-    <div>
-        <Schedules
-                   :items="items"
-                   :editableItems="true"
-                   @item-updated="updateItem"
-                   @item-deleted="deleteItem" />
+    
+
+    <div class="container">
+        <Schedules :items="items" />
     </div>
 </template>
 
 <script>
     import * as $ from 'jquery'
     import Schedules from './Schedules'
-    import CreateItemForms from './CreateItemForms'
-    import URLS from '../../variables'
+    //import ItemForms from './ItemForms'
     export default {
         name: 'ScheduleBuilder',
         components: {
             Schedules,
-            CreateItemForms,
+            //ItemForms,
         },
         data() {
             return {
                 loading: false,
                 items: [],
-                demo: false,
-                createButtonText: "Create"
-            }
-        },
-        computed: {
-            nextId() {
-                return this.items.length + 1;
-            },
-            ajaxContext() {
-                return this;
+                demo: true
             }
         },
         created() {
-            this.user = this.$route.params.user;
-            this.scheduleId = this.$route.params.scheduleId;
             if (!this.demo) {
                 this.loadSchedule();
             }
@@ -129,12 +103,11 @@
             // Make an AJAX request to get items on page load
             loadSchedule() {
                 this.loading = true;
-                let requestName = "LoadSchedule";
-                console.log(requestName);
+
+                console.log("ajax time (SB)");
                 $.ajax({
                     // set the HTTP request URL
-                    // url: `${baseURL}/schedule/getschedule/${this.user}/${this.scheduleId}`,
-                    url: `${URLS.api.scheduleBuilder.getSchedule}/${this.user}/${this.scheduleId}`,
+                    url: 'schedule/getschedule/1',
 
                     // set the context object to the vue component
                     // this line tells vue to update its components
@@ -169,94 +142,9 @@
                     }
                 });
             },
-            // Creates a schedule item and adds it to this.items.
-            addItem(newItem) {
-                console.log("Adding item");
-                this.items.push(newItem);
-                console.log("Item added");
-                // let sendable = $(newItem).serialize();
-                newItem.creator = String(this.user);
-                newItem.scheduleId = Number(this.scheduleId);
-                let sendable = JSON.stringify(newItem);
-                // make ajax request
-                $.ajax({
-                    // url: this.baseUrl + 'schedule/createItem/' + this.schedule + "/" + newItem.id,
-                    // url: `${baseURL}/schedule/createItem/${this.user}/${this.scheduleId}`,
-                    url: `${URLS.api.scheduleBuilder.createItem}/${this.user}/${this.scheduleId}`,
-                    // url: `${baseURL}/api/schedule/CreateItem/`,
-                    context: this.ajaxContext,
-                    contentType: 'application/json',
-                    method: 'POST',
-                    data: sendable,
-                    dataType: 'json',
-                    success: function (data) {
-                        console.log(data);
-                    },
-                    error: function (error) {
-                        console.log(error);
-                    }
-                });
-            },
-            // Updates a schedule item
-            updateItem(updatedItem) {
-                console.log("ScheduleBuilder.updateItem()");
-                let updated = false;
-                for (let i = 0; i < this.items.length && !updated; i++) {
-                    if (this.items[i].id === updatedItem.id) {
-                        this.items[i] = updatedItem;
-                        updated = true;
-                        console.log("Successfully updated");
-                    }
-                }
-                // Make ajax request to update the item
-                $.ajax({
-                    // url: this.baseUrl + 'schedule/updateItem/' + this.schedule + "/" + updatedItem.id,
-                    // url: `${baseURL}/schedule/updateItem/${this.user}/${this.scheduleId}`,
-                    url: `${URLS.api.scheduleBuilder.updateItem}/${this.user}/${this.scheduleId}`,
-                    context: this,
-                    method: 'POST',
-                    data: updatedItem,
-                    success: function (data) {
-                        console.log(data);
-                    },
-                    error: function (error) {
-                        console.log(error);
-                    }
-                });
-            },
-            // Deletes a schedule item based on ID.
-            deleteItem(deleteableItem) {
-                console.log("ScheduleBuilder.deleteItem()");
-                console.log("Deleting item with id " + deleteableItem.id);
-                let deleted = false;
-                for (let i = 0; i < this.items.length && !deleted; i++) {
-                    if (this.items[i].id === deleteableItem.id) {
-                        this.items = this.items.filter(item => (item.id !== this.items[i].id));
-                        deleted = true;
-                        console.log("Successfully deleted from list");
-                    }
-                }
-                if (!deleted) {
-                    console.log("Could not delete");
-                }
-                // Make AJAX request to delete the item.
-                $.ajax({
-                    // url: this.baseUrl + 'schedule/deleteItem/' + this.schedule + "/" + deleteableItem.id,
-                    // url: `${baseURL}/api/schedule/deleteItem/${this.user}/${this.scheduleId}/${deleteableItem.id}`,
-                    url: `${URLS.api.scheduleBuilder.deleteItem}/${this.user}/${this.scheduleId}/${deleteableItem.id}`,
-                    context: this,
-                    method: 'DELETE',
-                    data: deleteableItem,
-                    success: function (data) {
-                        console.log(data);
-                        console.log("Successfully deleted everywhere");
-                    },
-                    error: function (error) {
-                        console.log(error);
-                        console.log("Could not delete everywhere");
-                    }
-                });
-            }
+            // TODO: create schedule item
+            // TODO: update schedule item
+            // TODO: delete schedule item
         },
     }
 </script>

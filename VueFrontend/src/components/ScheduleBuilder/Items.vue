@@ -1,32 +1,78 @@
 <template>
-    <div v-if="editing && editable" id="editdiv">
-        <UpdateItemForms
-                   @item-updated="updateItem"
-                   @item-deleted="deleteItem"
-                   @cancel="cancel"
-                   :nextId="item.id"
-                   :item="item"
-                   :editing="editing"
-                   :submitText="updateButtonText"
-                   >
-        </UpdateItemForms>
+    <div v-if="editing" id="editdiv">
+        <table>
+            <thead>
+                <tr>
+                    <td>
+                        <button @click="saveEdit()" type="button">Save</button>
+                        <button @click="cancelEdit()" type="reset">Cancel</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <!-- TODO: form for start time -->
+                        <input v-model="tempItem.startHour">
+                        <input v-model="tempItem.startMinute">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <!-- TODO: form for end time -->
+                        <input v-model="tempItem.endHour">
+                        <input v-model="tempItem.endMinute">
+                    </td>
+                </tr>
+                <!-- TODO: form for days -->
+                <tr>
+                    <td v-for="(day, index) in item.days" :key="day">
+                        <input v-model="tempItem.days[index]" type="checkbox" v-if="day" checked>
+                        <input v-model="tempItem.days[index]" type="checkbox" v-else>
+                    </td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <!-- TODO: form for title -->
+                        <label for="titleEditField">Title</label>
+                        <input v-model="tempItem.title" id="titleEditField">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <!-- TODO: form for contact -->
+                        <label for="contactEditField">Contact</label>
+                        <input v-model="tempItem.contact" id="contactEditField">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <!-- TODO: form for location -->
+                        <label for="locationEditField">Location</label>
+                        <input v-model="tempItem.location" id="locationEditField">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <!-- TODO: form for notes -->
+                        <label for="notesEditField">Notes</label>
+                        <textarea v-model="tempItem.notes" id="notesEditField" />
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
     <div v-else id="noeditdiv">
         <table>
             <thead>
                 <tr>
                     <td>
-                        <button v-if="editable" @click="edit()" type="button">Edit</button>
+                        <button @click="edit()" type="button">Edit</button>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <Times
-                               :startHour="item.startHour"
-                               :startMinute="item.startMinute"
-                               :endHour="item.endHour"
-                               :endMinute="item.endMinute"
-                         />
+                        <Time :startHour="item.startHour" :startMinute="item.startMinute" :endHour="item.endHour" :endMinute="item.endMinute" />
                     </td>
                 </tr>
             </thead>
@@ -49,61 +95,64 @@
 </template>
 
 <script>
-    import UpdateItemForms from "./UpdateItemForms"
-    import Times from "./Times"
-    export default {
-        name: "ScheduleItems",
-        props: {
-            item: Object,
-            Time: Object,
-            editable: Boolean
-        },
-        components: {
-            UpdateItemForms,
-            Times,
-        },
-        created(){
-            this.editing = false;
-            this.tempItem = {};
-        },
-        data(){
-            return {
-                editing: this.editing,
-                tempItem: this.tempItem,
-                updateButtonText: "Save"
-            };
-        },
-        methods: {
-            edit(){
-                this.editing = true;
+//import Times from "./Times"
+export default {
+    name: "ScheduleItems",
+    props: {
+        Time: Object,
+    },
+    components:{
+        //Times,
+    },
+    created(){
+    },
+    data(){
+        return {
+            editing: false,
+            tempItem: {}
+        };
+    },
+    methods: {
+        edit(){
+            this.editing = true;
 
-                // Set up tempItem to hold values while editing
-                this.tempItem = {
-                    id: this.item.id,
-                    title: this.item.title,
-                    contact: this.item.contact,
-                    location: this.item.location,
-                    notes: this.item.notes,
-                    days: this.item.days,
-                    startHour: this.item.startHour,
-                    startMinute: this.item.startMinute,
-                    endHour: this.item.endHour,
-                    endMinute: this.item.endMinute
-                };
-            },
-            cancelEdit(){
-                this.editing = false;
-            },
-            updateItem(updatedItem) {
-                // emit to parent component
-                this.$emit("item-updated", updatedItem);
-            },
-            cancel() {
-                this.editing = false;
-            },
-            deleteItem(deleteableItem) {
-                this.$emit("item-deleted", deleteableItem);
-            }
+            // Set up tempItem to hold values while editing
+            this.tempItem = {
+                id: this.item.id,
+                title: this.item.title,
+                contact: this.item.contact,
+                location: this.item.location,
+                notes: this.item.notes,
+                days: this.item.days,
+                startHour: this.item.startHour,
+                startMinute: this.item.startMinute,
+                endHour: this.item.endHour,
+                endMinute: this.item.endMinute
+            };
+            this.item.editing = true;
+        },
+        saveEdit(){
+            // Update the vaules
+            this.item = {
+                id: this.item.id,
+                title: this.tempItem.title,
+                contact: this.tempItem.contact,
+                location: this.tempItem.location,
+                notes: this.tempItem.notes,
+                days: this.tempItem.days,
+                startHour: this.tempItem.startHour,
+                startMinute: this.tempItem.startMinute,
+                endHour: this.tempItem.endHour,
+                endMinute: this.tempItem.endMinute
+            };
+            this.item.editing = false;
+            this.editing = false;
+        },
+        cancelEdit(){
+            this.item.editing = false;
+            this.editing = false;
+            // Don't update this.item's values
         }
     }
+}
 </script>

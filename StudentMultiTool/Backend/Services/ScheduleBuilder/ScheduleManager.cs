@@ -33,7 +33,7 @@ namespace StudentMultiTool.Backend.Services.ScheduleBuilder
         }
         public ScheduleManager()
         {
-            dbConnectionString = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING");
+            dbConnectionString = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING", EnvironmentVariableTarget.User);
             BaseFilePath = "./";
         }
         public ScheduleManager(string dbConnectionString, string BaseFilePath)

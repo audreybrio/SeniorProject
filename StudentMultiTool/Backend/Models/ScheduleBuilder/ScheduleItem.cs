@@ -39,84 +39,6 @@ namespace StudentMultiTool.Backend.Models.ScheduleBuilder
             false
         };
 
-        // Shorthand for the days
-        public bool Sunday
-        {
-            get
-            {
-                return this.DaysOfWeek[0];
-            }
-            set
-            {
-                this.DaysOfWeek[0] = value;
-            }
-        }
-        public bool Monday
-        {
-            get
-            {
-                return this.DaysOfWeek[1];
-            }
-            set 
-            {
-                this.DaysOfWeek[1] = value; 
-            }
-        }
-        public bool Tuesday
-        { 
-            get
-            {
-                return this.DaysOfWeek[2];
-            }
-            set
-            {
-                this.DaysOfWeek[2] = value;
-            }
-        }
-        public bool Wednesday
-        { 
-            get 
-            {
-                return this.DaysOfWeek[3];
-            }
-            set
-            { 
-                this.DaysOfWeek[3] = value;
-            } 
-        }
-        public bool Thursday
-        {
-            get
-            {
-                return this.DaysOfWeek[4];
-            }
-            set 
-            {
-                this.DaysOfWeek[4] = value;
-            }
-        }
-        public bool Friday
-        {
-            get
-            {
-                return this.DaysOfWeek[5];
-            }
-            set
-            {
-                this.DaysOfWeek[5] = value;
-            }
-        }
-        public bool Saturday
-        {
-            get
-            {
-                return this.DaysOfWeek[6];
-            }
-            set
-            {
-                this.DaysOfWeek[6] = value;
-            }
-        }
         // The times at which the ScheduleItem begins and ends.
         public TimeOnly StartTime { get; set; } = new TimeOnly();
         public TimeOnly EndTime { get; set; } = new TimeOnly();
@@ -164,28 +86,10 @@ namespace StudentMultiTool.Backend.Models.ScheduleBuilder
             }
         }
 
-        public ScheduleItem() { }
-
-        public ScheduleItem(int Id)
-        {
-            this.Id = Id;
-        }
         public ScheduleItem(int Id, int Creator)
         {
             this.Id = Id;
             this.Creator = Creator;
-        }
-        public ScheduleItem(ScheduleItemCRUDModel model)
-        {
-            this.Id = model.Id;
-            this.Creator = int.Parse(model.Creator); // TODO: fix the inconsistency between datatypes
-            this.Contact = model.Contact;
-            this.DaysOfWeek = model.DaysOfWeek;
-            this.EndTime = new TimeOnly(model.EndHour, model.EndMinute);
-            this.Location = model.Location;
-            this.Notes = model.Notes;
-            this.StartTime = new TimeOnly(model.StartHour, model.StartMinute);
-            this.Title = model.Title;
         }
 
         // Returns the ScheduleItem as a JsonObject.

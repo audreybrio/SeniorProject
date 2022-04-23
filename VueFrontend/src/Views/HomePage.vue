@@ -17,20 +17,6 @@
         </div>
         <button @click="onSubmit">Logout</button>
 
-            <button @click="onAC">Access Control</button>
-            <button @click="onScheduleBuilder">Schedule Builder</button>
-            <button @click="onScheduleComparison">Schedule Comparison</button>
-        </div>
-        <div>
-            <button @click="onAM">Automated Moderating</button>
-            <button @click="onBS">Book Selling</button>
-            <button @click="onUSD">User Analysis Dashboard</button>
-        </div>
-        <div>
-            <button @click="onAid">Aid Eligibility Estimates</button>
-            <button @click="onSD">Student Discounts</button>
-            <button @click="onSubmit">Logout</button>
-        </div>
     </div>
     <router-view />
 </template>
@@ -48,12 +34,28 @@
             };
         },
         created() {
+            // fetch the data when the view is created and the data is
+            // already being observed
+            this.fetchData();
         },
         watch: {
             // call again the method if the route changes
             '$route': 'fetchData'
         },
         methods: {
+            fetchData() {
+                this.post = null;
+                this.loading = true;
+
+                fetch('https://studentmultitool.me:5001/weatherforecast')
+                    .then(r => r.json())
+                    .then(json => {
+                        this.post = json;
+                        this.loading = false;
+                        return;
+                    });
+
+            },
             onSubmit() {
                 const token = window.sessionStorage.getItem("token");
                 var isJWT = jwt_decode(token);
@@ -64,22 +66,19 @@
             },
 
              onAC() {
-                router.push({ name: "not-found" });
+                router.push({ name: "EmailVue" });
             },
-            onScheduleBuilder() {
-                router.push({ name: "SelectForBuilder", params: { user: this.id }});
-            },
-            onScheduleSelection() {
-                router.push({ name: "SelectForComparison", params: { user: this.id }});
+            onSB() {
+                router.push({ name: "ScheduleSelection" });
             },
             onAM() {
-                router.push({ name: "not-found" });
+                router.push({ name: "EmailVue" });
             },
             onBS() {
                 router.push({ name: "bookSelling" });
             },
             onUSD() {
-                router.push({ name: "not-found" });
+                router.push({ name: "EmailVue" });
             },
             onSD() {
                 router.push({ name: "studentDiscounts" });
@@ -89,9 +88,6 @@
             },
 
 
-            onAid() {
-                router.push({ name: "studentInformation" });
-            }
         },
     });
 </script>
