@@ -23,13 +23,14 @@
       <input type="submit" value="Post Discount"/>
     </div>
   </form>
-
+    the username is {{ this.username }}
 </template>
 
 <script>
 export default {
   data () {
     return {
+        username: this.$route.params.username,
       form: {
         discountName: '',
         establishment: '',

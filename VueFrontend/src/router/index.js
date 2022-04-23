@@ -16,7 +16,7 @@ import StudentDiscounts from '../components/StudentDiscounts/StudentDiscounts.vu
 const routes = [
     // Core Features
     {
-        path: '/',
+        path: '/emailvue',
         name: 'EmailVue',
         component: EmailVue
     },
@@ -86,7 +86,7 @@ const routes = [
 
     // StudentDiscounts
     {
-        path: '/studentDiscounts',
+        path: '/:username',
         // path: '/',
         name: 'studentDiscounts',
         component: StudentDiscounts,
