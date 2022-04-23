@@ -1,4 +1,3 @@
-<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>-->
 <template>
     <div class="list">
         <div v-if="loading" class="loading">
@@ -10,64 +9,61 @@
                 <p>
                     Create a new Schedule
                     <input v-model="newScheduleTitle" placeholder="Title" />
-                    <button id="newScheduleSubmit" @click="PostSchedule()">Create</button>
+                    <button id="newScheduleSubmit" @click="PostSchedule">Create</button>
                 </p>
             </form>
         </div>
 
         <div v-if="list" class="content">
-            <center>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>id</th>
-                            <th>title</th>
-                            <th>created</th>
-                            <th>modified</th>
-                            <th>Owner</th>
-                            <th>Edit</th>
-                            <th>Delete</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="schedule in list" :key="schedule.id">
-                            <!--TODO: implement Schedule component-->
-                            <!--<Schedule :schedule="schedule"/>-->
-                            <td>{{ schedule.id }}</td>
-                            <td>{{ schedule.title }}</td>
-                            <td>{{ schedule.created }}</td>
-                            <td>{{ schedule.modified }}</td>
-                            <td>{{ schedule.owner }}</td>
-                            <td><button>Edit</button></td>
-                            <td><button>Delete</button></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </center>
+            <table>
+                <thead>
+                    <tr>
+                        <th>id</th>
+                        <th>title</th>
+                        <th>created</th>
+                        <th>modified</th>
+                        <th>Owner</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="schedule in list" :key="schedule.id">
+                        <!--TODO: implement Schedule component-->
+                        <!--<Schedule :schedule="schedule"/>-->
+                        <td>{{ schedule.id }}</td>
+                        <td>{{ schedule.title }}</td>
+                        <td>{{ schedule.created }}</td>
+                        <td>{{ schedule.modified }}</td>
+                        <td>{{ schedule.owner }}</td>
+                        <td><button @click="onScheduleBuilder(schedule.id)">Edit</button></td>
+                        <td><button @click="deleteSchedule(schedule.id)">Delete</button></td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
+    <router-view />
 </template>
 
 <script lang="js">
     import * as $ from 'jquery'
+    import router from '../../router'
+    const baseURL = "https://localhost:5002";
     export default ({
         data() {
             return {
                 loading: false,
                 list: null,
-                newScheduleTitle: ""
+                newScheduleTitle: "",
+
+                // get user id or other identifier from the router to plug into getList()
+                user: this.$route.params.user
             };
         },
-        props: {
-            //newScheduleTitle: String,
-        },
         created() {
-            // TODO: get user id or other identifier from cookie to plug into getList()
-
-            // fetch the data when the view is created and the data is
-            // already being observed
+            console.log("this.user: " + this.user);
             this.getList();
-            console.log("created")
         },
         watch: {
             // call again the method if the route changes
@@ -80,7 +76,7 @@
                 console.log("ajax time");
                 $.ajax({
                     // set the HTTP request URL
-                    url: 'schedule/getlist/aloafofbrad',
+                    url: `${baseURL}/api/schedule/getlist/${this.user}`,
 
                     // set the context object to the vue component
                     // this line tells vue to update its components
@@ -117,16 +113,9 @@
             },
             PostSchedule() {
                 this.loading = true;
-                let username = "aloafofbrad";
                 $.ajax({
-                    url: "schedule/newschedule/" + this.newScheduleTitle + "/" + username,
+                    url: `${baseURL}/api/schedule/newschedule/${this.newScheduleTitle}/${this.user}`,
                     context: this,
-                    //contentType: "application/json; charset=utf-8",
-                    //data: {
-                    //    title: this.newScheduleTitle,
-                    //    username: username
-                    //},
-                    //dataType: "json",
                     processData: true,
                     method: 'POST',
                     success: function (data) {
@@ -141,6 +130,40 @@
                     }
                 });
             },
+            onScheduleBuilder(scheduleId) {
+                router.push({
+                    name: 'ScheduleBuilder',
+                    params: { user: this.user, scheduleId: scheduleId }
+                });
+            },
+            deleteSchedule(scheduleId) {
+                let userConfirmed = confirm("Are you sure you want to delete this schedule?");
+                if (userConfirmed) {
+                    $.ajax({
+                        url: `${baseURL}/api/schedule/deleteSchedule/${this.user}/${scheduleId}`,
+                        context: this,
+                        method: "DELETE",
+                        success: function (data) {
+                            console.log(data);
+                            this.getList();
+                        },
+                        error: function (error) {
+                            console.log(error);
+                        }
+                    });
+                }
+            },
         }
     });
 </script>
+
+<style>
+    table {
+        margin: auto;
+    }
+    td {
+        border-width: 1px;
+        border-style: solid;
+        border-color: black;
+    }
+</style>

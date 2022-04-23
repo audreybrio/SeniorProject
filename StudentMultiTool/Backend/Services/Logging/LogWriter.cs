@@ -78,7 +78,7 @@ namespace Marvel.Services.Logging
         {
             try
             {
-                dbConnectionString = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING", EnvironmentVariableTarget.User);
+                dbConnectionString = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING");
             }
             catch (Exception ex)
             {
