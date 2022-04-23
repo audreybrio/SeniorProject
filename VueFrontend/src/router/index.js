@@ -59,6 +59,11 @@ const routes = [
         name: 'studentDiscounts',
         component: StudentDiscounts
     },
+    {
+        path: '/aidEligibility/info',
+        name: 'studentInformation',
+        component: () => import('../Views/AidEligibility/Info.vue')
+    }
     // add more here 
 ]
 
