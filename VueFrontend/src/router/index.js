@@ -95,8 +95,15 @@ const routes = [
         path: '/aidEligibility/info',
         name: 'studentInformation',
         component: () => import('../Views/AidEligibility/Info.vue')
+    },
+    // ADD MORE HERE! DON'T ADD AFTER not-found!
+
+    // Not found; don't move this one or place anything after it
+    {
+        path: '/:pathMatch(.*)*',
+        name: 'not-found',
+        component: () => import('../Views/NotFound')
     }
-    // add more here 
 ]
 
 const router = createRouter({
