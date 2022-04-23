@@ -23,7 +23,7 @@ namespace StudentMultiTool.Backend.Controllers
             InputValidation userValidation = new InputValidation();
             if (userValidation.usernameExists(username))
             {
-
+                Console.WriteLine("username: " + username);
                 return Ok("valid");
             }
             else

@@ -48,6 +48,7 @@
         },
     methods: {
         postDiscount() {
+            console.log('postDiscounts')
             $.ajax({
                 // set the HTTP request URL
                 url: `${baseURL}/api/studentdiscounts/verification/${this.username}`,
@@ -62,13 +63,14 @@
                 success: function (data) {
                     console.log(data)
                     // log that we've completed
-
+                    console.log('success')
                     return true;
                 },
                 // On an unsuccessful AJAX request:
                 error: function (error) {
                     // log the error
                     console.log(error);
+                    console.log('failed')
                     this.items = null;
                     return false;
                 }
