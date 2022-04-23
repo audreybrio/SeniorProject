@@ -11,27 +11,27 @@
                 <div>
                     <label for="username">Username:</label>
                     <br />
-                    <input type="text" name="username" v-model="username" placeholder="yourusername12" maxlength="64" required>
+                    <input type="text" name="username" v-model="username" placeholder="yourusername12" maxlength="21" required>
                     <br />
 
                     <label for="password">Password:</label>
                     <br />
-                    <input type="password" name="Password" v-model="password" placeholder="YourPassword12" maxlength="64" required>
+                    <input type="password" name="Password" v-model="password" placeholder="YourPassword12" maxlength="25" required>
                     <br />
 
                     <label for="retype_password">Re-type password:</label>
                     <br />
-                    <input type="password" name="Password" v-model="retype_password" placeholder="YourPassword12" maxlength="64" required>
+                    <input type="password" name="Password" v-model="retype_password" placeholder="YourPassword12" maxlength="25" required>
                     <br />
 
                     <label for="email">Email:</label>
                     <br />
-                    <input type="email" name="email" v-model="email" placeholder="Example@student.csulb.edu" maxlength="64" required>
+                    <input type="email" name="email" v-model="email" placeholder="Example@student.csulb.edu" maxlength="51" required>
                     <br />
 
                     <label for="retype_email">Re-type email:</label>
                     <br />
-                    <input type="email" name="retype_email" v-model="retype_email" placeholder="Re-type email" maxlength="64" required>
+                    <input type="email" name="retype_email" v-model="retype_email" placeholder="Re-type email" maxlength="51" required>
                     <br />
 
                     <select v-model="university" required>
@@ -42,7 +42,7 @@
                     </select>
                     <br />
 
-                    <input type="submit" value="REGISTER" class="button">
+                    <input type="submit" value="REGISTER" class="button" formnovalidate>
                 </div>
             </form>
             <div class="signin">
@@ -78,22 +78,6 @@
             };
         },
         computed: {
-            resetValidateValues() {
-                this.validate.username = false;
-                this.validate.password = false;
-                this.validate.email = false;
-                this.validate.university = false;
-                this.validate.usernameExist = true;
-                this.validate.emailExist = true;
-            },
-            resetInputValues() {
-                this.username = "";
-                this.password = "";
-                this.email = "";
-                this.university = "";
-                this.retype_email = "";
-                this.retype_password = "";
-            },
             areValidInputs() {
                 if (this.validate.username == true && this.validate.password == true && this.validate.email == true
                     && this.validate.university == true && this.validate.usernameExist == false
@@ -111,7 +95,7 @@
                     context: this,
                     processData: true,
                     method: 'POST',
-                    success: function (data) {
+                    success: function () {
                         this.isAccountCreated = true;
                         // resets user input values
                         alert("We have sent an email to " + this.email + " \n \n You need to verify your email to activate"
@@ -125,9 +109,12 @@
                         return;
                     }
                 });
+                return true;
             }
         },
         methods: {
+
+            // errorMessages method populates an array with errors when input values are checked for validation
             errorMessages() {
                 this.errors = []
 
@@ -167,6 +154,9 @@
                     this.usernameExist = false;
                 }
             },
+
+            // validateUserInput verifies that user input is valid sending a GET request to the server's api
+            // and receiving the values of the valid or invalid input fields
             validateUserInput() {
                 this.isAccountCreated = false;
                 this.resetValidateValues;
@@ -182,7 +172,6 @@
                     method: 'GET',
                     // On a successful AJAX request:
                     success: function (data) {
-                        console.log(data)
                         this.validate.username = data[0].username;
                         this.validate.password = data[0].password;
                         this.validate.email = data[0].email;
@@ -190,7 +179,6 @@
                         this.validate.usernameExist = data[0].usernameExist;
                         this.validate.emailExist = data[0].emailExist;
                         // log that we've completed
-                        console.log("ajax Success")
                         this.errorMessages()
                         if (this.areValidInputs) {
                             // Creates a new user account if user inputs are valid
@@ -208,7 +196,6 @@
                 });
             },
             getData() {
-                console.log('getting data...');
                 $.ajax({
                     // set the HTTP request URL
                     url: `${baseURL}/api/registration`,
@@ -223,7 +210,7 @@
                     success: function (data) {
                         this.items = data;
                         // log that we've completed
-                        console.log("ajax Success")
+                        
                         return true;
                     },
                     // On an unsuccessful AJAX request:
@@ -234,7 +221,23 @@
                         return false;
                     }
                 });
-            }
+            },
+            resetValidateValues() {
+                this.validate.username = false;
+                this.validate.password = false;
+                this.validate.email = false;
+                this.validate.university = false;
+                this.validate.usernameExist = true;
+                this.validate.emailExist = true;
+            },
+            resetInputValues() {
+                this.username = "";
+                this.password = "";
+                this.email = "";
+                this.university = "";
+                this.retype_email = "";
+                this.retype_password = "";
+            },
         }
     };
 </script>
