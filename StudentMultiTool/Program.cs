@@ -7,6 +7,13 @@ static class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
+
+        builder.Services.AddControllers(options =>
+        {
+            options.OutputFormatters.RemoveType<HttpNoContentOutputFormatter>();
+            var jsonInputFormatter = options.InputFormatters.OfType<SystemTextJsonInputFormatter>().Single();
+            jsonInputFormatter.SupportedMediaTypes.Add("application/json");
+        });
         // Add services to the container.
         builder.Services.AddControllers(options =>
         {

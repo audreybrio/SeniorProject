@@ -7,7 +7,7 @@ namespace StudentMultiTool.Backend.Models.RecipeModel
     public class RecipeDB
     {
 
-        public List<Recipe> GetAllRecipe(int recipeID)
+        public List<Recipe> GetAllRecipe()
         {
             List<Recipe> customerRecipe = new List<Recipe>();
             string connection = @"Server=(localdb)\MSSQLLocalDB;Database=RecipeData;Trusted_Connection=True; MultipleActiveResultSets=true;";
@@ -15,8 +15,9 @@ namespace StudentMultiTool.Backend.Models.RecipeModel
             using (SqlConnection con = new SqlConnection(connection))
             {
 
+                SqlCommand cmd = new SqlCommand("SELECT * FROM [recipes];", con);
 
-                SqlCommand cmd = new SqlCommand("SELECT * FROM [recipes] where recipes.id=@recipeID;", con);
+                //SqlCommand cmd = new SqlCommand("SELECT * FROM [recipes] where recipes.id=@recipeID;", con);
                 cmd.CommandType = CommandType.Text;
                 con.Open();
 
@@ -29,6 +30,7 @@ namespace StudentMultiTool.Backend.Models.RecipeModel
 
                         customerRecipe.Add(new Recipe
                         {
+                            id = Convert.ToInt32(rd["id"]),
                             title = rd["title"].ToString(),
                             category = rd["category"].ToString(),
                             calorieValue = rd["calorieValue"].ToString(),

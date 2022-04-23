@@ -8,17 +8,17 @@ using Microsoft.AspNetCore.Http;
 namespace StudentMultiTool.Backend.Services.Recipe
 {
     [ApiController]
-    [Route("api/" + "Recipes")]
+    [Route("api/" + "recipes")]
     public class RecipeController: Controller
     {
         RecipeDB db = new RecipeDB();
 
-        [HttpGet("getlist/{id}")]
-        public IActionResult GetSchedule(int id)
+        [HttpGet("getlist")]
+        public IActionResult GetSchedule()
         {
-            ViewBag.Message = db.GetAllRecipe(id);
+            ViewBag.Message = db.GetAllRecipe();
 
-            return View();
+            return View(ViewBag.Message);
         }
 
     }

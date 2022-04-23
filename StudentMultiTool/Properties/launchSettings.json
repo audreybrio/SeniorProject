@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "StudentMultiTool": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "hotReloadEnabled": true,
+      "applicationUrl": "https://localhost:49852;http://localhost:49853"
+    }
+  }
+}
