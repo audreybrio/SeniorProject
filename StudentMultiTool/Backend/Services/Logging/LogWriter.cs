@@ -78,7 +78,7 @@ namespace Marvel.Services.Logging
         {
             try
             {
-                dbConnectionString = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING", EnvironmentVariableTarget.User);
+                dbConnectionString = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING");
             }
             catch (Exception ex)
             {
@@ -169,7 +169,7 @@ namespace Marvel.Services.Logging
     public class FileLogWriter : LogWriter
     {
         private Queue<Log> logs { get; }
-        public string filePath { get; set; }
+        public string? filePath { get; set; }
         public FileLogWriter()
         {
             try

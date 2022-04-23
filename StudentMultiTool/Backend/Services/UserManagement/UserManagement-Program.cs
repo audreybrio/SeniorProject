@@ -9,7 +9,7 @@ namespace UserManagement
         // Checks if user exists, if not validates username and passcode are valid and creates new user
         public static bool CreateUsers(string name, string username, string email, string passcode, string school)
         {
-
+            Update updateDB = new Update();
             bool userExist = Validate.UserExist(username);
             bool validUsername = false, validPasscode=false;
             if (userExist == false)
@@ -26,7 +26,8 @@ namespace UserManagement
                 }
                 if(validUsername == true && validPasscode == true)
                 {
-                    Update.UpdateCreate(name, username, email, passcode, school);
+                    String token = Guid.NewGuid().ToString();
+                    updateDB.UpdateCreate(email, passcode, username, school, token);
                     return true;
                 }
                 else
@@ -387,44 +388,69 @@ namespace UserManagement
             cmd.Parameters.AddWithValue("@username", username);
             cmd.ExecuteNonQuery();
         }
-
-        // Updates database to create new user 
-        public static void UpdateCreate(string name, string username, string email, string passcode, string school)
+        public bool ActivateAccount(string username, string token)
         {
-            // inserts the created user into the database
+            if(UserTokenMatched(username, token))
+            {
+                SqlConnection conn = new SqlConnection();
+                conn.ConnectionString = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING");
+                conn.Open();
+                SqlCommand cmd = new SqlCommand("UPDATE UserAccounts" + " SET active_status = 1, verified_email = 1" + 
+                                                " WHERE username = @username", conn);
+                cmd.Parameters.AddWithValue("@username", username);
+                cmd.ExecuteNonQuery();
+                conn.Close();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+            
+        }
+        public bool UserTokenMatched(string username, string token)
+        {
             SqlConnection conn = new SqlConnection();
             conn.ConnectionString = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING");
             conn.Open();
-            //int id = (int) generateID();
-            SqlCommand cmd = new SqlCommand("INSERT INTO UserAccounts " + "(name, username, email, passcode, role, school, active_status) " + "  values (@name, @username, @email, @passcode, @role, @school, @active_status)", conn);
-            cmd.Parameters.AddWithValue("@name", name);
+
+            SqlCommand cmd = new SqlCommand("SELECT COUNT(username) FROM UserAccounts WHERE username = @username AND token = @token AND verified_email = 0", conn);
             cmd.Parameters.AddWithValue("@username", username);
+            cmd.Parameters.AddWithValue("@token", token);
+            cmd.ExecuteNonQuery();
+            int numberOfMatchedAccounts = (int)cmd.ExecuteScalar();
+            conn.Close();
+            if (numberOfMatchedAccounts == 1)
+            {
+                return true;
+            }
+            else { return false; }
+            
+        }
+
+        public void UpdateCreate(string email, string passcode, string username, string school, string token)
+        {
+            // inserts the created user into the database
+            
+            SqlConnection conn = new SqlConnection();
+            conn.ConnectionString = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING");
+            conn.Open();
+            SqlCommand cmd = new SqlCommand("INSERT INTO UserAccounts " + "(email, name, username,  passcode, role, school, active_status, token, verified_email) " +
+                                                               "  values (@email, @name, @username, @passcode, @role, @school, @active_status, @token, @verified_email)", conn);
             cmd.Parameters.AddWithValue("@email", email);
+            cmd.Parameters.AddWithValue("@name", "");
+            cmd.Parameters.AddWithValue("@username", username);
             cmd.Parameters.AddWithValue("@passcode", passcode);
             cmd.Parameters.AddWithValue("@role", "student");
             cmd.Parameters.AddWithValue("@school", school);
             cmd.Parameters.AddWithValue("@active_status", 0);
+            cmd.Parameters.AddWithValue("@token", token);
+            cmd.Parameters.AddWithValue("@verified_email", 0);
             cmd.ExecuteNonQuery();
-        }
-
-        public void UpdateCreate(string email, string password, string username, string school)
-        {
-            // inserts the created user into the database
-            SqlConnection conn = new SqlConnection();
-            conn.ConnectionString = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING");
-            conn.Open();
-            //int id = (int) generateID();
-            SqlCommand cmd = new SqlCommand("INSERT INTO UserAccounts " + "(username, email, password, school) " + "  values (@username, @email, @password, @school)", conn);
-            cmd.Parameters.AddWithValue("@name", "");
-            cmd.Parameters.AddWithValue("@username", username);
-            cmd.Parameters.AddWithValue("@email", email);
-            cmd.Parameters.AddWithValue("@password", password);
-            cmd.Parameters.AddWithValue("@role", "student");
-            cmd.Parameters.AddWithValue("@school", school);
-            cmd.Parameters.AddWithValue("@active_status", 0);
-            cmd.ExecuteNonQuery();
+            conn.Close();
             System.Console.WriteLine("New User Account created successfully.\n");
         }
+
         // Generates next ID number in database
         public static int generateID()
         {
