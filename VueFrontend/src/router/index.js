@@ -91,7 +91,12 @@ const routes = [
         name: 'studentDiscounts',
         component: StudentDiscounts,
     },
-    // add more here
+    {
+        path: '/aidEligibility/info',
+        name: 'studentInformation',
+        component: () => import('../Views/AidEligibility/Info.vue')
+    },
+    // ADD MORE HERE! DON'T ADD AFTER not-found!
 
     // Not found; don't move this one or place anything after it
     {

@@ -3,14 +3,21 @@
         <div v-if="loading" class="loading">
             Hello {{ id }}! :)
         </div>
-        <button @click="onAC">Access Control</button>
-        <button @click="onScheduleBuilder">Schedule Builder</button>
-        <button @click="onScheduleComparison">Schedule Comparison</button>
-        <button @click="onAM">Automated Moderating</button>
-        <button @click="onBS">Book Selling</button>
-        <button @click="onUSD">User Analysis Dashboard</button>
-        <button @click="onSD">Student Discounts</button>
-        <button @click="onSubmit">Logout</button>
+        <div>
+            <button @click="onAC">Access Control</button>
+            <button @click="onScheduleBuilder">Schedule Builder</button>
+            <button @click="onScheduleComparison">Schedule Comparison</button>
+        </div>
+        <div>
+            <button @click="onAM">Automated Moderating</button>
+            <button @click="onBS">Book Selling</button>
+            <button @click="onUSD">User Analysis Dashboard</button>
+        </div>
+        <div>
+            <button @click="onAid">Aid Eligibility Estimates</button>
+            <button @click="onSD">Student Discounts</button>
+            <button @click="onSubmit">Logout</button>
+        </div>
     </div>
     <router-view />
 </template>
@@ -64,7 +71,9 @@
             onSD() {
                 router.push({ name: "studentDiscounts" });
             },
-
+            onAid() {
+                router.push({ name: "studentInformation" });
+            }
         },
     });
 </script>
