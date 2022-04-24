@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using StudentMultiTool.Backend.Models.StudentDiscounts;
+using StudentMultiTool.Backend.Services.StudentDiscounts;
 using StudentMultiTool.Backend.Services.UserManagement;
 
 namespace StudentMultiTool.Backend.Controllers
@@ -15,22 +16,20 @@ namespace StudentMultiTool.Backend.Controllers
             _logger = logger;
         }
 
-        // validateInput method returns an array of IEnumerable with the valid or invalid
-        // values for the user's input
-        [HttpGet("verification/{username}")]
-        public IActionResult verification(string username)
+        // post student discount for Establishment
+        [HttpGet("postDiscount/{title}/{name}/{address}/{latitude}/{longitud}/{description}")]
+        public IActionResult postEstablishment(string title, string name, string address, string latitude, string longitud, string description)
         {
-            InputValidation userValidation = new InputValidation();
-            if (userValidation.usernameExists(username))
+            DiscountsManager discount = new DiscountsManager();
+            if(discount.postDiscountEstablishment(title, name, address, latitude, longitud, description))
             {
-                Console.WriteLine("username: " + username);
-                return Ok("valid");
+                return Ok("Success");
             }
             else
             {
-                return BadRequest("error in api");
+                return BadRequest();
             }
-            
+
         }
     }
 }

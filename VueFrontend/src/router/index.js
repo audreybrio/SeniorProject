@@ -86,7 +86,7 @@ const routes = [
 
     // StudentDiscounts
     {
-        path: '/:username',
+        path: '/',
         // path: '/',
         name: 'studentDiscounts',
         component: StudentDiscounts,
