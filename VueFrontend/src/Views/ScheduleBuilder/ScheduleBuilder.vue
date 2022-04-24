@@ -22,8 +22,8 @@
 
 <script>
     import * as $ from 'jquery'
-    import Schedules from './Schedules'
-    import CreateItemForms from './CreateItemForms'
+    import Schedules from '../../components/ScheduleBuilder/Schedules'
+    import CreateItemForms from '../../components/ScheduleBuilder/CreateItemForms'
     import URLS from '../../variables'
     export default {
         name: 'ScheduleBuilder',

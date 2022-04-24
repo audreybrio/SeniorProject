@@ -14,7 +14,7 @@
 
 <script>
     import * as $ from 'jquery'
-    import Schedules from '../ScheduleBuilder/Schedules'
+    import Schedules from '../../components/ScheduleBuilder/Schedules'
     export default {
         name: 'ScheduleComparison',
         components: {
