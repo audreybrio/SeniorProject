@@ -17,11 +17,28 @@ namespace StudentMultiTool.Backend.Controllers
         }
 
         // post student discount for Establishment
-        [HttpGet("postDiscount/{title}/{name}/{address}/{latitude}/{longitud}/{description}")]
+        [HttpGet("postEstablishment/{title}/{name}/{address}/{latitude}/{longitud}/{description}")]
         public IActionResult postEstablishment(string title, string name, string address, string latitude, string longitud, string description)
         {
             DiscountsManager discount = new DiscountsManager();
             if(discount.postDiscountEstablishment(title, name, address, latitude, longitud, description))
+            {
+                return Ok("Success");
+            }
+            else
+            {
+                return BadRequest();
+            }
+
+        }
+
+        // post student discount for Website
+        [HttpGet("postWebsite/{title}/{website}/{description}")]
+        public IActionResult postWebsite(string title, string website, string description)
+        {
+            //return Ok("Success");
+            DiscountsManager discount = new DiscountsManager();
+            if (discount.postDiscountWebsite(title, website, description))
             {
                 return Ok("Success");
             }

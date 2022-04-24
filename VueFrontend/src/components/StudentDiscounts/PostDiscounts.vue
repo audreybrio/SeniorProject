@@ -26,8 +26,6 @@
 <script>
     import PostEstablishment from "./PostEstablishment.vue"
     import PostWebsite from "./PostWebsite.vue"
-    import * as $ from 'jquery'
-    const baseURL = "https://localhost:5002";
 
     export default {
       data () {

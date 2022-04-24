@@ -36,7 +36,7 @@ namespace StudentMultiTool.Backend.Services.StudentDiscounts
 
         }
 
-        public bool postDiscountWebsite(string website, string name, string address, string description)
+        public bool postDiscountWebsite(string title, string website, string description)
         {
             try
             {
@@ -45,21 +45,21 @@ namespace StudentMultiTool.Backend.Services.StudentDiscounts
                 SqlConnection conn = new SqlConnection();
                 conn.ConnectionString = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING");
                 conn.Open();
-                SqlCommand cmd = new SqlCommand("INSERT INTO Discounts " + "(type, name, website, description, dateCreated) " +
-                                                                   "  VALUES (@type, @name, @website, @description, @dateCreated)", conn);
+                SqlCommand cmd = new SqlCommand("INSERT INTO Discounts " + "(type, title, website, description, dateCreated) " +
+                                                                   "  VALUES (@type, @title, @website, @description, @dateCreated)", conn);
                 cmd.Parameters.AddWithValue("@type", "Website");
-                cmd.Parameters.AddWithValue("@name", name);
+                cmd.Parameters.AddWithValue("@title", title);
                 cmd.Parameters.AddWithValue("@website", website);
                 cmd.Parameters.AddWithValue("@description", description);
                 cmd.Parameters.AddWithValue("@dateCreated", dateCreated);
                 cmd.ExecuteNonQuery();
                 conn.Close();
                 return true;
-            }
+        }
             catch (Exception ex)
             {
                 return false;
             }
-        }
+}
     }
 }

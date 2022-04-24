@@ -82,7 +82,7 @@
             postDiscount() {
                 $.ajax({
                     // set the HTTP request URL
-                    url: `${baseURL}/api/studentdiscounts/postDiscount/${this.discountInfo.title}
+                    url: `${baseURL}/api/studentdiscounts/postEstablishment/${this.discountInfo.title}
                            /${this.discountInfo.name}/${this.discountInfo.address}/${this.discountInfo.lat}
                            /${this.discountInfo.lng}/${this.discountInfo.description}`,
                     // set the context object to the vue component
