@@ -26,11 +26,11 @@
         <label>Member of Student body: </label>
         <input type="checkbox" v-model="studentBody" />
     </div>
-    <router-view />
+    <!--<router-view />-->
 </template>
 
 <script lang="js">
-    import router from '../../router'
+    //import router from '../../router'
     import jwt_decode from "jwt-decode"
 
     export default ({
