@@ -30,7 +30,7 @@
 </template>
 
 <script lang="js">
-    import router from '../../router'
+    // import router from '../../router'
     import jwt_decode from "jwt-decode"
 
     export default ({

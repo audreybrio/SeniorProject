@@ -1,22 +1,9 @@
 <template>
     <div class="post">
-        <div v-if="loading" class="loading">
+        <div>
             Hello {{ id }}! :)
         </div>
         <div>
-        <button @click="onAC">Access Control</button>
-        <button @click="onSB">Schedule Builder</button>
-        <button @click="onAM">Automated Moderating</button>
-        <button @click="onBS">Book Selling</button>
-        </div>
-        <div>
-            <button @click="onUSD">User Analysis Dashboard</button>
-            <button @click="onSD">Student Discounts</button>
-            <button @click="onMatching">Matching</button>
-            <button @click="onEP">Event Planning</button>
-        </div>
-        <button @click="onSubmit">Logout</button>
-
             <button @click="onAC">Access Control</button>
             <button @click="onScheduleBuilder">Schedule Builder</button>
             <button @click="onScheduleComparison">Schedule Comparison</button>
@@ -29,8 +16,11 @@
         <div>
             <button @click="onAid">Aid Eligibility Estimates</button>
             <button @click="onSD">Student Discounts</button>
-            <button @click="onSubmit">Logout</button>
+            <button @click="onMatching">Matching</button>
+            <button @click="onEP">Event Planning</button>
         </div>
+            <button @click="onSubmit">Logout</button>
+        
     </div>
     <router-view />
 </template>

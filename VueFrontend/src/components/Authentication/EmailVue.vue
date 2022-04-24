@@ -3,6 +3,9 @@
         <div v-if="loading" class="loading">
             Welcome! Please enter email and passcode!
         </div>
+        <div class="warning">
+            <div v-if="errors.length" :key="index" class="warning">{{errors}}</div>
+        </div>
         <input id="email" v-model="email" placeholder="Email">
         <input id="passcode" v-model="passcode" placeholder="Passocde">
         <button id="button" @click="onSubmit">Submit</button>
@@ -16,13 +19,15 @@
 
 <script> // <!--lang="js"-->
     import router from '@/router'
-    // import * as $ from 'jquery'
+    import * as $ from 'jquery'
+    const baseURL = "https://localhost:5002";
 
     export default ({
         data() {
             return {
                 loading: false,
                 post: null,
+                errors: "",
             };
         },
         created() {
@@ -51,61 +56,27 @@
 
             },
             onSubmit() {
-                if (this.email == "audrey.brio@student.csulb.edu" && this.passcode == "hello world") {
-                    router.push({ name: "LoginVue" });
+                $.ajax({
+                    url: `${baseURL}/api/login/validate/${this.email}/${this.passcode}`,
+                    context: this,
+                    method: 'GET',
+                    success: function () {
+                        console.log("ajax success")
+                        router.push({ name: "LoginVue" });
 
-                }
-                else if (this.email == "bradley.nickle@student.csulb.edu" && this.passcode == "marvel fan") {
-                    router.push({ name: "LoginVue" });
-
-                }
-                else if (this.email == "joseph.cutri@student.csulb.edu" && this.passcode == "number one") {
-                    router.push({ name: "LoginVue" });
-
-                }
-                else if (this.email == "albert.toscano01@student.csulb.edu" && this.passcode == "happy meal") {
-                    router.push({ name: "LoginVue" });
-
-                }
-                else if (this.email == "jacob.delgado01@student.csulb.edu" && this.passcode == "super man") {
-                    router.push({ name: "LoginVue" });
-
-                }
-                else if (this.email == "szeman.tang@student.csulb.edu" && this.passcode == "wonder woman") {
-                    router.push({ name: "LoginVue" });
-
-                }
-                else if (this.email == "devarsh.patel@student.csulb.edu" && this.passcode == "pizza guy") {
-                    router.push({ name: "LoginVue" });
-
-                }
-                else {
-                    alert("Incorect email/passcode");
-                }
+                    },
+                    error: function () {
+                        console.log("error")
+                        this.errors = "Email/Passcode Incorrect";
+                    }
+                })
             },
 
-            //skip() {
-            //    console.log("ajax time")
-            //    $.ajax({
-            //        url: `${baseURL}/api/login`,
-            //        context: this,
-            //        method: 'login',
-            //        success: function (data) {
-            //            console.log("ajax suxcess")
-            //            window.sessionStorage.setItem("token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiQXVkcmV5IEJyaW8iLCJ1c2VybmFtZSI6ImFicmlvIiwiZW1haWwiOiJhdWRyZXkuYnJpb0BzdHVkZW50LmNzdWxiLmVkdSIsInBhc3Njb2RlIjoiaGVsbG8gd29ybGQiLCJyb2xlIjoiYWRtaW4iLCJzY2hvb2wiOiJDU1VMQiJ9.O9qyhghpLVvFIurYuDaAzLV6r9HVpO0DrXBhTbB-3Yo");
-            //            router.push({ name: "HomePage" })
-
-            //        },
-            //        erro: function (error) {
-            //            console.log("error")
-            //        }
-
-            //    })
-        // }
             skip() {
                 window.sessionStorage.setItem("token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiQXVkcmV5IEJyaW8iLCJ1c2VybmFtZSI6ImFicmlvIiwiZW1haWwiOiJhdWRyZXkuYnJpb0BzdHVkZW50LmNzdWxiLmVkdSIsInBhc3Njb2RlIjoiaGVsbG8gd29ybGQiLCJyb2xlIjoiYWRtaW4iLCJzY2hvb2wiOiJDU1VMQiJ9.O9qyhghpLVvFIurYuDaAzLV6r9HVpO0DrXBhTbB-3Yo");
                 router.push({ name: "HomePage" })
             },
+
                  
             
 
@@ -115,5 +86,12 @@
 <style scoped>
     button {
         font-weight: bold;
+    }
+    .warning {
+        color: red;
+        margin: auto;
+        width: 440px;
+        text-align: center;
+        font-size: 11px;
     }
 </style>

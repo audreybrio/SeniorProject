@@ -1,26 +1,117 @@
-﻿using StudentMultiTool.Backend.Services.Authentication;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Net.Mail;
 using System.Data.SqlClient;
+using StudentMultiTool.Backend.Services.Authentication;
+using System.Net.Mail;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using System.Text;
-using System.Security.Principal;
 
-
-namespace StudentMultiTool.Backend.Services.Authentication.Controller
+namespace StudentMultiTool.Backend.Controllers
 {
     [ApiController]
     [Route("api/" + "login")]
-    public class LoginController : ControllerBase
+    public class LoginController : Controller
     {
         const string connectionString = "MARVELCONNECTIONSTRING";
         //AppDomain.CurrentDomain.SetPrincipalPolicy(PrincipalPolicy.WindowsPrincipal); 
         //WindowsPrincipal myPrincipal = (WindowsPrincipal)Thread.CurrentPrincipal;
 
-        [HttpGet("login")]
+        [HttpGet("getlogin")]
         public IActionResult Login()
         {
-            return new OkResult();
+            return Ok("okay");
+        }
+
+        [HttpGet("validate/{email}/{passcode}")]
+        public IActionResult EmailPasscodeCheck(string email, string passcode)
+        {
+            bool valPasscode, valEmail, doesExist;
+            Validate val = new Validate();
+            valPasscode = val.ValidatePasscode(passcode);
+            valEmail = val.ValidateEmail(email);
+
+            Console.WriteLine(valEmail+ " " + valPasscode);
+            
+
+            if (valPasscode && valEmail)
+            {
+                doesExist = UserExist(email, passcode);
+                if (doesExist == true)
+                {
+                    string otp = Randomize(email);
+                    SendEmail(email, otp);
+                    return Ok("Success");
+                }
+
+                else
+                {
+                    return NotFound();
+                }   
+            }
+            else
+            {
+                return NotFound();
+            }
+      
+        }
+
+        [HttpGet("authenticate/{username}/{otp}")]
+        public IActionResult AuthenticateUser(string username, string otp)
+        {
+
+            int count = LoginUser(username, otp);
+            bool isValid = ValidTime(username);
+            if (!isValid)
+            {
+                return NotFound();
+            }
+
+            if(count > 0)
+            {
+                return Ok();
+            }
+            else
+            {
+                return NotFound();
+            }
+
+
+            //// int attempts = 1;
+            // // User has 5 attempts to log in 
+            // //while (attempts < 6)
+            // //{
+
+            //     //Console.WriteLine("Enter Username");
+            //     //string username = Console.ReadLine();
+
+            //     //Console.WriteLine("Enter OTP");
+            //     //string password = Console.ReadLine();
+            //     int count = LoginUser(username, otp);
+
+            //     bool isValid = ValidTime(username);
+            //     if (!isValid)
+            //     {
+            //         //Console.WriteLine("Invalid OTP");
+            //         //break;
+            //     }
+            //     if (count > 0)
+            //     {
+
+            //         return Ok();
+            //     }
+            //     else
+            //     {
+            //         //Console.WriteLine("Login Incorrect. Try again.");
+            //         // Log ip address
+            //         //LogIP log = new LogIP();
+            //         //log.LoggingIP(username);
+            //        // attempts++;
+            //        // continue;
+            //     }
+
+            // // }
+
+            // return NotFound();
         }
         public IActionResult Authenticate()
         {
@@ -187,7 +278,6 @@ namespace StudentMultiTool.Backend.Services.Authentication.Controller
                 prf: KeyDerivationPrf.HMACSHA256,
                 iterationCount: 100000,
                 numBytesRequested: 256 / 8));
-
             return hashed;
         }
 
@@ -269,18 +359,22 @@ namespace StudentMultiTool.Backend.Services.Authentication.Controller
         }
 
         // Checks is OTP is still valid
-        public static bool ValidTime(string email)
+        public static bool ValidTime(string username)
         {
             SqlConnection conn = new SqlConnection();
             conn.ConnectionString = Environment.GetEnvironmentVariable(connectionString);
             conn.Open();
 
-            SqlCommand c = new SqlCommand("SELECT id FROM UserAccounts WHERE UserAccounts.email = @email", conn);
-            c.Parameters.AddWithValue("@email", email);
+            SqlCommand c = new SqlCommand("SELECT id FROM UserAccounts WHERE UserAccounts.username = @username", conn);
+            c.Parameters.AddWithValue("@username", username);
             SqlDataReader read = c.ExecuteReader();
             int id = 0;
             read.Close();
-            id = (int)c.ExecuteScalar();
+            if (c.ExecuteScalar() == null)
+            {
+                return false;
+            }
+           id = (int)c.ExecuteScalar();
 
             SqlCommand cds = new SqlCommand("SELECT timestamp FROM Otp WHERE Otp.userId = @userId", conn);
             cds.Parameters.AddWithValue("@userId", id);
@@ -352,13 +446,79 @@ namespace StudentMultiTool.Backend.Services.Authentication.Controller
             }
         }
 
+        //// GET: LoginController
+        //public ActionResult Index()
+        //{
+        //    return View();
+        //}
 
+        //// GET: LoginController/Details/5
+        //public ActionResult Details(int id)
+        //{
+        //    return View();
+        //}
 
+        //// GET: LoginController/Create
+        //public ActionResult Create()
+        //{
+        //    return View();
+        //}
 
+        //// POST: LoginController/Create
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult Create(IFormCollection collection)
+        //{
+        //    try
+        //    {
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    catch
+        //    {
+        //        return View();
+        //    }
+        //}
 
+        //// GET: LoginController/Edit/5
+        //public ActionResult Edit(int id)
+        //{
+        //    return View();
+        //}
+
+        //// POST: LoginController/Edit/5
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult Edit(int id, IFormCollection collection)
+        //{
+        //    try
+        //    {
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    catch
+        //    {
+        //        return View();
+        //    }
+        //}
+
+        //// GET: LoginController/Delete/5
+        //public ActionResult Delete(int id)
+        //{
+        //    return View();
+        //}
+
+        //// POST: LoginController/Delete/5
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult Delete(int id, IFormCollection collection)
+        //{
+        //    try
+        //    {
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    catch
+        //    {
+        //        return View();
+        //    }
+        //}
     }
-
-
-
-
 }

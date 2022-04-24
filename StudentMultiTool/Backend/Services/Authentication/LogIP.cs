@@ -12,15 +12,15 @@ namespace StudentMultiTool.Backend.Services.Authentication
             return myIP;
         }
 
-        public void LoggingIP(string email)
+        public void LoggingIP(string username)
         {
             string myIP = GetIP();
 
             SqlConnection conn = new SqlConnection();
             conn.ConnectionString = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING");
             conn.Open();
-            SqlCommand c = new SqlCommand("SELECT id FROM UserAccounts WHERE UserAccounts.email = @email", conn);
-            c.Parameters.AddWithValue("@email", email);
+            SqlCommand c = new SqlCommand("SELECT id FROM UserAccounts WHERE UserAccounts.username = @username", conn);
+            c.Parameters.AddWithValue("@email", username);
             SqlDataReader reader = c.ExecuteReader();
             int id = 0;
             reader.Close();

@@ -1,4 +1,4 @@
-<template >
+<!--<template >
   <div style="text-align:center;">
     <h3>Search Establishments</h3>
     direction: {{this.address}}
@@ -6,9 +6,9 @@
   
   <section style="position:relative; z-index:1;">
       <div class="column">
-         <form >
+         <form >-->
            <!--<div  v-show="error">{{ error }}</div>-->
-            <div >
+            <!--<div >
                   <input
                      type="text"
                      placeholder="Enter the address"
@@ -180,4 +180,4 @@ export default {
   left: 0;
   bottom: 0;
 } */
-</style>
+</style>-->
