@@ -40,9 +40,6 @@ module.exports = {
             '^/api': {
                 target: 'https://localhost:5001/'
             },
-            '^/weatherforecast': {
-                target: 'http://localhost:5000/'
-            },
         },
         port: 5002
     }
