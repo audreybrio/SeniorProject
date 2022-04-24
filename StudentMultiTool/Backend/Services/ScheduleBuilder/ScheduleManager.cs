@@ -1,5 +1,6 @@
 ﻿using System.Data;
 using System.Data.SqlClient;
+using StudentMultiTool.Backend.Services.DataAccess;
 using StudentMultiTool.Backend.Models.ScheduleBuilder;
 
 namespace StudentMultiTool.Backend.Services.ScheduleBuilder
@@ -54,67 +55,23 @@ namespace StudentMultiTool.Backend.Services.ScheduleBuilder
             int? newId = null;
             string scheduleIDQuery = "SELECT id FROM Schedules WHERE path = @path;";
             int rowsAffected = 0;
-            using (SqlConnection connection = new SqlConnection(dbConnectionString))
+            SqlCommandRunner runner = new SqlCommandRunner(dbConnectionString);
+            runner.Query = scheduleQuery;
+            runner.AddParam("@title", newSchedule.Title);
+            runner.AddParam("@created", newSchedule.Created);
+            runner.AddParam("@modified", newSchedule.Modified);
+            runner.AddParam("@path", newSchedule.Path);
+            rowsAffected = runner.ExecuteNonQuery();
+            //Console.WriteLine("paramsAdded " + paramsAdded);
+            //Console.WriteLine("rowsAffected " + rowsAffected);
+            if (rowsAffected == 1)
             {
-                using (SqlCommand command = new SqlCommand(scheduleQuery, connection))
+                runner.Query = scheduleIDQuery;
+                runner.AddParam("@path", newSchedule.Path);
+                List<object[]> queryResults = runner.ExecuteReader();
+                if (queryResults.Count > 0)
                 {
-                    command.Parameters.AddWithValue("@title", newSchedule.Title);
-                    command.Parameters.AddWithValue("@created", newSchedule.Created);
-                    command.Parameters.AddWithValue("@modified", newSchedule.Modified);
-                    command.Parameters.AddWithValue("@path", newSchedule.Path);
-
-                    try
-                    {
-                        connection.Open();
-                        rowsAffected = command.ExecuteNonQuery();
-                        connection.Close();
-                    }
-                    catch (System.InvalidOperationException ex)
-                    {
-                        Console.WriteLine("The following exception has occurred: " +
-                                ex.GetType().FullName);
-                        Console.WriteLine(ex.Message);
-                    }
-                    catch (SqlException ex)
-                    {
-                        Console.WriteLine("The following exception has occurred: " +
-                                ex.GetType().FullName);
-                        Console.WriteLine(ex.Message);
-                    }
-                }
-
-                if (rowsAffected == 1)
-                {
-                    // Get the ID of newSchedule in the db
-                    Console.WriteLine("Get the ID of newSchedule in the db");
-                    using (SqlCommand command = new SqlCommand(scheduleIDQuery, connection))
-                    {
-                        command.Parameters.AddWithValue("@path", newSchedule.Path);
-
-                        try
-                        {
-                            connection.Open();
-                            SqlDataReader reader = command.ExecuteReader();
-                            while (reader.Read())
-                            {
-                                IDataRecord row = (IDataRecord)reader;
-                                newId = (int)row[0];
-                            }
-                            connection.Close();
-                        }
-                        catch (System.InvalidOperationException ex)
-                        {
-                            Console.WriteLine("The following exception has occurred: " +
-                                    ex.GetType().FullName);
-                            Console.WriteLine(ex.Message);
-                        }
-                        catch (SqlException ex)
-                        {
-                            Console.WriteLine("The following exception has occurred: " +
-                                    ex.GetType().FullName);
-                            Console.WriteLine(ex.Message);
-                        }
-                    }
+                    newId = (int) queryResults[0][0];
                 }
             }
             return newId;
@@ -131,35 +88,13 @@ namespace StudentMultiTool.Backend.Services.ScheduleBuilder
                                        "(schedule, collaborator, canWrite, isOwner) " +
                                        "VALUES (@schedule, @collaborator, @canWrite, @isOwner);";
             int rowsAffected = 0;
-            using (SqlConnection connection = new SqlConnection(dbConnectionString))
-            {
-                using (SqlCommand command = new SqlCommand(collaboratorQuery, connection))
-                {
-                    command.Parameters.AddWithValue("@schedule", scheduleId);
-                    command.Parameters.AddWithValue("@collaborator", userHash);
-                    command.Parameters.AddWithValue("@canWrite", canWrite);
-                    command.Parameters.AddWithValue("@isOwner", isOwner);
-
-                    try
-                    {
-                        connection.Open();
-                        rowsAffected = command.ExecuteNonQuery();
-                        connection.Close();
-                    }
-                    catch (System.InvalidOperationException ex)
-                    {
-                        Console.WriteLine("The following exception has occurred: " +
-                                ex.GetType().FullName);
-                        Console.WriteLine(ex.Message);
-                    }
-                    catch (SqlException ex)
-                    {
-                        Console.WriteLine("The following exception has occurred: " +
-                                ex.GetType().FullName);
-                        Console.WriteLine(ex.Message);
-                    }
-                }
-            }
+            SqlCommandRunner runner = new SqlCommandRunner(dbConnectionString);
+            runner.Query = collaboratorQuery;
+            runner.AddParam("@schedule", scheduleId);
+            runner.AddParam("@collaborator", userHash);
+            runner.AddParam("@canWrite", canWrite);
+            runner.AddParam("@isOwner", isOwner);
+            rowsAffected = runner.ExecuteNonQuery();
             return rowsAffected;
         }
 
@@ -174,32 +109,10 @@ namespace StudentMultiTool.Backend.Services.ScheduleBuilder
             }
             // set up query
             string query = "DELETE FROM Schedules WHERE Schedules.id=@scheduleId";
-            using (SqlConnection connection = new SqlConnection(this.dbConnectionString))
-            {
-                using (SqlCommand command = new SqlCommand(query, connection))
-                {
-                    command.Parameters.AddWithValue("@scheduleId", scheduleId);
-
-                    try
-                    {
-                        connection.Open();
-                        rowsAffected = command.ExecuteNonQuery();
-                        connection.Close();
-                    }
-                    catch (System.InvalidOperationException ex)
-                    {
-                        Console.WriteLine("The following exception has occurred: " +
-                                ex.GetType().FullName);
-                        Console.WriteLine(ex.Message);
-                    }
-                    catch (SqlException ex)
-                    {
-                        Console.WriteLine("The following exception has occurred: " +
-                                ex.GetType().FullName);
-                        Console.WriteLine(ex.Message);
-                    }
-                }
-            }
+            SqlCommandRunner runner = new SqlCommandRunner(dbConnectionString);
+            runner.Query = query;
+            runner.AddParam("@scheduleId", scheduleId);
+            rowsAffected = runner.ExecuteNonQuery();
             return rowsAffected;
         }
         // Remove Collaborators from a Schedule. Called during ScheduleManager.DeleteSchedule().
@@ -212,32 +125,10 @@ namespace StudentMultiTool.Backend.Services.ScheduleBuilder
             }
             // set up query
             string query = "DELETE FROM Collaborators WHERE Collaborators.schedule=@scheduleId";
-            using (SqlConnection connection = new SqlConnection(this.dbConnectionString))
-            {
-                using (SqlCommand command = new SqlCommand(query, connection))
-                {
-                    command.Parameters.AddWithValue("@scheduleId", scheduleId);
-
-                    try
-                    {
-                        connection.Open();
-                        rowsAffected = command.ExecuteNonQuery();
-                        connection.Close();
-                    }
-                    catch (System.InvalidOperationException ex)
-                    {
-                        Console.WriteLine("The following exception has occurred: " +
-                                ex.GetType().FullName);
-                        Console.WriteLine(ex.Message);
-                    }
-                    catch (SqlException ex)
-                    {
-                        Console.WriteLine("The following exception has occurred: " +
-                                ex.GetType().FullName);
-                        Console.WriteLine(ex.Message);
-                    }
-                }
-            }
+            SqlCommandRunner runner = new SqlCommandRunner(dbConnectionString);
+            runner.Query = query;
+            runner.AddParam("@scheduleId", scheduleId);
+            rowsAffected = runner.ExecuteNonQuery();
             return rowsAffected;
         }
 
@@ -251,60 +142,39 @@ namespace StudentMultiTool.Backend.Services.ScheduleBuilder
             Schedule? result = null;
             // set up query
             string query = "SELECT * FROM Schedules WHERE Schedules.id=@scheduleId";
-            using (SqlConnection connection = new SqlConnection(this.dbConnectionString))
+            SqlCommandRunner runner = new SqlCommandRunner(dbConnectionString);
+            runner.Query = query;
+            runner.AddParam("@scheduleId", scheduleId);
+            object[] firstRow = runner.ExecuteReader()[0];
+            try
             {
-                using (SqlCommand command = new SqlCommand(query, connection))
+                // try to unpack the data and set up the new Schedule
+                int? id = (int) firstRow[0];
+                string? title = (string) firstRow[1];
+                DateTime? created = (DateTime) firstRow[2];
+                DateTime? modified = (DateTime) firstRow[3];
+                string? path = (string) firstRow[4];
+
+                if (id != null &&
+                    !string.IsNullOrEmpty(title) &&
+                    created != null &&
+                    modified != null &&
+                    !string.IsNullOrEmpty(path)
+                    )
                 {
-                    command.Parameters.AddWithValue("@scheduleId", scheduleId);
-
-                    try
-                    {
-                        connection.Open();
-                        SqlDataReader reader = command.ExecuteReader();
-
-                        // Unpack query results. This loop should have at most one iteration
-                        // due to the primary key uniqueness constraint on the id attribute.
-                        // If there were no query results, then this loop will have zero
-                        // iterations and the result will be null.
-                        while (reader.Read())
-                        {
-                            IDataRecord row = reader;
-                            int? id = (int?)row[0];
-                            string? title = (string?)row[1];
-                            DateTime? created = (DateTime?)row[2];
-                            DateTime? modified = (DateTime?)row[3];
-                            string? path = (string?)row[4];
-
-                            // If the results aren't null, then the Schedule can be constructed
-                            if (id != null && !string.IsNullOrEmpty(title) &&
-                                created != null && modified != null &&
-                                !string.IsNullOrEmpty(path))
-                            {
-                                result = new Schedule(
-                                    (int)id,
-                                    -1,
-                                    (DateTime)created,
-                                    (DateTime)modified,
-                                    (string)title,
-                                    (string)path
-                                );
-                            }
-                        }
-                        connection.Close();
-                    }
-                    catch (System.InvalidOperationException ex)
-                    {
-                        Console.WriteLine("The following exception has occurred: " +
-                                ex.GetType().FullName);
-                        Console.WriteLine(ex.Message);
-                    }
-                    catch (SqlException ex)
-                    {
-                        Console.WriteLine("The following exception has occurred: " +
-                                ex.GetType().FullName);
-                        Console.WriteLine(ex.Message);
-                    }
+                    result = new Schedule((int)id,
+                                          -1,
+                                          (DateTime)created,
+                                          (DateTime)modified,
+                                          (string)title,
+                                          (string)path
+                                         );
                 }
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine(ex.GetType().FullName);
+                Console.Error.WriteLine(ex.Message);
             }
             return result;
         }
