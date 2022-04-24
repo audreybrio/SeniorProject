@@ -6,48 +6,35 @@
             <br />
 
         </div>
-        <div>To Select Multiple hold Ctrl key and Click On The Name:</div>
-        <select v-model="mychoice" multiple>
-            <option value="Studying">Studying</option>
-            <option value="Exercising">Exercising</option>
-            <option value="Get food (on/off campus)">Get food (on/off campus</option>
-            <option value="Get food (dining hall)">Get food (dining hall)</option>
-            <option value="Go off campus">Go off campus</option>
-            <option value="Go to specific location on campus">Go to specific location on campus</option>
-            <option value="Hang out">Hang out</option>
-            <option value="Go to event">Go to event</option>
-            <option value="Other">Other</option>
-        </select>
-        <div class="output">{{mychoice}}</div>
-        <button @click="cleardata">Clear Data</button>
 
         <div>
-            <input type="checkbox" id="study" value="study" v-model="checkedNames">
+            <input type="checkbox" id="study" value="Studying" v-model="checkedNames" :disabled="checkedNames.length >= 5 && checkedNames.indexOf('Studying') == -1" >
             <label for="study">Studying</label>
             <br />
-            <input type="checkbox" id="exercise" value="exercise" v-model="checkedNames">
+            <input type="checkbox" id="exercise" value="Exercising" v-model="checkedNames" :disabled="checkedNames.length >= 5 && checkedNames.indexOf('Exercising') == -1">
             <label for="exercise">Exercising</label>
             <br />
-            <input type="checkbox" id="food_one" value="food_one" v-model="checkedNames">
+            <input type="checkbox" id="food_one" value="Get food (on/off campus)" v-model="checkedNames" :disabled="checkedNames.length >= 5 && checkedNames.indexOf('Get food (on/off campus)') == -1">
             <label for="food_one">Get food (on/off campus)</label>
             <br />
-            <input type="checkbox" id="food_two" value="food_two" v-model="checkedNames">
+            <input type="checkbox" id="food_two" value="Get food (dining hall)" v-model="checkedNames" :disabled="checkedNames.length >= 5 && checkedNames.indexOf('Get food (dining hall)') == -1">
             <label for="food_two">Get food (dining hall)</label>
             <br />
-            <input type="checkbox" id="offcampus" value="offcampus" v-model="checkedNames">
+            <input type="checkbox" id="offcampus" value="Go off campus" v-model="checkedNames" :disabled="checkedNames.length >= 5 && checkedNames.indexOf('Go off campus') == -1">
             <label for="offcampus">Go off campus</label>
             <br />
-            <input type="checkbox" id="oncampus" value="oncampus" v-model="checkedNames">
+            <input type="checkbox" id="oncampus" value="Go to specific location on campus" v-model="checkedNames" :disabled="checkedNames.length >= 5 && checkedNames.indexOf('Go to specific location on campus') == -1">
             <label for="oncampus">Go to specific location on campus</label>
             <br />
-            <input type="checkbox" id="hang" value="hang" v-model="checkedNames">
+            <input type="checkbox" id="hang" value="Hang out" v-model="checkedNames" :disabled="checkedNames.length >= 5 && checkedNames.indexOf('Hang out') == -1">
             <label for="hang">Hang out</label>
             <br />
-            <input type="checkbox" id="event" value="event" v-model="checkedNames">
+            <input type="checkbox" id="event" value="Go to event" v-model="checkedNames" :disabled="checkedNames.length >= 5 && checkedNames.indexOf('Go to event') == -1">
             <label for="event">Go to event</label>
             <br />
-            <input type="checkbox" id="other" value="other" v-model="checkedNames">
+            <input type="checkbox" id="other" value="Other" v-model="checkedNames" :disabled="checkedNames.length >= 5 && checkedNames.indexOf('Other') == -1">
             <label for="other">Other</label>
+
             <br>
             <span>Checked names: {{ checkedNames }}</span>
         </div>
@@ -56,6 +43,7 @@
             <br>
             <button @click="save">Save</button>
             <button @click="onSubmit">Back</button>
+            <button @click="cleardata">Clear Selections</button>
         </div>
 
 
@@ -77,7 +65,6 @@
                 loading: false,
                 post: null,
                 id: jwt_decode(window.sessionStorage.getItem("token")).username,
-                mychoice: [],
                 checkedNames: []
             };
         },
@@ -115,7 +102,7 @@
 
             cleardata() {
                 console.log("Clear Data")
-                this.mychoice = []
+                this.checkedNames = []
             },
 
 
