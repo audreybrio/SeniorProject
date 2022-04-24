@@ -7,6 +7,7 @@
         <input id="passcode" v-model="passcode" placeholder="Passocde">
         <button id="button" @click="onSubmit">Submit</button>
         <div>
+            <button id="skip" @click="onSkip">Skip</button>
             <router-link to="/registration">Registration</router-link>
         </div>
     </div>
@@ -48,6 +49,11 @@
                     });
 
             },
+            onSkip() {
+
+                router.push({ name: "LoginVue" });
+
+            },
             onSubmit() {
                 if (this.email == "audrey.brio@student.csulb.edu" && this.passcode == "hello world") {
                     router.push({name: "LoginVue"});
@@ -81,6 +87,7 @@
                     alert("Incorect email/passcode");
                 }
             }
+            
 
         },
     });

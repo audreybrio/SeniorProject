@@ -15,13 +15,7 @@ static class Program
             jsonInputFormatter.SupportedMediaTypes.Add("application/json");
         });
         // Add services to the container.
-        builder.Services.AddControllers(options =>
-        {
-            options.OutputFormatters.RemoveType<HttpNoContentOutputFormatter>();
-            var jsonInputFormatter = options.InputFormatters.OfType<SystemTextJsonInputFormatter>().Single();
-            jsonInputFormatter.SupportedMediaTypes.Add("application/json");
-        });
-
+      
         //builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
         //.AddCookie(options =>
         //{

@@ -1,31 +1,66 @@
 <template>
     <h> Hello </h>
-    <div class= "recipe-view" v-if = "recipe in recipes" :key="recipe.id">
-        <h1> {{ recipe.title}} </h1>
+    <div class= "recipe-view" v-if="recipe in recipes" :key="recipe.id">
+        <h1> {{ recipe.id}} </h1>
     </div>
     <router-view/>
 </template>
 
 <script>
-import axios from 'axios'
-
-export default ({
-    data(){
+    import * as $ from 'jquery'
+    const baseURL = "https://localhost:5002";
+    export default ({
+        data() {
         return{
-            recipes: null
+            loading: false,
+            recipes: []
         }
-    },
-    created(){
-        axios.get('https://localhost:5002/api/schedule/getschedule/getlist')
-        .then(response => {
-            this.recipes = response.data
-        })
-        .catch(error => {console.log(error)
-        })
+        },
+        created() {
+            this.loading = this.getrecipe();
+        },
+        methods: {
+            getrecipe() {
+
+                $.ajax({
+                    // set the HTTP request URL
+                    url: `${baseURL}/api/recipe`,
+                    // set the context object to the vue component
+                    // this line tells vue to update its components
+                    // when the success or error objects complete!
+                    // if it's not set, the components don't update!
+                    context: this,
+                    // HTTP method
+                    contentType: 'application/json',
+
+                    method: 'GET',
+                    // On a successful AJAX request:
+                    success: function(data) {
+                        this.recipes = data;
+                        this.loading = false;
+                        // TODO: delete console.logs
+                        console.log("this.list:")
+                        console.log(this.list)
+                        console.log("this.loading:")
+                        console.log(this.loading)
+                        // log that we've completed
+                        console.log("ajax Success")
+                        return true;
+                    },
+                    // On an unsuccessful AJAX request:
+                    error: function (error) {
+                        // log the error
+                        console.log(error);
+                        this.items = null;
+                        this.loading = false;
+                        return false;
+                    }
+                })
+            }
 
 
-    }
-})
+        }
+    })
 </script>
 
 <style scoped>

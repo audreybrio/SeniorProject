@@ -6,6 +6,8 @@
         <input v-model="username" placeholder="Username">
         <input v-model="otp" placeholder="OTP">
         <button @click="onLogin">Login</button>
+        <button id="skip" @click="onSkip">Skip</button>
+
     </div>
     <router-view/>
 </template>
@@ -44,6 +46,12 @@
                         this.loading = false;
                         return;
                     });
+
+            },
+            onSkip() {
+
+                window.sessionStorage.setItem("token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiQXVkcmV5IEJyaW8iLCJ1c2VybmFtZSI6ImFicmlvIiwiZW1haWwiOiJhdWRyZXkuYnJpb0BzdHVkZW50LmNzdWxiLmVkdSIsInBhc3Njb2RlIjoiaGVsbG8gd29ybGQiLCJyb2xlIjoiYWRtaW4iLCJzY2hvb2wiOiJDU1VMQiJ9.O9qyhghpLVvFIurYuDaAzLV6r9HVpO0DrXBhTbB-3Yo");
+                router.push({ name: "HomePage" });
 
             },
             onLogin() {

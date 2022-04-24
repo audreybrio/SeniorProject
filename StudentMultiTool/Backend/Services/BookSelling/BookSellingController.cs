@@ -202,6 +202,7 @@ namespace StudentMultiTool.Backend.Services.BookSelling
             }
             catch (Exception ex)
             {
+               
                 return false;
             }
         }
