@@ -14,7 +14,7 @@
 
 <script>
     import * as $ from 'jquery'
-    const baseURL = "https://localhost:5002";
+    //const baseURL = "https://localhost:5002";
     import URLS from '../../variables'
 //import Map1 from './ShowMap.vue'
 

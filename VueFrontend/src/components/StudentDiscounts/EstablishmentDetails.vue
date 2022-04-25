@@ -29,7 +29,7 @@
     import ShowMap from './ShowMap.vue'
     import * as $ from 'jquery'
     import URLS from '../../variables'
-    const baseURL = "https://localhost:5002";
+    //const baseURL = "https://localhost:5002";
     export default {
         props: ['id'],
         components: {

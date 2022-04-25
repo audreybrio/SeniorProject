@@ -40,7 +40,7 @@
 <script>
     import VueGoogleAutocomplete from "vue-google-autocomplete";
     import * as $ from 'jquery'
-    const baseURL = "https://localhost:5002";
+    //const baseURL = "https://localhost:5002";
     import URLS from '../../variables'
     export default {
 
