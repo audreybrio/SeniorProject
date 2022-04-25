@@ -36,7 +36,7 @@
                         <td>{{ schedule.created }}</td>
                         <td>{{ schedule.modified }}</td>
                         <td>{{ schedule.owner }}</td>
-                        <td><button @click="onScheduleBuilder(schedule.id)">Edit</button></td>
+                        <td><button @click="onScheduleBuilder(schedule.id, schedule.title, schedule.created, schedule.modified)">Edit</button></td>
                         <td><button @click="deleteSchedule(schedule.id)">Delete</button></td>
                     </tr>
                 </tbody>
@@ -136,13 +136,21 @@
                     }
                 });
             },
-            onScheduleBuilder(scheduleId) {
+            onScheduleBuilder(scheduleId, title, created, modified) {
+                console.log("To schedule builder @" + scheduleId + "/" + title);
                 router.push({
                     name: 'ScheduleBuilder',
-                    params: { user: this.user, scheduleId: scheduleId }
+                    params: {
+                        user: this.user,
+                        scheduleId: scheduleId,
+                        title: title,
+                        created: created,
+                        modified: modified,
+                    }
                 });
             },
             deleteSchedule(scheduleId) {
+                //let scheduleId = schedule.id;
                 let userConfirmed = confirm("Are you sure you want to delete this schedule?");
                 if (userConfirmed) {
                     $.ajax({
