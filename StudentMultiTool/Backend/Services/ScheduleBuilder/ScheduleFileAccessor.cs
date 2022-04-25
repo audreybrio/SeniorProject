@@ -1,5 +1,6 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Nodes;
+using StudentMultiTool.Backend.Services.DataAccess;
 
 namespace StudentMultiTool.Backend.Models.ScheduleBuilder
 {
@@ -21,12 +22,12 @@ namespace StudentMultiTool.Backend.Models.ScheduleBuilder
         // file should be indented. Indentation should only be used for demonstrative
         // or testing purposes. When deployed, indentation should not be used, to save
         // storage space.
-        public string WriteScheduleItems(Schedule schedule)
+        public string WriteScheduleItems(Schedule schedule, string basePath)
         {
             try
             {
                 string result = "";
-                using (FileStream stream = File.Create(schedule.Path))
+                using (FileStream stream = File.Create(basePath + schedule.Path))
                 {
                     // Configure writer to indent the .json file, or not.
                     JsonWriterOptions options = new JsonWriterOptions();
@@ -61,10 +62,54 @@ namespace StudentMultiTool.Backend.Models.ScheduleBuilder
                 return ex.Message;
             }
         }
+        // Overload for writing JsonArray instead of from a Schedule
+        public string WriteScheduleItems(string path, JsonArray items, string basePath)
+        {
+            try
+            {
+                string result = "";
+                using (FileStream stream = File.Create(basePath + path))
+                {
+                    // Configure writer to indent the .json file, or not.
+                    JsonWriterOptions options = new JsonWriterOptions();
+                    options.Indented = this.Indentation;
+
+                    using (Utf8JsonWriter writer = new Utf8JsonWriter(stream, options))
+                    {
+                        // Convert the items to a JsonObject to utilize JsonObject.WriteTo
+                        // Each ScheduleItem will be automatically converted
+                        // to a JsonObject as well, and added to a JsonArray
+                        // If there are no ScheduleItems, an empty JsonArray
+                        // will be written to the file.
+                        JsonObject itemsAsJson = new JsonObject();
+                        itemsAsJson[ScheduleItemOptions.JsonArrayCount] = items.Count;
+                        itemsAsJson[ScheduleItemOptions.JsonArrayName] = items;
+
+                        try
+                        {
+                            itemsAsJson.WriteTo(writer);
+                            result = ScheduleFileAccessor.Success;
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine(ex.Message);
+                            result = ex.Message;
+                        }
+                    }
+                }
+                return result;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return ex.Message;
+            }
+        }
 
         // Reads all ScheduleItems in a given .json file.
         public List<ScheduleItem> ReadScheduleItems(string path)
         {
+            Console.WriteLine("ScheduleFileAccessor.ReadScheduleItems: " + path);
             // Set up the List to store the results
             List<ScheduleItem> result = new List<ScheduleItem>();
 
@@ -79,7 +124,7 @@ namespace StudentMultiTool.Backend.Models.ScheduleBuilder
             //// in terms of security but the file needs to be a .json for
             //// the ScheduleFileAccessor to work.
             string extension = Path.GetExtension(path.ToLower()).ToLower();
-            if (!extension.Equals("json"))
+            if (!extension.Equals(".json"))
             {
                 return result;
             }
@@ -105,7 +150,7 @@ namespace StudentMultiTool.Backend.Models.ScheduleBuilder
                 // from the json contents
                 // This needs to be cast as an array to read all of the ScheduleItems
                 // from it
-                JsonArray itemsArray = (JsonArray) jsonContents!["scheduleItems"]!;
+                JsonArray itemsArray = (JsonArray) jsonContents![ScheduleItemOptions.JsonArrayName]!;
                 foreach(JsonNode? currentNode in itemsArray)
                 {
                     // The currentNode can only be read if it isn't null

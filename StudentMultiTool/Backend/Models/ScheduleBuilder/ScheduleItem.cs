@@ -175,10 +175,19 @@ namespace StudentMultiTool.Backend.Models.ScheduleBuilder
             this.Id = Id;
             this.Creator = Creator;
         }
-        public ScheduleItem(ScheduleItemCRUDModel model)
+        public ScheduleItem(ScheduleItemDTO model)
         {
             this.Id = model.Id;
-            this.Creator = int.Parse(model.Creator); // TODO: fix the inconsistency between datatypes
+            try
+            {
+                this.Creator = int.Parse(model.Creator); // TODO: fix the inconsistency between datatypes
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.GetType().FullName);
+                Console.WriteLine(ex.Message);
+                this.Creator = -1;
+            }
             this.Contact = model.Contact;
             this.DaysOfWeek = model.DaysOfWeek;
             this.EndTime = new TimeOnly(model.EndHour, model.EndMinute);

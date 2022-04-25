@@ -14,9 +14,9 @@
     <div v-else id="noeditdiv">
         <table>
             <thead>
-                <tr>
+                <tr v-if="editable">
                     <td>
-                        <button v-if="editable" @click="edit()" type="button">Edit</button>
+                        <button @click="edit()" type="button">Edit</button>
                     </td>
                 </tr>
                 <tr>

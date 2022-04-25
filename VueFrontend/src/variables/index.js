@@ -1,5 +1,5 @@
 const domain = "localhost";
-const apiPort = "5000";
+const apiPort = "5003";
 let root = `http://${domain}/`;
 let apiRoot = `http://${domain}:${apiPort}/api/`;
 const URLS = {
@@ -11,9 +11,10 @@ const URLS = {
             getList: apiRoot + "schedule/getlist",
             getSchedule: apiRoot + "schedule/getschedule",
             newSchedule: apiRoot + "schedule/newschedule",
-            createItem: apiRoot + "schedule/createItem",
-            updateItem: apiRoot + "schedule/updateItem",
-            deleteItem: apiRoot + "schedule/deleteItem"
+            saveSchedule: apiRoot + "schedule/saveschedule",
+            //createItem: apiRoot + "schedule/createItem",
+            //updateItem: apiRoot + "schedule/updateItem",
+            //deleteItem: apiRoot + "schedule/deleteItem"
         },
     }
 }

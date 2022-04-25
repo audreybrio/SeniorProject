@@ -36,3 +36,4 @@ nupkg/
 # Visual Studio 2015
 .vs/
 /StudentMultiTool/Properties/PublishProfiles
+/StudentMultiTool/schedules

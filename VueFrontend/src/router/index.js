@@ -49,25 +49,25 @@ const routes = [
     // ScheduleBuilder & ScheduleComparison
     // ScheduleBuilder
     {
-        path: '/schedule/builder/:user/:scheduleId',
+        path: '/schedule/builder/',
         name: 'ScheduleBuilder',
-        component: () => import('../components/ScheduleBuilder/ScheduleBuilder.vue')
+        component: () => import('../Views/ScheduleBuilder/ScheduleBuilder.vue')
     },
     {
-        path: '/schedule/builder/select/:user',
+        path: '/schedule/builder/select/',
         name: 'SelectForBuilder',
-        component: () => import('../components/ScheduleBuilder/SelectForBuilder.vue')
+        component: () => import('../Views/ScheduleBuilder/SelectForBuilder.vue')
     },
     // ScheduleComparison
     {
         path: '/schedule/comparison/:user/:selection',
         name: 'ScheduleComparison',
-        component: () => import('../components/ScheduleComparison/ScheduleComparison.vue')
+        component: () => import('../Views/ScheduleComparison/ScheduleComparison.vue')
     },
     {
         path: '/schedule/comparison/select/:user',
         name: 'SelectForComparison',
-        component: () => import('../components/ScheduleComparison/SelectForComparison.vue')
+        component: () => import('../Views/ScheduleComparison/SelectForComparison.vue')
     },
 
     // BookSelling
