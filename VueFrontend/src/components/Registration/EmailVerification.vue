@@ -37,7 +37,7 @@
         created() {
             //const baseURL = "https://localhost:5002";
             $.ajax({
-                url: `${URLS.apiRoot}/registration/emailVerification/${this.username}/${this.token}`,
+                url: `${URLS.apiRoot}registration/emailVerification/${this.username}/${this.token}`,
                 context: this,
                 processData: true,
                 method: 'POST',

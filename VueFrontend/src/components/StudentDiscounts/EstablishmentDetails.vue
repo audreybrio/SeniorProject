@@ -50,7 +50,7 @@
             getDetails() {
                 var result = $.ajax({
                     // set the HTTP request URL
-                    url: `${URLS.apiRoot}/studentdiscounts/getEstDetails/${this.id}`,
+                    url: `${URLS.apiRoot}studentdiscounts/getEstDetails/${this.id}`,
                     // set the context object to the vue component
                     // this line tells vue to update its components
                     // when the success or error objects complete!

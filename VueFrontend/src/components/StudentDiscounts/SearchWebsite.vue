@@ -43,7 +43,7 @@
                 //this.resetValidateValues;
                 $.ajax({
                     // set the HTTP request URL
-                    url: `${URLS.apiRoot}/studentdiscounts/getDiscountsWebsite`,
+                    url: `${URLS.apiRoot}studentdiscounts/getDiscountsWebsite`,
                     // set the context object to the vue component
                     // this line tells vue to update its components
                     // when the success or error objects complete!
