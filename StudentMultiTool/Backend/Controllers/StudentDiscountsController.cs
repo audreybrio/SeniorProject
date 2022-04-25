@@ -37,6 +37,7 @@ namespace StudentMultiTool.Backend.Controllers
         public IActionResult postWebsite(string title, string website, string description)
         {
             //return Ok("Success");
+
             DiscountsManager discount = new DiscountsManager();
             if (discount.postDiscountWebsite(title, website, description))
             {

@@ -1,7 +1,9 @@
 <template>
     <div class="page">
         <h3>Post Website</h3>
-        <div v-for="(error, index) in errors" :key="index" class="warning">{{index + 1}}. {{error}}</div>
+        <ul>
+            <li v-for="(error, index) in errors" :key="index" class="warning">{{error}}</li>
+        </ul>
         <div v-if="isDiscountPosted" class="discountPostedStyle">STUDENT DISCOUNT POSTED</div>
         <form @submit.prevent="submitButtonPressed">
             <label for="title">Discount Title:</label>
@@ -32,6 +34,11 @@
                     title: '',
                     website: '',
                     description: ''
+                },
+                validInputWeb: {
+                    validTitle: false,
+                    validWebsite: false,
+                    validDescription: false
                 }
             }
         },
@@ -40,22 +47,71 @@
         },
         methods: {
             submitButtonPressed() {
-                this.isDiscountPosted = true
+                this.resetValidInput()
                 this.errorMessages()
-                this.postDiscount()
+                if (this.isValid()) {
+                    this.postDiscount()
+                    this.isDiscountPosted = true
+                    this.resetInputFields()
+                }
+                
             },
             errorMessages() {
-                this.errors.push('Error')
-                this.errors.push('Error')
-                this.errors.push('Error')
-                this.errors.push('Error')
+                this.errors = []
+
+                if (this.discountInfo.title.length < 4) {
+                    this.errors.push('Discount title must be 4 or more characters') 
+                }
+                else {
+                    this.validInputWeb.validTitle = true
+                }
+
+                if (!this.validateWebsite()) {
+                    this.errors.push('Please enter a valid website URL')
+                }
+                else {
+                    this.validInputWeb.validWebsite = true
+                }
+
+                if (this.discountInfo.description.length < 4) {
+                    this.errors.push('Discount description must be 4 or more characters')
+                }
+                else {
+                    this.validInputWeb.validDescription = true
+                }
+            },
+            validateWebsite() {
+                if (new RegExp("([a-zA-Z0-9]+://)?([a-zA-Z0-9_]+:[a-zA-Z0-9_]+@)?([a-zA-Z0-9.-]+\\.[A-Za-z]{2,4})(:[0-9]+)?(/.*)?").test(this.discountInfo.website)) {
+                    return true
+                }
+                else {
+                    return false
+                }
+            },
+            isValid() {
+                console.log('validinputweb: ')
+                console.log(this.validInputWeb)
+                if (this.validInputWeb.validTitle && this.validInputWeb.validWebsite && this.validInputWeb.validDescription) {
+                    return true
+                }
+                else {
+                    return false
+                }
+            },
+            resetValidInput() {
+                this.validInputWeb.validTitle = false
+                this.validInputWeb.validWebsite = false
+                this.validInputWeb.validDescription = false
+            },
+            resetInputFields() {
+                this.discountInfo.title = ''
+                this.discountInfo.website = ''
+                this.discountInfo.description = ''
             },
             postDiscount() {
-                console.log('descr: ' + this.discountInfo.description)
                 $.ajax({
                     // set the HTTP request URL
-                    url: `${baseURL}/api/studentdiscounts/postWebsite/${this.discountInfo.title}/${this.discountInfo.website}/
-                            ${this.discountInfo.description}`,
+                    url: `${baseURL}/api/studentdiscounts/postWebsite/${this.discountInfo.title}/${this.discountInfo.website}/${this.discountInfo.description}`,
                     // set the context object to the vue component
                     // this line tells vue to update its components
                     // when the success or error objects complete!

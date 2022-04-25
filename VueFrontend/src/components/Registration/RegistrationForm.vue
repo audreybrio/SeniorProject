@@ -3,7 +3,9 @@
         <h2>CREATE ACCOUNT</h2>
         <br />
         <div class="warning">
-            <div v-for="(error, index) in errors" :key="index" class="warning">{{index + 1}}. {{error}}</div>
+            <ul>
+                <li v-for="(error, index) in errors" :key="index" class="warning">{{error}}</li>
+            </ul>
         </div>
         <div v-if="isAccountCreated" class="accountCreatedStyle">NEW USER ACCOUNT CREATED SUCCESSFULLY</div>
         <div>
