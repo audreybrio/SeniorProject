@@ -46,12 +46,12 @@ const routes = [
     // ScheduleBuilder & ScheduleComparison
     // ScheduleBuilder
     {
-        path: '/schedule/builder/:user/:scheduleId',
+        path: '/schedule/builder/',
         name: 'ScheduleBuilder',
         component: () => import('../Views/ScheduleBuilder/ScheduleBuilder.vue')
     },
     {
-        path: '/schedule/builder/select/:user',
+        path: '/schedule/builder/select/',
         name: 'SelectForBuilder',
         component: () => import('../Views/ScheduleBuilder/SelectForBuilder.vue')
     },
