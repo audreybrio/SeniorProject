@@ -43,7 +43,6 @@ export default {
               method: 'GET',
               // On a successful AJAX request:
               success: function (data) {
-                  console.log(data)
                   this.discounts = data
                   // log that we've completed
 
