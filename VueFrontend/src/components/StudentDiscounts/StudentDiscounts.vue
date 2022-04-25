@@ -44,14 +44,12 @@
               if (!this.isSearch) {
               this.isSearch = true
               this.isPost = false
-              console.log("search: " + this.isSearch + " post: " + this.isPost)
             }
           },
           postSwitch(){
             if (!this.isPost){
               this.isSearch = false
               this.isPost = true
-              console.log("search: " + this.isSearch + " post: " + this.isPost)
             }
           }
 

@@ -11,11 +11,14 @@
             <br />
             <br />
             <div class="details">
+                Address: {{discount.address}}
+                <br />
                 Description:
                 <br />
                 {{discount.description}}
             </div>
             <button>Website</button>
+            <ShowMap :latitud="33.7838" :longitud="-118.1141"/>
         </div>
         <br />
         <br />
@@ -23,22 +26,30 @@
 </template>
 
 <script>
+    import ShowMap from './ShowMap.vue'
     import * as $ from 'jquery'
     const baseURL = "https://localhost:5002";
     export default {
         props: ['id'],
+        components: {
+            ShowMap
+        },
         data() {
             return {
-                discounts: {}
+                discounts: {},
+                //lat: "",
+                //lng: ""
             }
         },
         created() {
             this.getDetails()
+            console.log('created....')
+            console.log(this.discounts)
         },
         methods: {
             getDetails() {
                 console.log('getting establishments')
-                $.ajax({
+                var result = $.ajax({
                     // set the HTTP request URL
                     url: `${baseURL}/api/studentdiscounts/getEstDetails/${this.id}`,
                     // set the context object to the vue component
@@ -51,7 +62,7 @@
                     // On a successful AJAX request:
                     success: function (data) {
                         this.discounts = data
-                        console.log(data)
+                        //console.log(data)
                         // log that we've completed
                         //this.discounts = data
                         return true;
@@ -64,6 +75,7 @@
                         return false;
                     }
                 });
+                return result
             }
 
 
