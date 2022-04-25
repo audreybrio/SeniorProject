@@ -17,7 +17,7 @@
                 <br />
                 {{discount.description}}
             </div>
-            <button>Website</button>
+            <br/>
             <ShowMap :latitud="33.7838" :longitud="-118.1141"/>
         </div>
         <br />
@@ -43,12 +43,10 @@
         },
         created() {
             this.getDetails()
-            console.log('created....')
-            console.log(this.discounts)
+
         },
         methods: {
             getDetails() {
-                console.log('getting establishments')
                 var result = $.ajax({
                     // set the HTTP request URL
                     url: `${baseURL}/api/studentdiscounts/getEstDetails/${this.id}`,
