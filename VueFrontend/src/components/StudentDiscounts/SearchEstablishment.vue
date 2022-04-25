@@ -1,44 +1,40 @@
-<template >
-  <div>
-    <h3>Search Establishments</h3>
-  </div>
-  
-  <section >
-      <div >
+<template>
+    <div>
+        <h3>Search Establishments</h3>
+    </div>
+    <div v-for="discount in discounts" :key="discount.id" class="discount">
+        <router-link :to="{name:'discountDetails', params: {id: discount.id}}">
+            <h2>{{discount.title}}</h2>
+        </router-link>
+    </div>
+    <br />
+    <br />
 
-      </div>
-  </section>
-
-    
-    
-        
-    
 </template>
 
 <script>
     import * as $ from 'jquery'
     const baseURL = "https://localhost:5002";
-// import axios from 'axios'
 //import Map1 from './ShowMap.vue'
 
 export default {
   data () {
-    return {
-      spinner: false,
-      displayMap: false,
-      address: '',
-      error: '',
-      location:{
-        lat: 33.7838,
-        lng: -118.1141
-      },
+        return {
+            discounts: {},
+            spinner: false,
+            displayMap: false,
+            address: '',
+             error: '',
+              location:{
+                lat: 33.7838,
+                lng: -118.1141
+              },
     }
   },
   components:{
     //Map1
         },
   created(){
-      console.log('getting data')
       this.getWebDiscounts()
     },
   computed:{
@@ -55,7 +51,7 @@ export default {
           //this.resetValidateValues;
           $.ajax({
               // set the HTTP request URL
-              url: `${baseURL}/api/studentdiscounts/getDiscountsWebsite`,
+              url: `${baseURL}/api/studentdiscounts/getDiscountsEstablishment`,
               // set the context object to the vue component
               // this line tells vue to update its components
               // when the success or error objects complete!
@@ -66,6 +62,7 @@ export default {
               // On a successful AJAX request:
               success: function (data) {
                   console.log(data)
+                  this.discounts = data
                   // log that we've completed
 
                   return true;
@@ -194,5 +191,22 @@ export default {
         margin-left: 50px;
         font-weight: bold;
     }
+    .discount h2 {
+        background-color: #f4f4f4;
+        padding: 20px;
+        border-radius: 10px;
+        margin: 10px auto;
+        max-width: 600px;
+        cursor: pointer;
+        color: #444;
+        text-decoration: none;
+    }
 
+        .discount h2:hover {
+            background: #ddd;
+        }
+
+    .discount .a {
+        text-decoration: none;
+    }
 </style>

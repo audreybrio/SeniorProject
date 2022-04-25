@@ -89,8 +89,6 @@
                 }
             },
             isValid() {
-                console.log('validinputweb: ')
-                console.log(this.validInputWeb)
                 if (this.validInputWeb.validTitle && this.validInputWeb.validWebsite && this.validInputWeb.validDescription) {
                     return true
                 }
@@ -121,7 +119,6 @@
                     method: 'POST',
                     // On a successful AJAX request:
                     success: function () {
-                        console.log('success')
                         // log that we've completed
                         return true;
                     },

@@ -72,5 +72,15 @@ namespace StudentMultiTool.Backend.Controllers
             return discount.getWebDetails(id);
 
         }
+
+        // get discounts for Establishments
+        [HttpGet("getDiscountsEstablishment")]
+        public IEnumerable<DiscountsEstabl> getDiscountsWe()
+        {
+
+            DiscountsManager discount = new DiscountsManager();
+            return discount.getDiscountsEstablishment();
+
+        }
     }
 }

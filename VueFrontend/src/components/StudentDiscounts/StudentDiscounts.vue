@@ -3,7 +3,9 @@
         <div>
             <h2 class="row1">Student Discounts</h2>
         </div>
+        <router-link to="/home" class="homepage">HomePage</router-link>
         <div>
+            <br />
             Please select a type of Student Discounts:
             <br />
             <div class="action">
@@ -39,7 +41,7 @@
         },
         methods: {
           searchSwitch(){
-            if (!this.isSearch){
+              if (!this.isSearch) {
               this.isSearch = true
               this.isPost = false
               console.log("search: " + this.isSearch + " post: " + this.isPost)
@@ -58,6 +60,10 @@
 
 
 <style scoped>
+    .homepage {
+        margin-right: 20px;
+        float: right;
+    }
     .page {
         margin: auto;
         padding: auto;

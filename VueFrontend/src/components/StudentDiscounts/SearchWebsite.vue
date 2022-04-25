@@ -37,7 +37,7 @@
             this.getWebDiscounts()
         },
         methods: {
-            getDiscounts() {
+            getWebDiscounts() {
                 //this.isAccountCreated = false;
                 //this.resetValidateValues;
                 $.ajax({
