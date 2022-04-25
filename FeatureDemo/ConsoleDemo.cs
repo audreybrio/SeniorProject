@@ -56,6 +56,8 @@ namespace ConsoleDemo
                         MatchingController matchingController = new MatchingController();
                         matchingController.MatchingActivity("abrio");
 
+                        matchingController.DisplayMatches("abrio");
+
 
 
                         break;

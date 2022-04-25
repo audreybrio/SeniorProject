@@ -75,7 +75,7 @@ namespace StudentMultiTool.Backend.Controllers
         }
 
 
-        public int ProfileExists(string username)
+        public static int ProfileExists(string username)
         {
             SqlConnection conn = new SqlConnection();
             conn.ConnectionString = Environment.GetEnvironmentVariable(connectionString);

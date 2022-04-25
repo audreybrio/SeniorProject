@@ -118,15 +118,16 @@
             },
 
             save() {
-                var act = new Array();
-                $("input[name='activity']:checked").each(function () {
-                    act.push(this.value);
-                });
+                // var act = new Array();
+                //$("input[name='checkedNames']:checked").each(function () {
+                ////    this.checkedNames.push(this.value);
+                //});
                 $.ajax({
                     /*url: `${baseURL}/api/activityProfile/update/${jwt_decode(window.sessionStorage.getItem("token")).username}/${JSON.stringify(this.checkedNames)}/${true}`,*/
-                    url: `${baseURL}/api/activityProfile/update/${JSON.stringify(act)}`,
+                    url: `${baseURL}/api/activityProfile/update}`,
                     context: this,
                     method: 'POST',
+                    data: JSON.stringify(this.checkedNames),
                     success: function () {
                         console.log("ajax success");
                         router.push({name: "matchingMain"})

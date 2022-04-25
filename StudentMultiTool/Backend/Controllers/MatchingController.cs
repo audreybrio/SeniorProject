@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Data.SqlClient;
+using StudentMultiTool.Backend.Models.Matching;
+using StudentMultiTool.Backend.Controllers;
 
 namespace StudentMultiTool.Backend.Controllers
 {
@@ -99,9 +101,32 @@ namespace StudentMultiTool.Backend.Controllers
         }
 
         // Display Matches to frontend 
-        public bool DisplayMatches()
+        public List<Match> DisplayMatches(string username)
         {
-            return true;
+            List<Match> matches = new List<Match>();
+            SqlConnection conn = new SqlConnection();
+            conn.ConnectionString = Environment.GetEnvironmentVariable(connectionString);
+            conn.Open();
+            SqlCommand cmd = new SqlCommand("SELECT matchId, reason FROM Matches WHERE  Matches.userId = (SELECT id FROM UserAccounts WHERE UserAccounts.username = @username)", conn);
+            cmd.Parameters.AddWithValue("@username", username);
+            int matchId = 0;
+            string reason = "";
+            SqlDataReader dr = cmd.ExecuteReader();
+            while (dr.Read())
+            { 
+                matchId = dr.GetInt32(0);
+                reason = dr.GetString(1);
+
+                Match matchExample = new Match(matchId, reason);
+                matches.Add(matchExample);
+
+            }
+            dr.Close();
+            foreach (Match match in matches)
+            {
+                Console.WriteLine(match.matchId + " " + match.reason);
+            }
+            return matches;
         }
 
         // Get activity profile
@@ -255,23 +280,25 @@ namespace StudentMultiTool.Backend.Controllers
         [HttpGet("updateOptStatus/{username}/{opt}")]
         public IActionResult UpdateOptStatus(string username, bool opt)
         {
+
+            int countActivityProfile = ActivityProfileController.ProfileExists(username);
+            int countTutoringProfile = TutoringProfileController.ProfileExists(username);
+
+            if (countActivityProfile == 0 && countTutoringProfile == 0)
+            {
+                return NotFound();
+            }
             SqlConnection conn = new SqlConnection();
             conn.ConnectionString = Environment.GetEnvironmentVariable(connectionString);
             conn.Open();
             SqlCommand cmd = new SqlCommand("UPDATE TutoringProfile SET opt = @opt WHERE TutoringProfile.userId = (SELECT id FROM UserAccounts WHERE UserAccounts.username = @username)", conn);
             cmd.Parameters.AddWithValue("@username", username);
             cmd.Parameters.AddWithValue("@opt", opt);
-            if (cmd.ExecuteScalar() == null)
-            {
-                return NotFound();
-            }
+            cmd.ExecuteScalar();
             SqlCommand cmd2 = new SqlCommand("UPDATE ActivityProfile SET opt = @opt WHERE ActivityProfile.userId = (SELECT id FROM UserAccounts WHERE UserAccounts.username = @username)", conn);
             cmd2.Parameters.AddWithValue("@username", username);
             cmd2.Parameters.AddWithValue("@opt", opt);
-            if (cmd2.ExecuteScalar() == null)
-            {
-                return NotFound();
-            }
+            cmd2.ExecuteScalar();
             return Ok();
         }
 

@@ -10,8 +10,8 @@ namespace StudentMultiTool.Backend.Controllers
     {
         const string connectionString = "MARVELCONNECTIONSTRING";
 
-        [HttpPost("update/{activities}")]
-        public IActionResult HelpMe(string[] activities) { 
+        [HttpPost("update")]
+        public IActionResult HelpMe(List<string> activities) { 
             return Ok();
         }
 
@@ -71,7 +71,7 @@ namespace StudentMultiTool.Backend.Controllers
             return Ok();
         }
 
-        public int ProfileExists(string username)
+        public static int ProfileExists(string username)
         {
             SqlConnection conn = new SqlConnection();
             conn.ConnectionString = Environment.GetEnvironmentVariable(connectionString);
