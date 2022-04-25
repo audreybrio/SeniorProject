@@ -11,9 +11,10 @@ const URLS = {
             getList: apiRoot + "schedule/getlist",
             getSchedule: apiRoot + "schedule/getschedule",
             newSchedule: apiRoot + "schedule/newschedule",
-            createItem: apiRoot + "schedule/createItem",
-            updateItem: apiRoot + "schedule/updateItem",
-            deleteItem: apiRoot + "schedule/deleteItem"
+            saveSchedule: apiRoot + "schedule/saveschedule",
+            //createItem: apiRoot + "schedule/createItem",
+            //updateItem: apiRoot + "schedule/updateItem",
+            //deleteItem: apiRoot + "schedule/deleteItem"
         },
     }
 }
