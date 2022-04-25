@@ -12,6 +12,8 @@ import EmailVerification from '../components/Registration/EmailVerification.vue'
 // StudentDiscounts
 import StudentDiscounts from '../components/StudentDiscounts/StudentDiscounts.vue'
 import DiscountDetails from '../components/StudentDiscounts/DiscountDetails.vue'
+import EstablishmentDetails from '../components/StudentDiscounts/EstablishmentDetails.vue'
+
 
 // Defining the routes
 const routes = [
@@ -93,16 +95,23 @@ const routes = [
         component: StudentDiscounts,
     },
     {
-        path: '/aidEligibility/info',
-        name: 'studentInformation',
-        component: () => import('../Views/AidEligibility/Info.vue')
-    },
-    {
         path: '/studentDiscounts/discountDetails/:id',
         name: 'discountDetails',
         component: DiscountDetails,
         props: true
     },
+    {
+        path: '/studentDiscounts/establishmentDetails/:id',
+        name: 'EstablishmentDetails',
+        component: EstablishmentDetails,
+        props: true
+    },
+    {
+        path: '/aidEligibility/info',
+        name: 'studentInformation',
+        component: () => import('../Views/AidEligibility/Info.vue')
+    },
+    
     // ADD MORE HERE! DON'T ADD AFTER not-found!
 
     // Not found; don't move this one or place anything after it

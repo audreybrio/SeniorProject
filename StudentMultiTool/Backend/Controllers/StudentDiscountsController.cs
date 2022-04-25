@@ -63,11 +63,10 @@ namespace StudentMultiTool.Backend.Controllers
         }
 
         // get discount details for website
-        [HttpGet("getDetails/{id}")]
+        [HttpGet("getWebDetails/{id}")]
         public IEnumerable<DiscountsWeb> getDetailsWebsite(string id)
         {
-            //return Ok("Success");
-            Console.WriteLine("id is: " + id);
+
             DiscountsManager discount = new DiscountsManager();
             return discount.getWebDetails(id);
 
@@ -80,6 +79,16 @@ namespace StudentMultiTool.Backend.Controllers
 
             DiscountsManager discount = new DiscountsManager();
             return discount.getDiscountsEstablishment();
+
+        }
+
+        // get discount details for establishment
+        [HttpGet("getEstDetails/{id}")]
+        public IEnumerable<DiscountsEstabl> getDetailsEstablishment(string id)
+        {
+
+            DiscountsManager discount = new DiscountsManager();
+            return discount.getEstDetails(id);
 
         }
     }

@@ -6,6 +6,43 @@ namespace StudentMultiTool.Backend.Services.StudentDiscounts
     {
         public DiscountsManager() { }
 
+        public IEnumerable<DiscountsEstabl> getEstDetails(string attribute)
+        {
+            string discountsQuery = "SELECT * FROM Discounts WHERE id = @id";
+            List<DiscountsEstabl> result = new List<DiscountsEstabl>();
+            SqlConnection conn = new SqlConnection();
+            conn.ConnectionString = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING");
+            conn.Open();
+            SqlCommand cmd = new SqlCommand(discountsQuery, conn);
+            cmd.Parameters.AddWithValue("@id", attribute);
+            try
+            {
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        int id = (int)reader["id"];
+                        string name = (string)reader["name"];
+                        string title = (string)reader["title"];
+                        string address = (string)reader["address"];
+                        string lat = (string)reader["latitud"];
+                        string lng = (string)reader["longitud"];
+                        string description = (string)reader["description"];
+                        string dataCreated = (string)reader["dateCreated"];
+                        int likes = (int)reader["likes"];
+                        int dislikes = (int)reader["dislikes"];
+                        DiscountsEstabl discount = new DiscountsEstabl(id, name, title, address, lat, lng, description, dataCreated, likes, dislikes);
+                        result.Add(discount);
+                    }
+                }
+            }
+
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+            return result;
+        }
         public IEnumerable<DiscountsEstabl> getDiscountsEstablishment()
         {
             string discountsQuery = "SELECT * FROM Discounts WHERE type = @type";

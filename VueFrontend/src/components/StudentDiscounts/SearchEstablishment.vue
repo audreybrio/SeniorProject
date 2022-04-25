@@ -3,7 +3,7 @@
         <h3>Search Establishments</h3>
     </div>
     <div v-for="discount in discounts" :key="discount.id" class="discount">
-        <router-link :to="{name:'discountDetails', params: {id: discount.id}}">
+        <router-link :to="{name:'EstablishmentDetails', params: {id: discount.id}}">
             <h2>{{discount.title}}</h2>
         </router-link>
     </div>
@@ -35,7 +35,7 @@ export default {
     //Map1
         },
   created(){
-      this.getWebDiscounts()
+      this.getEstDiscounts()
     },
   computed:{
     locLat(){
@@ -46,7 +46,7 @@ export default {
     }
   },
   methods:{
-      getWebDiscounts() {
+      getEstDiscounts() {
           //this.isAccountCreated = false;
           //this.resetValidateValues;
           $.ajax({
