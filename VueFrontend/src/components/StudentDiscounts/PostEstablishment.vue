@@ -41,6 +41,7 @@
     import VueGoogleAutocomplete from "vue-google-autocomplete";
     import * as $ from 'jquery'
     const baseURL = "https://localhost:5002";
+    import URLS from '../../variables'
     export default {
 
         components: { VueGoogleAutocomplete },
@@ -82,7 +83,7 @@
             postDiscount() {
                 $.ajax({
                     // set the HTTP request URL
-                    url: `${baseURL}/api/studentdiscounts/postEstablishment/${this.discountInfo.title}
+                    url: `${URLS.apiRoot}/studentdiscounts/postEstablishment/${this.discountInfo.title}
                            /${this.discountInfo.name}/${this.discountInfo.address}/${this.discountInfo.lat}
                            /${this.discountInfo.lng}/${this.discountInfo.description}`,
                     // set the context object to the vue component
