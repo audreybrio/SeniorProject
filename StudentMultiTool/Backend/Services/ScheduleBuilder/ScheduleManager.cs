@@ -10,7 +10,7 @@ namespace StudentMultiTool.Backend.Services.ScheduleBuilder
     {
         public string? dbConnectionString { get; set; } = null;
         private string _baseFilePath = string.Empty;
-        private ScheduleFileAccessor _fileAccessor = new ScheduleFileAccessor();
+        private ScheduleFileAccessor _fileAccessor = new ScheduleFileAccessor(true);
         public string BaseFilePath
         {
             get
@@ -21,21 +21,21 @@ namespace StudentMultiTool.Backend.Services.ScheduleBuilder
             set
             {
                 _baseFilePath = (string)value;
-                int lastIndex = value.Length - 1;
-                if (!_baseFilePath[lastIndex].Equals("/"))
-                {
-                    _baseFilePath = value + "/";
-                }
-                else
-                {
-                    _baseFilePath = value;
-                }
+                //int lastIndex = value.Length - 1;
+                //if (!_baseFilePath[lastIndex].Equals("/"))
+                //{
+                //    _baseFilePath = value + "/";
+                //}
+                //else
+                //{
+                //    _baseFilePath = value;
+                //}
             }
         }
         public ScheduleManager()
         {
             dbConnectionString = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING");
-            BaseFilePath = "./";
+            BaseFilePath = "./schedules/";
         }
         public ScheduleManager(string dbConnectionString, string BaseFilePath)
         {
@@ -145,7 +145,7 @@ namespace StudentMultiTool.Backend.Services.ScheduleBuilder
             SqlCommandRunner runner = new SqlCommandRunner(dbConnectionString);
             runner.Query = query;
             runner.AddParam("@scheduleId", scheduleId);
-            object[] firstRow = runner.ExecuteReader()[0];
+            object[] firstRow = runner.ExecuteReaderAsync().Result[0];
             try
             {
                 // try to unpack the data and set up the new Schedule
@@ -205,7 +205,7 @@ namespace StudentMultiTool.Backend.Services.ScheduleBuilder
 
                 // Set up the file path
                 string path = this.BaseFilePath + result.Path;
-                List<ScheduleItem> items = _fileAccessor.ReadScheduleItems(result.Path);
+                List<ScheduleItem> items = _fileAccessor.ReadScheduleItems(path);
                 foreach (ScheduleItem item in items)
                 {
                     result.AddScheduleItem(item);
@@ -293,6 +293,23 @@ namespace StudentMultiTool.Backend.Services.ScheduleBuilder
                 i++;
             }
             return deleted;
+        }
+        // Writes a schedule to a file.
+        public string SaveSchedule(ref Schedule s)
+        {
+            string result = string.Empty;
+            try
+            {
+                result = _fileAccessor.WriteScheduleItems(s, BaseFilePath);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("The following exception has occurred: " +
+                                ex.GetType().FullName);
+                Console.WriteLine(ex.Message);
+                result = ex.Message;
+            }
+            return result;
         }
     }
 }
