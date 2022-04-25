@@ -6,6 +6,9 @@
         <div class="warning">
             <div v-if="errors.length" :key="index" class="warning">{{errors}}</div>
         </div>
+        <div class="warning">
+            <div v-if="parseInt(count)>5" :key="count" class="warning">{{accountDisabled}}</div>
+        </div>
         <input v-model="username" placeholder="Username">
         <input v-model="otp" placeholder="OTP">
         <button @click="onLogin">Login</button>
@@ -21,10 +24,14 @@
 
     export default ({
         data() {
+            // count: 0;
             return {
                 loading: false,
                 post: null,
                 errors: "",
+                accountDisabled: "Account Disabled",
+                count: 0
+                
 
             };
         },
@@ -43,6 +50,7 @@
                 this.loading = true;
                 this.username = '';
                 this.otp = '';
+                
 
                 fetch('weatherforecast')
                     .then(r => r.json())
@@ -86,7 +94,10 @@
                     },
                     error: function () {
                         console.log("error")
+                        this.count = this.count + 1;
                         this.errors = "Username/Otp Incorrect";
+                        
+                        
                     }
                 })
             },

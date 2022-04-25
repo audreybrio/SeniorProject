@@ -4,9 +4,13 @@ using System.Data.SqlClient;
 
 namespace StudentMultiTool.Backend.Controllers
 {
+    [ApiController]
+    [Route("api/" + "matching")]
     public class MatchingController : Controller
     {
         const string connectionString = "MARVELCONNECTIONSTRING";
+
+        // matching logic for activity profile
         public bool MatchingActivity(string username)
         {
 
@@ -19,9 +23,10 @@ namespace StudentMultiTool.Backend.Controllers
                 SqlConnection conn = new SqlConnection();
                 conn.ConnectionString = Environment.GetEnvironmentVariable(connectionString);
                 conn.Open();
-                SqlCommand cmd = new SqlCommand("SELECT userId FROM ActivityProfile WHERE ActivityProfile.userId != (SELECT id FROM UserAccounts WHERE UserAccounts.username = @username) AND (activity1 = @activity OR activity2 = @activity OR activity3 = @activity OR activity4 = @activity OR activity5 = @activity)", conn);
+                SqlCommand cmd = new SqlCommand("SELECT userId FROM ActivityProfile WHERE ActivityProfile.userId != (SELECT id FROM UserAccounts WHERE UserAccounts.username = @username) AND (activity1 = @activity OR activity2 = @activity OR activity3 = @activity OR activity4 = @activity OR activity5 = @activity) AND opt = @opt", conn);
                 cmd.Parameters.AddWithValue("@username", username);
                 cmd.Parameters.AddWithValue("@activity", activities[i]);
+                cmd.Parameters.AddWithValue("@opt", 1);
                 cmd.ExecuteNonQuery();
                 if(cmd.ExecuteScalar() != null)
                 {
@@ -35,9 +40,14 @@ namespace StudentMultiTool.Backend.Controllers
                     {
                         matches.Add(id, new List<string> { activities[i] });
                     }
+                    int countMatchExists = MatchExists(username, id, activities[i]);
+                    if (countMatchExists == 0){
+                        InsertMatch(username, id, activities[i]);
+                    }
+                    
                 }   
             }
-
+            
             foreach (KeyValuePair<int, List<string>> kvp in matches)
                 foreach (string val in kvp.Value)
                     Console.WriteLine("Key: {0}, Value: {1}", kvp.Key, val);
@@ -45,6 +55,7 @@ namespace StudentMultiTool.Backend.Controllers
             return true;
         }
 
+        // Matching Logic for Tutoring profile
         public bool MatchingTutoring(string username)
         {
             List<string> courses = new List<string>();
@@ -57,11 +68,12 @@ namespace StudentMultiTool.Backend.Controllers
                 SqlConnection conn = new SqlConnection();
                 conn.ConnectionString = Environment.GetEnvironmentVariable(connectionString);
                 conn.Open();
-                SqlCommand cmd = new SqlCommand("SELECT userId FROM TutoringProfile WHERE TutoringProfile.userId != (SELECT id FROM UserAccounts WHERE UserAccounts.username = @username) AND (course1 = @course OR course2 = @course OR course3 = @course OR course4 = @course OR course5 = @course OR course6 = @course) AND individual = @individual AND requires != @requires", conn);
+                SqlCommand cmd = new SqlCommand("SELECT userId FROM TutoringProfile WHERE TutoringProfile.userId != (SELECT id FROM UserAccounts WHERE UserAccounts.username = @username) AND (course1 = @course OR course2 = @course OR course3 = @course OR course4 = @course OR course5 = @course OR course6 = @course) AND individual = @individual AND requires != @requires AND opt = @opt", conn);
                 cmd.Parameters.AddWithValue("@username", username);
                 cmd.Parameters.AddWithValue("@course", courses[i]);
                 cmd.Parameters.AddWithValue("@individual", individual);
                 cmd.Parameters.AddWithValue("@requires", requires);
+                cmd.Parameters.AddWithValue("@opt", 1);
                 cmd.ExecuteNonQuery();
                 if (cmd.ExecuteScalar() != null)
                 {
@@ -86,11 +98,13 @@ namespace StudentMultiTool.Backend.Controllers
             return true;
         }
 
+        // Display Matches to frontend 
         public bool DisplayMatches()
         {
             return true;
         }
 
+        // Get activity profile
         public List<string> GetActivityProfile(string username)
         {
             List<string> activities = new List<string>();
@@ -137,7 +151,7 @@ namespace StudentMultiTool.Backend.Controllers
             return activities;
         }
 
-
+        // Get tutoring profile
         public (List<string>, bool, bool) GetTutoringProfile(string username)
         {
 
@@ -195,83 +209,71 @@ namespace StudentMultiTool.Backend.Controllers
 
         }
 
-        public bool InsertMatch(string username)
+        // Insert Match into database
+        public void InsertMatch(string username, int matchId, string reason)
         {
-            return true;
+            SqlConnection conn = new SqlConnection();
+            conn.ConnectionString = Environment.GetEnvironmentVariable(connectionString);
+            conn.Open();
+            SqlCommand cmd = new SqlCommand("INSERT INTO Matches (userId, matchId, reason, overlap) VALUES ((SELECT id FROM UserAccounts WHERE UserAccounts.username = @username), @matchId, @reason, NULL)", conn);
+            cmd.Parameters.AddWithValue("@matchId", matchId);
+            cmd.Parameters.AddWithValue("@reason", reason);
+            cmd.Parameters.AddWithValue("@username", username);
+            cmd.ExecuteNonQuery();
         }
-        //// GET: MatchingController
-        //public ActionResult Index()
-        //{
-        //    return View();
-        //}
 
-        //// GET: MatchingController/Details/5
-        //public ActionResult Details(int id)
-        //{
-        //    return View();
-        //}
+        public int MatchExists(string username, int matchId, string reason)
+        {
+            SqlConnection conn = new SqlConnection();
+            conn.ConnectionString = Environment.GetEnvironmentVariable(connectionString);
+            conn.Open();
+            SqlCommand cmd = new SqlCommand("SELECT COUNT(userId) FROM Matches WHERE userId = (SELECT id FROM UserAccounts WHERE UserAccounts.username = @username) AND matchId = @matchId AND reason = @reason ", conn);
+            cmd.Parameters.AddWithValue("@username", username);
+            cmd.Parameters.AddWithValue("@matchId", matchId);
+            cmd.Parameters.AddWithValue("@reason", reason);
+            SqlDataReader reader = cmd.ExecuteReader();
+            int count = 0;
+            reader.Close();
+            count = (int)cmd.ExecuteScalar();
+            return count;
+        }
 
-        //// GET: MatchingController/Create
-        //public ActionResult Create()
-        //{
-        //    return View();
-        //}
+        // when generate matches, checking if opted in 
+        public bool CheckOptedIn(string username)
+        {
+            SqlConnection conn = new SqlConnection();
+            conn.ConnectionString = Environment.GetEnvironmentVariable(connectionString);
+            conn.Open();
+            SqlCommand cmd = new SqlCommand("SELECT opt FROM TutoringProfile WHERE TutoringProfile.userId = (SELECT id FROM UserAccounts WHERE UserAccounts.username = @username)", conn);
+            cmd.Parameters.AddWithValue("@username", username);
+            bool opt = (bool) cmd.ExecuteScalar();
+            return opt; 
+        }
 
-        //// POST: MatchingController/Create
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Create(IFormCollection collection)
-        //{
-        //    try
-        //    {
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    catch
-        //    {
-        //        return View();
-        //    }
-        //}
 
-        //// GET: MatchingController/Edit/5
-        //public ActionResult Edit(int id)
-        //{
-        //    return View();
-        //}
+        // For when user wants to opt in / out 
+        [HttpGet("updateOptStatus/{username}/{opt}")]
+        public IActionResult UpdateOptStatus(string username, bool opt)
+        {
+            SqlConnection conn = new SqlConnection();
+            conn.ConnectionString = Environment.GetEnvironmentVariable(connectionString);
+            conn.Open();
+            SqlCommand cmd = new SqlCommand("UPDATE TutoringProfile SET opt = @opt WHERE TutoringProfile.userId = (SELECT id FROM UserAccounts WHERE UserAccounts.username = @username)", conn);
+            cmd.Parameters.AddWithValue("@username", username);
+            cmd.Parameters.AddWithValue("@opt", opt);
+            if (cmd.ExecuteScalar() == null)
+            {
+                return NotFound();
+            }
+            SqlCommand cmd2 = new SqlCommand("UPDATE ActivityProfile SET opt = @opt WHERE ActivityProfile.userId = (SELECT id FROM UserAccounts WHERE UserAccounts.username = @username)", conn);
+            cmd2.Parameters.AddWithValue("@username", username);
+            cmd2.Parameters.AddWithValue("@opt", opt);
+            if (cmd2.ExecuteScalar() == null)
+            {
+                return NotFound();
+            }
+            return Ok();
+        }
 
-        //// POST: MatchingController/Edit/5
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Edit(int id, IFormCollection collection)
-        //{
-        //    try
-        //    {
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    catch
-        //    {
-        //        return View();
-        //    }
-        //}
-
-        //// GET: MatchingController/Delete/5
-        //public ActionResult Delete(int id)
-        //{
-        //    return View();
-        //}
-
-        //// POST: MatchingController/Delete/5
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Delete(int id, IFormCollection collection)
-        //{
-        //    try
-        //    {
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    catch
-        //    {
-        //        return View();
-        //    }
-        //}
     }
 }

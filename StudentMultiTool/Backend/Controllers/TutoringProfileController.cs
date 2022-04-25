@@ -12,7 +12,7 @@ namespace StudentMultiTool.Backend.Controllers
 
         // Individual  is 1 if want individual, 0 if want group
         // requires is 1 if requires tutroing, 0 if offering
-        public string TutoringProfile(string username, List<string> courses, bool individual, bool requires)
+        public string TutoringProfile(string username, List<string> courses, bool individual, bool requires, bool opt)
         {
 
             int listSize = courses.Count;
@@ -55,7 +55,7 @@ namespace StudentMultiTool.Backend.Controllers
                 SqlConnection conn = new SqlConnection();
                 conn.ConnectionString = Environment.GetEnvironmentVariable(connectionString);
                 conn.Open();
-                SqlCommand cmd = new SqlCommand("INSERT INTO TutoringProfile (userId, course1, course2, course3, course4, course5, course6, individual, requires) VALUES ( (SELECT id FROM UserAccounts WHERE UserAccounts.username = @username), @course1, @course2, @course3, @course4, @course5, @course6, @individual, @requires)", conn);
+                SqlCommand cmd = new SqlCommand("INSERT INTO TutoringProfile (userId, course1, course2, course3, course4, course5, course6, individual, requires, opt) VALUES ( (SELECT id FROM UserAccounts WHERE UserAccounts.username = @username), @course1, @course2, @course3, @course4, @course5, @course6, @individual, @requires, @opt)", conn);
                 cmd.Parameters.AddWithValue("@course1", course1);
                 cmd.Parameters.AddWithValue("@course2", course2);
                 cmd.Parameters.AddWithValue("@course3", course3);
@@ -65,6 +65,7 @@ namespace StudentMultiTool.Backend.Controllers
                 cmd.Parameters.AddWithValue("@individual", individual);
                 cmd.Parameters.AddWithValue("@requires", requires);
                 cmd.Parameters.AddWithValue("@username", username);
+                cmd.Parameters.AddWithValue("@opt", opt);
                 cmd.ExecuteNonQuery();
             }
 
@@ -88,79 +89,6 @@ namespace StudentMultiTool.Backend.Controllers
             return count;
         }
 
-        //// GET: TutoringProfileController
-        //public ActionResult Index()
-        //{
-        //    return View();
-        //}
 
-        //// GET: TutoringProfileController/Details/5
-        //public ActionResult Details(int id)
-        //{
-        //    return View();
-        //}
-
-        //// GET: TutoringProfileController/Create
-        //public ActionResult Create()
-        //{
-        //    return View();
-        //}
-
-        //// POST: TutoringProfileController/Create
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Create(IFormCollection collection)
-        //{
-        //    try
-        //    {
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    catch
-        //    {
-        //        return View();
-        //    }
-        //}
-
-        //// GET: TutoringProfileController/Edit/5
-        //public ActionResult Edit(int id)
-        //{
-        //    return View();
-        //}
-
-        //// POST: TutoringProfileController/Edit/5
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Edit(int id, IFormCollection collection)
-        //{
-        //    try
-        //    {
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    catch
-        //    {
-        //        return View();
-        //    }
-        //}
-
-        //// GET: TutoringProfileController/Delete/5
-        //public ActionResult Delete(int id)
-        //{
-        //    return View();
-        //}
-
-        //// POST: TutoringProfileController/Delete/5
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Delete(int id, IFormCollection collection)
-        //{
-        //    try
-        //    {
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    catch
-        //    {
-        //        return View();
-        //    }
-        //}
     }
 }

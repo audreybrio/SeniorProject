@@ -4,10 +4,19 @@ using System.Data.SqlClient;
 
 namespace StudentMultiTool.Backend.Controllers
 {
+    [ApiController]
+    [Route("api/" + "activityProfile")]
     public class ActivityProfileController : Controller
     {
         const string connectionString = "MARVELCONNECTIONSTRING";
-        public string ActivityProfile(string username, List<string> activities)
+
+        [HttpPost("update/{activities}")]
+        public IActionResult HelpMe(string[] activities) { 
+            return Ok();
+        }
+
+        [HttpGet("update/{username}/{activities}/{opt}")]
+        public IActionResult ActivityProfile(string username, List<string> activities, bool opt)
         {
 
             int listSize = activities.Count;
@@ -46,19 +55,20 @@ namespace StudentMultiTool.Backend.Controllers
                 SqlConnection conn = new SqlConnection();
                 conn.ConnectionString = Environment.GetEnvironmentVariable(connectionString);
                 conn.Open();
-                SqlCommand cmd = new SqlCommand("INSERT INTO ActivityProfile (userId, activity1, activity2, activity3, activity4, activity5) VALUES ( (SELECT id FROM UserAccounts WHERE UserAccounts.username = @username), @activity1, @activity2, @activity3, @activity4, @activity5)", conn);
+                SqlCommand cmd = new SqlCommand("INSERT INTO ActivityProfile (userId, activity1, activity2, activity3, activity4, activity5, opt) VALUES ( (SELECT id FROM UserAccounts WHERE UserAccounts.username = @username), @activity1, @activity2, @activity3, @activity4, @activity5, @opt)", conn);
                 cmd.Parameters.AddWithValue("@activity1", activity1);
                 cmd.Parameters.AddWithValue("@activity2", activity2);
                 cmd.Parameters.AddWithValue("@activity3", activity3);
                 cmd.Parameters.AddWithValue("@activity4", activity4);
                 cmd.Parameters.AddWithValue("@activity5", activity5);
                 cmd.Parameters.AddWithValue("@username", username);
+                cmd.Parameters.AddWithValue("@opt", opt);
                 cmd.ExecuteNonQuery();
             }
 
 
 
-            return "Success";
+            return Ok();
         }
 
         public int ProfileExists(string username)

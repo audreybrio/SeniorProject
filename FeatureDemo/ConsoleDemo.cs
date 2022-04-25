@@ -41,10 +41,10 @@ namespace ConsoleDemo
                         break;
                     // Login/Logout
                     case 2:
-                        LoginController loginController = new LoginController();
-                        loginController.Authenticate();
+                        //LoginController loginController = new LoginController();
+                        //loginController.Authenticate();
                             
-/*                        TutoringProfileController tutoringProfileController = new TutoringProfileController();
+/*                      TutoringProfileController tutoringProfileController = new TutoringProfileController();
                         List<string> tutorings = new List<string>();
                         tutorings.Add("CECS 451");
                         tutorings.Add("MATH 323");
