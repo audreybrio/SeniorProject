@@ -17,7 +17,8 @@ namespace StudentMultiTool.Backend.Controllers
         }
 
         // post student discount for Establishment
-        [HttpGet("postEstablishment/{title}/{name}/{address}/{latitude}/{longitud}/{description}")]
+        [HttpPost]
+        [HttpPost("postEstablishment/{title}/{name}/{address}/{latitude}/{longitud}/{description}")]
         public IActionResult postEstablishment(string title, string name, string address, string latitude, string longitud, string description)
         {
             DiscountsManager discount = new DiscountsManager();
@@ -33,7 +34,8 @@ namespace StudentMultiTool.Backend.Controllers
         }
 
         // post student discount for Website
-        [HttpGet("postWebsite/{title}/{website}/{description}")]
+        [HttpPost]
+        [HttpPost("postWebsite/{title}/{website}/{description}")]
         public IActionResult postWebsite(string title, string website, string description)
         {
             //return Ok("Success");
@@ -47,6 +49,27 @@ namespace StudentMultiTool.Backend.Controllers
             {
                 return BadRequest();
             }
+
+        }
+
+        // get discounts for Websites
+        [HttpGet("getDiscountsWebsite")]
+        public IEnumerable<DiscountsWeb> getDiscountsWebsite()
+        {
+
+            DiscountsManager discount = new DiscountsManager();
+            return discount.getDiscountsWeb();
+
+        }
+
+        // get discount details for website
+        [HttpGet("getDetails/{id}")]
+        public IEnumerable<DiscountsWeb> getDetailsWebsite(string id)
+        {
+            //return Ok("Success");
+            Console.WriteLine("id is: " + id);
+            DiscountsManager discount = new DiscountsManager();
+            return discount.getWebDetails(id);
 
         }
     }

@@ -1,37 +1,25 @@
 <template >
-  <div style="text-align:center;">
+  <div>
     <h3>Search Establishments</h3>
-    direction: {{this.address}}
   </div>
   
-  <section style="position:relative; z-index:1;">
-      <div class="column">
-         <form >
-           <!--<div  v-show="error">{{ error }}</div>-->
-            <div >
-                  <input
-                     type="text"
-                     placeholder="Enter the address"
-                     v-model="address"
-                     ref="autocomplete"
-                     />
-                  <button  @click="locatorButtonPressed"></button>
-               </div>
-         </form>
+  <section >
+      <div >
+
       </div>
-   </section>
-  <section id="map"></section>
-    <button @click="getGeocode(this.address); displayMap=true">Go</button>
-    address: {{this.location}}
+  </section>
+
+    
+    
         
-    <dev v-if="displayMap">
-      <Map1 :latitude="locLat" :longitude="locLng"/>
-    </dev>
+    
 </template>
 
 <script>
+    import * as $ from 'jquery'
+    const baseURL = "https://localhost:5002";
 // import axios from 'axios'
-import Map1 from './ShowMap.vue'
+//import Map1 from './ShowMap.vue'
 
 export default {
   data () {
@@ -47,8 +35,12 @@ export default {
     }
   },
   components:{
-    Map1
-  },
+    //Map1
+        },
+  created(){
+      console.log('getting data')
+      this.getWebDiscounts()
+    },
   computed:{
     locLat(){
       return this.location.lat;
@@ -58,6 +50,35 @@ export default {
     }
   },
   methods:{
+      getWebDiscounts() {
+          //this.isAccountCreated = false;
+          //this.resetValidateValues;
+          $.ajax({
+              // set the HTTP request URL
+              url: `${baseURL}/api/studentdiscounts/getDiscountsWebsite`,
+              // set the context object to the vue component
+              // this line tells vue to update its components
+              // when the success or error objects complete!
+              // if it's not set, the components don't update!
+              context: this,
+              // HTTP method
+              method: 'GET',
+              // On a successful AJAX request:
+              success: function (data) {
+                  console.log(data)
+                  // log that we've completed
+
+                  return true;
+              },
+              // On an unsuccessful AJAX request:
+              error: function (error) {
+                  // log the error
+                  console.log(error);
+                  this.items = null;
+                  return false;
+              }
+          });
+      },
     async getGeocode(inputAddress){
       try{
       var geocoder = new google.maps.Geocoder;
@@ -155,7 +176,7 @@ export default {
   },
   mounted() {
   new google.maps.places.Autocomplete(
-    this.$refs["autocomplete"], this.$forceUpdate()
+    this.$refs["autocomplete"]
   );
 },
 }
@@ -173,11 +194,5 @@ export default {
         margin-left: 50px;
         font-weight: bold;
     }
-/* #map{
-  position:absolute;
-  top: 0;
-  right: 0;
-  left: 0;
-  bottom: 0;
-} */
+
 </style>

@@ -118,7 +118,7 @@
                     // if it's not set, the components don't update!
                     context: this,
                     // HTTP method
-                    method: 'GET',
+                    method: 'POST',
                     // On a successful AJAX request:
                     success: function () {
                         console.log('success')

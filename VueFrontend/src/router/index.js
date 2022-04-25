@@ -11,6 +11,7 @@ import EmailVerification from '../components/Registration/EmailVerification.vue'
 // Application features
 // StudentDiscounts
 import StudentDiscounts from '../components/StudentDiscounts/StudentDiscounts.vue'
+import DiscountDetails from '../components/StudentDiscounts/DiscountDetails.vue'
 
 // Defining the routes
 const routes = [
@@ -95,6 +96,12 @@ const routes = [
         path: '/aidEligibility/info',
         name: 'studentInformation',
         component: () => import('../Views/AidEligibility/Info.vue')
+    },
+    {
+        path: '/studentDiscounts/discountDetails/:id',
+        name: 'discountDetails',
+        component: DiscountDetails,
+        props: true
     },
     // ADD MORE HERE! DON'T ADD AFTER not-found!
 
