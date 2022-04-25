@@ -3,7 +3,9 @@
         <h2>CREATE ACCOUNT</h2>
         <br />
         <div class="warning">
-            <div v-for="(error, index) in errors" :key="index" class="warning">{{index + 1}}. {{error}}</div>
+            <ul>
+                <li v-for="(error, index) in errors" :key="index" class="warning">{{error}}</li>
+            </ul>
         </div>
         <div v-if="isAccountCreated" class="accountCreatedStyle">NEW USER ACCOUNT CREATED SUCCESSFULLY</div>
         <div>
@@ -184,33 +186,6 @@
                             // Creates a new user account if user inputs are valid
                             this.postData
                         }
-                        return true;
-                    },
-                    // On an unsuccessful AJAX request:
-                    error: function (error) {
-                        // log the error
-                        console.log(error);
-                        this.items = null;
-                        return false;
-                    }
-                });
-            },
-            getData() {
-                $.ajax({
-                    // set the HTTP request URL
-                    url: `${baseURL}/api/registration`,
-                    // set the context object to the vue component
-                    // this line tells vue to update its components
-                    // when the success or error objects complete!
-                    // if it's not set, the components don't update!
-                    context: this,
-                    // HTTP method
-                    method: 'GET',
-                    // On a successful AJAX request:
-                    success: function (data) {
-                        this.items = data;
-                        // log that we've completed
-                        
                         return true;
                     },
                     // On an unsuccessful AJAX request:

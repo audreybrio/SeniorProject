@@ -45,7 +45,8 @@ export default {
 <style scoped>
     .alignLeft {
         text-align: left;
-        margin-left: 50px;
+        margin: auto;
+        width: 500px;
         font-weight: bold;
     }
   .box{

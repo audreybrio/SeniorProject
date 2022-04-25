@@ -1,22 +1,26 @@
 <template>
-    <div>
-        <h2 class="row1">Student Discounts</h2>
-    </div>
-    <div>
-        Please select a type of Student Discounts:
-        <br />
-        <div class="action">
-            <div :class="[isSearch ? 'active' : 'deactive']">
-                <button class="btn" @click="searchSwitch" :class="{active:isSearch, }">Search</button>
-            </div>
-            <div :class="[isPost ? 'active' : 'deactive']">
-                <button class="btn" @click="postSwitch" :class="{active:isPost}"> Post </button>
-            </div>
+    <div class="page">
+        <div>
+            <h2 class="row1">Student Discounts</h2>
         </div>
-        <PostDiscounts v-if="isPost" />
-        <SearchDiscounts v-if="isSearch" />
-    </div>
+        <router-link to="/home" class="homepage">HomePage</router-link>
+        <div>
+            <br />
+            Please select a type of Student Discounts:
+            <br />
+            <div class="action">
+                <div :class="[isSearch ? 'active' : 'deactive']">
+                    <button class="btn" @click="searchSwitch" :class="{active:isSearch, }">Search</button>
+                </div>
+                <div :class="[isPost ? 'active' : 'deactive']">
+                    <button class="btn" @click="postSwitch" :class="{active:isPost}"> Post </button>
+                </div>
+            </div>
+            <PostDiscounts v-if="isPost" />
+            <SearchDiscounts v-if="isSearch" />
+        </div>
         <router-view class="row3" />
+    </div>
 </template>
 
 <script>
@@ -30,24 +34,22 @@
         },
         data(){
           return{
-            isSearch: false,
-            isPost: true
+            isSearch: true,
+            isPost: false
           }
 
         },
         methods: {
           searchSwitch(){
-            if (!this.isSearch){
+              if (!this.isSearch) {
               this.isSearch = true
               this.isPost = false
-              console.log("search: " + this.isSearch + " post: " + this.isPost)
             }
           },
           postSwitch(){
             if (!this.isPost){
               this.isSearch = false
               this.isPost = true
-              console.log("search: " + this.isSearch + " post: " + this.isPost)
             }
           }
 
@@ -56,8 +58,13 @@
 
 
 <style scoped>
+    .homepage {
+        margin-right: 20px;
+        float: right;
+    }
     .page {
         margin: auto;
+        padding: auto;
     }
 
     .header {
