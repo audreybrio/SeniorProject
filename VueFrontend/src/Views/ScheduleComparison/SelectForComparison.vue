@@ -50,7 +50,6 @@
 <script lang="js">
     import * as $ from 'jquery'
     import router from '../../router'
-    const baseURL = "https://localhost:5002"
     import URLs from '../../variables'
     export default ({
         data() {
@@ -61,7 +60,7 @@
                 newScheduleTitle: "",
 
                 // get user id or other identifier from the router to plug into getList()
-                user: this.$route.params.user
+                user: null
             };
         },
         computed: {
@@ -70,8 +69,8 @@
             }
         },
         created() {
+            this.user = this.$route.params.user;
             this.selection = [];
-            console.log(URLs);
             console.log("this.user: " + this.user);
             this.getList();
         },
@@ -97,7 +96,8 @@
                 console.log(requestName);
                 $.ajax({
                     // set the HTTP request URL
-                    url: `${baseURL}/api/schedule/getlist/${this.user}`,
+                    //url: `${baseURL}/api/schedule/getlist/${this.user}`,
+                    url: `${URLs.api.scheduleBuilder.getList}/${this.user}`,
 
                     // set the context object to the vue component
                     // this line tells vue to update its components
