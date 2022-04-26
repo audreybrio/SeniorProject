@@ -8,6 +8,7 @@ namespace StudentMultiTool.Backend.Services.ScheduleComparison
         public int Size { get { return _list.Count; } }
 
         public ScheduleItemHeap() {}
+
         // Add a ScheduleItem to the heap.
         public bool Add(ScheduleItem si)
         {
@@ -15,7 +16,8 @@ namespace StudentMultiTool.Backend.Services.ScheduleComparison
             HeapifyBottomUp(Size);
             return true;
         }
-        // Resort the heap based on the given index.
+
+        // Re-sort the heap based on the given index.
         public void HeapifyBottomUp(int index)
         {
             int parent = index / 2;
