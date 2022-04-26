@@ -14,10 +14,13 @@ const URLS = {
             getSchedule: apiRoot + "schedule/getschedule",
             newSchedule: apiRoot + "schedule/newschedule",
             saveSchedule: apiRoot + "schedule/saveschedule",
-            //createItem: apiRoot + "schedule/createItem",
-            //updateItem: apiRoot + "schedule/updateItem",
-            //deleteItem: apiRoot + "schedule/deleteItem"
+            createItem: apiRoot + "schedule/createItem",
+            updateItem: apiRoot + "schedule/updateItem",
+            deleteItem: apiRoot + "schedule/deleteItem"
         },
+        scheduleComparison: {
+            getComparison: apiRoot + "schedulecomparison/getcomparison",
+        }
     }
 }
 

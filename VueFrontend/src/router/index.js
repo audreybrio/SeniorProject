@@ -60,7 +60,7 @@ const routes = [
     },
     // ScheduleComparison
     {
-        path: '/schedule/comparison/:user/:selection',
+        path: '/schedule/comparison/',
         name: 'ScheduleComparison',
         component: () => import('../Views/ScheduleComparison/ScheduleComparison.vue')
     },
