@@ -8,7 +8,7 @@
         <form @submit.prevent="submitButtonPressed">
             <label for="title">Discount Title:</label>
             <br />
-            <input type="text" id="title" v-model="discountInfo.title" ref="postWeb" maxlength="30" required>
+            <input type="text" id="title" v-model="discountInfo.title" maxlength="30" required>
             <br />
             <label for="website">Website:</label>
             <br />
@@ -41,9 +41,6 @@
                     validDescription: false
                 }
             }
-        },
-        mounted() {
-            this.$refs.postWeb.focus();
         },
         methods: {
             submitButtonPressed() {
