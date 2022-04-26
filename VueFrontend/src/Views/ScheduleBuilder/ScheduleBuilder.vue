@@ -1,31 +1,37 @@
 <template>
-    <h2>
-        Schedule Builder
-    </h2>
-    <div>
-        <h3 v-if="title != ''">{{ title }}</h3><h3 v-if="scheduleId != null"> ({{ scheduleId }})</h3>
-        <input v-model="title" />
-    </div>
-    <div>
-        <button @click="save">Save Schedule</button>
-        <button @click="onBack">Return to Selection</button>
-    </div>
-    <br />
-    <div v-if="items != null">
-        <CreateItemForms @item-added="addItem" :nextId="nextId" :submitText="createButtonText" />
-    </div>
-    <br />
-    <div v-if="items != null">
-        <Schedules
-                   :items="items"
-                   :editableItems="true"
-                   @item-updated="updateItem"
-                   @item-deleted="deleteItem" />
+    <div class="list">
+        <div v-if="loading" class="loading">
+            Loading...
+        </div>
+        <h2>
+            Schedule Builder
+        </h2>
+        <div>
+            <h3 v-if="title != ''">{{ title }}</h3><h3 v-if="scheduleId != null"> ({{ scheduleId }})</h3>
+        </div>
+        <div>
+            <button @click="save">Save Schedule</button>
+            <button @click="onBack">Return to Selection</button>
+        </div>
+        <br />
+        <!--<div v-if="items && items.length">-->
+        <div>
+            <CreateItemForms @item-added="addItem" :nextId="nextId" :submitText="createButtonText" />
+        </div>
+        <br />
+        <!--<div v-if="items && items.length" class="content">-->
+        <div>
+            <Schedules :items="Items"
+                       :editableItems="true"
+                       @item-updated="updateItem"
+                       @item-deleted="deleteItem" />
+        </div>
     </div>
     <router-view />
 </template>
 
 <script>
+    import axios from 'axios'
     import router from '../../router'
     import * as $ from 'jquery'
     import Schedules from '../../components/ScheduleBuilder/Schedules'
@@ -49,6 +55,9 @@
             }
         },
         computed: {
+            Items() {
+                return this.items;
+            },
             nextId() {
                 if (this.items == null) {
                     return 0;
@@ -60,16 +69,8 @@
             }
         },
         created() {
-            //this.items = [];
-            this.user = this.$route.params.user;
-            this.scheduleId = this.$route.params.scheduleId;
-            this.title = this.$route.params.title;
-            this.created = this.$route.params.created;
-            this.modified = this.$route.params.modified;
-            console.log(this.user);
-            console.log(this.schedule);
+            this.loadSchedule();
             if (!this.demo) {
-                this.loadSchedule();
             }
             else {
                 console.log("Demo");
@@ -140,66 +141,85 @@
                         editing: false
                     },
                 ]
-                console.log(this.items);
             }
+            
+            this.title = this.$route.params.title;
+            this.created = this.$route.params.created;
+            this.modified = this.$route.params.modified;
+            console.log(this.user);
+            console.log(this.schedule);
+            console.log("this.items:");
+            console.log(this.items);
         },
         methods: {
             // Make an AJAX request to get items on page load
             loadSchedule() {
                 this.loading = true;
-                this.items = [];
                 let requestName = "LoadSchedule";
+                this.user = this.$route.params.user;
+                this.scheduleId = this.$route.params.scheduleId;
                 //var scheduleItems = [];
                 console.log(requestName);
-                let scheduleItems = $.ajax({
-                    // set the HTTP request URL
-                    // url: `${baseURL}/schedule/getschedule/${this.user}/${this.scheduleId}`,
-                    url: `${URLS.api.scheduleBuilder.getSchedule}/${this.user}/${this.scheduleId}`,
-
-                    //contentType: 'application/json',
-                    //datatype: 'json',
-
-                    // set the context object to the vue component
-                    // this line tells vue to update its components
-                    // when the success or error objects complete!
-                    // if it's not set, the components don't update!
-                    context: this,
-
-                    // HTTP method
-                    method: 'GET',
-
-                    // On a successful AJAX request:
-                    success: function (data) {
-                        scheduleItems = data;
-                        this.items = data;
-                        // log that we've completed
-                        console.log(requestName + "- Success")
-                        return data;
-                    },
-
-                    // On an unsuccessful AJAX request:
-                    error: function (error) {
-                        // log the error
-                        console.log(requestName + "- Error")
-                        console.log(error);
-                        this.items = [];
-                        // return false;
-                    }
-                });
-                console.log("Unpacking...");
+                axios.get(`${URLS.api.scheduleBuilder.getSchedule}/${this.user}/${this.scheduleId}`, { timeout: 5000 })
+                    .then(response => {
+                        this.items = response.data
+                        this.loading = false
+                    })
+                    .catch(e => {
+                        console.log(e)
+                    })
+                this.loaded = true;
+                //let scheduleItems =
+                //$.ajax({
+                //    // set the HTTP request URL
+                //    // url: `${baseURL}/schedule/getschedule/${this.user}/${this.scheduleId}`,
+                //    url: `${URLS.api.scheduleBuilder.getSchedule}/${this.user}/${this.scheduleId}`,
+                //    //contentType: 'application/json',
+                //    //datatype: 'json',
+                //    // set the context object to the vue component
+                //    // this line tells vue to update its components
+                //    // when the success or error objects complete!
+                //    // if it's not set, the components don't update!
+                //    context: this,
+                //    // HTTP method
+                //    method: 'GET',
+                //    // On a successful AJAX request:
+                //    success: function (data) {
+                //        //scheduleItems = data;
+                //        this.items = data;
+                //        // log that we've completed
+                //        console.log(requestName + "- Success")
+                //        //return data;
+                //        this.loading = false;
+                //        return true;
+                //    },
+                //    // On an unsuccessful AJAX request:
+                //    error: function (error) {
+                //        // log the error
+                //        console.log(requestName + "- Error")
+                //        console.log(error);
+                //        this.items = [];
+                //        this.loading = false;
+                //        return false;
+                //        // return false;
+                //    }
+                //});
+                //await nextTick()
+                //this.$refs.input.focus()
+                //console.log("Unpacking...");
                 // Unpack the data from the request
                 // If there was an error, scheduleItems will be
                 // empty and the loop won't execute
                 //this.items = [];
                 //scheduleItems = JSON.parse(scheduleItems.responseText);
-                console.log(scheduleItems);
+                //console.log(scheduleItems);
                 
-                this.loading = false;
-                console.log("this.items:")
-                console.log(this.items)
-                console.log(scheduleItems)
-                console.log("this.loading:")
-                console.log(this.loading)
+                //this.loading = false;
+                //console.log("this.items:")
+                //console.log(this.items)
+                //console.log(scheduleItems)
+                //console.log("this.loading:")
+                //console.log(this.loading)
                         // return true;
             },
             // Creates a schedule item and adds it to this.items.
@@ -253,7 +273,7 @@
                         ScheduleId: this.scheduleId,
                         Creator: this.user,
                         Contact: this.items[i].contact,
-                        DaysOfWeek: this.items[i].days,
+                        DaysOfWeek: this.items[i].daysOfWeek,
                         StartHour: this.items[i].startHour,
                         StartMinute: this.items[i].startMinute,
                         EndHour: this.items[i].endHour,

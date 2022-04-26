@@ -1,4 +1,4 @@
-<template>
+<template v-if="IsOnDay">
     <div v-if="editing && editable" id="editdiv">
         <UpdateItemForms
                    @item-updated="updateItem"
@@ -14,7 +14,7 @@
     <div v-else id="noeditdiv">
         <table>
             <thead>
-                <tr v-if="editable">
+                <tr>
                     <td>
                         <button @click="edit()" type="button">Edit</button>
                     </td>
@@ -56,7 +56,13 @@
         props: {
             item: Object,
             Time: Object,
-            editable: Boolean
+            editable: Boolean,
+            index: Number
+        },
+        computed: {
+            IsOnDay() {
+                return this.item.daysOfWeek[this.index];
+            }
         },
         components: {
             UpdateItemForms,
@@ -84,11 +90,12 @@
                     contact: this.item.contact,
                     location: this.item.location,
                     notes: this.item.notes,
-                    days: this.item.daysOfWeek,
+                    daysOfWeek: this.item.daysOfWeek,
                     startHour: this.item.startHour,
                     startMinute: this.item.startMinute,
                     endHour: this.item.endHour,
-                    endMinute: this.item.endMinute
+                    endMinute: this.item.endMinute,
+                    editing: null
                 };
             },
             cancelEdit(){

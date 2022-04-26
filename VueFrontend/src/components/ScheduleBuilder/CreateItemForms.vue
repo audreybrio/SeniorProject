@@ -156,7 +156,15 @@
                     contact: this.contact,
                     location: this.location,
                     notes: this.notes,
-                    daysOfWeek: this.daysOfWeek,
+                    daysOfWeek: [
+                        this.daysOfWeek[0],
+                        this.daysOfWeek[1],
+                        this.daysOfWeek[2],
+                        this.daysOfWeek[3],
+                        this.daysOfWeek[4],
+                        this.daysOfWeek[5],
+                        this.daysOfWeek[6]
+                    ],
                     startHour: newStart.hour,
                     startMinute: newStart.minute,
                     endHour: newEnd.hour,
@@ -183,7 +191,7 @@
                 this.contact = "";
                 this.location = "";
                 this.notes = "";
-                this.daysOfWeek = [false, false, false, false, false, false, false];
+                //this.daysOfWeek = [false, false, false, false, false, false, false];
                 this.startInput = defaultStart;
                 this.endInput = defaultEnd;
             },
