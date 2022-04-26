@@ -21,19 +21,19 @@
         <!-- Days -->
         <div>
             <label for="sundayField">Sunday</label>
-            <input v-model="days[0]" id="sundayField" type="checkbox" />
+            <input v-model="daysOfWeek[0]" id="sundayField" type="checkbox" />
             <label for="mondayField">Monday</label>
-            <input v-model="days[1]" id="mondayField" type="checkbox" />
+            <input v-model="daysOfWeek[1]" id="mondayField" type="checkbox" />
             <label for="tuesdayField">Tuesday</label>
-            <input v-model="days[2]" id="tuesdayField" type="checkbox" />
+            <input v-model="daysOfWeek[2]" id="tuesdayField" type="checkbox" />
             <label for="wednesdayField">Wednesday</label>
-            <input v-model="days[3]" id="wednesdayField" type="checkbox" />
+            <input v-model="daysOfWeek[3]" id="wednesdayField" type="checkbox" />
             <label for="thursdayField">Thursday</label>
-            <input v-model="days[4]" id="thursdayField" type="checkbox" />
+            <input v-model="daysOfWeek[4]" id="thursdayField" type="checkbox" />
             <label for="fridayField">Friday</label>
-            <input v-model="days[5]" id="fridayField" type="checkbox" />
+            <input v-model="daysOfWeek[5]" id="fridayField" type="checkbox" />
             <label for="saturdayField">Saturday</label>
-            <input v-model="days[6]" id="saturdayField" type="checkbox" />
+            <input v-model="daysOfWeek[6]" id="saturdayField" type="checkbox" />
         </div>
 
         <div>
@@ -69,10 +69,11 @@
                 contact: "",
                 location: "",
                 notes: "",
-                days: [false, false, false, false, false, false, false],
+                daysOfWeek: [false, false, false, false, false, false, false],
                 startInput: defaultStart,
                 endInput: defaultEnd,
-                creatorId: -1
+                creatorId: -1,
+                editing: false
             };
         },
         methods: {
@@ -118,13 +119,13 @@
                 // At least one day must be checked (true) for the
                 // form to be valid.
                 return (
-                        this.days[0]
-                     || this.days[1]
-                     || this.days[2]
-                     || this.days[3]
-                     || this.days[4]
-                     || this.days[5]
-                     || this.days[6]
+                    this.daysOfWeek[0]
+                    || this.daysOfWeek[1]
+                    || this.daysOfWeek[2]
+                    || this.daysOfWeek[3]
+                    || this.daysOfWeek[4]
+                    || this.daysOfWeek[5]
+                    || this.daysOfWeek[6]
                 );
             },
             onSubmit() {
@@ -133,7 +134,7 @@
                 // Check that the user checked at least one day
                 if (!this.validateDays()) {
                     alert("You must select at least one day.");
-                    console.log(this.days);
+                    console.log(this.daysOfWeek);
                     return;
                 }
 
@@ -155,12 +156,13 @@
                     contact: this.contact,
                     location: this.location,
                     notes: this.notes,
-                    days: this.days,
+                    daysOfWeek: this.daysOfWeek,
                     startHour: newStart.hour,
                     startMinute: newStart.minute,
                     endHour: newEnd.hour,
                     endMinute: newEnd.minute,
-                    creator: this.creatorId
+                    creator: this.creatorId,
+                    editing: false
                 };
 
                 // Emit the new item to the ScheduleBuilder so it can be shown to the user
@@ -181,7 +183,7 @@
                 this.contact = "";
                 this.location = "";
                 this.notes = "";
-                this.days = [false, false, false, false, false, false, false];
+                this.daysOfWeek = [false, false, false, false, false, false, false];
                 this.startInput = defaultStart;
                 this.endInput = defaultEnd;
             },
