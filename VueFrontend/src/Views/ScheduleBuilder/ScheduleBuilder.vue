@@ -70,9 +70,7 @@
         },
         created() {
             this.loadSchedule();
-            if (!this.demo) {
-            }
-            else {
+            if (this.demo) {
                 console.log("Demo");
                 this.items = [
                     {
