@@ -324,7 +324,7 @@
                         Id: this.items[i].id,
                         ScheduleId: this.scheduleId,
                         Creator: this.user,
-                        Contact: this.items[i].Contact,
+                        Contact: this.items[i].contact,
                         DaysOfWeek: this.items[i].days,
                         StartHour: this.items[i].startHour,
                         StartMinute: this.items[i].startMinute,
@@ -335,7 +335,6 @@
                         Title: this.items[i].title
                     });
                 }
-
                 let data = JSON.stringify({
                     Items: scheduleItems,
                     ScheduleId: this.scheduleId,
@@ -350,11 +349,6 @@
                     contentType: 'application/json',
                     data: data,
                     datatype: 'json',
-                    //data: {
-                    //    //Items: this.items,
-                    //    ScheduleId: this.scheduleId,
-                    //    Modified: this.modified,
-                    //},
                     success: function (data) {
                         console.log(requestName + "- Successfully saved schedule");
                         console.log(data);
@@ -374,6 +368,12 @@
                 if (userWantsToGoBack) {
                     //router.push({ name: 'SelectForBuilder' });
                     //router.back();
+                    console.log("Back to schedule selection");
+                    router.push({
+                        name: 'SelectForBuilder',
+                        params: {
+                            user: this.user,
+                        }
                 }
             }
         },
