@@ -56,7 +56,8 @@
 
 <script>
     import * as $ from 'jquery'
-    const baseURL = "https://localhost:5002";
+    //const baseURL = "https://localhost:5002";
+    import URLS from '../../variables'
     export default {
         data() {
             return {
@@ -93,7 +94,7 @@
             },
             postData() {
                 $.ajax({
-                    url: `${baseURL}/api/registration/newRegistration/${this.username}/${this.password}/${this.email}/${this.university}`,
+                    url: `${URLS.apiRoot}registration/newRegistration/${this.username}/${this.password}/${this.email}/${this.university}`,
                     context: this,
                     processData: true,
                     method: 'POST',
@@ -164,7 +165,7 @@
                 this.resetValidateValues;
                 $.ajax({
                     // set the HTTP request URL
-                    url: `${baseURL}/api/registration/validation/${this.username}/${this.password}/${this.email}/${this.university}`,
+                    url: `${URLS.apiRoot}registration/validation/${this.username}/${this.password}/${this.email}/${this.university}`,
                     // set the context object to the vue component
                     // this line tells vue to update its components
                     // when the success or error objects complete!

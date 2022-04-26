@@ -24,7 +24,8 @@
 
 <script>
     import * as $ from 'jquery'
-    const baseURL = "https://localhost:5002";
+    //const baseURL = "https://localhost:5002";
+    import URLS from '../../variables'
     export default {
         data() {
             return {
@@ -106,7 +107,7 @@
             postDiscount() {
                 $.ajax({
                     // set the HTTP request URL
-                    url: `${baseURL}/api/studentdiscounts/postWebsite/${this.discountInfo.title}/${this.discountInfo.website}/${this.discountInfo.description}`,
+                    url: `${URLS.apiRoot}studentdiscounts/postWebsite/${this.discountInfo.title}/${this.discountInfo.website}/${this.discountInfo.description}`,
                     // set the context object to the vue component
                     // this line tells vue to update its components
                     // when the success or error objects complete!

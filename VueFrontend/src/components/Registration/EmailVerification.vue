@@ -25,6 +25,7 @@
 
 <script>
     import * as $ from 'jquery'
+    import URLS from '../../variables'
     export default {
         data() {
             return {
@@ -34,9 +35,9 @@
             }
         },
         created() {
-            const baseURL = "https://localhost:5002";
+            //const baseURL = "https://localhost:5002";
             $.ajax({
-                url: `${baseURL}/api/registration/emailVerification/${this.username}/${this.token}`,
+                url: `${URLS.apiRoot}registration/emailVerification/${this.username}/${this.token}`,
                 context: this,
                 processData: true,
                 method: 'POST',
