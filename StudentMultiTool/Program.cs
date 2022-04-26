@@ -29,7 +29,6 @@ static class Program
             options.OutputFormatters.RemoveType<HttpNoContentOutputFormatter>();
             var jsonInputFormatter = options.InputFormatters.OfType<SystemTextJsonInputFormatter>().Single();
             jsonInputFormatter.SupportedMediaTypes.Add("application/json");
-            //options.RespectBrowserAcceptHeader = true; // not needed/security risk
         });
 
         //builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
