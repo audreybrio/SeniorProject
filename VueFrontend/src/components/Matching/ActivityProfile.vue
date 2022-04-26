@@ -118,25 +118,46 @@
             },
 
             save() {
-                // var act = new Array();
-                //$("input[name='checkedNames']:checked").each(function () {
-                ////    this.checkedNames.push(this.value);
-                //});
-                $.ajax({
-                    /*url: `${baseURL}/api/activityProfile/update/${jwt_decode(window.sessionStorage.getItem("token")).username}/${JSON.stringify(this.checkedNames)}/${true}`,*/
-                    url: `${baseURL}/api/activityProfile/update}`,
-                    context: this,
-                    method: 'POST',
-                    data: JSON.stringify(this.checkedNames),
-                    success: function () {
-                        console.log("ajax success");
-                        router.push({name: "matchingMain"})
+                let activities = [];
+                $("input[name='activity']:checked").each(function () {
+                    activities.push(this.value);
+                });
+                //let activities = [];
+                //for (let i = 0; i <= this.checkedNames; i++) {
+                //    activities.push(this.checkedNames[i])
+                //}
+                let data = {
+                    activities: activities
+                }
+                console.log("data: ", data)
+                console.log("activities: ", activities)
+                //$.ajax({
+                //    /*url: `${baseURL}/api/activityProfile/update/${jwt_decode(window.sessionStorage.getItem("token")).username}/${JSON.stringify(this.checkedNames)}/${true}`,*/
+                //    url: `${baseURL}/api/activityProfile/update`,
+                //    context: this,
+                //    method: 'POST',
+                //    contentType: 'application/json',
+                //    data: data,
+                //    // dataType: 'list',
+                //    success: function () {
+                //        console.log("ajax success");
+                //        router.push({name: "matchingMain"})
 
+                //    },
+                //    error: function () {
+                //        console.log("error");
+                //    }
+                //})
+                fetch(
+                    `${baseURL}/api/activityProfile/update`, {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
                     },
-                    error: function () {
-                        console.log("error");
-                    }
-                })
+                    body: JSON.stringify(data)
+                }).then(() => { });
+                
 
             },
 

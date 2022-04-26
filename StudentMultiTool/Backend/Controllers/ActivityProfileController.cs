@@ -11,8 +11,9 @@ namespace StudentMultiTool.Backend.Controllers
         const string connectionString = "MARVELCONNECTIONSTRING";
 
         [HttpPost("update")]
-        public IActionResult HelpMe(List<string> activities) { 
-            return Ok();
+        public IActionResult HelpMe([FromBody] Data activities) {
+            var x = Request.Body;
+            return Ok("hello");
         }
 
         [HttpGet("update/{username}/{activities}/{opt}")]
@@ -162,5 +163,10 @@ namespace StudentMultiTool.Backend.Controllers
         //        return View();
         //    }
         //}
+    }
+
+    public class Data
+    {
+        public List<string> Activities { get; set; }
     }
 }
