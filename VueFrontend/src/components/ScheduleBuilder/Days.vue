@@ -66,7 +66,7 @@
         },
         computed: {
             getItemsForDay() {
-                return this.items.filter(item => (item.days[this.index] || item.editing));
+                return this.items.filter(item => (item.daysOfWeek[this.index] || item.editing));
             },
             getSortedItems() {
                 let items = this.getItemsForDay;

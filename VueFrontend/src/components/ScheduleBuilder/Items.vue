@@ -84,7 +84,7 @@
                     contact: this.item.contact,
                     location: this.item.location,
                     notes: this.item.notes,
-                    days: this.item.days,
+                    days: this.item.daysOfWeek,
                     startHour: this.item.startHour,
                     startMinute: this.item.startMinute,
                     endHour: this.item.endHour,

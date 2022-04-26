@@ -58,8 +58,8 @@ namespace StudentMultiTool.Backend.Controllers
             Console.WriteLine("\tuser: \"" + user + "\"");
             Console.WriteLine("\tscheduleId: \"" + scheduleId + "\"");
             //IEnumerable<ScheduleItemDTO> items = Enumerable.Empty<ScheduleItemDTO>();
-            //List<ScheduleItemDTO> items = new List<ScheduleItemDTO>();
-            IEnumerable<ScheduleItemDTO> items = new List<ScheduleItemDTO>();
+            List<ScheduleItemDTO> items = new List<ScheduleItemDTO>();
+            //IEnumerable<ScheduleItemDTO> items = new List<ScheduleItemDTO>();
 
             ScheduleManager manager = new ScheduleManager();
             Schedule? schedule = manager.SelectScheduleWithItems(scheduleId);
@@ -70,15 +70,22 @@ namespace StudentMultiTool.Backend.Controllers
                     Console.WriteLine(si.Title);
                     ScheduleItemDTO temp = new ScheduleItemDTO(si);
                     temp.ScheduleId = scheduleId;
-                    items.Append(temp);
+                    //items.Append(temp);
+                    items.Add(temp);
                 }
+                //Console.WriteLine("Request finished with " + schedule.Items.Count + " items");
+                //return schedule.Items;
+                Console.WriteLine("Request finished with " + items.Count + " items");
+                return items;
             }
+            //return Enumerable.Empty<ScheduleItem>();
+            return Enumerable.Empty<ScheduleItemDTO>();
             //else
             //{
             //    return StatusCode(500, "Schedule was null");
             //}
-            Console.WriteLine("Request finished with " + schedule.Items.Count + " items");
-            return items;
+
+            //return items;
             //return new JsonResult(items);
         }
 

@@ -22,11 +22,11 @@
                    @item-updated="updateItem"
                    @item-deleted="deleteItem" />
     </div>
-    <!--<router-view />-->
+    <router-view />
 </template>
 
 <script>
-    //import router from '../../router'
+    import router from '../../router'
     import * as $ from 'jquery'
     import Schedules from '../../components/ScheduleBuilder/Schedules'
     import CreateItemForms from '../../components/ScheduleBuilder/CreateItemForms'
@@ -60,12 +60,9 @@
             }
         },
         created() {
-            this.items = [];
+            //this.items = [];
             this.user = this.$route.params.user;
-            //this.schedule = this.$route.params.schedule;
             this.scheduleId = this.$route.params.scheduleId;
-            //this.scheduleId = this.schedule.id;
-            //this.title = this.schedule.title;
             this.title = this.$route.params.title;
             this.created = this.$route.params.created;
             this.modified = this.$route.params.modified;
@@ -151,10 +148,10 @@
             loadSchedule() {
                 this.loading = true;
                 this.items = [];
-                let scheduleItems = [];
                 let requestName = "LoadSchedule";
+                //var scheduleItems = [];
                 console.log(requestName);
-                $.ajax({
+                let scheduleItems = $.ajax({
                     // set the HTTP request URL
                     // url: `${baseURL}/schedule/getschedule/${this.user}/${this.scheduleId}`,
                     url: `${URLS.api.scheduleBuilder.getSchedule}/${this.user}/${this.scheduleId}`,
@@ -174,9 +171,10 @@
                     // On a successful AJAX request:
                     success: function (data) {
                         scheduleItems = data;
+                        this.items = data;
                         // log that we've completed
                         console.log(requestName + "- Success")
-                        // return true;
+                        return data;
                     },
 
                     // On an unsuccessful AJAX request:
@@ -188,39 +186,21 @@
                         // return false;
                     }
                 });
-
                 console.log("Unpacking...");
                 // Unpack the data from the request
                 // If there was an error, scheduleItems will be
                 // empty and the loop won't execute
-                for (let i = 0; i < scheduleItems.length; i++) {
-                    this.items.push({
-                        id: scheduleItems[i].Id,
-                        title: scheduleItems[i].Title,
-                        contact: scheduleItems[i].Contact,
-                        location: scheduleItems[i].Location,
-                        notes: scheduleItems[i].Notes,
-                        days: [
-                            scheduleItems[i].DaysOfWeek[0],
-                            scheduleItems[i].DaysOfWeek[1],
-                            scheduleItems[i].DaysOfWeek[2],
-                            scheduleItems[i].DaysOfWeek[3],
-                            scheduleItems[i].DaysOfWeek[4],
-                            scheduleItems[i].DaysOfWeek[5],
-                            scheduleItems[i].DaysOfWeek[6]
-                        ],
-                        startHour: scheduleItems[i].StartHour,
-                        startMinute: scheduleItems[i].StartMinute,
-                        EndHour: scheduleItems[i].EndHour,
-                        EndMinute: scheduleItems[i].EndMinute,
-                        editing: false
-                    });
-                }
+                //this.items = [];
+                //scheduleItems = JSON.parse(scheduleItems.responseText);
+                console.log(scheduleItems);
+                
                 this.loading = false;
-                console.log("this.list:")
+                console.log("this.items:")
                 console.log(this.items)
+                console.log(scheduleItems)
                 console.log("this.loading:")
                 console.log(this.loading)
+                        // return true;
             },
             // Creates a schedule item and adds it to this.items.
             addItem(newItem) {
@@ -230,26 +210,6 @@
                 this.items.push(newItem);
                 console.log("Item added");
                 this.unsavedChanges = true;
-                //// let sendable = $(newItem).serialize();
-                //let sendable = JSON.stringify(newItem);
-                //// make ajax request
-                //$.ajax({
-                //    // url: this.baseUrl + 'schedule/createItem/' + this.schedule + "/" + newItem.id,
-                //    // url: `${baseURL}/schedule/createItem/${this.user}/${this.scheduleId}`,
-                //    url: `${URLS.api.scheduleBuilder.createItem}/${this.user}/${this.scheduleId}`,
-                //    // url: `${baseURL}/api/schedule/CreateItem/`,
-                //    context: this.ajaxContext,
-                //    contentType: 'application/json',
-                //    method: 'POST',
-                //    data: sendable,
-                //    dataType: 'json',
-                //    success: function (data) {
-                //        console.log(data);
-                //    },
-                //    error: function (error) {
-                //        console.log(error);
-                //    }
-                //});
             },
             // Updates a schedule item
             updateItem(updatedItem) {
@@ -265,21 +225,6 @@
                 if (updated) {
                     this.unsavedChanges = true;
                 }
-                /// Make ajax request to update the item
-                //$.ajax({
-                //    // url: this.baseUrl + 'schedule/updateItem/' + this.schedule + "/" + updatedItem.id,
-                //    // url: `${baseURL}/schedule/updateItem/${this.user}/${this.scheduleId}`,
-                //    url: `${URLS.api.scheduleBuilder.updateItem}/${this.user}/${this.scheduleId}`,
-                //    context: this,
-                //    method: 'POST',
-                //    data: updatedItem,
-                //    success: function (data) {
-                //        console.log(data);
-                //    },
-                //    error: function (error) {
-                //        console.log(error);
-                //    }
-                //});
             },
             // Deletes a schedule item based on ID.
             deleteItem(deleteableItem) {
@@ -299,23 +244,6 @@
                 else {
                     this.unsavedChanges = true;
                 }
-                //// Make AJAX request to delete the item.
-                //$.ajax({
-                //    // url: this.baseUrl + 'schedule/deleteItem/' + this.schedule + "/" + deleteableItem.id,
-                //    // url: `${baseURL}/api/schedule/deleteItem/${this.user}/${this.scheduleId}/${deleteableItem.id}`,
-                //    url: `${URLS.api.scheduleBuilder.deleteItem}/${this.user}/${this.scheduleId}/${deleteableItem.id}`,
-                //    context: this,
-                //    method: 'DELETE',
-                //    data: deleteableItem,
-                //    success: function (data) {
-                //        console.log(data);
-                //        console.log("Successfully deleted everywhere");
-                //    },
-                //    error: function (error) {
-                //        console.log(error);
-                //        console.log("Could not delete everywhere");
-                //    }
-                //});
             },
             save() {
                 let scheduleItems = [];
@@ -366,14 +294,13 @@
                     userWantsToGoBack = confirm("You have unsaved changes. Are you sure you want to go back?");
                 }
                 if (userWantsToGoBack) {
-                    //router.push({ name: 'SelectForBuilder' });
-                    //router.back();
                     console.log("Back to schedule selection");
                     router.push({
                         name: 'SelectForBuilder',
                         params: {
                             user: this.user,
                         }
+                    })
                 }
             }
         },
