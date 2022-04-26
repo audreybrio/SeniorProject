@@ -65,7 +65,7 @@ const routes = [
         component: () => import('../Views/ScheduleComparison/ScheduleComparison.vue')
     },
     {
-        path: '/schedule/comparison/select/:user',
+        path: '/schedule/comparison/select/',
         name: 'SelectForComparison',
         component: () => import('../Views/ScheduleComparison/SelectForComparison.vue')
     },
