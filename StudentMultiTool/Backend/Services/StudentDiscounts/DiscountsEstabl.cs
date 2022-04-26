@@ -1,6 +1,6 @@
 ﻿namespace StudentMultiTool.Backend.Services.StudentDiscounts
 {
-
+    // Establishment Discounts class
     public class DiscountsEstabl
     {
         private int _id;
