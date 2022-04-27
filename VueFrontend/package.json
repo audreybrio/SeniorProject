@@ -15,7 +15,14 @@
     "jwt-decode": "^3.1.2",
     "vue": "^3.2.13",
     "vue-router": "^4.0.14",
+<<<<<<< HEAD
     "vuex": "^4.0.2"
+=======
+    "jquery": "^3.6.0",
+    "jwt-decode": "^3.1.2",
+    "vue3-google-maps": "^0.0.1",
+    "axios": "0.27.1"
+>>>>>>> main
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",

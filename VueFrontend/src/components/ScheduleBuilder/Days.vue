@@ -1,7 +1,16 @@
 <template>
     <td>
+<<<<<<< HEAD
         <div v-for="item in Items" :key="item.id">
             <Items :item="item" />
+=======
+        <div v-for="item in items" :key="item.id">
+            <Items :item="item"
+                   :index="index"
+                   @item-updated="updateItem"
+                   @item-deleted="deleteItem"
+                   :editable="editableItems" />
+>>>>>>> main
         </div>
     </td>
 </template>
@@ -42,10 +51,40 @@ export default {
                 {
                     return 1;
                 }
+<<<<<<< HEAD
             }
             else if (a.startHour > b.startHour)
             {
                 return 1;
+=======
+            },
+            updateItem(updatedItem) {
+                console.log("Days.updateItem()");
+                this.$emit('item-updated', updatedItem);
+            },
+            deleteItem(deleteableItem) {
+                console.log("Days.deleteItem()");
+                this.$emit("item-deleted", deleteableItem);
+            },
+            onToday(item) {
+                return item.daysOfWeek[this.index] || item.editing;
+            }
+        },
+        computed: {
+            getItemsForDay() {
+                if (!this.items) {
+                    return [];
+                }
+                return this.items.filter(item => (item.daysOfWeek[this.index] || item.editing));
+            },
+            getSortedItems() {
+                let items = this.getItemsForDay;
+                // TODO: sort
+                return items;
+            },
+            TodaysItems(){
+                return this.getSortedItems;
+>>>>>>> main
             }
         }
     },

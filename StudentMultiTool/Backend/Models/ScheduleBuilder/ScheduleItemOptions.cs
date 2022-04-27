@@ -41,7 +41,8 @@
         public static string Thursday { get { return JsonThursday; } }
         public static string Friday { get { return JsonFriday; } }
         public static string Saturday { get { return JsonSaturday; } }
-
+        public static string JsonArrayName { get; } = "items";
+        public static string JsonArrayCount { get; } = "count";
 
         // Ordering of days (does the week start with Sunday or Monday?
         public static List<string> Days { get; } = new List<string> { Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday };

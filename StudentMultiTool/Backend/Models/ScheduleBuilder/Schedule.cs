@@ -91,7 +91,7 @@ namespace StudentMultiTool.Backend.Models.ScheduleBuilder
         {
             JsonObject result = new JsonObject
             {
-                ["count"] = Items.Count,
+                [ScheduleItemOptions.JsonArrayCount] = Items.Count,
             };
             JsonArray scheduleItems = new JsonArray();
             foreach (ScheduleItem si in Items)
@@ -99,7 +99,7 @@ namespace StudentMultiTool.Backend.Models.ScheduleBuilder
                 JsonObject currentValue = si.ToJson();
                 scheduleItems.Add(currentValue);
             }
-            result.Add("scheduleItems", scheduleItems);
+            result.Add(ScheduleItemOptions.JsonArrayName, scheduleItems);
             return result;
         }
     }

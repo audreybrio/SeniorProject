@@ -6,8 +6,16 @@ import HomePage from '../views/HomePage.vue'
 import ScheduleBuilder from '../components/ScheduleBuilder/ScheduleBuilder.vue'
 import ScheduleSelection from '../components/ScheduleBuilder/ScheduleSelection.vue'
 import StudentDiscounts from '../components/StudentDiscounts/StudentDiscounts.vue'
+<<<<<<< HEAD
 import MyRecipe from '../components/RecipeSharing/RecipeMainPage.vue'
 import NewRecipe from '../components/MyRecipe/RecipeView.vue'
+=======
+import DiscountDetails from '../components/StudentDiscounts/DiscountDetails.vue'
+import EstablishmentDetails from '../components/StudentDiscounts/EstablishmentDetails.vue'
+
+
+// Defining the routes
+>>>>>>> main
 const routes = [
     {
         path: '/',
@@ -32,6 +40,7 @@ const routes = [
         component: RegistrationForm
     },
     {
+<<<<<<< HEAD
         path: '/schedulebuilder',
         name: 'ScheduleBuilder',
         component: ScheduleBuilder
@@ -41,6 +50,38 @@ const routes = [
         name: 'ScheduleSelection',
         component: ScheduleSelection
     },
+=======
+        path: '/Registrationform/:username/:token',
+        name: 'EmailVerification',
+        component: EmailVerification
+    },
+
+    // ScheduleBuilder & ScheduleComparison
+    // ScheduleBuilder
+    {
+        path: '/schedule/builder/',
+        name: 'ScheduleBuilder',
+        component: () => import('../Views/ScheduleBuilder/ScheduleBuilder.vue')
+    },
+    {
+        path: '/schedule/builder/select/',
+        name: 'SelectForBuilder',
+        component: () => import('../Views/ScheduleBuilder/SelectForBuilder.vue')
+    },
+    // ScheduleComparison
+    {
+        path: '/schedule/comparison/',
+        name: 'ScheduleComparison',
+        component: () => import('../Views/ScheduleComparison/ScheduleComparison.vue')
+    },
+    {
+        path: '/schedule/comparison/select/',
+        name: 'SelectForComparison',
+        component: () => import('../Views/ScheduleComparison/SelectForComparison.vue')
+    },
+
+    // BookSelling
+>>>>>>> main
     {
         path: '/bookSelling',
         name: 'bookSelling',
@@ -61,6 +102,30 @@ const routes = [
         name: 'studentDiscounts',
         component: StudentDiscounts
     },
+<<<<<<< HEAD
+=======
+    {
+        path: '/studentDiscounts/discountDetails/:id',
+        name: 'discountDetails',
+        component: DiscountDetails,
+        props: true
+    },
+    {
+        path: '/studentDiscounts/establishmentDetails/:id',
+        name: 'EstablishmentDetails',
+        component: EstablishmentDetails,
+        props: true
+    },
+    {
+        path: '/aidEligibility/info',
+        name: 'studentInformation',
+        component: () => import('../Views/AidEligibility/Info.vue')
+    },
+    
+    // ADD MORE HERE! DON'T ADD AFTER not-found!
+
+    // Not found; don't move this one or place anything after it
+>>>>>>> main
     {
         path: '/Recipe',
         name: 'MyRecipe',

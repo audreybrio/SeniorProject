@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <template>
     <div v-if="editing" id="editdiv">
         <table>
@@ -61,6 +62,20 @@
                 </tr>
             </tbody>
         </table>
+=======
+<template v-if="IsOnDay">
+    <div v-if="editing && editable" id="editdiv">
+        <UpdateItemForms
+                   @item-updated="updateItem"
+                   @item-deleted="deleteItem"
+                   @cancel="cancel"
+                   :nextId="item.id"
+                   :item="item"
+                   :editing="editing"
+                   :submitText="updateButtonText"
+                   >
+        </UpdateItemForms>
+>>>>>>> main
     </div>
     <div v-else id="noeditdiv">
         <table>
@@ -95,6 +110,7 @@
 </template>
 
 <script>
+<<<<<<< HEAD
 //import Times from "./Times"
 export default {
     name: "ScheduleItems",
@@ -152,6 +168,70 @@ export default {
             this.item.editing = false;
             this.editing = false;
             // Don't update this.item's values
+=======
+    import UpdateItemForms from "./UpdateItemForms"
+    import Times from "./Times"
+    export default {
+        name: "ScheduleItems",
+        props: {
+            item: Object,
+            Time: Object,
+            editable: Boolean,
+            index: Number
+        },
+        computed: {
+            IsOnDay() {
+                return this.item.daysOfWeek[this.index];
+            }
+        },
+        components: {
+            UpdateItemForms,
+            Times,
+        },
+        created(){
+            this.editing = false;
+            this.tempItem = {};
+        },
+        data(){
+            return {
+                editing: this.editing,
+                tempItem: this.tempItem,
+                updateButtonText: "Save"
+            };
+        },
+        methods: {
+            edit(){
+                this.editing = true;
+
+                // Set up tempItem to hold values while editing
+                this.tempItem = {
+                    id: this.item.id,
+                    title: this.item.title,
+                    contact: this.item.contact,
+                    location: this.item.location,
+                    notes: this.item.notes,
+                    daysOfWeek: this.item.daysOfWeek,
+                    startHour: this.item.startHour,
+                    startMinute: this.item.startMinute,
+                    endHour: this.item.endHour,
+                    endMinute: this.item.endMinute,
+                    editing: null
+                };
+            },
+            cancelEdit(){
+                this.editing = false;
+            },
+            updateItem(updatedItem) {
+                // emit to parent component
+                this.$emit("item-updated", updatedItem);
+            },
+            cancel() {
+                this.editing = false;
+            },
+            deleteItem(deleteableItem) {
+                this.$emit("item-deleted", deleteableItem);
+            }
+>>>>>>> main
         }
     }
 }

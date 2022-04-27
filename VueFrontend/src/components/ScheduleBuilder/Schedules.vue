@@ -1,5 +1,6 @@
 <template>
     <div>
+<<<<<<< HEAD
         <center>
             <table>
                 <thead>
@@ -16,6 +17,35 @@
                 </tbody>
             </table>
         </center>
+=======
+        <table>
+            <thead>
+                <tr>
+                    <td v-for="day in days" :key="day" >
+                        <h3>{{ day }}</h3>
+                    </td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-if="items">
+                    <Days
+                          v-for="day in days"
+                          :key="day"
+                          :items="items"
+                          :index="this.days.indexOf(day)"
+                          :editableItems="editableItems"
+                          @item-updated="updateItem"
+                          @item-deleted="deleteItem"
+                     />
+                </tr>
+                <tr v-else>
+                    <td v-for="day in days" :key="day">
+                        Use the form above to add items to your schedule!
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+>>>>>>> main
     </div>
 </template>
 

@@ -11,7 +11,11 @@
             <router-link to="/registration">Registration</router-link>
         </div>
     </div>
+<<<<<<< HEAD
     <router-view/>
+=======
+    <router-view />
+>>>>>>> main
 </template>
 
 <script lang="js">

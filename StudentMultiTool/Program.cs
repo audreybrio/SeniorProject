@@ -7,15 +7,30 @@ static class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
+        // Add services to the container.
 
+        // CORS to allow cross-origin requests to port 8080
+        // Should be before AddControllers()
+        var CORSapi = "allowApiThruCORS";
+        builder.Services.AddCors(options =>
+        {
+            options.AddPolicy(name: CORSapi,
+                policy =>
+                {
+                    policy.WithOrigins("http://localhost:5003", "https://localhost:5001", "http://localhost:8080", "https://localhost:5002")
+                    .AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin();
+                });
+        });
+
+        // Add controllers to the server to handle requests
+        // Should be after AddCors()
         builder.Services.AddControllers(options =>
         {
             options.OutputFormatters.RemoveType<HttpNoContentOutputFormatter>();
             var jsonInputFormatter = options.InputFormatters.OfType<SystemTextJsonInputFormatter>().Single();
             jsonInputFormatter.SupportedMediaTypes.Add("application/json");
         });
-        // Add services to the container.
-      
+
         //builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
         //.AddCookie(options =>
         //{
@@ -39,8 +54,12 @@ static class Program
 
         //app.UseRouting();
 
+        // Use CORS policy as defined earlier
+        // Should be before MapControllers()
+        app.UseCors(CORSapi);
+
         // Map controllers for URL routing. Since we aren't using Razor Pages, we don't need
-        // to call app.MapRazorPages().
+        // to call app.MapRazorPages(). Should be after UseCors()
         app.MapControllers();
 
         app.Run();
