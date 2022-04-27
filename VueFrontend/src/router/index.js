@@ -13,11 +13,17 @@ import EmailVerification from '../components/Registration/EmailVerification.vue'
 import StudentDiscounts from '../components/StudentDiscounts/StudentDiscounts.vue'
 import DiscountDetails from '../components/StudentDiscounts/DiscountDetails.vue'
 import EstablishmentDetails from '../components/StudentDiscounts/EstablishmentDetails.vue'
+import RecipeView from '../components/MyRecipe/RecipeView.vue'
+import RecipeDetails from '../components/MyRecipe/RecipeDetails.vue'
+import RecipeLayout from '../components/MyRecipe/RecipeLayout.vue'
+import RecipeRegister from '../components/MyRecipe/RecipeRegister.vue'
+import RecipeEdit from '../components/MyRecipe/RecipeEdit.vue'
+import RecipeDelete from '../components/MyRecipe/RecipeDelete.vue'
 
 
 // Defining the routes
 const routes = [
-    // Core Features
+
     {
         path: '/',
         name: 'EmailVue',
@@ -111,10 +117,40 @@ const routes = [
         name: 'studentInformation',
         component: () => import('../Views/AidEligibility/Info.vue')
     },
-    
-    // ADD MORE HERE! DON'T ADD AFTER not-found!
-
-    // Not found; don't move this one or place anything after it
+    {
+        path: '/recipeview',
+        name: 'RecipeView',
+        component: RecipeView, 
+        props: route => ({ page: parseInt(route.query.page) || 1})
+    },
+    {
+        path: '/register',
+        name: 'RecipeRegister',
+        component: RecipeRegister
+    },
+    {
+        path: '/recipeview/:id',
+        name: 'RecipeLayout',
+        props: true,
+        component: RecipeLayout,
+        children: [  
+            {
+                path: '',
+                name: 'RecipeDetails',
+                component: RecipeDetails,
+            },
+            {
+                path: 'delete',
+                name: 'RecipeDelete',
+                component: RecipeDelete
+            },
+            {
+                path: 'edit',
+                name: 'RecipeEdit',
+                component: RecipeEdit
+            }
+        ]
+    },
     {
         path: '/:pathMatch(.*)*',
         name: 'not-found',

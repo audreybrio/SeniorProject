@@ -38,9 +38,9 @@ module.exports = {
         // https://developer/mozilla.org/en-US/docs/Web/HTTP/CORS/Errors/CORSMissingAllowOrigin
         proxy: {
             '^/api': {
-                target: 'https://localhost:5001/'
+                target: 'https://localhost:5003/'
             },
         },
-        port: 5002
+        port: 5003
     }
 }
