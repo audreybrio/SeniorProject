@@ -39,14 +39,6 @@
                 this.username = '';
                 this.otp = '';
 
-                fetch('weatherforecast')
-                    .then(r => r.json())
-                    .then(json => {
-                        this.post = json;
-                        this.loading = false;
-                        return;
-                    });
-
             },
             onSkip() {
 

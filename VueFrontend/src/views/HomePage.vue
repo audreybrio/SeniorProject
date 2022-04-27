@@ -40,15 +40,6 @@
             fetchData() {
                 this.post = null;
                 this.loading = true;
-
-                fetch('weatherforecast')
-                    .then(r => r.json())
-                    .then(json => {
-                        this.post = json;
-                        this.loading = false;
-                        return;
-                    });
-
             },
             onSubmit() {
                 const token = window.sessionStorage.getItem("token");

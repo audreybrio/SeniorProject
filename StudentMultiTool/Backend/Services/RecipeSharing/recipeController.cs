@@ -14,16 +14,25 @@ namespace StudentMultiTool.Backend.Services.RecipeSharing
 
         RecipeDB _recipeDB = new RecipeDB();
 
-        [HttpGet] //("getlist/{id}")
+        [HttpGet("getRecipe")] 
         public IActionResult Get()
         {
-            //List<Recipe> recipe = ;
 
             return new JsonResult(_recipeDB.GetAllRecipe());
          
         }
 
-        [HttpPost]
+
+        [HttpGet("getRecipe/{id}")]
+        public IActionResult Get(int id)
+        {
+
+            return new JsonResult(_recipeDB.GetSingleRecipe(id));
+
+        }
+
+
+        [HttpPost("newRecipe")]
         public IActionResult Post(Recipe r)
         {
 
@@ -41,7 +50,7 @@ namespace StudentMultiTool.Backend.Services.RecipeSharing
             return new JsonResult(m);
         }
 
-        [HttpPut]
+        [HttpPut("updateRecipe/{id}")]
         public IActionResult Put(Recipe r)
         {
 
@@ -61,8 +70,7 @@ namespace StudentMultiTool.Backend.Services.RecipeSharing
 
         }
 
-
-        [HttpDelete("{id}")]
+        [HttpDelete("deleteRecipe/{id}")]
         public IActionResult Delete(int id)
         {
             bool result = _recipeDB.deleteValue(id);
@@ -75,8 +83,6 @@ namespace StudentMultiTool.Backend.Services.RecipeSharing
             {
                 m = "Error";
             }
-
-
             return new JsonResult(m);
 
 
