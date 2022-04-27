@@ -10,29 +10,31 @@ namespace StudentMultiTool.Backend.Controllers
     {
         const string connectionString = "MARVELCONNECTIONSTRING";
 
-        [HttpPost("update")]
+        [HttpPost("updateMain")]
         public IActionResult HelpMe([FromBody] Data activities) {
             var x = Request.Body;
             return Ok("hello");
         }
 
-        [HttpGet("update/{username}/{activities}/{opt}")]
-        public IActionResult ActivityProfile(string username, List<string> activities, bool opt)
+        [HttpPost("update/{username}/{opt}")]
+        public IActionResult ActivityProfile([FromBody] Data activities, string username, string opt)
         {
-
-            int listSize = activities.Count;
+            //string username = "abrio";
+           // bool opt = true;
+            
+            int listSize = activities.activities.Count;
             Console.WriteLine(listSize);    
             int remainder = 5 - listSize;
             for (int i = 0; i < remainder; i++)
             {
-                activities.Add("null");
+                activities.activities.Add("null");
             }
 
-            string activity1 = activities[0];
-            string activity2 = activities[1];
-            string activity3= activities[2];
-            string activity4 = activities[3];
-            string activity5 = activities[4];
+            string activity1 = activities.activities[0];
+            string activity2 = activities.activities[1];
+            string activity3= activities.activities[2];
+            string activity4 = activities.activities[3];
+            string activity5 = activities.activities[4];
 
             int userExists = ProfileExists(username);
 
@@ -167,6 +169,6 @@ namespace StudentMultiTool.Backend.Controllers
 
     public class Data
     {
-        public List<string> Activities { get; set; }
+        public List<string> activities { get; set; }
     }
 }

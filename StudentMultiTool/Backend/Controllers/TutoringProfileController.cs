@@ -5,6 +5,8 @@ using System.Data.SqlClient;
 namespace StudentMultiTool.Backend.Controllers
 
 {
+    [ApiController]
+    [Route("api/" + "tutoringProfile")]
     public class TutoringProfileController : Controller
     {
 
@@ -12,23 +14,26 @@ namespace StudentMultiTool.Backend.Controllers
 
         // Individual  is 1 if want individual, 0 if want group
         // requires is 1 if requires tutroing, 0 if offering
-        public string TutoringProfile(string username, List<string> courses, bool individual, bool requires, bool opt)
+
+        [HttpPost]
+        [Route("update/{username}/{individual}/{requires}/{opt}")]
+        public string TutoringProfile([FromBody] DataT courses, string username, bool individual, bool requires, bool opt)
         {
 
-            int listSize = courses.Count;
+            int listSize = courses.courses.Count;
             Console.WriteLine(listSize);
             int remainder = 6 - listSize;
             for (int i = 0; i < remainder; i++)
             {
-                courses.Add("null");
+                courses.courses.Add("null");
             }
 
-            string course1 = courses[0];
-            string course2 = courses[1];
-            string course3 = courses[2];
-            string course4 = courses[3];
-            string course5 = courses[4];
-            string course6 = courses[5];
+            string course1 = courses.courses[0];
+            string course2 = courses.courses[1];
+            string course3 = courses.courses[2];
+            string course4 = courses.courses[3];
+            string course5 = courses.courses[4];
+            string course6 = courses.courses[5];
 
             int userExists = ProfileExists(username);
 
@@ -90,5 +95,9 @@ namespace StudentMultiTool.Backend.Controllers
         }
 
 
+    }
+    public class DataT
+    {
+        public List<string> courses { get; set; }
     }
 }

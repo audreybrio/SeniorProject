@@ -16,11 +16,11 @@
             <label for="group">Group</label>
             <input type="radio" id="individual" value="individual" v-model="picked">
             <label for="individual">Individual</label>
-            <br> 
+            <br>
         </div>
 
         <div>
-            <br >
+            <br>
             Are you looking for a tutor or offering tutoring?
 
         </div>
@@ -31,31 +31,32 @@
             <input type="radio" id="requires" value="requires" v-model="chosen">
             <label for="requires">Looking For a Tutor</label>
             <br>
-           
+
         </div>
 
         <div>
-            <br >
+            <br>
             Add up to six classes
         </div>
         <div>
-            <input id="course1" v-model="input" placeholder="Course One">
+            <input id="course1" name="tutoring" v-model="input1" placeholder="Course One">
         </div>
         <div>
-            <input id="couse2" v-model="input" placeholder="Course Two">
+            <input id="couse2" name="tutoring" v-model="input2" placeholder="Course Two">
         </div>
         <div>
-            <input id="course3" v-model="input" placeholder="Course Three">
+            <input id="course3" name="tutoring" v-model="input3" placeholder="Course Three">
         </div>
         <div>
-            <input id="course4" v-model="input" placeholder="Course Four">
+            <input id="course4" name="tutoring" v-model="input4" placeholder="Course Four">
         </div>
         <div>
-            <input id="course5" v-model="input" placeholder="Course Five">
+            <input id="course5" name="tutoring" v-model="input5" placeholder="Course Five">
         </div>
         <div>
-            <input id="course6" v-model="input" placeholder="Course Six">
+            <input id="course6" name="tutoring" v-model="input6" placeholder="Course Six">
         </div>
+
 
         <button @click="save">Save</button>
         <button @click="onSubmit">Back</button>
@@ -68,6 +69,8 @@
 <script lang="js">
     import router from '@/router'
     import jwt_decode from "jwt-decode"
+    // import * as $ from 'jquery'
+    // const baseURL = "https://localhost:5002";
 
 
 
@@ -78,7 +81,7 @@
                 post: null,
                 id: jwt_decode(window.sessionStorage.getItem("token")).username,
                 picked: null,
-                chosen: null
+                chosen: null,
 
             };
         },
@@ -111,6 +114,22 @@
             },
 
             save() {
+
+                let courses = [];
+                if (this.input1 != null) { courses.push(this.input1); }
+                if (this.input2 != null) { courses.push(this.input2); }
+                if (this.input3 != null) { courses.push(this.input3); }
+                if (this.input4 != null) { courses.push(this.input4); }
+                if (this.input5 != null) { courses.push(this.input5); }
+                if (this.input6 != null) { courses.push(this.input6); }
+                //$("input[name='tutoring']:checked").each(function () {
+                //    courses.push(this.value);
+                //});
+                let data = {
+                    courses: courses
+                }
+                console.log("data: ", data)
+                console.log("activities: ", courses)
 
             },
 

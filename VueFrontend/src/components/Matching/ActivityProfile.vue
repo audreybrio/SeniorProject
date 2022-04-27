@@ -149,14 +149,15 @@
                 //    }
                 //})
                 fetch(
-                    `${baseURL}/api/activityProfile/update`, {
+                    `${baseURL}/api/activityProfile/update/${jwt_decode(window.sessionStorage.getItem("token")).username}/${true}`, {
                     method: 'POST',
                     headers: {
                         'Accept': 'application/json',
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify(data)
-                }).then(() => { });
+                        body: JSON.stringify(data),
+
+                }).then(() => { router.push({name: "matchingMain"}) });
                 
 
             },
