@@ -29,7 +29,7 @@ module.exports = {
         },
         proxy: {
             '^/api': {
-                target: 'https://localhost:5001/'
+                target: 'https://localhost:5003/'
             },
         },
         port: 5003

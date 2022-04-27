@@ -1,6 +1,4 @@
 <template>
-    
-
     <div class="container">
         <Schedules :items="items" />
     </div>

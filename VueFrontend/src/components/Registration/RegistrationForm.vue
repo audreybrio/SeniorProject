@@ -1,12 +1,3 @@
-<<<<<<< HEAD
-npm<template>
-    <div id="app">
-        <h2>Registration Form</h2>
-        <form @submit.prevent="login">
-            <div>
-                <label for="username"></label>
-                <input name="username" v-model="username" placeholder="Username">
-=======
 <template>
     <section>
         <h2>CREATE ACCOUNT</h2>
@@ -55,10 +46,10 @@ npm<template>
 
                     <input type="submit" value="REGISTER" class="button" formnovalidate>
                 </div>
-            </form>
+        </form>
+        <form>
             <div class="signin">
                 Already have an account? <router-link to="/">Login</router-link>
->>>>>>> main
             </div>
             <div>
                 <label for="password"></label>
@@ -87,14 +78,13 @@ npm<template>
             </div>
         </form>
     </div>
+    </section>
 </template>
 <script>
-<<<<<<< HEAD
-=======
+
     import * as $ from 'jquery'
     //const baseURL = "https://localhost:5002";
     import URLS from '../../variables'
->>>>>>> main
     export default {
         // name: "App",
         data() {
@@ -107,7 +97,6 @@ npm<template>
                 university: ""
             };
         },
-<<<<<<< HEAD
         methods: {
             async login() {
                 const { username, password, retype_password, email, retype_email, university } = this;
@@ -131,7 +120,7 @@ npm<template>
                 const data = await res.json();
                 console.log(data);
             }
-=======
+        },
         computed: {
             areValidInputs() {
                 if (this.validate.username == true && this.validate.password == true && this.validate.email == true
@@ -266,8 +255,7 @@ npm<template>
                 this.retype_email = "";
                 this.retype_password = "";
             },
->>>>>>> main
         }
-    };
+    }
 </script>
 
