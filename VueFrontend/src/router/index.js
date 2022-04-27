@@ -114,8 +114,8 @@ const routes = [
 
     //EventPlanning
     {
-        path: '/EventPlannning/EventPlannning',
-        name: 'studentInformation',
+        path: '/eventPlannning',
+        name: 'EventPlannning',
         component: () => import('../Views/EventPlannning/EventPlannning.vue')
     },
 
