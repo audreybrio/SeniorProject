@@ -16,6 +16,7 @@
         <div>
             <button @click="onAid">Aid Eligibility Estimates</button>
             <button @click="onSD">Student Discounts</button>
+            <button @click="onRP">Recipes</button>
             <button @click="onSubmit">Logout</button>
         </div>
     </div>
@@ -73,6 +74,10 @@
             },
             onAid() {
                 router.push({ name: "studentInformation" });
+            },
+            onRP() {
+                router.push({ name: "RecipeView" });
+
             }
         },
     });
