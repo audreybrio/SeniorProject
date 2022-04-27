@@ -8,6 +8,10 @@ namespace StudentMultiTool.Backend.Services.ScheduleComparison
         {
             ConnectionString = Environment.GetEnvironmentVariable(EnvironmentVariableEnum.CONNECTIONSTRING)!;
         }
+        public SchedulePermissionValidator(string ConnectionString)
+        {
+            this.ConnectionString = ConnectionString;
+        }
 
         // Validate a user's permissions for a single schedule by checking
         // If they are listed as a collaborator on it.
