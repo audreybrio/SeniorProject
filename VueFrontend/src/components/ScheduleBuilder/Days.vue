@@ -1,14 +1,11 @@
 <template>
     <td>
         <div v-for="item in items" :key="item.id">
-            <!--<Items v-if="item.daysOfWeek[this.index]"-->
-            <!--<Items v-show="item.daysOfWeek[this.index]"-->
             <Items :item="item"
                    :index="index"
                    @item-updated="updateItem"
                    @item-deleted="deleteItem"
                    :editable="editableItems" />
-            <!--<div v-else></div>-->
         </div>
     </td>
 </template>

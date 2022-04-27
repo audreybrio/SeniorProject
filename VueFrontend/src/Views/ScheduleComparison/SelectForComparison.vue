@@ -27,8 +27,7 @@
                 </thead>
                 <tbody>
                     <tr v-for="schedule in schedules" :key="schedule.id">
-                        <!--TODO: implement Schedule component-->
-                        <!--<Schedule :schedule="schedule"/>-->
+                        <!--TODO: implement Schedule details component!-->
                         <td><input type="checkbox" @click="toggleSelection(schedule.id)" /></td>
                         <td>{{ schedule.id }}</td>
                         <td>{{ schedule.title }}</td>
@@ -71,7 +70,6 @@
         created() {
             this.user = this.$route.params.user;
             this.selection = [];
-            console.log("this.user: " + this.user);
             this.getList();
         },
         watch: {
@@ -88,7 +86,6 @@
                 else {
                     this.selection.push(scheduleID);
                 }
-                console.log(this.selection);
             },
             getList() {
                 this.loading = true;
@@ -112,11 +109,7 @@
                     success: function (data) {
                         this.schedules = data;
                         this.loading = false;
-                        // TODO: delete console.logs
-                        console.log("this.list:")
-                        console.log(this.list)
-                        console.log("this.loading:")
-                        console.log(this.loading)
+
                         // log that we've completed
                         console.log(requestName + "- Success")
                         return true;
@@ -133,12 +126,15 @@
                     }
                 });
             },
+            // Routes the user to the schedule builder selection page
             onScheduleBuilder() {
                 router.push({
                     name: 'ScheduleSelection',
                     params: { user: this.user }
                 });
             },
+
+            // Rotuse the user to the comparison
             onScheduleComparison() {
                 if (!this.selectionLengthIsInRange) {
                     alert("Something went wrong.\nSelect 2 to 5 schedules for comparison.");

@@ -34,17 +34,17 @@
             }
         },
         created() {
+            // get the parameters from the router to load the comparison
             this.user = this.$route.params.user;
             this.schedules = this.$route.params.selection;
             this.loadComparison();
         },
         methods: {
+            // load the comparison
             loadComparison() {
-                //axios.get(`${URLS.api.scheduleComparison.getComparison}/${this.user}/${this.schedules}`)
                 axios.get(`${URLS.api.scheduleComparison.getComparison}`, {
                     params: {
                         user: this.user,
-                        //scheduleIds: this.schedules
                         scheduleIds: JSON.stringify(this.schedules)
                     }
                 })
