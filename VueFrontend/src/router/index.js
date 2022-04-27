@@ -111,6 +111,14 @@ const routes = [
         name: 'studentInformation',
         component: () => import('../Views/AidEligibility/Info.vue')
     },
+
+    //EventPlanning
+    {
+        path: '/EventPlannning/EventPlannning',
+        name: 'studentInformation',
+        component: () => import('../Views/EventPlannning/EventPlannning.vue')
+    },
+
     
     // ADD MORE HERE! DON'T ADD AFTER not-found!
 

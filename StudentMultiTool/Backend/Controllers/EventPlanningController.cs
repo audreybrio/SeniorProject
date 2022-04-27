@@ -17,11 +17,11 @@ namespace StudentMultiTool.Backend.Controllers
 
         // post event for Establishment
         [HttpPost]
-        [HttpPost("postEstablishment/{eventtitle}/{eventtime}/{date}/{location}/{description}")]
-        public IActionResult postEstablishment(string eventtitle, string eventtime, string date, string location, string description)
+        [HttpPost("postEevent/{eventtitle}/{eventtime}/{date}/{location}/{description}")]
+        public IActionResult postEevent(string eventtitle, string eventtime, string date, string location, string description)
         {
             EventPlanningUi post = new EventPlanningUi();
-            if(post.postEstablishment(eventtitle, eventtime, date, location, description))
+            if(post.postEevent(eventtitle, eventtime, date, location, description))
             {
                 return Ok("Success");
             }
