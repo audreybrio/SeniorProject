@@ -16,7 +16,6 @@
         </div>
 
         <div v-if="list" class="content">
-<<<<<<<< HEAD:VueFrontend/src/components/ScheduleBuilder/ScheduleSelection.vue
             <center>
                 <table>
                     <thead>
@@ -45,7 +44,6 @@
                     </tbody>
                 </table>
             </center>
-========
             <table>
                 <thead>
                     <tr>
@@ -71,43 +69,32 @@
                     </tr>
                 </tbody>
             </table>
->>>>>>>> main:VueFrontend/src/Views/ScheduleBuilder/SelectForBuilder.vue
         </div>
     </div>
 </template>
 
 <script lang="js">
     import * as $ from 'jquery'
-<<<<<<<< HEAD:VueFrontend/src/components/ScheduleBuilder/ScheduleSelection.vue
-========
     import router from '../../router'
     import URLS from '../../variables'
->>>>>>>> main:VueFrontend/src/Views/ScheduleBuilder/SelectForBuilder.vue
     export default ({
         data() {
             return {
                 loading: false,
                 list: null,
-<<<<<<<< HEAD:VueFrontend/src/components/ScheduleBuilder/ScheduleSelection.vue
                 newScheduleTitle: ""
-========
-                newScheduleTitle: "",
                 // get user id or other identifier from the router to plug into getList()
                 user: this.$route.params.user
->>>>>>>> main:VueFrontend/src/Views/ScheduleBuilder/SelectForBuilder.vue
             };
         },
         props: {
             //newScheduleTitle: String,
         },
         created() {
-<<<<<<<< HEAD:VueFrontend/src/components/ScheduleBuilder/ScheduleSelection.vue
             // TODO: get user id or other identifier from cookie to plug into getList()
 
             // fetch the data when the view is created and the data is
             // already being observed
-========
->>>>>>>> main:VueFrontend/src/Views/ScheduleBuilder/SelectForBuilder.vue
             this.getList();
             console.log("created")
         },
@@ -122,11 +109,7 @@
                 console.log(requestName);
                 $.ajax({
                     // set the HTTP request URL
-<<<<<<<< HEAD:VueFrontend/src/components/ScheduleBuilder/ScheduleSelection.vue
-                    url: 'schedule/getlist/aloafofbrad',
-========
                     url: `${URLS.api.scheduleBuilder.getList}/${this.user}`, 
->>>>>>>> main:VueFrontend/src/Views/ScheduleBuilder/SelectForBuilder.vue
 
                     // set the context object to the vue component
                     // this line tells vue to update its components
@@ -159,11 +142,8 @@
                 this.loading = true;
                 let username = "aloafofbrad";
                 $.ajax({
-<<<<<<<< HEAD:VueFrontend/src/components/ScheduleBuilder/ScheduleSelection.vue
-                    url: "schedule/newschedule/" + this.newScheduleTitle + "/" + username,
-========
+
                     url: `${URLS.api.scheduleBuilder.newSchedule}/${this.user}/${this.newScheduleTitle}`,
->>>>>>>> main:VueFrontend/src/Views/ScheduleBuilder/SelectForBuilder.vue
                     context: this,
                     //contentType: "application/json; charset=utf-8",
                     //data: {
@@ -185,8 +165,6 @@
                     }
                 });
             },
-<<<<<<<< HEAD:VueFrontend/src/components/ScheduleBuilder/ScheduleSelection.vue
-========
             onScheduleBuilder(scheduleId, title, created, modified) {
                 console.log("To schedule builder @" + scheduleId + "/" + title);
                 router.push({
@@ -217,7 +195,6 @@
                     });
                 }
             },
->>>>>>>> main:VueFrontend/src/Views/ScheduleBuilder/SelectForBuilder.vue
         }
     });
 </script>
