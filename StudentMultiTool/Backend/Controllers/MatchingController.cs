@@ -13,8 +13,13 @@ namespace StudentMultiTool.Backend.Controllers
         const string connectionString = "MARVELCONNECTIONSTRING";
 
         // matching logic for activity profile
-        public bool MatchingActivity(string username)
+
+        [HttpGet]
+        [Route("matchActivity")]
+        public IActionResult MatchingActivity()
+
         {
+            string username = "abrio";
 
             List<string> activities = new List<string>();
             Dictionary<int, List<string>> matches = new Dictionary<int, List<string>>();
@@ -46,19 +51,23 @@ namespace StudentMultiTool.Backend.Controllers
                     if (countMatchExists == 0){
                         InsertMatch(username, id, activities[i]);
                     }
-                    
-                }   
+
+                }
+                else
+                {
+                    return NotFound();
+                }
             }
             
             foreach (KeyValuePair<int, List<string>> kvp in matches)
                 foreach (string val in kvp.Value)
                     Console.WriteLine("Key: {0}, Value: {1}", kvp.Key, val);
 
-            return true;
+            return Ok();
         }
 
         // Matching Logic for Tutoring profile
-        public bool MatchingTutoring(string username)
+        public IActionResult MatchingTutoring(string username)
         {
             List<string> courses = new List<string>();
             bool individual, requires;
@@ -91,13 +100,17 @@ namespace StudentMultiTool.Backend.Controllers
                     }
                     
                 }
+                else
+                {
+                    return NotFound();
+                }
             }
 
             foreach (KeyValuePair<int, List<string>> kvp in matches)
                 foreach (string val in kvp.Value)
                     Console.WriteLine("Key: {0}, Value: {1}", kvp.Key, val);
 
-            return true;
+            return Ok() ;
         }
 
         // Display Matches to frontend 

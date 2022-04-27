@@ -12,7 +12,7 @@
             Looking For Group or Individual Tutoring?
         </div>
         <div>
-            <input type="radio" id="group" value="Group" v-model="picked">
+            <input type="radio" id="group" value="group" v-model="picked">
             <label for="group">Group</label>
             <input type="radio" id="individual" value="individual" v-model="picked">
             <label for="individual">Individual</label>
@@ -26,7 +26,7 @@
         </div>
 
         <div>
-            <input type="radio" id="offer" value="offer" v-model="chosen">
+            <input type="radio" id="offers" value="offers" v-model="chosen">
             <label for="offer">Offering Tutoring</label>
             <input type="radio" id="requires" value="requires" v-model="chosen">
             <label for="requires">Looking For a Tutor</label>
@@ -70,7 +70,7 @@
     import router from '@/router'
     import jwt_decode from "jwt-decode"
     // import * as $ from 'jquery'
-    // const baseURL = "https://localhost:5002";
+    const baseURL = "https://localhost:5002";
 
 
 
@@ -82,6 +82,12 @@
                 id: jwt_decode(window.sessionStorage.getItem("token")).username,
                 picked: null,
                 chosen: null,
+                input1: null,
+                input2: null,
+                input3: null,
+                input4: null,
+                input5: null,
+                input6: null
 
             };
         },
@@ -99,14 +105,6 @@
                 this.post = null;
                 this.loading = true;
 
-                fetch('https://studentmultitool.me:5001/weatherforecast')
-                    .then(r => r.json())
-                    .then(json => {
-                        this.post = json;
-                        this.loading = false;
-                        return;
-                    });
-
             },
 
             onSubmit() {
@@ -122,6 +120,12 @@
                 if (this.input4 != null) { courses.push(this.input4); }
                 if (this.input5 != null) { courses.push(this.input5); }
                 if (this.input6 != null) { courses.push(this.input6); }
+
+                let requires = true;
+                let individual = true;
+
+                if (this.chosen == "offers") { requires = false; }
+                if (this.picked == "group") { individual = false; }
                 //$("input[name='tutoring']:checked").each(function () {
                 //    courses.push(this.value);
                 //});
@@ -130,6 +134,18 @@
                 }
                 console.log("data: ", data)
                 console.log("activities: ", courses)
+                console.log("group", this.picked)
+                console.log("requires: ", this.chosen)
+                fetch(
+                    `${baseURL}/api/tutoringProfile/update/${jwt_decode(window.sessionStorage.getItem("token")).username}/${individual}/${requires}/${true}`, {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data),
+
+                }).then(() => { router.push({ name: "matchingMain" }) });
 
             },
 

@@ -95,6 +95,18 @@
 
             displayMatches() {
 
+            },
+
+            generateMatches() {
+                fetch(
+                    `${baseURL}/api/matching/matchActivity`, {
+                    method: 'GET',
+                    //headers: {
+                    //    'Accept': 'application/json',
+                    //    'Content-Type': 'application/json'
+                    //},
+
+                }).then(() => { this.errors = "SUCCUESS" });
             }
         },
     });

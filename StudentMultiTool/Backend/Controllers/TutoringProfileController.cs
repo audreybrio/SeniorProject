@@ -19,6 +19,10 @@ namespace StudentMultiTool.Backend.Controllers
         [Route("update/{username}/{individual}/{requires}/{opt}")]
         public string TutoringProfile([FromBody] DataT courses, string username, bool individual, bool requires, bool opt)
         {
+            //string username = "abrio";
+            //bool individual = true;
+            //bool requires = true;
+            //bool opt = true;
 
             int listSize = courses.courses.Count;
             Console.WriteLine(listSize);
