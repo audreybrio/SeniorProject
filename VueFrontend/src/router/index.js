@@ -116,6 +116,7 @@ const routes = [
         name: 'studentInformation',
         component: () => import('../Views/AidEligibility/Info.vue')
     },
+    // Recipe Sharing
     {
         path: '/recipeview',
         name: 'RecipeView',
