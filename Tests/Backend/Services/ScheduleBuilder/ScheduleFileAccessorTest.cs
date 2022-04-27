@@ -12,6 +12,7 @@ namespace Tests
 {
     public class ScheduleFileAccessorTest
     {
+        public static string baseFilePath = "../smt-storage/testSchedules/";
         [Fact]
         public async void Constructor()
         {
@@ -83,7 +84,7 @@ namespace Tests
             ScheduleFileAccessor accessor = new ScheduleFileAccessor(indentation);
 
             // Write the ScheduleItems to a file
-            string result = accessor.WriteScheduleItems(testSchedule);
+            string result = accessor.WriteScheduleItems(testSchedule, baseFilePath);
 
             // If the file was written to without exception, then the test should pass
             Assert.Equal(ScheduleFileAccessor.Success, result);
@@ -152,7 +153,7 @@ namespace Tests
             ScheduleFileAccessor accessor = new ScheduleFileAccessor(indentation);
 
             // Write the ScheduleItems to a file
-            accessor.WriteScheduleItems(testSchedule);
+            accessor.WriteScheduleItems(testSchedule, baseFilePath);
             
             // Read them from the files
             List<ScheduleItem> itemsWithIndentation = accessor.ReadScheduleItems(path);
@@ -186,10 +187,6 @@ namespace Tests
             Assert.Equal(testItems.Count, titlesCorrectlyRead);
             Assert.Equal(testItems.Count, contactsCorrectlyRead);
             Assert.Equal(testItems.Count, locationsCorrectlyRead);
-        }
-        [Fact]
-        public async void ToJson()
-        {
         }
     }
 }
