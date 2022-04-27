@@ -1,32 +1,36 @@
 <template>
-    <h2>
-        Schedule Builder
-    </h2>
-    <div>
-        <h3 v-if="title != ''">{{ title }}</h3><h3 v-if="scheduleId != null"> ({{ scheduleId }})</h3>
-        <input v-model="title" />
+    <div class="list">
+        <div v-if="loading" class="loading">
+            Loading...
+        </div>
+        <h2>
+            Schedule Builder
+        </h2>
+        <div>
+            <h3 v-if="title != ''">{{ title }}</h3><h3 v-if="scheduleId != null"> ({{ scheduleId }})</h3>
+        </div>
+        <div>
+            <button @click="save">Save Schedule</button>
+            <button @click="onBack">Return to Selection</button>
+        </div>
+        <br />
+        <div>
+            <CreateItemForms @item-added="addItem" :nextId="nextId" :submitText="createButtonText" />
+        </div>
+        <br />
+        <div>
+            <Schedules :items="Items"
+                       :editableItems="true"
+                       @item-updated="updateItem"
+                       @item-deleted="deleteItem" />
+        </div>
     </div>
-    <div>
-        <button @click="save">Save Schedule</button>
-        <button @click="onBack">Return to Selection</button>
-    </div>
-    <br />
-    <div v-if="items != null">
-        <CreateItemForms @item-added="addItem" :nextId="nextId" :submitText="createButtonText" />
-    </div>
-    <br />
-    <div v-if="items != null">
-        <Schedules
-                   :items="items"
-                   :editableItems="true"
-                   @item-updated="updateItem"
-                   @item-deleted="deleteItem" />
-    </div>
-    <!--<router-view />-->
+    <router-view />
 </template>
 
 <script>
-    //import router from '../../router'
+    import axios from 'axios'
+    import router from '../../router'
     import * as $ from 'jquery'
     import Schedules from '../../components/ScheduleBuilder/Schedules'
     import CreateItemForms from '../../components/ScheduleBuilder/CreateItemForms'
@@ -49,6 +53,9 @@
             }
         },
         computed: {
+            Items() {
+                return this.items;
+            },
             nextId() {
                 if (this.items == null) {
                     return 0;
@@ -60,237 +67,56 @@
             }
         },
         created() {
-            this.items = [];
-            this.user = this.$route.params.user;
-            //this.schedule = this.$route.params.schedule;
-            this.scheduleId = this.$route.params.scheduleId;
-            //this.scheduleId = this.schedule.id;
-            //this.title = this.schedule.title;
+            this.loadSchedule();
+            
             this.title = this.$route.params.title;
             this.created = this.$route.params.created;
             this.modified = this.$route.params.modified;
-            console.log(this.user);
-            console.log(this.schedule);
-            if (!this.demo) {
-                this.loadSchedule();
-            }
-            else {
-                console.log("Demo");
-                this.items = [
-                    {
-                        id: 1,
-                        title: "{title}",
-                        contact: "{Contact}",
-                        location: "{location}",
-                        notes: "{notes}",
-                        days: [false, false, false, false, false, true, false],
-                        startHour: 17,
-                        startMinute: 30,
-                        endHour: 18,
-                        endMinute: 45,
-                        editing: false
-                    },
-                    {
-                        id: 2,
-                        title: "CECS 277",
-                        contact: "Cleary",
-                        location: "ECS 407",
-                        notes: "rocks",
-                        days: [false, false, true, false, true, false, false],
-                        startHour: 19,
-                        startMinute: 0,
-                        endHour: 21,
-                        endMinute: 45,
-                        editing: false
-                    },
-                    {
-                        id: 3,
-                        title: "CECS 228",
-                        contact: "Nguyen",
-                        location: "ECS 308",
-                        notes: "is rough",
-                        days: [false, true, false, true, false, false, false],
-                        startHour: 9,
-                        startMinute: 0,
-                        endHour: 11,
-                        endMinute: 15,
-                        editing: false
-                    },
-                    {
-                        id: 4,
-                        title: "CECS 282",
-                        contact: "Nguyen",
-                        location: "ECS 308",
-                        notes: "is ok",
-                        days: [false, true, false, true, false, false, false],
-                        startHour: 13,
-                        startMinute: 0,
-                        endHour: 15,
-                        endMinute: 15,
-                        editing: false
-                    },
-                    {
-                        id: 5,
-                        title: "CWL 305",
-                        contact: "DeSuza",
-                        location: "LA 305",
-                        notes: "is fun",
-                        days: [false, true, false, true, false, false, false],
-                        startHour: 17,
-                        startMinute: 0,
-                        endHour: 18,
-                        endMinute: 15,
-                        editing: false
-                    },
-                ]
-                console.log(this.items);
-            }
         },
         methods: {
             // Make an AJAX request to get items on page load
             loadSchedule() {
                 this.loading = true;
-                this.items = [];
-                let scheduleItems = [];
                 let requestName = "LoadSchedule";
+                this.user = this.$route.params.user;
+                this.scheduleId = this.$route.params.scheduleId;
                 console.log(requestName);
-                $.ajax({
-                    // set the HTTP request URL
-                    // url: `${baseURL}/schedule/getschedule/${this.user}/${this.scheduleId}`,
-                    url: `${URLS.api.scheduleBuilder.getSchedule}/${this.user}/${this.scheduleId}`,
-
-                    //contentType: 'application/json',
-                    //datatype: 'json',
-
-                    // set the context object to the vue component
-                    // this line tells vue to update its components
-                    // when the success or error objects complete!
-                    // if it's not set, the components don't update!
-                    context: this,
-
-                    // HTTP method
-                    method: 'GET',
-
-                    // On a successful AJAX request:
-                    success: function (data) {
-                        scheduleItems = data;
-                        // log that we've completed
-                        console.log(requestName + "- Success")
-                        // return true;
-                    },
-
-                    // On an unsuccessful AJAX request:
-                    error: function (error) {
-                        // log the error
-                        console.log(requestName + "- Error")
-                        console.log(error);
-                        this.items = [];
-                        // return false;
-                    }
-                });
-
-                console.log("Unpacking...");
-                // Unpack the data from the request
-                // If there was an error, scheduleItems will be
-                // empty and the loop won't execute
-                for (let i = 0; i < scheduleItems.length; i++) {
-                    this.items.push({
-                        id: scheduleItems[i].Id,
-                        title: scheduleItems[i].Title,
-                        contact: scheduleItems[i].Contact,
-                        location: scheduleItems[i].Location,
-                        notes: scheduleItems[i].Notes,
-                        days: [
-                            scheduleItems[i].DaysOfWeek[0],
-                            scheduleItems[i].DaysOfWeek[1],
-                            scheduleItems[i].DaysOfWeek[2],
-                            scheduleItems[i].DaysOfWeek[3],
-                            scheduleItems[i].DaysOfWeek[4],
-                            scheduleItems[i].DaysOfWeek[5],
-                            scheduleItems[i].DaysOfWeek[6]
-                        ],
-                        startHour: scheduleItems[i].StartHour,
-                        startMinute: scheduleItems[i].StartMinute,
-                        EndHour: scheduleItems[i].EndHour,
-                        EndMinute: scheduleItems[i].EndMinute,
-                        editing: false
-                    });
-                }
-                this.loading = false;
-                console.log("this.list:")
-                console.log(this.items)
-                console.log("this.loading:")
-                console.log(this.loading)
+                axios.get(`${URLS.api.scheduleBuilder.getSchedule}/${this.user}/${this.scheduleId}`, { timeout: 5000 })
+                    .then(response => {
+                        this.items = response.data
+                        this.loading = false
+                    })
+                    .catch(e => {
+                        console.log(e)
+                    })
             },
             // Creates a schedule item and adds it to this.items.
             addItem(newItem) {
-                console.log("Adding item");
                 newItem.creator = String(this.user);
                 newItem.scheduleId = Number(this.scheduleId);
                 this.items.push(newItem);
-                console.log("Item added");
                 this.unsavedChanges = true;
-                //// let sendable = $(newItem).serialize();
-                //let sendable = JSON.stringify(newItem);
-                //// make ajax request
-                //$.ajax({
-                //    // url: this.baseUrl + 'schedule/createItem/' + this.schedule + "/" + newItem.id,
-                //    // url: `${baseURL}/schedule/createItem/${this.user}/${this.scheduleId}`,
-                //    url: `${URLS.api.scheduleBuilder.createItem}/${this.user}/${this.scheduleId}`,
-                //    // url: `${baseURL}/api/schedule/CreateItem/`,
-                //    context: this.ajaxContext,
-                //    contentType: 'application/json',
-                //    method: 'POST',
-                //    data: sendable,
-                //    dataType: 'json',
-                //    success: function (data) {
-                //        console.log(data);
-                //    },
-                //    error: function (error) {
-                //        console.log(error);
-                //    }
-                //});
             },
             // Updates a schedule item
             updateItem(updatedItem) {
-                console.log("ScheduleBuilder.updateItem()");
                 let updated = false;
                 for (let i = 0; i < this.items.length && !updated; i++) {
                     if (this.items[i].id === updatedItem.id) {
                         this.items[i] = updatedItem;
                         updated = true;
-                        console.log("Successfully updated");
                     }
                 }
                 if (updated) {
                     this.unsavedChanges = true;
                 }
-                /// Make ajax request to update the item
-                //$.ajax({
-                //    // url: this.baseUrl + 'schedule/updateItem/' + this.schedule + "/" + updatedItem.id,
-                //    // url: `${baseURL}/schedule/updateItem/${this.user}/${this.scheduleId}`,
-                //    url: `${URLS.api.scheduleBuilder.updateItem}/${this.user}/${this.scheduleId}`,
-                //    context: this,
-                //    method: 'POST',
-                //    data: updatedItem,
-                //    success: function (data) {
-                //        console.log(data);
-                //    },
-                //    error: function (error) {
-                //        console.log(error);
-                //    }
-                //});
             },
             // Deletes a schedule item based on ID.
             deleteItem(deleteableItem) {
-                console.log("ScheduleBuilder.deleteItem()");
-                console.log("Deleting item with id " + deleteableItem.id);
                 let deleted = false;
                 for (let i = 0; i < this.items.length && !deleted; i++) {
                     if (this.items[i].id === deleteableItem.id) {
                         this.items = this.items.filter(item => (item.id !== this.items[i].id));
                         deleted = true;
-                        console.log("Successfully deleted from list");
                     }
                 }
                 if (!deleted) {
@@ -299,25 +125,11 @@
                 else {
                     this.unsavedChanges = true;
                 }
-                //// Make AJAX request to delete the item.
-                //$.ajax({
-                //    // url: this.baseUrl + 'schedule/deleteItem/' + this.schedule + "/" + deleteableItem.id,
-                //    // url: `${baseURL}/api/schedule/deleteItem/${this.user}/${this.scheduleId}/${deleteableItem.id}`,
-                //    url: `${URLS.api.scheduleBuilder.deleteItem}/${this.user}/${this.scheduleId}/${deleteableItem.id}`,
-                //    context: this,
-                //    method: 'DELETE',
-                //    data: deleteableItem,
-                //    success: function (data) {
-                //        console.log(data);
-                //        console.log("Successfully deleted everywhere");
-                //    },
-                //    error: function (error) {
-                //        console.log(error);
-                //        console.log("Could not delete everywhere");
-                //    }
-                //});
             },
+
+            // Save the schedule to a file on the server
             save() {
+                // Format the data so the controller will accept it
                 let scheduleItems = [];
                 for (let i = 0; i < this.items.length; i++) {
                     scheduleItems.push({
@@ -325,7 +137,7 @@
                         ScheduleId: this.scheduleId,
                         Creator: this.user,
                         Contact: this.items[i].contact,
-                        DaysOfWeek: this.items[i].days,
+                        DaysOfWeek: this.items[i].daysOfWeek,
                         StartHour: this.items[i].startHour,
                         StartMinute: this.items[i].startMinute,
                         EndHour: this.items[i].endHour,
@@ -340,6 +152,8 @@
                     ScheduleId: this.scheduleId,
                     Modified: this.modified
                 });
+
+                // Make the request
                 let requestName = "saveSchedule";
                 console.log(requestName);
                 $.ajax({
@@ -350,8 +164,7 @@
                     data: data,
                     datatype: 'json',
                     success: function (data) {
-                        console.log(requestName + "- Successfully saved schedule");
-                        console.log(data);
+                        console.log(data)
                         this.unsavedChanges = false;
                     },
                     error: function (error) {
@@ -360,20 +173,20 @@
                     }
                 });
             },
+
+            // Go back to the selection page
             onBack() {
                 let userWantsToGoBack = true;
                 if (this.unsavedChanges) {
                     userWantsToGoBack = confirm("You have unsaved changes. Are you sure you want to go back?");
                 }
                 if (userWantsToGoBack) {
-                    //router.push({ name: 'SelectForBuilder' });
-                    //router.back();
-                    console.log("Back to schedule selection");
                     router.push({
                         name: 'SelectForBuilder',
                         params: {
                             user: this.user,
                         }
+                    })
                 }
             }
         },

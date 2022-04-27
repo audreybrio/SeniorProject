@@ -13,8 +13,10 @@
 </template>
 
 <script>
-    import * as $ from 'jquery'
+    //import * as $ from 'jquery'
     import Schedules from '../../components/ScheduleBuilder/Schedules'
+    import URLS from '../../variables'
+    import axios from 'axios'
     export default {
         name: 'ScheduleComparison',
         components: {
@@ -22,6 +24,8 @@
         },
         data() {
             return {
+                items: [],
+                schedules: []
             }
         },
         computed: {
@@ -30,12 +34,23 @@
             }
         },
         created() {
+            // get the parameters from the router to load the comparison
             this.user = this.$route.params.user;
-            this.scheduleId = this.$route.params.scheduleId;
+            this.schedules = this.$route.params.selection;
+            this.loadComparison();
         },
         methods: {
-            loadSchedules() {
-                $.ajax({});
+            // load the comparison
+            loadComparison() {
+                axios.get(`${URLS.api.scheduleComparison.getComparison}`, {
+                    params: {
+                        user: this.user,
+                        scheduleIds: JSON.stringify(this.schedules)
+                    }
+                })
+                    .then(response => {
+                        this.items = response.data
+                    })
             },
         },
     }

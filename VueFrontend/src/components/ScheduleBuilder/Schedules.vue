@@ -9,7 +9,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-if="items.length > 0">
+                <tr v-if="items">
                     <Days
                           v-for="day in days"
                           :key="day"

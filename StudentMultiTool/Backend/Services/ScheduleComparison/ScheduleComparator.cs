@@ -155,11 +155,11 @@ namespace StudentMultiTool.Backend.Services.ScheduleComparison
             return a > b ? a : b;
         }
 
-        public Schedule VisualRepresentation(List<Schedule> l)
+        public Schedule VisualRepresentation(List<Schedule> schedules)
         {
             Schedule result = new Schedule(
                 0,
-                l[0].OwnerId,
+                schedules[0].OwnerId,
                 DateTime.Now,
                 DateTime.Now,
                 "Comparison",
@@ -180,7 +180,7 @@ namespace StudentMultiTool.Backend.Services.ScheduleComparison
             for (int i = 0; i < days.Count; i++)
             {
                 ScheduleItemHeap currentHeap = new ScheduleItemHeap();
-                foreach (Schedule s in l)
+                foreach (Schedule s in schedules)
                 {
                     foreach (ScheduleItem si in s.Items)
                     {
@@ -195,6 +195,19 @@ namespace StudentMultiTool.Backend.Services.ScheduleComparison
                 // Compare the start and end times of each item in the heap
                 TimeOnly earlyBound = earliestPossible;
                 TimeOnly lateBound = latestPossible;
+
+                // If the current heap is empty, then all schedules are free all day (for this day).
+                if (currentHeap.List.Count == 0)
+                {
+                    ScheduleItem freeAllDay = new ScheduleItem(result.Items.Count + 1);
+                    freeAllDay.Title = "Free Time " + freeAllDay.Id.ToString();
+                    freeAllDay.StartTime = earliestPossible;
+                    freeAllDay.EndTime = latestPossible;
+                    freeAllDay.DaysOfWeek[i] = true;
+                    result.AddScheduleItem(freeAllDay);
+                }
+
+                // Otherwise
                 foreach (ScheduleItem si in currentHeap.List)
                 {
                     lateBound = si.StartTime;

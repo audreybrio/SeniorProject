@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using StudentMultiTool.Backend.Models.ScheduleBuilder;
 using StudentMultiTool.Backend.Services.ScheduleBuilder;
+using StudentMultiTool.Backend.Services.ScheduleComparison;
 using System.Data;
 using System.Data.SqlClient;
 using System.Text.Json;
@@ -22,23 +23,17 @@ namespace StudentMultiTool.Backend.Controllers
         public IEnumerable<Schedule> GetList(string username)
         {
             // TODO: check that the user is authenticated
-            // TODO: convert WL's to logs
-            Console.WriteLine("ScheduleController.GetList with args");
-            Console.WriteLine("\tusername: \"" + username + "\"");
             // Get user hash so we know who to get schedules for
             string? userHash = null;
-            Console.WriteLine("Getting user hash for user \"" + username + "\"");
             ScheduleListBuilder builder = new ScheduleListBuilder();
             userHash = builder.GetUserHash(username);
             if (userHash == null)
             {
-                Console.WriteLine("userHash was null");
                 return Enumerable.Empty<Schedule>();
             }
 
             // Get all schedules the user owns (and/or can collaborate on)
             IEnumerable<Schedule> list = builder.GetAllSchedulesForUser(userHash).Result;
-            Console.WriteLine("Request finished");
             if (list == null)
             {
                 return Enumerable.Empty<Schedule>();
@@ -50,36 +45,44 @@ namespace StudentMultiTool.Backend.Controllers
         // Always returns an enumerable, but the enumerable may be empty.
         [HttpGet("getschedule/{user}/{scheduleId}")]
         public IEnumerable<ScheduleItemDTO> GetSchedule(string user, int scheduleId)
-        //public List<ScheduleItemDTO> GetSchedule(string user, int scheduleId)
-        //public JsonResult GetSchedule(string user, int scheduleId)
-        //public ActionResult GetSchedule(string user, int scheduleId)
         {
-            Console.WriteLine("ScheduleController.GetSchedule with args");
-            Console.WriteLine("\tuser: \"" + user + "\"");
-            Console.WriteLine("\tscheduleId: \"" + scheduleId + "\"");
-            //IEnumerable<ScheduleItemDTO> items = Enumerable.Empty<ScheduleItemDTO>();
-            //List<ScheduleItemDTO> items = new List<ScheduleItemDTO>();
-            IEnumerable<ScheduleItemDTO> items = new List<ScheduleItemDTO>();
+            List<ScheduleItemDTO> items = new List<ScheduleItemDTO>();
 
-            ScheduleManager manager = new ScheduleManager();
-            Schedule? schedule = manager.SelectScheduleWithItems(scheduleId);
-            if (schedule != null)
+            // Check that the user has permission to edit the schedule
+            SchedulePermissionValidator validator = new SchedulePermissionValidator();
+            ScheduleListBuilder listBuilder = new ScheduleListBuilder();
+            string? hash = listBuilder.GetUserHash(user);
+            int isCollaborator = 0;
+
+            // If the user's hash is null, then they probably aren't logged in
+            if (!string.IsNullOrEmpty(hash))
             {
-                foreach (ScheduleItem si in schedule.Items)
+                isCollaborator = validator.IsCollaborator(hash, scheduleId);
+            }
+
+            // If the user is a collaborator on the schedule, continue
+            if (isCollaborator > 0)
+            {
+                // Get the schedule's items
+                ScheduleManager manager = new ScheduleManager();
+                Schedule? schedule = manager.SelectScheduleWithItems(scheduleId);
+                if (schedule != null)
                 {
-                    Console.WriteLine(si.Title);
-                    ScheduleItemDTO temp = new ScheduleItemDTO(si);
-                    temp.ScheduleId = scheduleId;
-                    items.Append(temp);
+                    // Prep the items for data transfer
+                    foreach (ScheduleItem si in schedule.Items)
+                    {
+                        Console.WriteLine(si.Title);
+                        ScheduleItemDTO temp = new ScheduleItemDTO(si);
+                        temp.ScheduleId = scheduleId;
+                        items.Add(temp);
+                    }
+
+                    // Return the items
+                    return items;
                 }
             }
-            //else
-            //{
-            //    return StatusCode(500, "Schedule was null");
-            //}
-            Console.WriteLine("Request finished with " + schedule.Items.Count + " items");
-            return items;
-            //return new JsonResult(items);
+            // If something went wrong or the user wasn't a collaborator, return an empty list
+            return Enumerable.Empty<ScheduleItemDTO>();
         }
 
         // Create a new schedule for a user.
@@ -89,14 +92,9 @@ namespace StudentMultiTool.Backend.Controllers
         public string NewSchedule(string user, string title)
         {
             // TODO: check that the user is authenticated
-            // TODO: convert WL's to logs
-            Console.WriteLine("ScheduleController.NewSchedule with args");
-            Console.WriteLine("\tuser: \"" + user + "\"");
-            Console.WriteLine("\ttitle: \"" + title + "\"");
             int rowsAffected = 0;
             string? userHash = null;
 
-            Console.WriteLine("Getting user hash for user \"" + user + "\"");
             ScheduleListBuilder builder = new ScheduleListBuilder();
             userHash = builder.GetUserHash(user);
             if (userHash == null)
@@ -105,7 +103,6 @@ namespace StudentMultiTool.Backend.Controllers
             }
 
             // Add schedule to DB
-            Console.WriteLine("Add schedule to db");
             Schedule newSchedule = new Schedule(
                -1,
                DateTime.Now,
@@ -119,82 +116,30 @@ namespace StudentMultiTool.Backend.Controllers
             if (newId != null)
             {
                 // Add the owner as a collaborator to the DB
-                Console.WriteLine("Add the owner as a collaborator to the db");
                 rowsAffected = manager.InsertCollaborator((int) newId, userHash, true, true);
             }
 
-            if (rowsAffected > 0 )
+            if (rowsAffected > 0)
             {
                 return "Success";
             }
-            // TODO: make a better default return value
-            return "Oops";
+            
+            return "Could not create new schedule";
         }
 
         [HttpPost("saveSchedule")]
         //public ActionResult SaveSchedule(string data)
         public ActionResult SaveSchedule(ScheduleDTO data)
         {
-            Console.WriteLine("ScheduleController.SaveSchedule with data:");
-            Console.WriteLine(data.ScheduleId);
-            foreach (ScheduleItemDTO si in data.Items)
-            {
-                Console.WriteLine(si);
-            }
-            Console.WriteLine(data.Modified);
             string nullOrEmptyResult = "Request data was null or empty";
-            //JsonResult input = new JsonResult();
             // Make sure the data isn't null or empty
-            //if (!string.IsNullOrEmpty(data))
             if (data != null)
             {
-                // Unpack the data
-                //JsonNode? input = null;
-                //JsonArray? items = null;
-                //int? scheduleId = null;
-                //try
-                //{
-                //    // Unpack the data. If it's null, the request was probably malformed
-                //    //Schedule current = JsonSerializer.Deserialize<Schedule>(data);
-                //    //input = JsonNode.Parse(data);
-                //    //if (input == null)
-                //    //{
-                //    //    return BadRequest(nullOrEmptyResult);
-                //    //}
-
-                //    // Unpack the scheduleId. If it's not there, we can't really do anything.
-                //    //scheduleId = (int) input!["scheduleId"]!;
-                //    if (scheduleId == null)
-                //    {
-                //        return BadRequest("ScheduleId was null");
-                //    }
-
-                //    // Unpack the items. If it's empty, it won't be null. If it's null, the request
-                //    // was probably malformed.
-                //    //items = (JsonArray) input!["items"]!;
-                //    if (items == null)
-                //    {
-                //        return BadRequest("Items was null");
-                //    }
-                //}
-                //catch (ArgumentNullException ex)
-                //{
-                //    return BadRequest("Could not save due to null argument");
-                //}
-                //catch (JsonException ex)
-                //{
-                //    return BadRequest("JsonException");
-                //}
-
-                // If unpacking was successful, continue
-                //if (data.ScheduleId != null)
-                //{
                 // Get the file path to write the schedule items to
                 ScheduleManager manager = new ScheduleManager();
                 Schedule? schedule = manager.SelectScheduleWithoutItems(data.ScheduleId);
                 if (schedule == null)
                 {
-                    // TODO: update modified datetime. add a schedulemanager method for it
                     return StatusCode(500, "Could not find schedule with id " + data.ScheduleId);
                 }
 
@@ -207,10 +152,8 @@ namespace StudentMultiTool.Backend.Controllers
                 }
 
                 // Write the schedule items to the schedule's file
-                //ScheduleFileAccessor accessor = new ScheduleFileAccessor();
-                //string result = accessor.WriteScheduleItems(schedule);
                 string result = manager.SaveSchedule(ref schedule);
-                Console.WriteLine(result);
+
                 // Done!
                 if (result.Equals(ScheduleFileAccessor.Success))
                 {
@@ -220,102 +163,9 @@ namespace StudentMultiTool.Backend.Controllers
                 {
                     return StatusCode(500, "Could not save schedule to file");
                 }
-                //}
+
             }
             return BadRequest(nullOrEmptyResult);
-        }
-
-        [HttpPost]
-        [HttpPost("{user}/{scheduleId}/{newItem}")]
-        //public string CreateItem(string user, int scheduleId, JsonObject newItem)
-        public string CreateItem(ScheduleItemDTO newItem)
-        {
-            Console.WriteLine("ScheduleController.CreateItem with args");
-            Console.WriteLine("\tnewItem: \"" + newItem + "\"");
-            if (newItem != null)
-            {
-                string user = newItem.Creator;
-                int scheduleId = newItem.ScheduleId;
-                Console.WriteLine("\tuser: \"" + user + "\"");
-                Console.WriteLine("\tscheduleId: \"" + scheduleId + "\"");
-                // Load the schedule
-                ScheduleManager manager = new ScheduleManager();
-                Schedule? schedule = manager.SelectScheduleWithItems(scheduleId);
-                if (schedule != null)
-                {
-                    ScheduleItem item = new ScheduleItem(newItem);
-
-                    // add the item to the schedule
-                    manager.CreateScheduleItem(ref schedule, ref item);
-                }
-                // TODO: return error message if the item couldn't be added
-            }
-            // TODO: return error message if null
-            // TODO: make a better default return value
-            Console.WriteLine("Returning");
-            return "Oops";
-        }
-
-        [HttpPost]
-        [HttpPost("updateItem/{user}/{scheduleId}")]
-        //public string UpdateItem(string user, int scheduleId)
-        public string UpdateItem(ScheduleItemDTO updatedItem)
-        {
-            Console.WriteLine("ScheduleController.UpdateItem with args");
-            Console.WriteLine("\tnewItem: \"" + updatedItem + "\"");
-            if (updatedItem != null)
-            {
-                string user = updatedItem.Creator;
-                int scheduleId = updatedItem.ScheduleId;
-                Console.WriteLine("\tuser: \"" + user + "\"");
-                Console.WriteLine("\tscheduleId: \"" + scheduleId + "\"");
-                // Load the schedule
-                ScheduleManager manager = new ScheduleManager();
-                Schedule? schedule = manager.SelectScheduleWithItems(scheduleId);
-                if (schedule != null)
-                {
-                    ScheduleItem item = new ScheduleItem(updatedItem);
-
-                    // update the item
-                    manager.UpdateScheduleItem(ref schedule, ref item);
-                }
-                // TODO: return error message if the item couldn't be updated
-            }
-            // TODO: return error message if null
-            // TODO: make a better default return value
-            Console.WriteLine("Returning");
-            return "Oops";
-        }
-
-        [HttpDelete]
-        [HttpDelete("deleteItem/{user}/{scheduleId}/{deleteableItemId}")]
-        //public string DeleteItem(string user, int scheduleId, int deleteableItemId)
-        public string DeleteItem(ScheduleItemDTO deleteableItem)
-        {
-            Console.WriteLine("ScheduleController.DeleteItem with args");
-            Console.WriteLine("\tnewItem: \"" + deleteableItem + "\"");
-            if (deleteableItem != null)
-            {
-                string user = deleteableItem.Creator;
-                int scheduleId = deleteableItem.ScheduleId;
-                Console.WriteLine("\tuser: \"" + user + "\"");
-                Console.WriteLine("\tscheduleId: \"" + scheduleId + "\"");
-                // Load the schedule
-                ScheduleManager manager = new ScheduleManager();
-                Schedule? schedule = manager.SelectScheduleWithItems(scheduleId);
-                if (schedule != null)
-                {
-                    ScheduleItem item = new ScheduleItem(deleteableItem);
-
-                    // delete the item from the schedule
-                    manager.DeleteScheduleItem(ref schedule, item);
-                }
-                // TODO: return error message if the item couldn't be deleted
-            }
-            // TODO: return error message if null
-            // TODO: make a better default return value
-            Console.WriteLine("Returning");
-            return "Oops";
         }
     }
 }

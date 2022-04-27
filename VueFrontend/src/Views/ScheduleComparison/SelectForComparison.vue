@@ -27,8 +27,7 @@
                 </thead>
                 <tbody>
                     <tr v-for="schedule in schedules" :key="schedule.id">
-                        <!--TODO: implement Schedule component-->
-                        <!--<Schedule :schedule="schedule"/>-->
+                        <!--TODO: implement Schedule details component!-->
                         <td><input type="checkbox" @click="toggleSelection(schedule.id)" /></td>
                         <td>{{ schedule.id }}</td>
                         <td>{{ schedule.title }}</td>
@@ -50,7 +49,6 @@
 <script lang="js">
     import * as $ from 'jquery'
     import router from '../../router'
-    const baseURL = "https://localhost:5002"
     import URLs from '../../variables'
     export default ({
         data() {
@@ -61,7 +59,7 @@
                 newScheduleTitle: "",
 
                 // get user id or other identifier from the router to plug into getList()
-                user: this.$route.params.user
+                user: null
             };
         },
         computed: {
@@ -70,9 +68,8 @@
             }
         },
         created() {
+            this.user = this.$route.params.user;
             this.selection = [];
-            console.log(URLs);
-            console.log("this.user: " + this.user);
             this.getList();
         },
         watch: {
@@ -89,7 +86,6 @@
                 else {
                     this.selection.push(scheduleID);
                 }
-                console.log(this.selection);
             },
             getList() {
                 this.loading = true;
@@ -97,7 +93,8 @@
                 console.log(requestName);
                 $.ajax({
                     // set the HTTP request URL
-                    url: `${baseURL}/api/schedule/getlist/${this.user}`,
+                    //url: `${baseURL}/api/schedule/getlist/${this.user}`,
+                    url: `${URLs.api.scheduleBuilder.getList}/${this.user}`,
 
                     // set the context object to the vue component
                     // this line tells vue to update its components
@@ -112,11 +109,7 @@
                     success: function (data) {
                         this.schedules = data;
                         this.loading = false;
-                        // TODO: delete console.logs
-                        console.log("this.list:")
-                        console.log(this.list)
-                        console.log("this.loading:")
-                        console.log(this.loading)
+
                         // log that we've completed
                         console.log(requestName + "- Success")
                         return true;
@@ -133,12 +126,15 @@
                     }
                 });
             },
+            // Routes the user to the schedule builder selection page
             onScheduleBuilder() {
                 router.push({
                     name: 'ScheduleSelection',
                     params: { user: this.user }
                 });
             },
+
+            // Rotuse the user to the comparison
             onScheduleComparison() {
                 if (!this.selectionLengthIsInRange) {
                     alert("Something went wrong.\nSelect 2 to 5 schedules for comparison.");
