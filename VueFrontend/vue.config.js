@@ -29,14 +29,8 @@ module.exports = {
         },
         proxy: {
             '^/api': {
-<<<<<<< HEAD
-                target: 'https://localhost:5003',
-                ws:true
-            }
-=======
                 target: 'https://localhost:5001/'
             },
->>>>>>> main
         },
         port: 5003
     }
