@@ -101,7 +101,7 @@
 
             generateMatches() {
                 fetch(
-                    `${baseURL}/api/matching/matchActivity/${jwt_decode(window.sessionStorage.getItem("token")).username}`, {
+                    `${baseURL}/api/matching/matchTutoring/${jwt_decode(window.sessionStorage.getItem("token")).username}`, {
                         method: 'GET',
                         context: this,
                     headers: {

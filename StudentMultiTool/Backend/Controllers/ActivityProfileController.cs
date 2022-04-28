@@ -17,7 +17,7 @@ namespace StudentMultiTool.Backend.Controllers
         }
 
         [HttpPost("update/{username}/{opt}")]
-        public IActionResult ActivityProfile([FromBody] Data activities, string username, string opt)
+        public IActionResult ActivityProfile([FromBody] Data activities, string username, bool opt)
         {
             //string username = "abrio";
            // bool opt = true;

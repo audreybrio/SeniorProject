@@ -30,6 +30,7 @@ namespace StudentMultiTool.Backend.Controllers
             Dictionary<int, List<string>> matches = new Dictionary<int, List<string>>();
             activities = GetActivityProfile(username);
 
+
             for (int i = 0; i < activities.Count; i++)
             {
                 SqlConnection conn = new SqlConnection();
@@ -55,7 +56,8 @@ namespace StudentMultiTool.Backend.Controllers
                     int countMatchExists = MatchExists(username, id, activities[i]);
                     if (countMatchExists == 0)
                     {
-                        InsertMatch(username, id, activities[i]);
+                        string overlap = Match.GetOverlap(username, id);
+                        InsertMatch(username, id, activities[i], overlap);
                     }
 
                 }
@@ -73,6 +75,7 @@ namespace StudentMultiTool.Backend.Controllers
         }
 
         // Matching Logic for Tutoring profile
+        [HttpGet("match/{username}")]
         public IActionResult MatchingTutoring(string username)
         {
             List<string> courses = new List<string>();
@@ -104,11 +107,18 @@ namespace StudentMultiTool.Backend.Controllers
                     {
                         matches.Add(id, new List<string> { courses[i] });
                     }
-                    
+
+                    int countMatchExists = MatchExists(username, id, courses[i]);
+                    if (countMatchExists == 0)
+                    {
+                        string overlap = Match.GetOverlap(username, id);
+                        InsertMatch(username, id, courses[i], overlap);
+                    }
+
                 }
                 else
                 {
-                    return NotFound();
+                    return Ok();
                 }
             }
 
@@ -116,35 +126,36 @@ namespace StudentMultiTool.Backend.Controllers
             //    foreach (string val in kvp.Value)
             //        Console.WriteLine("Key: {0}, Value: {1}", kvp.Key, val);
 
-            return Ok() ;
+            return Ok();
         }
 
-        // Display Matches to frontend 
-        public List<Match> DisplayMatches(string username)
+            // Display Matches to frontend 
+            public List<Match> DisplayMatches(string username)
         {
             List<Match> matches = new List<Match>();
             SqlConnection conn = new SqlConnection();
             conn.ConnectionString = Environment.GetEnvironmentVariable(connectionString);
             conn.Open();
-            SqlCommand cmd = new SqlCommand("SELECT matchId, reason FROM Matches WHERE  Matches.userId = (SELECT id FROM UserAccounts WHERE UserAccounts.username = @username)", conn);
+            SqlCommand cmd = new SqlCommand("SELECT matchId, reason, overlap FROM Matches WHERE  Matches.userId = (SELECT id FROM UserAccounts WHERE UserAccounts.username = @username)", conn);
             cmd.Parameters.AddWithValue("@username", username);
             int matchId = 0;
             string reason = "";
+            string overlap = "";
             SqlDataReader dr = cmd.ExecuteReader();
             while (dr.Read())
             { 
                 matchId = dr.GetInt32(0);
                 reason = dr.GetString(1);
+                overlap = dr.GetString(2);
 
-                Match matchExample = new Match(matchId, reason);
-                matches.Add(matchExample);
+
+                string matchName = Match.GetName(matchId);
+                Match newMatch = new Match(matchName, reason, overlap);
+                matches.Add(newMatch);
 
             }
             dr.Close();
-            foreach (Match match in matches)
-            {
-                Console.WriteLine(match.matchId + " " + match.reason);
-            }
+            conn.Close();
             return matches;
         }
 
@@ -254,15 +265,16 @@ namespace StudentMultiTool.Backend.Controllers
         }
 
         // Insert Match into database
-        public void InsertMatch(string username, int matchId, string reason)
+        public void InsertMatch(string username, int matchId, string reason, string overlap)
         {
             SqlConnection conn = new SqlConnection();
             conn.ConnectionString = Environment.GetEnvironmentVariable(connectionString);
             conn.Open();
-            SqlCommand cmd = new SqlCommand("INSERT INTO Matches (userId, matchId, reason, overlap) VALUES ((SELECT id FROM UserAccounts WHERE UserAccounts.username = @username), @matchId, @reason, NULL)", conn);
+            SqlCommand cmd = new SqlCommand("INSERT INTO Matches (userId, matchId, reason, overlap) VALUES ((SELECT id FROM UserAccounts WHERE UserAccounts.username = @username), @matchId, @reason, @overlap)", conn);
             cmd.Parameters.AddWithValue("@matchId", matchId);
             cmd.Parameters.AddWithValue("@reason", reason);
             cmd.Parameters.AddWithValue("@username", username);
+            cmd.Parameters.AddWithValue("@overlap", overlap);
             cmd.ExecuteNonQuery();
         }
 
