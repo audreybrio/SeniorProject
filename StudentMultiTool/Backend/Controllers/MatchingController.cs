@@ -31,6 +31,7 @@ namespace StudentMultiTool.Backend.Controllers
             activities = GetActivityProfile(username);
 
 
+            // can we make this into one query where it returns all the peopele who are matched, select
             for (int i = 0; i < activities.Count; i++)
             {
                 SqlConnection conn = new SqlConnection();
