@@ -14,12 +14,17 @@ namespace StudentMultiTool.Backend.Controllers
 
         // matching logic for activity profile
 
-        [HttpGet]
-        [Route("matchActivity")]
-        public IActionResult MatchingActivity()
+        [HttpGet("match/{username}")]
+        public IActionResult Helpme(string username)
+        {
+            return Ok("hello");
+        }
+
+        [HttpGet("matchActivity/{username}")]
+        public IActionResult MatchingActivity(string username)
 
         {
-            string username = "abrio";
+            //string username = "abrio";
 
             List<string> activities = new List<string>();
             Dictionary<int, List<string>> matches = new Dictionary<int, List<string>>();
@@ -35,7 +40,7 @@ namespace StudentMultiTool.Backend.Controllers
                 cmd.Parameters.AddWithValue("@activity", activities[i]);
                 cmd.Parameters.AddWithValue("@opt", 1);
                 cmd.ExecuteNonQuery();
-                if(cmd.ExecuteScalar() != null)
+                if (cmd.ExecuteScalar() != null)
                 {
                     int id = (int)cmd.ExecuteScalar();
                     if (matches.ContainsKey(id))
@@ -48,20 +53,21 @@ namespace StudentMultiTool.Backend.Controllers
                         matches.Add(id, new List<string> { activities[i] });
                     }
                     int countMatchExists = MatchExists(username, id, activities[i]);
-                    if (countMatchExists == 0){
+                    if (countMatchExists == 0)
+                    {
                         InsertMatch(username, id, activities[i]);
                     }
 
                 }
                 else
                 {
-                    return NotFound();
+                    return Ok();
                 }
             }
-            
-            foreach (KeyValuePair<int, List<string>> kvp in matches)
-                foreach (string val in kvp.Value)
-                    Console.WriteLine("Key: {0}, Value: {1}", kvp.Key, val);
+
+            //foreach (KeyValuePair<int, List<string>> kvp in matches)
+            //    foreach (string val in kvp.Value)
+            //        Console.WriteLine("Key: {0}, Value: {1}", kvp.Key, val);
 
             return Ok();
         }
@@ -106,9 +112,9 @@ namespace StudentMultiTool.Backend.Controllers
                 }
             }
 
-            foreach (KeyValuePair<int, List<string>> kvp in matches)
-                foreach (string val in kvp.Value)
-                    Console.WriteLine("Key: {0}, Value: {1}", kvp.Key, val);
+            //foreach (KeyValuePair<int, List<string>> kvp in matches)
+            //    foreach (string val in kvp.Value)
+            //        Console.WriteLine("Key: {0}, Value: {1}", kvp.Key, val);
 
             return Ok() ;
         }
@@ -182,10 +188,10 @@ namespace StudentMultiTool.Backend.Controllers
                 activities.Add(activity5);
             }
             
-            foreach(string activity in activities)
-            {
-                Console.WriteLine(activity);
-            }
+            //foreach(string activity in activities)
+            //{
+            //    Console.WriteLine(activity);
+            //}
             return activities;
         }
 

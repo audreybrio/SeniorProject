@@ -14,6 +14,8 @@ import StudentDiscounts from '../components/StudentDiscounts/StudentDiscounts.vu
 import MatchingMain from '../components/Matching/MatchingMain.vue'
 import ActivityProfile from '../components/Matching/ActivityProfile.vue'
 import TutoringProfile from '../components/Matching/TutoringProfile.vue'
+import DisplayMatches from '../components/Matching/DisplayMatches.vue'
+
 const routes = [
     // Core Features
     {
@@ -93,6 +95,7 @@ const routes = [
         component: StudentDiscounts,
     },
 
+    // matching
     {
         path: '/matchingMain',
         name: 'matchingMain',
@@ -109,6 +112,13 @@ const routes = [
         path: '/tutoringprofile',
         name: 'tutoringProfile',
         component: TutoringProfile
+    },
+
+    {
+        path: '/displaymatches',
+        name: 'displayMatches',
+        component: DisplayMatches
+
     },
 
     {

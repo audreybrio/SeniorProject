@@ -17,7 +17,7 @@
             <button @click="activity">Activity Profile</button>
             <button @click="tutoring">Tutoring Profile</button>
             <button @click="generateMatches">Generate Matches</button>
-            <button @click="displayeMatches">Display Matches</button>
+            <button @click="displayMatches">Display Matches</button>
         </div>
         <button @click="onSubmit">Return to Homepage</button>
 
@@ -95,16 +95,19 @@
 
             displayMatches() {
 
+                router.push({ name: "displayMatches" })
+
             },
 
             generateMatches() {
                 fetch(
-                    `${baseURL}/api/matching/matchActivity`, {
-                    method: 'GET',
-                    //headers: {
-                    //    'Accept': 'application/json',
+                    `${baseURL}/api/matching/matchActivity/${jwt_decode(window.sessionStorage.getItem("token")).username}`, {
+                        method: 'GET',
+                        context: this,
+                    headers: {
+                        'Accept': 'application/json',
                     //    'Content-Type': 'application/json'
-                    //},
+                    },
 
                 }).then(() => { this.errors = "SUCCUESS" });
             }
