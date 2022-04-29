@@ -6,6 +6,7 @@
             <br>
         </div>
 
+        <!-- Radio buttons for user to select which type of setting they would want for tutoring-->
         <div>
             Looking For Group or Individual Tutoring?
         </div>
@@ -17,6 +18,7 @@
             <br>
         </div>
 
+        <!-- Radio buttons for user to select if a user is a tutor or looking for a tutor-->
         <div>
             <br>
             Are you looking for a tutor or offering tutoring?
@@ -32,6 +34,7 @@
 
         </div>
 
+        <!-- User can add up to 6 courses-->
         <div>
             <br>
             Add up to six classes
@@ -55,6 +58,7 @@
             <input id="course6" name="tutoring" v-model="input6" placeholder="Course Six">
         </div>
 
+        <!-- Selecting a schedule-->
         <div>
             <br />
             Select a schedule
@@ -73,12 +77,10 @@
 </template>
 
 <script lang="js">
+    // Imports
     import router from '@/router'
     import jwt_decode from "jwt-decode"
-    // import * as $ from 'jquery'
     import URLS from '../../variables'
-
-
 
     export default ({
         data() {
@@ -99,12 +101,9 @@
             };
         },
         created() {
-            // fetch the data when the view is created and the data is
-            // already being observed
             this.fetchData();
         },
         watch: {
-            // call again the method if the route changes
             '$route': 'fetchData'
         },
         methods: {
@@ -113,13 +112,14 @@
                 this.loading = true;
 
             },
-
+            // Go back to main matching page
             onSubmit() {
                 router.push({name: "matchingMain"})
             },
 
+            // Save tutoring profile information
             save() {
-
+                // Gets entered course information
                 let courses = [];
                 if (this.input1 != null) { courses.push(this.input1); }
                 if (this.input2 != null) { courses.push(this.input2); }
@@ -130,12 +130,11 @@
 
                 let requires = true;
                 let individual = true;
-
+                // Gets individual and requires values (if individual is true, they want individual,
+                // if individual is false they want group; if requres is true, they are looking for 
+                // a tutor, if requires is false, they are a tutor
                 if (this.chosen == "offers") { requires = false; }
                 if (this.picked == "group") { individual = false; }
-                //$("input[name='tutoring']:checked").each(function () {
-                //    courses.push(this.value);
-                //});
                 let data = {
                     courses: courses
                 }
@@ -143,6 +142,7 @@
                 console.log("activities: ", courses)
                 console.log("group", this.picked)
                 console.log("requires: ", this.chosen)
+                // Connection to backend
                 fetch(
                     `${URLS.api.tutoringProfile.update}/${jwt_decode(window.sessionStorage.getItem("token")).username}/${individual}/${requires}/${true}`, {
                     method: 'POST',
@@ -155,10 +155,6 @@
                 }).then(() => { router.push({ name: "matchingMain" }) });
 
             },
-
-
-
-
         },
     });
 </script>

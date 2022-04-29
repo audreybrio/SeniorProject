@@ -8,6 +8,7 @@
         </div>
 
         <div>
+            <!-- Checkboxes for the different activities a user can select; user can only select up to 5-->
             <input type="checkbox" id="study" name="activity" value="Studying" v-model="checkedNames" :disabled="checkedNames.length >= 5 && checkedNames.indexOf('Studying') == -1">
             <label for="study">Studying</label>
             <br />
@@ -36,10 +37,10 @@
             <label for="other">Other</label>
 
             <br>
-            <!--<span>Checked names: {{ checkedNames }}</span>-->
         </div>
 
         <div>
+            <!-- Gets schedule selection-->
             <br />
             Select a schedule
         </div>
@@ -48,28 +49,23 @@
             <label for="one">Schedule A</label>
         </div>
 
-
-        <div>
+         <div>
             <br>
             <button @click="save">Save</button>
             <button @click="onSubmit">Back</button>
             <button @click="cleardata">Clear Selections</button>
         </div>
 
-
-
-
     </div>
     <router-view />
 </template>
 
 <script lang="js">
+    // Imports
     import router from '@/router'
     import jwt_decode from "jwt-decode"
     import * as $ from 'jquery'
     import URLS from '../../variables'
-
-
 
     export default ({
         data() {
@@ -82,12 +78,9 @@
             };
         },
         created() {
-            // fetch the data when the view is created and the data is
-            // already being observed
             this.fetchData();
         },
         watch: {
-            // call again the method if the route changes
             '$route': 'fetchData'
         },
         methods: {
@@ -96,12 +89,13 @@
                 this.loading = true;
 
             },
-          
+           // Goes back to main matching page
             onSubmit() {
                 router.push({name: "matchingMain"})
             },
-
+            // Saves the selected data a user has entered 
             save() {
+                // Gets selected activities
                 let activities = [];
                 $("input[name='activity']:checked").each(function () {
                     activities.push(this.value);
@@ -112,7 +106,7 @@
                 }
                 console.log("data: ", data)
                 console.log("activities: ", activities)
-
+                // Connection to backend 
                 fetch(
                     `${URLS.api.activityProfile.update}/${jwt_decode(window.sessionStorage.getItem("token")).username}/${true}`, {
                     method: 'POST',

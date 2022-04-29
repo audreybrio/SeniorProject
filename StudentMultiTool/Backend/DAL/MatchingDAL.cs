@@ -5,11 +5,13 @@ using System.Data.SqlClient;
 
 namespace StudentMultiTool.Backend.DAL
 {
+    // Matching DAL
     public class MatchingDAL
     {
+        // Connection string for database
         const string connectionString = "MARVELCONNECTIONSTRING";
 
-        // SQL for matching activity logic
+        // SQL for matching activities logic
         public static bool MatchingActivity(List<string> activities, string username)
         {
             // Loops through selected activities to find matches 
@@ -19,9 +21,7 @@ namespace StudentMultiTool.Backend.DAL
 
             for (int i = 0; i < activities.Count; i++)
             {
-                //SqlConnection conn = new SqlConnection();
-                //conn.ConnectionString = Environment.GetEnvironmentVariable(connectionString);
-                //conn.Open();
+                // Gets list of users also have the same activity in their profile
                 SqlCommand cmd = new SqlCommand("SELECT userId FROM ActivityProfile WHERE ActivityProfile.userId != (SELECT id FROM UserAccounts WHERE UserAccounts.username = @username) AND (activity1 = @activity OR activity2 = @activity OR activity3 = @activity OR activity4 = @activity OR activity5 = @activity) AND opt = @opt", conn);
                 cmd.Parameters.AddWithValue("@username", username);
                 cmd.Parameters.AddWithValue("@activity", activities[i]);
@@ -34,6 +34,7 @@ namespace StudentMultiTool.Backend.DAL
                     {
                         int id = dr.GetInt32(0);
                         int countMatchExists = MatchExists(username, id, activities[i]);
+                        // If match doesnt already exist, insert into database
                         if (countMatchExists == 0)
                         {
                             string overlap = Match.GetOverlap(username, id);
@@ -53,7 +54,7 @@ namespace StudentMultiTool.Backend.DAL
             return true;
         }
 
-        // Matching Logic for Tutoring profile
+        // SQL for matching tutoring profiles
         public static bool MatchingTutoring(List<string> courses, string username, bool individual, bool requires)
         {
             // Loops through prfile given for tutoring to find matches 
@@ -62,6 +63,7 @@ namespace StudentMultiTool.Backend.DAL
             conn.Open();
             for (int i = 0; i < courses.Count; i++)
             {
+                // Finds users who have same courses and individal selections but opposite information for requries
                 SqlCommand cmd = new SqlCommand("SELECT userId FROM TutoringProfile WHERE TutoringProfile.userId != (SELECT id FROM UserAccounts WHERE UserAccounts.username = @username) AND (course1 = @course OR course2 = @course OR course3 = @course OR course4 = @course OR course5 = @course OR course6 = @course) AND individual = @individual AND requires != @requires AND opt = @opt", conn);
                 cmd.Parameters.AddWithValue("@username", username);
                 cmd.Parameters.AddWithValue("@course", courses[i]);
@@ -76,6 +78,7 @@ namespace StudentMultiTool.Backend.DAL
                     {
                         int id = dr.GetInt32(0);
                         int countMatchExists = MatchExists(username, id, courses[i]);
+                        // If match does not alread exist, enter into database
                         if (countMatchExists == 0)
                         {
                             string overlap = Match.GetOverlap(username, id);
@@ -91,10 +94,10 @@ namespace StudentMultiTool.Backend.DAL
             return true;
         }
 
-        // Display Matches to frontend 
+        // SQL to get all the matches for a single user  
         public static List<Match> DisplayMatches(string username)
-        {
-            //string username = "abrio";
+        { 
+            // Selects all matches for a single user 
             List<Match> matches = new List<Match>();
             SqlConnection conn = new SqlConnection();
             conn.ConnectionString = Environment.GetEnvironmentVariable(connectionString);
@@ -111,7 +114,7 @@ namespace StudentMultiTool.Backend.DAL
                 reason = dr.GetString(1);
                 overlap = dr.GetString(2);
 
-
+                // Adds user to list of matches
                 string matchName = Match.GetName(matchId);
                 Match newMatch = new Match(matchName, reason, overlap);
                 matches.Add(newMatch);
@@ -122,7 +125,7 @@ namespace StudentMultiTool.Backend.DAL
             return matches;
         }
 
-        // Get activity profile
+        // SQL to get which activities a user selected, to know what to match for 
         public static (string, string, string, string, string) GetActivityProfile(string username)
         {
             SqlConnection conn = new SqlConnection();
@@ -142,15 +145,14 @@ namespace StudentMultiTool.Backend.DAL
             }
             dr.Close();
             conn.Close();
-            
+            // Returns all the activities they have entered 
             return (activity1, activity2, activity3, activity4, activity5);
         }
 
-        // Get tutoring profile
+        // SQL to get what infromation is in a users tutoring profile, to know what to match for 
         public static (string, string, string, string, string, string, bool, bool) GetTutoringProfile(string username)
         {
             List<string> courses = new List<string>();
-            // return (courses, true, true);
             SqlConnection conn = new SqlConnection();
             conn.ConnectionString = Environment.GetEnvironmentVariable(connectionString);
             conn.Open();
@@ -172,11 +174,12 @@ namespace StudentMultiTool.Backend.DAL
             }
             dr.Close();
             conn.Close();
+            // Returns all the information in profile
             return (course1, course2, course3, course4, course5, course6, individual, requires);
 
         }
 
-        // Insert Match into database
+        // SQL to insert a match into the matches table of database
         public static bool InsertMatch(string username, int matchId, string reason, string overlap)
         {
             SqlConnection conn = new SqlConnection();
@@ -187,14 +190,14 @@ namespace StudentMultiTool.Backend.DAL
             cmd.Parameters.AddWithValue("@reason", reason);
             cmd.Parameters.AddWithValue("@username", username);
             cmd.Parameters.AddWithValue("@overlap", overlap);
-            
+            // Success
             try
             {
                 cmd.ExecuteNonQuery();
                 conn.Close();
                 return true;
             }
-
+            // Fail
             catch
             {
                 conn.Close();   
@@ -202,7 +205,8 @@ namespace StudentMultiTool.Backend.DAL
             }
 
         }
-
+        // SQL to see if a match already exists in the database, as to not enter any duplicates or cause any foreign key errors
+        // If row already exists, returns 1, else reutrns 0
         public static int MatchExists(string username, int matchId, string reason)
         {
             SqlConnection conn = new SqlConnection();
@@ -220,7 +224,7 @@ namespace StudentMultiTool.Backend.DAL
             return count;
         }
 
-        // almost whole thing  can go 
+        // SQL to see if a user is opted in or not in order to be considered in matching logic 
         public static bool CheckOptedIn(string username)
         {
             SqlConnection conn = new SqlConnection();
@@ -234,7 +238,7 @@ namespace StudentMultiTool.Backend.DAL
         }
 
 
-        // For when user wants to opt in / out 
+        // SQL to change a users opt in/out status 
         public static bool UpdateOptStatus(string username, bool opt)
         {
             SqlConnection conn = new SqlConnection();
