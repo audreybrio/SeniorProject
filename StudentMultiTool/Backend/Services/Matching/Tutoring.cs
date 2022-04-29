@@ -9,7 +9,7 @@ namespace StudentMultiTool.Backend.Services.Matching
         {
             bool isSuccess = false;
             int listSize = courses.Count;
-            Console.WriteLine(listSize);
+            if (listSize > 6){ return false; }
             int remainder = 6 - listSize;
             for (int i = 0; i < remainder; i++)
             {

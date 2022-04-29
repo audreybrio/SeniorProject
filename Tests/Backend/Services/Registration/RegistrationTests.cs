@@ -22,7 +22,7 @@ namespace Tests.Backend.Services.Registration
             string school = "csulb";
             UserAccount userAcc = new UserAccount(email, password, userName, school);
             Update usertoDB = new Update();
-            usertoDB.UpdateCreate(email, password, userName, school);
+           // usertoDB.UpdateCreate(email, password, userName, school);
             bool successCase = input.emailExists(email);
             Assert.True(successCase);
         }

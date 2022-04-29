@@ -11,7 +11,11 @@ namespace StudentMultiTool.Backend.Services.Matching
 
             int listSize = activities.Count;
             bool isSuccess = false;
-            Console.WriteLine(listSize);
+            if(listSize > 5)
+            {
+                return false;
+            }
+
             int remainder = 5 - listSize;
             for (int i = 0; i < remainder; i++)
             {

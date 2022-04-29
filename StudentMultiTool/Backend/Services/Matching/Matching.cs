@@ -1,4 +1,4 @@
-﻿using StudentMultiTool.Backend.Controllers;
+﻿using StudentMultiTool.Backend.Services.Matching;
 using StudentMultiTool.Backend.DAL;
 using StudentMultiTool.Backend.Models.Matching;
 
@@ -10,6 +10,11 @@ namespace StudentMultiTool.Backend.Services.Matching
         public static bool MatchingActivity(string username)
         {
             //string username = "abrio";
+            int profileCount = Activity.ProfileExists(username);
+            if (profileCount == 0)
+            {
+                return false;
+            }
             List<string> activities = new List<string>();
             activities = GetActivityProfile(username);
             bool isSuccess = MatchingDAL.MatchingActivity(activities, username);
@@ -19,6 +24,11 @@ namespace StudentMultiTool.Backend.Services.Matching
         // Matching Logic for Tutoring profile
         public static bool MatchingTutoring(string username)
         {
+            int profileCount = Tutoring.ProfileExists(username);
+            if (profileCount == 0)
+            {
+                return false;
+            }
             List<string> courses = new List<string>();
             bool individual, requires;
             (courses, individual, requires) = GetTutoringProfile(username);
