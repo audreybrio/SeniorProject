@@ -1,4 +1,3 @@
-
 <template>
     <GoogleMap api-key="AIzaSyCzpBhiWzAnVHY7-Es0IUuqm9NSEMTYtY0" style="width: 100%; height: 500px" :center="center" :zoom="15">
         <Marker :options="{ position: center }" />
@@ -7,6 +6,7 @@
 
 <script>
     import { GoogleMap, Marker } from "vue3-google-map";
+
     export default {
         components: { GoogleMap, Marker },
         props: {

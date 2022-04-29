@@ -17,6 +17,7 @@
     //const baseURL = "https://localhost:5002";
     import URLS from '../../variables'
 //import Map1 from './ShowMap.vue'
+
 export default {
   data () {
         return {
@@ -45,6 +46,7 @@ export default {
               success: function (data) {
                   this.discounts = data
                   // log that we've completed
+
                   return true;
               },
               // On an unsuccessful AJAX request:
@@ -62,9 +64,9 @@ export default {
 
 <style scoped>
     .ui.button,
-    .dot.circle.icon {
-        background-color: #ff5a5f;
-        color: white;
+    .dot.circle.icon{
+    background-color: #ff5a5f;
+    color:white;
     }
 
     .alignLeft {
@@ -72,7 +74,6 @@ export default {
         margin-left: 50px;
         font-weight: bold;
     }
-
     .discount h2 {
         background-color: #f4f4f4;
         padding: 20px;

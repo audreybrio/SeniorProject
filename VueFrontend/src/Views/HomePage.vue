@@ -59,7 +59,7 @@
             onScheduleBuilder() {
                 router.push({ name: "SelectForBuilder", params: { user: this.id }});
             },
-            onScheduleSelection() {
+            onScheduleComparison() {
                 router.push({ name: "SelectForComparison", params: { user: this.id }});
             },
             onAM() {

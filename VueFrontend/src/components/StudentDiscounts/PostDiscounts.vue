@@ -24,32 +24,36 @@
 </template>
 
 <script>
-import PostEstablishment from "./PostEstablishment.vue"
-import PostWebsite from "./PostWebsite.vue"
-export default {
-  data () {
-    return {
-      form: {
-        postType: ''
-      }
+    import PostEstablishment from "./PostEstablishment.vue"
+    import PostWebsite from "./PostWebsite.vue"
+
+    export default {
+      data () {
+        return {
+          form: {
+            postType: ''
+            },
+          
+        }
+      },
+      components:{
+        PostEstablishment,
+        PostWebsite
+        }
     }
-  },
-  components:{
-    PostEstablishment,
-    PostWebsite
-  }
-}
 </script>
 
 <style scoped>
-    .alignLeft{
-        text-align:left;
-        margin-left:50px;
-        font-weight:bold;
+    .alignLeft {
+        text-align: left;
+        margin: auto;
+        width: 500px;
+        font-weight: bold;
     }
-  .box{
-    background-color:rgb(212, 200, 210);
-  }
+    .box {
+        background-color: rgb(212, 200, 210);
+        margin: auto;
+    }
   
 hr {
         margin-left: auto;

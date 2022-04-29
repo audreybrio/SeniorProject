@@ -16,6 +16,14 @@ import ActivityProfile from '../components/Matching/ActivityProfile.vue'
 import TutoringProfile from '../components/Matching/TutoringProfile.vue'
 import DisplayMatches from '../components/Matching/DisplayMatches.vue'
 import MatchesChild from '../components/Matching/MatchesChild.vue'
+import DiscountDetails from '../components/StudentDiscounts/DiscountDetails.vue'
+import EstablishmentDetails from '../components/StudentDiscounts/EstablishmentDetails.vue'
+import RecipeView from '../components/MyRecipe/RecipeView.vue'
+import RecipeDetails from '../components/MyRecipe/RecipeDetails.vue'
+import RecipeLayout from '../components/MyRecipe/RecipeLayout.vue'
+import RecipeRegister from '../components/MyRecipe/RecipeRegister.vue'
+import RecipeEdit from '../components/MyRecipe/RecipeEdit.vue'
+import RecipeDelete from '../components/MyRecipe/RecipeDelete.vue'
 
 const routes = [
     // Core Features
@@ -50,25 +58,25 @@ const routes = [
     // ScheduleBuilder & ScheduleComparison
     // ScheduleBuilder
     {
-        path: '/schedule/builder/:user/:scheduleId',
+        path: '/schedule/builder/',
         name: 'ScheduleBuilder',
-        component: () => import('../components/ScheduleBuilder/ScheduleBuilder.vue')
+        component: () => import('../Views/ScheduleBuilder/ScheduleBuilder.vue')
     },
     {
-        path: '/schedule/builder/select/:user',
+        path: '/schedule/builder/select/',
         name: 'SelectForBuilder',
-        component: () => import('../components/ScheduleBuilder/SelectForBuilder.vue')
+        component: () => import('../Views/ScheduleBuilder/SelectForBuilder.vue')
     },
     // ScheduleComparison
     {
-        path: '/schedule/comparison/:user/:selection',
+        path: '/schedule/comparison/',
         name: 'ScheduleComparison',
-        component: () => import('../components/ScheduleComparison/ScheduleComparison.vue')
+        component: () => import('../Views/ScheduleComparison/ScheduleComparison.vue')
     },
     {
-        path: '/schedule/comparison/select/:user',
+        path: '/schedule/comparison/select/',
         name: 'SelectForComparison',
-        component: () => import('../components/ScheduleComparison/SelectForComparison.vue')
+        component: () => import('../Views/ScheduleComparison/SelectForComparison.vue')
     },
 
     // BookSelling
@@ -132,10 +140,58 @@ const routes = [
 
 
     {
+        path: '/studentDiscounts/discountDetails/:id',
+        name: 'discountDetails',
+        component: DiscountDetails,
+        props: true
+    },
+    {
+        path: '/studentDiscounts/establishmentDetails/:id',
+        name: 'EstablishmentDetails',
+        component: EstablishmentDetails,
+        props: true
+    },
+    {
         path: '/aidEligibility/info',
         name: 'studentInformation',
         component: () => import('../Views/AidEligibility/Info.vue')
     },
+    // Recipe Sharing
+    {
+        path: '/recipeview',
+        name: 'RecipeView',
+        component: RecipeView, 
+        props: route => ({ page: parseInt(route.query.page) || 1})
+    },
+    {
+        path: '/register',
+        name: 'RecipeRegister',
+        component: RecipeRegister
+    },
+    {
+        path: '/recipeview/:id',
+        name: 'RecipeLayout',
+        props: true,
+        component: RecipeLayout,
+        children: [  
+            {
+                path: '',
+                name: 'RecipeDetails',
+                component: RecipeDetails,
+            },
+            {
+                path: 'delete',
+                name: 'RecipeDelete',
+                component: RecipeDelete
+            },
+            {
+                path: 'edit',
+                name: 'RecipeEdit',
+                component: RecipeEdit
+            }
+        ]
+    },
+    
     // ADD MORE HERE! DON'T ADD AFTER not-found!
 
     // Not found; don't move this one or place anything after it

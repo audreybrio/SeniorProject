@@ -1,12 +1,11 @@
 <template>
     <td>
-        <div v-for="item in Items" :key="item.id">
-            <Items
-                   :item="item"
+        <div v-for="item in items" :key="item.id">
+            <Items :item="item"
+                   :index="index"
                    @item-updated="updateItem"
                    @item-deleted="deleteItem"
-                   :editable="editableItems"
-            />
+                   :editable="editableItems" />
         </div>
     </td>
 </template>
@@ -62,18 +61,24 @@
             deleteItem(deleteableItem) {
                 console.log("Days.deleteItem()");
                 this.$emit("item-deleted", deleteableItem);
+            },
+            onToday(item) {
+                return item.daysOfWeek[this.index] || item.editing;
             }
         },
         computed: {
             getItemsForDay() {
-                return this.items.filter(item => (item.days[this.index] || item.editing));
+                if (!this.items) {
+                    return [];
+                }
+                return this.items.filter(item => (item.daysOfWeek[this.index] || item.editing));
             },
             getSortedItems() {
                 let items = this.getItemsForDay;
                 // TODO: sort
                 return items;
             },
-            Items(){
+            TodaysItems(){
                 return this.getSortedItems;
             }
         }
