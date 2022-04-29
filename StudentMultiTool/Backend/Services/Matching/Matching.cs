@@ -121,8 +121,8 @@ namespace StudentMultiTool.Backend.Services.Matching
         public static bool UpdateOptStatus(string username, bool opt)
         {
 
-            int countActivityProfile = ActivityProfileController.ProfileExists(username);
-            int countTutoringProfile = TutoringProfileController.ProfileExists(username);
+            int countActivityProfile = Activity.ProfileExists(username);
+            int countTutoringProfile = Tutoring.ProfileExists(username);
 
             if (countActivityProfile == 0 && countTutoringProfile == 0)
             {
