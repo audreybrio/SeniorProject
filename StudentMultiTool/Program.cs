@@ -17,8 +17,8 @@ static class Program
             options.AddPolicy(name: CORSapi,
                 policy =>
                 {
-                    policy.WithOrigins("http://localhost:5000", "https://localhost:5001", "http://localhost:8080")
-                    .AllowAnyMethod().AllowAnyOrigin();
+                    policy.WithOrigins("http://localhost:5003", "https://localhost:5001", "http://localhost:8080", "https://localhost:5002")
+                    .AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin();
                 });
         });
 
@@ -29,7 +29,6 @@ static class Program
             options.OutputFormatters.RemoveType<HttpNoContentOutputFormatter>();
             var jsonInputFormatter = options.InputFormatters.OfType<SystemTextJsonInputFormatter>().Single();
             jsonInputFormatter.SupportedMediaTypes.Add("application/json");
-            //options.RespectBrowserAcceptHeader = true; // not needed/security risk
         });
 
         //builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)

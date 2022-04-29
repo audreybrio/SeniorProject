@@ -33,7 +33,7 @@
     import router from '@/router'
     import jwt_decode from "jwt-decode"
     import * as $ from 'jquery'
-    const baseURL = "https://localhost:5002";
+    import URLS from '../../variables'
 
     export default ({
         data() {
@@ -83,7 +83,7 @@
             toggle() {
                 this.isActive = !this.isActive;
                 $.ajax({
-                    url: `${baseURL}/api/matching/updateOptStatus/${jwt_decode(window.sessionStorage.getItem("token")).username}/${this.isActive}`,
+                    url: `${URLS.api.matching.updateOptStatus}/${jwt_decode(window.sessionStorage.getItem("token")).username}/${this.isActive}`,
                     context: this,
                     method: 'GET',
                     success: function () {
@@ -105,7 +105,7 @@
 
             generateTutoringMatches() {
                 fetch(
-                    `${baseURL}/api/matching/matchTutoring/${jwt_decode(window.sessionStorage.getItem("token")).username}`, {
+                    `${URLS.api.matching.matchTutoring}/${jwt_decode(window.sessionStorage.getItem("token")).username}`, {
                         method: 'GET',
                         context: this,
                     headers: {
@@ -113,12 +113,13 @@
                     //    'Content-Type': 'application/json'
                     },
 
-                }).then(() => { this.errors = "SUCCUESS" });
+                }).then(() => { this.errors = "SUCCESS" })
+                    .catch(() => { this.errors = "You didnt create a profile" });
             },
 
             generateActivityMatches() {
                 fetch(
-                    `${baseURL}/api/matching/matchActivity/${jwt_decode(window.sessionStorage.getItem("token")).username}`, {
+                    `${URLS.api.matching.matchActivity}/${jwt_decode(window.sessionStorage.getItem("token")).username}`, {
                     method: 'GET',
                     context: this,
                     headers: {
@@ -126,7 +127,8 @@
                         //    'Content-Type': 'application/json'
                     },
 
-                }).then(() => { this.errors = "SUCCUESS" });
+                }).then(() => { this.errors = "SUCCESS" })
+                    .catch(() => { this.errors = "You didnt create a profile" });
             }
         },
     });

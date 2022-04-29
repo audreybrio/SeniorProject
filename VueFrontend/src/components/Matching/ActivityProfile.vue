@@ -67,7 +67,7 @@
     import router from '@/router'
     import jwt_decode from "jwt-decode"
     import * as $ from 'jquery'
-    const baseURL = "https://localhost:5002";
+    import URLS from '../../variables'
 
 
 
@@ -114,7 +114,7 @@
                 console.log("activities: ", activities)
 
                 fetch(
-                    `${baseURL}/api/activityProfile/update/${jwt_decode(window.sessionStorage.getItem("token")).username}/${true}`, {
+                    `${URLS.api.activityProfile.update}/${jwt_decode(window.sessionStorage.getItem("token")).username}/${true}`, {
                     method: 'POST',
                     headers: {
                         'Accept': 'application/json',

@@ -76,7 +76,7 @@
     import router from '@/router'
     import jwt_decode from "jwt-decode"
     // import * as $ from 'jquery'
-    const baseURL = "https://localhost:5002";
+    import URLS from '../../variables'
 
 
 
@@ -144,7 +144,7 @@
                 console.log("group", this.picked)
                 console.log("requires: ", this.chosen)
                 fetch(
-                    `${baseURL}/api/tutoringProfile/update/${jwt_decode(window.sessionStorage.getItem("token")).username}/${individual}/${requires}/${true}`, {
+                    `${URLS.api.tutoringProfile.update}/${jwt_decode(window.sessionStorage.getItem("token")).username}/${individual}/${requires}/${true}`, {
                     method: 'POST',
                     headers: {
                         'Accept': 'application/json',

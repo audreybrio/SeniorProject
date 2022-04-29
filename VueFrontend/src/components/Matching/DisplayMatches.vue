@@ -27,7 +27,8 @@
     // import { watchEffect } from 'vue'
     import axios from "axios"
     import jwt_decode from "jwt-decode"
-     import MatchesChild from '../Matching/MatchesChild.vue'
+    import MatchesChild from '../Matching/MatchesChild.vue'
+    import URLS from '../../variables'
 
 
 
@@ -52,7 +53,7 @@
         created() {
 
             let username = jwt_decode(window.sessionStorage.getItem("token")).username
-            axios.get(`./api/matching/displayMatches/${username}`)
+            axios.get(`${URLS.api.matching.displayMatches}/${username}`)
                 .then(response => this.matches = response.data);
             console.log(this.matches);
 

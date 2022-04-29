@@ -1,7 +1,7 @@
 const domain = "localhost";
-const apiPort = "5000";
-let root = `http://${domain}/`;
-let apiRoot = `http://${domain}:${apiPort}/api/`;
+const apiPort = "5002";
+let root = `https://${domain}/`;
+let apiRoot = `https://${domain}:${apiPort}/api/`;
 const URLS = {
     domain: domain,
     root: root,
@@ -15,6 +15,22 @@ const URLS = {
             updateItem: apiRoot + "schedule/updateItem",
             deleteItem: apiRoot + "schedule/deleteItem"
         },
+
+        matching: {
+            matchActivity: apiRoot + "matching/matchActivity",
+            matchTutoring: apiRoot + "matching/matchTutoring",
+            displayMatches: apiRoot + "matching/displayMatches",
+            updateOptStatus: apiRoot + "matching/updateOptStatus"
+        },
+
+        activityProfile: {
+            update: apiRoot + "activityProfile/update"
+        },
+
+        tutoringProfile: {
+            update: apiRoot + "tutoringProfile/update"
+        },
+
     }
 }
 
