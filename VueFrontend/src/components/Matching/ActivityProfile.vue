@@ -39,20 +39,22 @@
             <!--<span>Checked names: {{ checkedNames }}</span>-->
         </div>
 
-       
-        <!--<div v-for="itm in items" :key="itm.name">
-            <input type="checkbox" class="checkbox" value=itm.name v-model="checkedNames" :disabled="checkedNames.length >= 5 && checkedNames.indexOf(itm.name) == -1" />
-            {{ itm.name }}
+        <div>
             <br />
+            Select a schedule
         </div>
-        <span>Checked names: {{ checkedNames }}</span>-->
-    
-    <div>
-        <br>
-        <button @click="save">Save</button>
-        <button @click="onSubmit">Back</button>
-        <button @click="cleardata">Clear Selections</button>
-    </div>
+        <div>
+            <input type="radio" id="one" value="one" v-model="picked">
+            <label for="one">Schedule A</label>
+        </div>
+
+
+        <div>
+            <br>
+            <button @click="save">Save</button>
+            <button @click="onSubmit">Back</button>
+            <button @click="cleardata">Clear Selections</button>
+        </div>
 
 
 
@@ -76,17 +78,7 @@
                 post: null,
                 id: jwt_decode(window.sessionStorage.getItem("token")).username,
                 checkedNames: [],
-                items: [
-                    { name: "Studying" },
-                    { name: "Exercising" },
-                    { name: "Get food (on/off campus)" },
-                    { name: "Get food (dining hall)" },
-                    { name: "Go off campus" },
-                    { name: "Go to specific location on campus" },
-                    { name: "Hang out" },
-                    { name: "Go to event" },
-                    { name: "Other" }
-                ],
+                picked: null
             };
         },
         created() {
@@ -103,14 +95,6 @@
                 this.post = null;
                 this.loading = true;
 
-                //fetch('https://studentmultitool.me:5001/weatherforecast')
-                //    .then(r => r.json())
-                //    .then(json => {
-                //        this.post = json;
-                //        this.loading = false;
-                //        return;
-                //    });
-
             },
           
             onSubmit() {
@@ -122,32 +106,13 @@
                 $("input[name='activity']:checked").each(function () {
                     activities.push(this.value);
                 });
-                //let activities = [];
-                //for (let i = 0; i <= this.checkedNames; i++) {
-                //    activities.push(this.checkedNames[i])
-                //}
+
                 let data = {
                     activities: activities
                 }
                 console.log("data: ", data)
                 console.log("activities: ", activities)
-                //$.ajax({
-                //    /*url: `${baseURL}/api/activityProfile/update/${jwt_decode(window.sessionStorage.getItem("token")).username}/${JSON.stringify(this.checkedNames)}/${true}`,*/
-                //    url: `${baseURL}/api/activityProfile/update`,
-                //    context: this,
-                //    method: 'POST',
-                //    contentType: 'application/json',
-                //    data: data,
-                //    // dataType: 'list',
-                //    success: function () {
-                //        console.log("ajax success");
-                //        router.push({name: "matchingMain"})
 
-                //    },
-                //    error: function () {
-                //        console.log("error");
-                //    }
-                //})
                 fetch(
                     `${baseURL}/api/activityProfile/update/${jwt_decode(window.sessionStorage.getItem("token")).username}/${true}`, {
                     method: 'POST',
@@ -165,6 +130,7 @@
             cleardata() {
                 console.log("Clear Data")
                 this.checkedNames = []
+                this.picked = null
             },
 
 

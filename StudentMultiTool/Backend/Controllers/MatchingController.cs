@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Data.SqlClient;
 using StudentMultiTool.Backend.Models.Matching;
 using StudentMultiTool.Backend.Controllers;
+using StudentMultiTool.Backend.Services;
 
 namespace StudentMultiTool.Backend.Controllers
 {
@@ -13,12 +14,6 @@ namespace StudentMultiTool.Backend.Controllers
         const string connectionString = "MARVELCONNECTIONSTRING";
 
         // matching logic for activity profile
-
-        [HttpGet("match/{username}")]
-        public IActionResult Helpme(string username)
-        {
-            return Ok("hello");
-        }
 
         [HttpGet("matchActivity/{username}")]
         public IActionResult MatchingActivity(string username)
@@ -76,7 +71,7 @@ namespace StudentMultiTool.Backend.Controllers
         }
 
         // Matching Logic for Tutoring profile
-        [HttpGet("match/{username}")]
+        [HttpGet("matchTutoring/{username}")]
         public IActionResult MatchingTutoring(string username)
         {
             List<string> courses = new List<string>();
@@ -130,9 +125,11 @@ namespace StudentMultiTool.Backend.Controllers
             return Ok();
         }
 
-            // Display Matches to frontend 
-            public List<Match> DisplayMatches(string username)
+         // Display Matches to frontend 
+        [HttpGet("displayMatches/{username}")]
+        public List<Match> DisplayMatches(string username)
         {
+            //string username = "abrio";
             List<Match> matches = new List<Match>();
             SqlConnection conn = new SqlConnection();
             conn.ConnectionString = Environment.GetEnvironmentVariable(connectionString);
@@ -157,6 +154,7 @@ namespace StudentMultiTool.Backend.Controllers
             }
             dr.Close();
             conn.Close();
+            //return Json(matches);
             return matches;
         }
 

@@ -15,6 +15,7 @@ import MatchingMain from '../components/Matching/MatchingMain.vue'
 import ActivityProfile from '../components/Matching/ActivityProfile.vue'
 import TutoringProfile from '../components/Matching/TutoringProfile.vue'
 import DisplayMatches from '../components/Matching/DisplayMatches.vue'
+import MatchesChild from '../components/Matching/MatchesChild.vue'
 
 const routes = [
     // Core Features
@@ -120,6 +121,15 @@ const routes = [
         component: DisplayMatches
 
     },
+
+    {
+        path: '/matcheschild',
+        name: 'displayChild',
+        component: MatchesChild
+
+    },
+
+
 
     {
         path: '/aidEligibility/info',

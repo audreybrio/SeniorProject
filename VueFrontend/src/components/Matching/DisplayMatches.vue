@@ -1,20 +1,22 @@
 <template>
-    <h1> You've been matched!'</h1>
-
-
-    <li></li>
+    <h1> You've been matched!</h1>
     <div class="matches">
-        <MatchesChild v-for="match in match" :key="match.id" :match="match" />
-        <div class="pagination">
+        <MatchesChild v-for="match in matches" :key="match.match" :match="match">
+            <h5>{{match.match}}</h5>
+            <!--<h5>{{match.reason}}</h5>
+            <h5>{{match.overlap}}</h5>--> 
+        </MatchesChild>
+
+        <!--<div class="pagination">
 
             <router-link id="page-prev" :to="{ name: 'displayMatches', query: {page: page - 1}}"
                          rel="prev" v-if="page != 1"><button>&#60;Previous Page</button></router-link>
             <router-link id="page-next" :to="{ name: 'displayMatches', query: {page: page + 1}}"
                          rel="next" v-if="hasNextPage"><button>Next Page &#62; </button></router-link>
-        </div>
+        </div>-->
     </div>
 
-        <div id="d1">
+        <div>
             <button @click="onSubmit"> Return</button>
 
         </div>
@@ -22,36 +24,38 @@
 </template>
 
 <script>
-    import MatchesChild from '../Matching/MatchesChild.vue'
     // import { watchEffect } from 'vue'
+    import axios from "axios"
+    import jwt_decode from "jwt-decode"
+     import MatchesChild from '../Matching/MatchesChild.vue'
+
+
 
     export default ({
         name: 'displayMatches',
-        props: ['page'],
+        props: ['match'],
         components: {
             MatchesChild
         },
         data() {
             return {
                 post: null,
-                matches: null,
-                //totalRecipes: 0
+                matches: [],  
             }
         },
+        //mounted() {
+        //    fetch('https://localhost:5002/api/matching/displayMatches')
+        //        .then((res) => res.json())
+        //        .then(data => this.matches = data)
+        //        .catch(err => console.log(err.message))
+        //},
         created() {
-            //watchEffect(() => {
-            //    this.matches = null
-            //    RecipesService.getRecipes( 4, this.page)
-            //    .then((response) => {
-            //        this.recipes = response.data
-            //        //this.totalRecipes = response.headers['x-total-count']
-            //        // this.totalRecipes = this.recipes.length
-            //        //console.log('Recipes', this.recipes.length)
-            //    })
-            //    .catch((error) => {
-            //         console.log(error)
-            //    })
-            //})
+
+            let username = jwt_decode(window.sessionStorage.getItem("token")).username
+            axios.get(`./api/matching/displayMatches/${username}`)
+                .then(response => this.matches = response.data);
+            console.log(this.matches);
+
         },
         computed: {
             //hasNextPage() {
@@ -62,20 +66,21 @@
         methods: {
             onSubmit() {
                 this.$router.push({name: 'matchingMain'})
-            }
+            },
+
         }
 
     })
 </script>
 
 <style scoped>
-    .recipes {
+    .matches {
         display: flex;
         flex-direction: column;
         align-items: center;
     }
 
-    .pagination {
+/*    .pagination {
         display: flex;
         width: 290px;
     }
@@ -92,7 +97,7 @@
 
     #page-next {
         text-align: right;
-    }
+    }*/
 
     .d1 {
         width: 20px;

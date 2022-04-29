@@ -4,8 +4,6 @@
             Tutoring Profile !!!!! Complete Tutoring information to be matched for !!!
             <br>
             <br>
-
-
         </div>
 
         <div>
@@ -57,11 +55,19 @@
             <input id="course6" name="tutoring" v-model="input6" placeholder="Course Six">
         </div>
 
+        <div>
+            <br />
+            Select a schedule
+        </div>
+        <div>
+            <input type="radio" id="one" value="one" v-model="select">
+            <label for="one">Schedule A</label>
+            <br>
+        </div>
 
+        <br />
         <button @click="save">Save</button>
         <button @click="onSubmit">Back</button>
-
-
     </div>
     <router-view />
 </template>
@@ -82,6 +88,7 @@
                 id: jwt_decode(window.sessionStorage.getItem("token")).username,
                 picked: null,
                 chosen: null,
+                select: null,
                 input1: null,
                 input2: null,
                 input3: null,

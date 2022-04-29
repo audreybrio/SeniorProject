@@ -16,9 +16,13 @@
         <div>
             <button @click="activity">Activity Profile</button>
             <button @click="tutoring">Tutoring Profile</button>
-            <button @click="generateMatches">Generate Matches</button>
+        </div>
+        <div>
+            <button @click="generateActivityMatches">Generate Activity Matches</button>
+            <button @click="generateTutoringMatches">Generate Tutoring Matches</button>
             <button @click="displayMatches">Display Matches</button>
         </div>
+
         <button @click="onSubmit">Return to Homepage</button>
 
     </div>
@@ -99,7 +103,7 @@
 
             },
 
-            generateMatches() {
+            generateTutoringMatches() {
                 fetch(
                     `${baseURL}/api/matching/matchTutoring/${jwt_decode(window.sessionStorage.getItem("token")).username}`, {
                         method: 'GET',
@@ -107,6 +111,19 @@
                     headers: {
                         'Accept': 'application/json',
                     //    'Content-Type': 'application/json'
+                    },
+
+                }).then(() => { this.errors = "SUCCUESS" });
+            },
+
+            generateActivityMatches() {
+                fetch(
+                    `${baseURL}/api/matching/matchActivity/${jwt_decode(window.sessionStorage.getItem("token")).username}`, {
+                    method: 'GET',
+                    context: this,
+                    headers: {
+                        'Accept': 'application/json',
+                        //    'Content-Type': 'application/json'
                     },
 
                 }).then(() => { this.errors = "SUCCUESS" });

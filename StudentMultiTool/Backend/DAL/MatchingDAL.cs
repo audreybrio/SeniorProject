@@ -1,76 +1,62 @@
 ﻿using StudentMultiTool.Backend.Controllers;
-using StudentMultiTool.Backend.DAL;
+using StudentMultiTool.Backend.Services;
+using StudentMultiTool.Backend.Models.Matching;
+using System.Data.SqlClient;
 
-namespace StudentMultiTool.Backend.Services.Matching
+namespace StudentMultiTool.Backend.DAL
 {
-    public class Matching
+    public class MatchingDAL
     {
-
         const string connectionString = "MARVELCONNECTIONSTRING";
-
-        // matching logic for activity profile
-
-        public bool MatchingActivity(string username)
-        {
-            //string username = "abrio";
-            List<string> activities = new List<string>();
-            activities = GetActivityProfile(username);
-            bool isSuccess = MatchingDAL.MatchingActivity(activities, username);
-            return isSuccess;
+        public static bool MatchingActivity(List<string> activities, string username)
+        { 
+            Dictionary<int, List<string>> matches = new Dictionary<int, List<string>>();
 
             // go to DAL(activities)
 
-            //for (int i = 0; i < activities.Count; i++)
-            //{
-            //    SqlConnection conn = new SqlConnection();
-            //    conn.ConnectionString = Environment.GetEnvironmentVariable(connectionString);
-            //    conn.Open();
-            //    SqlCommand cmd = new SqlCommand("SELECT userId FROM ActivityProfile WHERE ActivityProfile.userId != (SELECT id FROM UserAccounts WHERE UserAccounts.username = @username) AND (activity1 = @activity OR activity2 = @activity OR activity3 = @activity OR activity4 = @activity OR activity5 = @activity) AND opt = @opt", conn);
-            //    cmd.Parameters.AddWithValue("@username", username);
-            //    cmd.Parameters.AddWithValue("@activity", activities[i]);
-            //    cmd.Parameters.AddWithValue("@opt", 1);
-            //    cmd.ExecuteNonQuery();
-            //    if (cmd.ExecuteScalar() != null)
-            //    {
-            //        int id = (int)cmd.ExecuteScalar();
-            //        if (matches.ContainsKey(id))
-            //        {
-            //            List<string> list = matches[id];
-            //            list.Add(activities[i]);
-            //        }
-            //        else
-            //        {
-            //            matches.Add(id, new List<string> { activities[i] });
-            //        }
-            //        int countMatchExists = MatchExists(username, id, activities[i]);
-            //        if (countMatchExists == 0)
-            //        {
-            //            string overlap = Match.GetOverlap(username, id);
-            //            InsertMatch(username, id, activities[i], overlap);
-            //        }
+            for (int i = 0; i < activities.Count; i++)
+            {
+                SqlConnection conn = new SqlConnection();
+                conn.ConnectionString = Environment.GetEnvironmentVariable(connectionString);
+                conn.Open();
+                SqlCommand cmd = new SqlCommand("SELECT userId FROM ActivityProfile WHERE ActivityProfile.userId != (SELECT id FROM UserAccounts WHERE UserAccounts.username = @username) AND (activity1 = @activity OR activity2 = @activity OR activity3 = @activity OR activity4 = @activity OR activity5 = @activity) AND opt = @opt", conn);
+                cmd.Parameters.AddWithValue("@username", username);
+                cmd.Parameters.AddWithValue("@activity", activities[i]);
+                cmd.Parameters.AddWithValue("@opt", 1);
+                cmd.ExecuteNonQuery();
+                if (cmd.ExecuteScalar() != null)
+                {
+                    int id = (int)cmd.ExecuteScalar();
+                    if (matches.ContainsKey(id))
+                    {
+                        List<string> list = matches[id];
+                        list.Add(activities[i]);
+                    }
+                    else
+                    {
+                        matches.Add(id, new List<string> { activities[i] });
+                    }
+                    int countMatchExists = MatchExists(username, id, activities[i]);
+                    if (countMatchExists == 0)
+                    {
+                        string overlap = Match.GetOverlap(username, id);
+                        InsertMatch(username, id, activities[i], overlap);
+                    }
 
-            //    }
-            //    else
-            //    {
-            //        return Ok();
-            //    }
-            //}
-
-            ////foreach (KeyValuePair<int, List<string>> kvp in matches)
-            ////    foreach (string val in kvp.Value)
-            ////        Console.WriteLine("Key: {0}, Value: {1}", kvp.Key, val);
-
-            //return Ok();
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            return true;
         }
 
         // Matching Logic for Tutoring profile
-        public bool MatchingTutoring(string username)
+        public static bool MatchingTutoring(List<string> courses, string username, bool individual, bool requires)
         {
-            List<string> courses = new List<string>();
-            bool individual, requires;
-            (courses, individual, requires) = GetTutoringProfile(username);
-            bool isSuccess = MatchingDAL.MatchingTutoring(courses, username, individual, requires);
 
+            Dictionary<int, List<string>> matches = new Dictionary<int, List<string>>();
             for (int i = 0; i < courses.Count; i++)
             {
                 SqlConnection conn = new SqlConnection();
@@ -222,6 +208,7 @@ namespace StudentMultiTool.Backend.Services.Matching
                 requires = dr.GetBoolean(7);
             }
             dr.Close();
+            conn.Close();
 
 
             courses.Add(course1);
@@ -246,10 +233,6 @@ namespace StudentMultiTool.Backend.Services.Matching
                 courses.Add(course6);
             }
 
-            foreach (string activity in courses)
-            {
-                Console.WriteLine(activity);
-            }
             return (courses, individual, requires);
 
         }
@@ -321,6 +304,5 @@ namespace StudentMultiTool.Backend.Services.Matching
             cmd2.ExecuteScalar();
             return Ok();
         }
-
     }
 }
