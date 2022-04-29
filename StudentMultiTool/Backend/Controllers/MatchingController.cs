@@ -54,7 +54,7 @@ namespace StudentMultiTool.Backend.Controllers
             bool updateOpt = Matching.UpdateOptStatus(username, opt);
             if (!updateOpt)
             {
-                return Ok();
+                return NotFound();
             }
             return Ok();
         }

@@ -6,10 +6,10 @@ namespace StudentMultiTool.Backend.Services.Matching
 {
     public class Matching
     {
-        // matching logic for activity profile
+        // Matches based off of activity profile 
         public static bool MatchingActivity(string username)
         {
-            //string username = "abrio";
+            // Sees if profile exists, if it does, continues to match
             int profileCount = Activity.ProfileExists(username);
             if (profileCount == 0)
             {
@@ -21,9 +21,10 @@ namespace StudentMultiTool.Backend.Services.Matching
             return isSuccess;
         }
 
-        // Matching Logic for Tutoring profile
+        // Matching based off of Tutoring profile
         public static bool MatchingTutoring(string username)
         {
+            // Sees if profile exists, if it does contrinues to match 
             int profileCount = Tutoring.ProfileExists(username);
             if (profileCount == 0)
             {
@@ -44,7 +45,7 @@ namespace StudentMultiTool.Backend.Services.Matching
             return matches;
         }
 
-        // Get activity profile
+        // Get activity profile from what user has entered 
         public static List<string> GetActivityProfile(string username)
         {
             List<string> activities = new List<string>();
@@ -71,7 +72,7 @@ namespace StudentMultiTool.Backend.Services.Matching
             return activities;
         }
 
-        // Get tutoring profile
+        // Get tutoring profile from what user has entered 
         public static (List<string>, bool, bool) GetTutoringProfile(string username)
         {
 
@@ -112,14 +113,14 @@ namespace StudentMultiTool.Backend.Services.Matching
             bool matchInserted = MatchingDAL.InsertMatch(username, matchId, reason, overlap);
             return matchInserted;
         }
-
+        // Checks if match already exists 
         public static int MatchExists(string username, int matchId, string reason)
         {
             int matchCount = MatchingDAL.MatchExists(username, matchId, reason);
             return matchCount;
         }
 
-        // almost whole thing  can go 
+        // Checks users opted in/out status
         public static bool CheckOptedIn(string username)
         {
             bool checkedOptStatus = MatchingDAL.CheckOptedIn(username);
@@ -127,7 +128,7 @@ namespace StudentMultiTool.Backend.Services.Matching
         }
 
 
-        // For when user wants to opt in / out 
+        // Updates a user's opted/in status
         public static bool UpdateOptStatus(string username, bool opt)
         {
 

@@ -4,15 +4,17 @@
             Matching !!!!!
             <br />
         </div>
+        <!-- Warning Error for if something goes wrong -->
         <div class="warning">
             <div v-if="errors.length" :key="index" class="warning">{{errors}}</div>
         </div>
+        <!-- Toggle button to opt in and opt of matching -->
         <button class="ui button big toggle"
                 :class="{active:isActive}"
                 @click="toggle">
             {{isActive ? 'YOU ARE OPTED IN OF MATCING' : 'YOU ARE OPTED OUT OF MATCHING'}}
         </button>
-
+        <!-- Buttons to go to different pages -->
         <div>
             <button @click="activity">Activity Profile</button>
             <button @click="tutoring">Tutoring Profile</button>
@@ -30,9 +32,9 @@
 </template>
 
 <script lang="js">
+    // Imports
     import router from '@/router'
     import jwt_decode from "jwt-decode"
-    import * as $ from 'jquery'
     import URLS from '../../variables'
 
     export default ({
@@ -46,12 +48,9 @@
             };
         },
         created() {
-            // fetch the data when the view is created and the data is
-            // already being observed
             this.fetchData();
         },
         watch: {
-            // call again the method if the route changes
             '$route': 'fetchData'
         },
         methods: {
@@ -59,50 +58,55 @@
                 this.post = null;
                 this.loading = true;
 
-                //fetch('https://studentmultitool.me:5001/weatherforecast')
-                //    .then(r => r.json())
-                //    .then(json => {
-                //        this.post = json;
-                //        this.loading = false;
-                //        return;
-                //    });
-
             },
+            // Routes to activity profile
             activity() {
                 router.push({name: "activityProfile"})
             },
-
+            // Routes to tutoring profile
             tutoring() {
                 router.push({name: "tutoringProfile"})
             },
-
+            //  Returns to home page 
             onSubmit() {
                 router.push({name: "HomePage"})
             },
-
+            // Changes a users opt in/opt out status
             toggle() {
                 this.isActive = !this.isActive;
-                $.ajax({
-                    url: `${URLS.api.matching.updateOptStatus}/${jwt_decode(window.sessionStorage.getItem("token")).username}/${this.isActive}`,
-                    context: this,
+                //$.ajax({
+                //    url: `${URLS.api.matching.updateOptStatus}/${jwt_decode(window.sessionStorage.getItem("token")).username}/${this.isActive}`,
+                //    context: this,
+                //    method: 'GET',
+                //    success: function () {
+                //        console.log("ajax success");
+
+                //    },
+                //    error: function () {
+                //        console.log("error");
+                //        this.errors = "No Profile Created";
+                //    }
+                //})
+
+                fetch(
+                    `${URLS.api.matching.updateOptStatus}/${jwt_decode(window.sessionStorage.getItem("token")).username}/${this.isActive}`, {
                     method: 'GET',
-                    success: function () {
-                        console.log("ajax success");
-
+                    context: this,
+                    headers: {
+                        'Accept': 'application/json',
+                        //    'Content-Type': 'application/json'
                     },
-                    error: function () {
-                        console.log("error");
-                        this.errors = "No Profile Created";
-                    }
-                })
-            },
 
+                }).then(() => { })
+                  .catch(() => { this.errors = "You didnt create a profile" });
+            },
+            // Goes to display matches page 
             displayMatches() {
 
                 router.push({ name: "displayMatches" })
 
             },
-
+            // Generates the tutoring Matches
             generateTutoringMatches() {
                 fetch(
                     `${URLS.api.matching.matchTutoring}/${jwt_decode(window.sessionStorage.getItem("token")).username}`, {
@@ -116,7 +120,7 @@
                 }).then(() => { this.errors = "SUCCESS" })
                     .catch(() => { this.errors = "You didnt create a profile" });
             },
-
+            // Generates the activity matches 
             generateActivityMatches() {
                 fetch(
                     `${URLS.api.matching.matchActivity}/${jwt_decode(window.sessionStorage.getItem("token")).username}`, {

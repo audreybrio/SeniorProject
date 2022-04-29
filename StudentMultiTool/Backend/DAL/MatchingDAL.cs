@@ -1,5 +1,5 @@
 ﻿using StudentMultiTool.Backend.Controllers;
-using StudentMultiTool.Backend.Services;
+using StudentMultiTool.Backend.Services.ScheduleComparison;
 using StudentMultiTool.Backend.Models.Matching;
 using System.Data.SqlClient;
 
@@ -37,7 +37,7 @@ namespace StudentMultiTool.Backend.DAL
                         // If match doesnt already exist, insert into database
                         if (countMatchExists == 0)
                         {
-                            string overlap = Match.GetOverlap(username, id);
+                            string overlap = ScheduleComparing.GetOverlap(username, id);
                             InsertMatch(username, id, activities[i], overlap);
                         }
 
@@ -81,7 +81,7 @@ namespace StudentMultiTool.Backend.DAL
                         // If match does not alread exist, enter into database
                         if (countMatchExists == 0)
                         {
-                            string overlap = Match.GetOverlap(username, id);
+                            string overlap = ScheduleComparing.GetOverlap(username, id);
                             InsertMatch(username, id, courses[i], overlap);
                         }
                     }
@@ -115,7 +115,7 @@ namespace StudentMultiTool.Backend.DAL
                 overlap = dr.GetString(2);
 
                 // Adds user to list of matches
-                string matchName = Match.GetName(matchId);
+                string matchName = GetName(matchId);
                 Match newMatch = new Match(matchName, reason, overlap);
                 matches.Add(newMatch);
 
@@ -224,6 +224,18 @@ namespace StudentMultiTool.Backend.DAL
             return count;
         }
 
+        // Gets the name of a user from a match 
+        public static string GetName(int id)
+        {
+            SqlConnection conn = new SqlConnection();
+            conn.ConnectionString = Environment.GetEnvironmentVariable(connectionString);
+            conn.Open();
+            SqlCommand cmd = new SqlCommand("SELECT username FROM UserAccounts WHERE UserAccounts.id = @id ", conn);
+            cmd.Parameters.AddWithValue("@id", id);
+            string username = (string)cmd.ExecuteScalar();
+            return username;
+        }
+
         // SQL to see if a user is opted in or not in order to be considered in matching logic 
         public static bool CheckOptedIn(string username)
         {
@@ -254,6 +266,34 @@ namespace StudentMultiTool.Backend.DAL
             cmd2.ExecuteScalar();
             conn.Close();  
             return true;
+        }
+
+
+        // SQL to get a users schedule
+        public static bool GetSchedule(string username, int scheduleId)
+        {
+            SqlConnection conn = new SqlConnection();
+            conn.ConnectionString = Environment.GetEnvironmentVariable(connectionString);
+            conn.Open();
+            SqlCommand cmd = new SqlCommand("SELECT schedule FROM Schedules WHERE Schedules.userId = (SELECT id FROM UserAccounts WHERE UserAccounts.username = @username) AND Schedules.scheduleId = @scheduleId ", conn);
+            cmd.Parameters.AddWithValue("@username", username);
+            cmd.Parameters.AddWithValue("@scheduleId", scheduleId);
+            cmd.ExecuteScalar();
+            return true;
+        }
+
+
+        // SQL to compare schedules
+        public static string CompareSchedule(int scheduleAId, int scheduleBId)
+        {
+            SqlConnection conn = new SqlConnection();
+            conn.ConnectionString = Environment.GetEnvironmentVariable(connectionString);
+            conn.Open();
+            SqlCommand cmd = new SqlCommand("SELECT overlap FROM ScheduleCommpare WHERE ScheduleCompare.scheduleOne = @scheduleAId AND ScheduleCompare.scheduleTwo = @schedulBId ", conn);
+            cmd.Parameters.AddWithValue("@scheduleAId", scheduleAId);
+            cmd.Parameters.AddWithValue("@scheduleBId", scheduleBId);
+            string overlap = (string) cmd.ExecuteScalar();
+            return overlap;
         }
     }
 }

@@ -1,39 +1,25 @@
+
 <template>
-    <h3>Map</h3>
-    <div>
-        <!-- Lat: {{ latitude }}  and lng: {{ longitude }} -->
-        center: {{this.center.lat}}, {{this.center.lng}}
-        
-    </div>
-    <GoogleMap api-key="AIzaSyCzpBhiWzAnVHY7-Es0IUuqm9NSEMTYtY0Alb" style="width: 100%; height: 500px" :center="center" :zoom="15">
-    <Marker :options="{ position: this.center }" />
+    <GoogleMap api-key="AIzaSyCzpBhiWzAnVHY7-Es0IUuqm9NSEMTYtY0" style="width: 100%; height: 500px" :center="center" :zoom="15">
+        <Marker :options="{ position: center }" />
     </GoogleMap>
 </template>
 
 <script>
-import { GoogleMap, Marker } from "vue3-google-map";
-
-export default {
-    
-    props:{'latitude':Number, 'longitude': Number},
-    components: { GoogleMap, Marker },
-    data() {
-        return {
-            center: {
-                lat: 0,
-                lng: 0
+    import { GoogleMap, Marker } from "vue3-google-map";
+    export default {
+        components: { GoogleMap, Marker },
+        props: {
+            'latitud': Number, 'longitud': Number
+        },
+        data() {
+            return {
+                center: { lat: 33.7838, lng: -118.1141 }
             }
+        },
+        created() {
+            this.center.lat = this.latitud
+            this.center.lng = this.longitud
         }
-    },
-    created(){
-        this.center.lat = this.latitude;
-        this.center.lng = this.longitude;
-    },
-    updated(){
-        this.center.lat = this.latitude;
-        this.center.lng = this.longitude;
     }
-         
-    
-}
 </script>
