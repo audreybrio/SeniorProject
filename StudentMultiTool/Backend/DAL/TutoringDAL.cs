@@ -65,11 +65,11 @@ namespace StudentMultiTool.Backend.DAL
             SqlCommand cmd = new SqlCommand("SELECT COUNT (userId) FROM TutoringProfile WHERE userId = (SELECT id FROM UserAccounts WHERE UserAccounts.username = @username)", conn);
             cmd.Parameters.AddWithValue("@username", username);
             SqlDataReader reader = cmd.ExecuteReader();
-            int count = 0;
+            int countProfile = 0;
             reader.Close();
-            count = (int)cmd.ExecuteScalar();
+            countProfile = (int)cmd.ExecuteScalar();
             conn.Close();
-            return count;
+            return countProfile;
         }
     }
 }
