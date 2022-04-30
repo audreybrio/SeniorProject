@@ -6,11 +6,13 @@ namespace StudentMultiTool.Backend.Services.Matching
 {
     public class Activity
     {
+        // Get list of activites that user has selcted, and sending them to be added into their saved profiles
         public static bool ActivityProfile(List<string> activities, string username, bool opt)
         {
 
             int listSize = activities.Count;
             bool isSuccess = false;
+            // User can only enter in up to 5 activities
             if(listSize > 5)
             {
                 return false;
@@ -28,6 +30,8 @@ namespace StudentMultiTool.Backend.Services.Matching
             string activity4 = activities[3];
             string activity5 = activities[4];
 
+
+            // Sees if a profile has already been created, if it has it updates, otherwise it inserts 
             int userExists = ProfileExists(username);
 
             if (userExists != 0)
@@ -45,6 +49,7 @@ namespace StudentMultiTool.Backend.Services.Matching
             return isSuccess;
         }
 
+        // Checks if profile already exists 
         public static int ProfileExists(string username)
         {
             int countProfile = ActivityDAL.ProfileExists(username);

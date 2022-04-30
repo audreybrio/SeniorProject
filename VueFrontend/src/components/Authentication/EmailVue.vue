@@ -10,7 +10,7 @@
         <input id="passcode" v-model="passcode" placeholder="Passocde">
         <button id="button" @click="onSubmit">Submit</button>
         <div>
-            <button @click="skip">Skip</button>
+            <button @click="skip">Test</button>
             <router-link to="/registration">Registration</router-link>
         </div>
     </div>
@@ -19,8 +19,9 @@
 
 <script> // <!--lang="js"-->
     import router from '@/router'
-    import * as $ from 'jquery'
-    const baseURL = "https://localhost:5002";
+    // import * as $ from 'jquery'
+    // import axios from "axios"
+    import URLS from '../../variables'
 
     export default ({
         data() {
@@ -31,12 +32,9 @@
             };
         },
         created() {
-            // fetch the data when the view is created and the data is
-            // already being observed
             this.fetchData();
         },
         watch: {
-            // call again the method if the route changes
             '$route': 'fetchData'
         },
         methods: {
@@ -49,24 +47,50 @@
 
             },
             onSubmit() {
-                $.ajax({
-                    url: `${baseURL}/api/login/validate/${this.email}/${this.passcode}`,
-                    context: this,
-                    method: 'GET',
-                    success: function () {
-                        console.log("ajax success")
-                        router.push({ name: "LoginVue" });
+                //$.ajax({
+                //    url: `${URLS.api.login.validate}/${this.email}/${this.passcode}`,
+                //    context: this,
+                //    method: 'GET',
+                //    success: function () {
+                //        console.log("ajax success")
+                //        router.push({ name: "LoginVue" });
 
+                //    },
+                //    error: function () {
+                //        console.log("error")
+                //        this.errors = "Email/Passcode Incorrect";
+                //    }
+                //})
+
+                fetch(
+                    `${URLS.api.login.validate}/${this.email}/${this.passcode}`, {
+                        method: 'POST',
+                        context: this,
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
                     },
-                    error: function () {
+
+                }).then((response) => {
+                    if (!response.ok) {
+
                         console.log("error")
                         this.errors = "Email/Passcode Incorrect";
                     }
-                })
+                    else {
+                        console.log("ajax success")
+                        router.push({ name: "LoginVue" })
+                    }
+                    
+                }).catch(() => {
+                    console.log("error")
+                    this.errors = "Email/Passcode Incorrect";
+
+                });
             },
 
             skip() {
-                window.sessionStorage.setItem("token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiQXVkcmV5IEJyaW8iLCJ1c2VybmFtZSI6ImFicmlvIiwiZW1haWwiOiJhdWRyZXkuYnJpb0BzdHVkZW50LmNzdWxiLmVkdSIsInBhc3Njb2RlIjoiaGVsbG8gd29ybGQiLCJyb2xlIjoiYWRtaW4iLCJzY2hvb2wiOiJDU1VMQiJ9.O9qyhghpLVvFIurYuDaAzLV6r9HVpO0DrXBhTbB-3Yo");
+                window.sessionStorage.setItem("token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiQXVkcmV5IEJyaW8iLCJ1c2VybmFtZSI6ImFicmlvIiwiZW1haWwiOiJhdWRyZXkuYnJpb0BzdHVkZW50LmNzdWxiLmVkdSIsInJvbGUiOiJhZG1pbiIsInNjaG9vbCI6IkNTVUxCIiwiaXNWYWxpZCI6dHJ1ZX0.OUsg0xFq6_1c8ApP3JdKs3t-RhbLUpqFGLsbnL0Cx4U");
                 router.push({ name: "HomePage" })
             },
 

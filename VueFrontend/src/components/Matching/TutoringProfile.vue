@@ -6,6 +6,11 @@
             <br>
         </div>
 
+        <!-- Warning Error for if something goes wrong -->
+        <div class="warning">
+            <div v-if="errors.length" :key="index" class="warning">{{errors}}</div>
+        </div>
+
         <!-- Radio buttons for user to select which type of setting they would want for tutoring-->
         <div>
             Looking For Group or Individual Tutoring?
@@ -43,7 +48,7 @@
             <input id="course1" name="tutoring" v-model="input1" placeholder="Course One">
         </div>
         <div>
-            <input id="couse2" name="tutoring" v-model="input2" placeholder="Course Two">
+            <input id="course2" name="tutoring" v-model="input2" placeholder="Course Two">
         </div>
         <div>
             <input id="course3" name="tutoring" v-model="input3" placeholder="Course Three">
@@ -96,7 +101,8 @@
                 input3: null,
                 input4: null,
                 input5: null,
-                input6: null
+                input6: null,
+                errors: "",
 
             };
         },
@@ -128,31 +134,48 @@
                 if (this.input5 != null) { courses.push(this.input5); }
                 if (this.input6 != null) { courses.push(this.input6); }
 
-                let requires = true;
-                let individual = true;
-                // Gets individual and requires values (if individual is true, they want individual,
-                // if individual is false they want group; if requres is true, they are looking for 
-                // a tutor, if requires is false, they are a tutor
-                if (this.chosen == "offers") { requires = false; }
-                if (this.picked == "group") { individual = false; }
-                let data = {
-                    courses: courses
-                }
-                console.log("data: ", data)
-                console.log("activities: ", courses)
-                console.log("group", this.picked)
-                console.log("requires: ", this.chosen)
-                // Connection to backend
-                fetch(
-                    `${URLS.api.tutoringProfile.update}/${jwt_decode(window.sessionStorage.getItem("token")).username}/${individual}/${requires}/${true}`, {
-                    method: 'POST',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(data),
 
-                }).then(() => { router.push({ name: "matchingMain" }) });
+                if (courses.length == 0 || this.picked == null || this.select == null || this.chosen == null) {
+                    this.errors = "Missing Information"
+                }
+
+                else {
+                    let requires = true;
+                    let individual = true;
+                    // Gets individual and requires values (if individual is true, they want individual,
+                    // if individual is false they want group; if requres is true, they are looking for 
+                    // a tutor, if requires is false, they are a tutor
+                    if (this.chosen == "offers") { requires = false; }
+                    if (this.picked == "group") { individual = false; }
+                    let data = {
+                        courses: courses
+                    }
+                    console.log("data: ", data)
+                    console.log("activities: ", courses)
+                    console.log("group", this.picked)
+                    console.log("requires: ", this.chosen)
+                    // Connection to backend
+                    fetch(
+                        `${URLS.api.tutoringProfile.update}/${jwt_decode(window.sessionStorage.getItem("token")).username}/${individual}/${requires}/${true}`, {
+                        method: 'POST',
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data),
+
+                    }).then((response) => {
+                        if (!response.ok) {
+
+                            console.log("error")
+                            this.errors = "Error";
+                        }
+                        else {
+                            console.log("success")
+                            router.push({ name: "matchingMain" })
+                        }
+                    })
+                }
 
             },
         },
@@ -161,5 +184,12 @@
 <style scoped>
     button {
         font-weight: bold;
+    }
+    .warning {
+        color: red;
+        margin: auto;
+        width: 440px;
+        text-align: center;
+        font-size: 11px;
     }
 </style>

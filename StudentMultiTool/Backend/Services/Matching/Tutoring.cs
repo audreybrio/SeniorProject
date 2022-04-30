@@ -5,10 +5,12 @@ namespace StudentMultiTool.Backend.Services.Matching
 {
     public class Tutoring
     {
+        // Gets information from what user has entered to send and store in backend 
         public static bool TutoringProfile(List<string> courses, string username, bool individual, bool requires, bool opt)
         {
             bool isSuccess = false;
             int listSize = courses.Count;
+            // Users can only enter upto 6 courses 
             if (listSize > 6){ return false; }
             int remainder = 6 - listSize;
             for (int i = 0; i < remainder; i++)
@@ -25,6 +27,7 @@ namespace StudentMultiTool.Backend.Services.Matching
 
             int userExists = ProfileExists(username);
 
+            // Checks if profile exists already, if yes updates, if no inserts
             if (userExists != 0)
             { 
                  isSuccess = TutoringDAL.TutoringProfileUpdate(course1, course2, course3, course4, course5, course6, username, individual, requires);
@@ -38,7 +41,7 @@ namespace StudentMultiTool.Backend.Services.Matching
             return isSuccess ;
         }
 
-
+        // Checks if profle exists 
         public static int ProfileExists(string username)
         {
             int countProfile = TutoringDAL.ProfileExists(username);

@@ -1,4 +1,5 @@
 <template>
+    <!-- Display Matches child, displays name of match reason and overlap-->
         <div class="match-card">
             <h4>Match: {{match.match}} </h4>
             <p> Reason: {{ match.reason}} </p>

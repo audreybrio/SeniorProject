@@ -12,7 +12,7 @@
         <button class="ui button big toggle"
                 :class="{active:isActive}"
                 @click="toggle">
-            {{isActive ? 'YOU ARE OPTED IN OF MATCING' : 'YOU ARE OPTED OUT OF MATCHING'}}
+            {{isActive ? 'YOU ARE OPTED IN OF MATCHING' : 'YOU ARE OPTED OUT OF MATCHING'}}
         </button>
         <!-- Buttons to go to different pages -->
         <div>
@@ -61,10 +61,18 @@
             },
             // Routes to activity profile
             activity() {
+                let isValid = jwt_decode(window.sessionStorage.getItem("token")).isValid
+                if (isValid == true) {
+                    console.log("valid token")
+                }
                 router.push({name: "activityProfile"})
             },
             // Routes to tutoring profile
             tutoring() {
+                let isValid = jwt_decode(window.sessionStorage.getItem("token")).isValid
+                if (isValid == true) {
+                    console.log("valid token")
+                }
                 router.push({name: "tutoringProfile"})
             },
             //  Returns to home page 
@@ -97,8 +105,16 @@
                         //    'Content-Type': 'application/json'
                     },
 
-                }).then(() => { })
-                  .catch(() => { this.errors = "You didnt create a profile" });
+                }).then((response) => {
+                    if (!response.ok) {
+
+                        console.log("error")
+                        this.errors = "No Profile Created";
+                    }
+                    else {
+                        console.log("success")
+                    }
+                })
             },
             // Goes to display matches page 
             displayMatches() {
@@ -117,8 +133,17 @@
                     //    'Content-Type': 'application/json'
                     },
 
-                }).then(() => { this.errors = "SUCCESS" })
-                    .catch(() => { this.errors = "You didnt create a profile" });
+                }).then((response) => {
+                    if (!response.ok) {
+
+                        console.log("error")
+                        this.errors = "No Profile Created";
+                    }
+                    else {
+                        console.log("success")
+                        this.errors = "SUCCESS"
+                    }
+                })
             },
             // Generates the activity matches 
             generateActivityMatches() {
@@ -131,8 +156,17 @@
                         //    'Content-Type': 'application/json'
                     },
 
-                }).then(() => { this.errors = "SUCCESS" })
-                    .catch(() => { this.errors = "You didnt create a profile" });
+                }).then((response) => {
+                    if (!response.ok) {
+
+                        console.log("error")
+                        this.errors = "No Profile Created";
+                    }
+                    else {
+                        console.log("success")
+                        this.errors = "SUCCESS"
+                    }
+                })
             }
         },
     });

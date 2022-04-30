@@ -5,18 +5,13 @@ using System.Data.SqlClient;
 
 namespace StudentMultiTool.Backend.Controllers
 {
+
+    // Activity Profile Controller 
     [ApiController]
     [Route("api/" + "activityProfile")]
     public class ActivityProfileController : Controller
     {
-
-
-        //[HttpPost("updateMain")]
-        //public IActionResult HelpMe([FromBody] Data activities) {
-        //    var x = Request.Body;
-        //    return Ok("hello");
-        //}
-
+        // Sends users selections to be inserted into database
         [HttpPost("update/{username}/{opt}")]
         public IActionResult ActivityProfile([FromBody] Data activities, string username, bool opt)
         {
@@ -24,13 +19,14 @@ namespace StudentMultiTool.Backend.Controllers
             bool isActivityUpdated = Activity.ActivityProfile(activities.activities, username, opt);
             if (!isActivityUpdated)
             {
-                return Ok();
+                return NotFound();
             }
 
             return Ok();
         }
     }
 
+    // Used to get list from frontend
     public class Data
     {
         public List<string> activities { get; set; }

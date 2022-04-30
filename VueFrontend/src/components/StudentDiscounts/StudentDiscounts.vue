@@ -1,4 +1,4 @@
-<template>
+<!--<template>
     <div class="page">
         <div>
             <h2 class="row1">Student Discounts</h2>
@@ -120,4 +120,4 @@
         color: white;
         width: 20mm;
     }*/
-</style>
+</style>-->

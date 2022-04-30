@@ -6,7 +6,10 @@
             <br />
 
         </div>
-
+        <!--  Warning error if somethig goes wrong -->
+        <div class="warning">
+            <div v-if="errors.length" :key="index" class="warning">{{errors}}</div>
+        </div>
         <div>
             <!-- Checkboxes for the different activities a user can select; user can only select up to 5-->
             <input type="checkbox" id="study" name="activity" value="Studying" v-model="checkedNames" :disabled="checkedNames.length >= 5 && checkedNames.indexOf('Studying') == -1">
@@ -49,7 +52,7 @@
             <label for="one">Schedule A</label>
         </div>
 
-         <div>
+        <div>
             <br>
             <button @click="save">Save</button>
             <button @click="onSubmit">Back</button>
@@ -74,7 +77,8 @@
                 post: null,
                 id: jwt_decode(window.sessionStorage.getItem("token")).username,
                 checkedNames: [],
-                picked: null
+                picked: null,
+                errors: "",
             };
         },
         created() {
@@ -101,24 +105,38 @@
                     activities.push(this.value);
                 });
 
-                let data = {
-                    activities: activities
+                if (activities.length == 0 || this.picked == null) {
+                    this.errors="Missing Information"
                 }
-                console.log("data: ", data)
-                console.log("activities: ", activities)
-                // Connection to backend 
-                fetch(
-                    `${URLS.api.activityProfile.update}/${jwt_decode(window.sessionStorage.getItem("token")).username}/${true}`, {
-                    method: 'POST',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
-                    },
+                else {
+                    let data = {
+                        activities: activities
+                    }
+                    console.log("data: ", data)
+                    console.log("activities: ", activities)
+                    // Connection to backend 
+                    fetch(
+                        `${URLS.api.activityProfile.update}/${jwt_decode(window.sessionStorage.getItem("token")).username}/${true}`, {
+                        method: 'POST',
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
                         body: JSON.stringify(data),
 
-                }).then(() => { router.push({name: "matchingMain"}) });
-                
+                    }).then((response) => {
+                        if (!response.ok) {
 
+                            console.log("error")
+                            this.errors = "Error";
+                        }
+                        else {
+                            console.log("success")
+                            router.push({ name: "matchingMain" })
+                        }
+                    })
+
+                }
             },
 
             cleardata() {
@@ -135,5 +153,12 @@
 <style scoped>
     button {
         font-weight: bold;
+    }
+    .warning {
+        color: red;
+        margin: auto;
+        width: 440px;
+        text-align: center;
+        font-size: 11px;
     }
 </style>

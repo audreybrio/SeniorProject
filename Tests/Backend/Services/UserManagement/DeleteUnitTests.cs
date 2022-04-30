@@ -25,8 +25,8 @@ namespace DeleteTesting
         public void DeleteUserSuccess()
         {
 
-
-            string user = "jcutri";
+            
+            string user = "jmann";
             bool isDeleted = UserManager.DeleteUser(user);
             Assert.True(isDeleted);
 

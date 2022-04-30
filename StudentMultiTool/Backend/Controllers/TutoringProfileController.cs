@@ -5,14 +5,13 @@ using StudentMultiTool.Backend.Services.Matching;
 namespace StudentMultiTool.Backend.Controllers
 
 {
+    // Tutoring Profile Controller
     [ApiController]
     [Route("api/" + "tutoringProfile")]
     public class TutoringProfileController : Controller
     {
-
-        // Individual  is 1 if want individual, 0 if want group
-        // requires is 1 if requires tutroing, 0 if offering
-
+        
+        // Sends users selections to be inserted into database 
         [HttpPost]
         [Route("update/{username}/{individual}/{requires}/{opt}")]
         public IActionResult TutoringProfile([FromBody] DataT courses, string username, bool individual, bool requires, bool opt)
@@ -22,7 +21,7 @@ namespace StudentMultiTool.Backend.Controllers
             updateTutoring = Tutoring.TutoringProfile(courses.courses, username, individual, requires, opt);
             if (!updateTutoring)
             {
-                return Ok();
+                return NotFound();
             }
 
             return Ok();
@@ -30,6 +29,8 @@ namespace StudentMultiTool.Backend.Controllers
 
 
     }
+
+    // Used to get list from frontend 
     public class DataT
     {
         public List<string> courses { get; set; }

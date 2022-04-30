@@ -5,10 +5,13 @@ using StudentMultiTool.Backend.Services;
 
 namespace StudentMultiTool.Backend.DAL
 {
+    // Tutorin DAL
     public class TutoringDAL
     {
+        // Connection string
         const string connectionString = "MARVELCONNECTIONSTRING";
 
+        // SQL to update tutoring profile information
         public static bool TutoringProfileUpdate(string course1, string course2, string course3, string course4, string course5, string course6, string username, bool individual, bool requires)
         {
 
@@ -30,7 +33,7 @@ namespace StudentMultiTool.Backend.DAL
             return true;
         }
 
-
+        // SQL to insert tutoring profile information
         public static bool TutoringProfileInsert(string course1, string course2, string course3, string course4, string course5, string course6, string username, bool individual, bool requires, bool opt)
         {
             SqlConnection conn = new SqlConnection();
@@ -53,6 +56,7 @@ namespace StudentMultiTool.Backend.DAL
         }
 
 
+        // SQL to check if a user profile exists in database
         public static int ProfileExists(string username)
         {
             SqlConnection conn = new SqlConnection();

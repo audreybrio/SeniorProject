@@ -4,6 +4,8 @@ using System.Data.SqlClient;
 using StudentMultiTool.Backend.Models.Matching;
 using StudentMultiTool.Backend.Services.Matching;
 
+
+// Matching Controller 
 namespace StudentMultiTool.Backend.Controllers
 {
     [ApiController]
@@ -11,7 +13,7 @@ namespace StudentMultiTool.Backend.Controllers
     public class MatchingController : Controller
     {
  
-        // Matching logic for activity profile
+        // Matches activity profiles together 
         [HttpGet("matchActivity/{username}")]
         public IActionResult MatchingActivity(string username)
 
@@ -19,12 +21,12 @@ namespace StudentMultiTool.Backend.Controllers
             bool gotActivityMatches = Matching.MatchingActivity(username);
             if (!gotActivityMatches)
             {
-                return Ok();
+                return NotFound();
             }
             return Ok();
         }
 
-        // Matching Logic for Tutoring profile
+        // Matching Tutoring profiles together 
         [HttpGet("matchTutoring/{username}")]
         public IActionResult MatchingTutoring(string username)
         {

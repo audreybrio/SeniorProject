@@ -22,9 +22,9 @@ namespace StudentMultiTool.Backend.Controllers
             return Ok("okay");
         }
 
-        [HttpGet("validate/{email}/{passcode}")]
+        [HttpPost("validate/{email}/{passcode}")]
         public IActionResult EmailPasscodeCheck(string email, string passcode)
-        {
+        { 
             bool valPasscode, valEmail, doesExist;
             Validate val = new Validate();
             valPasscode = val.ValidatePasscode(passcode);
@@ -40,22 +40,22 @@ namespace StudentMultiTool.Backend.Controllers
                 {
                     string otp = Randomize(email);
                     SendEmail(email, otp);
-                    return Ok("Success");
+                    return Ok();
                 }
 
                 else
                 {
-                    return NotFound();
+                    return NotFound(); 
                 }   
             }
             else
             {
-                return NotFound();
+                return NotFound() ;
             }
       
         }
 
-        [HttpGet("authenticate/{username}/{otp}")]
+        [HttpPost("authenticate/{username}/{otp}")]
         public IActionResult AuthenticateUser(string username, string otp)
         {
 

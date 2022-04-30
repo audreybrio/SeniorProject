@@ -4,14 +4,15 @@ using StudentMultiTool.Backend.Services;
 
 namespace StudentMultiTool.Backend.DAL
 {
+    // Activity DAL
     public class ActivityDAL
     {
+        // Connection string 
         const string connectionString = "MARVELCONNECTIONSTRING";
 
+        // SQL to update activity profile in the database 
         public static bool ActivityProfileUpdate(string activity1, string activity2, string activity3, string activity4, string activity5, string username)
         {
-            //string username = "abrio";
-            // bool opt = true;
 
             SqlConnection conn = new SqlConnection();
             conn.ConnectionString = Environment.GetEnvironmentVariable(connectionString);
@@ -30,6 +31,7 @@ namespace StudentMultiTool.Backend.DAL
  
         }
 
+        // SQL to insert activity profile in the database 
         public static bool ActivityProfileInsert(string activity1, string activity2, string activity3, string activity4, string activity5, string username, bool opt){
             SqlConnection conn = new SqlConnection();
             conn.ConnectionString = Environment.GetEnvironmentVariable(connectionString);
@@ -47,6 +49,7 @@ namespace StudentMultiTool.Backend.DAL
             return true;
         }
 
+        // SQL to check if activity profile for a user alraady exists 
         public static int ProfileExists(string username)
         {
             SqlConnection conn = new SqlConnection();

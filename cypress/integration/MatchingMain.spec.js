@@ -1,37 +1,56 @@
-// MatchingMain.spec.js created with Cypress
-//
-// Start writing your Cypress tests below!
-// If you're unfamiliar with how Cypress works,
-// check out the link below and learn how to write your first test:
-// https://on.cypress.io/writing-first-test
+describe('Matching Main', function () {
 
-describe('MatchingMain', function () {
-    it('Finds an element', function () {
+    // Makes sure activity button and route work
+    it('Goes to Activity Profile', function () {
+
         cy.visit('https://localhost:5002')
 
-        //cy.contains('tutoring')
+        cy.contains('Test').click()
 
-        //// checking by values
-        //cy.get('input[type="radio"]')
-        //    .check(['Group']);
-        //// unchecking all values
-        //cy.get('input[type="radio"]').uncheck();
-        //// checking and assertion combined with and()
-        //cy.get('input[value="individual"]')
-        //    .check().should('be.checked').and('have.value', 'individual');
-        //cy.get('input[value')
-
-    })
-
-    it('Clicks an element', function () {
-        cy.visit('https://localhost:5002/matchingmain')
+        cy.contains('Matching').click()
 
         cy.contains('Activity Profile').click()
 
-        cy.contains('Tutorring Profile').click()
+        cy.contains('Back').click()
+    })
 
-        cy.contains('YOU ARE OPTED INTO MATCHING').click()
+    // Makes sure tutoring profile and route work
+    it('Goes to tutoring profile', function () {
 
+        cy.visit('https://localhost:5002/matchingmain')
+
+        cy.contains('Tutoring Profile').click()
+
+        cy.contains('Back').click()
+
+    })
+
+    // Generates matches
+    it('Generates matches', function () {
+
+        cy.visit('https://localhost:5002/matchingmain')
+
+        cy.contains('Generate Activity Matches').click()
+
+        cy.contains('Generate Tutoring Matches').click()
+
+    })
+
+    // Opt in / Opt out of matching 
+    it('Selects opt in/ opt out', function () {
+        cy.visit('https://localhost:5002/matchingmain')
+
+        cy.contains('YOU ARE OPTED IN OF MATCHING').click()
+
+        cy.contains('YOU ARE OPTED OUT OF MATCHING').click()
+
+    })
+
+    // Return to homepage 
+    it('Returns to homepage', function () {
+        cy.visit('https://localhost:5002/matchingmain')
+
+        cy.contains('Return to Homepage').click()
 
     })
 })

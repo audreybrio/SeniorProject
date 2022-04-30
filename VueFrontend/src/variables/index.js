@@ -1,7 +1,7 @@
 const domain = "localhost";
-const apiPort = "5002";
-let root = `https://${domain}/`;
-let apiRoot = `https://${domain}:${apiPort}/api/`;
+//const apiPort = "5002";
+//let root = `https://${domain}/`;
+//let apiRoot = `https://${domain}:${apiPort}/api/`;
 const apiPort = "5003";
 //const domain = "ec2-13-52-181-69.us-west-1.compute.amazonaws.com";
 //const apiPort = "8080";
@@ -39,6 +39,11 @@ const URLS = {
 
         scheduleComparison: {
             getComparison: apiRoot + "schedulecomparison/getcomparison",
+        },
+
+        login: {
+            validate: apiRoot + "login/validate",
+            authenticate: apiRoot + "login/authenticate"
         }
     }
 }
