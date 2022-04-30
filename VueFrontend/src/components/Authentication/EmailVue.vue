@@ -3,10 +3,14 @@
         <div v-if="loading" class="loading">
             Welcome! Please enter email and passcode!
         </div>
+        <div class="warning">
+            <div v-if="errors.length" :key="index" class="warning">{{errors}}</div>
+        </div>
         <input id="email" v-model="email" placeholder="Email">
         <input id="passcode" v-model="passcode" placeholder="Passocde">
         <button id="button" @click="onSubmit">Submit</button>
         <div>
+            <button @click="skip">Test</button>
             <router-link to="/registration">Registration</router-link>
         </div>
     </div>
@@ -15,21 +19,22 @@
 
 <script> // <!--lang="js"-->
     import router from '@/router'
+    // import * as $ from 'jquery'
+    // import axios from "axios"
+    import URLS from '../../variables'
 
     export default ({
         data() {
             return {
                 loading: false,
                 post: null,
+                errors: "",
             };
         },
         created() {
-            // fetch the data when the view is created and the data is
-            // already being observed
             this.fetchData();
         },
         watch: {
-            // call again the method if the route changes
             '$route': 'fetchData'
         },
         methods: {
@@ -39,48 +44,58 @@
                 this.email = '';
                 this.passcode = '';
 
-                fetch('weatherforecast')
-                    .then(r => r.json())
-                    .then(json => {
-                        this.post = json;
-                        this.loading = false;
-                        return;
-                    });
 
             },
             onSubmit() {
-                if (this.email == "audrey.brio@student.csulb.edu" && this.passcode == "hello world") {
-                    router.push({name: "LoginVue"});
+                //$.ajax({
+                //    url: `${URLS.api.login.validate}/${this.email}/${this.passcode}`,
+                //    context: this,
+                //    method: 'GET',
+                //    success: function () {
+                //        console.log("ajax success")
+                //        router.push({ name: "LoginVue" });
 
-                }
-                else if (this.email == "bradley.nickle@student.csulb.edu" && this.passcode == "marvel fan") {
-                    router.push({ name: "LoginVue" });
+                //    },
+                //    error: function () {
+                //        console.log("error")
+                //        this.errors = "Email/Passcode Incorrect";
+                //    }
+                //})
 
-                }
-                else if (this.email == "joseph.cutri@student.csulb.edu" && this.passcode == "number one") {
-                    router.push({ name: "LoginVue" });
+                fetch(
+                    `${URLS.api.login.validate}/${this.email}/${this.passcode}`, {
+                        method: 'POST',
+                        context: this,
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                    },
 
-                }
-                else if (this.email == "albert.toscano01@student.csulb.edu" && this.passcode == "happy meal") {
-                    router.push({ name: "LoginVue" });
+                }).then((response) => {
+                    if (!response.ok) {
 
-                }
-                else if (this.email == "jacob.delgado01@student.csulb.edu" && this.passcode == "super man") {
-                    router.push({ name: "LoginVue" });
+                        console.log("error")
+                        this.errors = "Email/Passcode Incorrect";
+                    }
+                    else {
+                        console.log("ajax success")
+                        router.push({ name: "LoginVue" })
+                    }
+                    
+                }).catch(() => {
+                    console.log("error")
+                    this.errors = "Email/Passcode Incorrect";
 
-                }
-                else if (this.email == "szeman.tang@student.csulb.edu" && this.passcode == "wonder woman") {
-                    router.push({ name: "LoginVue" });
+                });
+            },
 
-                }
-                else if (this.email == "devarsh.patel@student.csulb.edu" && this.passcode == "pizza guy") {
-                    router.push({ name: "LoginVue" });
+            skip() {
+                window.sessionStorage.setItem("token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiQXVkcmV5IEJyaW8iLCJ1c2VybmFtZSI6ImFicmlvIiwiZW1haWwiOiJhdWRyZXkuYnJpb0BzdHVkZW50LmNzdWxiLmVkdSIsInJvbGUiOiJhZG1pbiIsInNjaG9vbCI6IkNTVUxCIiwiaXNWYWxpZCI6dHJ1ZX0.OUsg0xFq6_1c8ApP3JdKs3t-RhbLUpqFGLsbnL0Cx4U");
+                router.push({ name: "HomePage" })
+            },
 
-                }
-                else {
-                    alert("Incorect email/passcode");
-                }
-            }
+                 
+            
 
         },
     });
@@ -88,5 +103,12 @@
 <style scoped>
     button {
         font-weight: bold;
+    }
+    .warning {
+        color: red;
+        margin: auto;
+        width: 440px;
+        text-align: center;
+        font-size: 11px;
     }
 </style>

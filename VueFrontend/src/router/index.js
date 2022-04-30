@@ -11,6 +11,11 @@ import EmailVerification from '../components/Registration/EmailVerification.vue'
 // Application features
 // StudentDiscounts
 import StudentDiscounts from '../components/StudentDiscounts/StudentDiscounts.vue'
+import MatchingMain from '../components/Matching/MatchingMain.vue'
+import ActivityProfile from '../components/Matching/ActivityProfile.vue'
+import TutoringProfile from '../components/Matching/TutoringProfile.vue'
+import DisplayMatches from '../components/Matching/DisplayMatches.vue'
+import MatchesChild from '../components/Matching/MatchesChild.vue'
 import DiscountDetails from '../components/StudentDiscounts/DiscountDetails.vue'
 import EstablishmentDetails from '../components/StudentDiscounts/EstablishmentDetails.vue'
 import RecipeView from '../components/MyRecipe/RecipeView.vue'
@@ -20,7 +25,6 @@ import RecipeRegister from '../components/MyRecipe/RecipeRegister.vue'
 import RecipeEdit from '../components/MyRecipe/RecipeEdit.vue'
 import RecipeDelete from '../components/MyRecipe/RecipeDelete.vue'
 
-// Defining the routes
 const routes = [
     // Core Features
     {
@@ -99,6 +103,42 @@ const routes = [
         name: 'studentDiscounts',
         component: StudentDiscounts,
     },
+
+    // matching
+    {
+        path: '/matchingMain',
+        name: 'matchingMain',
+        component: MatchingMain
+    },
+
+    {
+        path: '/activityprofile',
+        name: 'activityProfile',
+        component: ActivityProfile
+    },
+
+    {
+        path: '/tutoringprofile',
+        name: 'tutoringProfile',
+        component: TutoringProfile
+    },
+
+    {
+        path: '/displaymatches',
+        name: 'displayMatches',
+        component: DisplayMatches
+
+    },
+
+    {
+        path: '/matcheschild',
+        name: 'displayChild',
+        component: MatchesChild
+
+    },
+
+
+
     {
         path: '/studentDiscounts/discountDetails/:id',
         name: 'discountDetails',
@@ -160,6 +200,7 @@ const routes = [
         name: 'not-found',
         component: () => import('../Views/NotFound')
     }
+    // add more here 
 ]
 
 const router = createRouter({

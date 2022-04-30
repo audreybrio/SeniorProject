@@ -1,4 +1,4 @@
-<template>
+<!--<template>
     <div>
         <h3>Search Establishments</h3>
     </div>
@@ -92,4 +92,4 @@ export default {
     .discount .a {
         text-decoration: none;
     }
-</style>
+</style>-->

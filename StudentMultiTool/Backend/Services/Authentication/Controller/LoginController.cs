@@ -9,13 +9,15 @@ using System.Security.Principal;
 
 namespace StudentMultiTool.Backend.Services.Authentication.Controller
 {
+    [ApiController]
+    [Route("api/" + "login")]
     public class LoginController : ControllerBase
     {
         const string connectionString = "MARVELCONNECTIONSTRING";
         //AppDomain.CurrentDomain.SetPrincipalPolicy(PrincipalPolicy.WindowsPrincipal); 
         //WindowsPrincipal myPrincipal = (WindowsPrincipal)Thread.CurrentPrincipal;
 
-        [HttpGet]
+        [HttpGet("login")]
         public IActionResult Login()
         {
             return new OkResult();
