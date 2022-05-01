@@ -1,12 +1,17 @@
 <template>
-    <div class="post">
-        <div id="login" v-if="loading" class="loading">
-            Welcome! Please enter username and OTP!
-        </div>
-        <input v-model="username" placeholder="Username">
-        <input v-model="otp" placeholder="OTP">
-        <button @click="onLogin">Login</button>
-    </div>
+<header> <h>Welcome to Student Multi-Tool</h> </header>
+   <body>  
+       <form action="login">
+           <div class="post">
+            <div id="login" v-if="loading" class="loading">
+                Welcome! Please enter username and OTP!
+            </div>
+            <input id="user" v-model="username" placeholder="Username">
+            <input id="otp" v-model="otp" placeholder="OTP">
+            <button @click="onLogin">submit</button>
+            </div> 
+       </form>
+    </body>
 </template>
 
 <script lang="js">
@@ -34,14 +39,6 @@
                 this.loading = true;
                 this.username = '';
                 this.otp = '';
-
-                fetch('weatherforecast')
-                    .then(r => r.json())
-                    .then(json => {
-                        this.post = json;
-                        this.loading = false;
-                        return;
-                    });
 
             },
             onLogin() {
@@ -94,6 +91,71 @@
     });
 </script>
 <style scoped>
+    
+body {
+    font-family: Arial, Helvetica, sans-serif; 
+    display: float, center;
+    vertical-align: middle;    
+    height:100%;
+ }
+form {border: 3px solid #f1f1f1; align-items: center; padding: 5rem;}
+
+input[id=user], input[id=otp] {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+button {
+  background-color: #04AA6D;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+}
+
+button:hover {
+  opacity: 0.8;
+}
+
+.cancelbtn {
+  width: auto;
+  padding: 10px 18px;
+  background-color: #f44336;
+}
+
+.welcome {
+  text-align: center;
+  margin: 24px 0 12px 0;
+}
+
+.post {
+  padding: 16px;
+}
+
+span.psw {
+  float: right;
+  padding-top: 16px;
+}
+
+/* Change styles for span and cancel button on extra small screens */
+@media screen and (max-width: 300px) {
+  span.psw {
+     display: block;
+     float: none;
+  }
+  .cancelbtn {
+     width: 100%;
+  }
+}
+    button {
+        font-weight: bold;
+    }
     button {
         font-weight: bold;
     }

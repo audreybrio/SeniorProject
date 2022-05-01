@@ -37,10 +37,6 @@
         },
         created() {
         },
-        watch: {
-            // call again the method if the route changes
-            '$route': 'fetchData'
-        },
         methods: {
             onSubmit() {
                 const token = window.sessionStorage.getItem("token");
@@ -82,6 +78,8 @@
         },
     });
 </script>
+
+
 <style scoped>
     button {
         font-weight: bold;

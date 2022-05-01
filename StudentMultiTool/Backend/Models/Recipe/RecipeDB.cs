@@ -70,7 +70,7 @@ namespace StudentMultiTool.Backend.Models.Recipe
             using (SqlConnection con = new SqlConnection(connection))
             {
 
-                SqlCommand cmd = new SqlCommand("SELECT * FROM [recipes]where id =" + id + ";", con);
+                SqlCommand cmd = new SqlCommand("SELECT * FROM [recipes] where id =" + id + ";", con);
 
                 //SqlCommand cmd = new SqlCommand("SELECT * FROM [recipes] where recipes.id=@recipeID;", con);
                 cmd.CommandType = CommandType.Text;
@@ -184,7 +184,7 @@ namespace StudentMultiTool.Backend.Models.Recipe
             bool result;
             using (SqlConnection con = new SqlConnection(connection))
             {
-                String query = "DELETE FROM [recipes] where id = @id;";
+                String query = "DELETE FROM [recipes] where id = " + id + ";";
 
                 SqlCommand cmd = new SqlCommand(query, con);
 

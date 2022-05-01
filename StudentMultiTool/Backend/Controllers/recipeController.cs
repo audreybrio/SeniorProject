@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using StudentMultiTool.Backend.Models.Recipe;
 using System.Diagnostics;
-using System.Data.SqlClient;
-using System.Data;
+
 
 namespace StudentMultiTool.Backend.Controllers
 {
