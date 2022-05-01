@@ -12,15 +12,18 @@ namespace StudentMultiTool.Backend.DAL
         const string connectionString = "MARVELCONNECTIONSTRING";
 
         // SQL for matching activities logic
-        public static bool MatchingActivity(List<string> activities, string username)
+        public static List<Match> MatchingActivity(List<string> activities, string username)
         {
             // Loops through selected activities to find matches 
+            List<Match> matches = new List<Match>();
             SqlConnection conn = new SqlConnection();
             conn.ConnectionString = Environment.GetEnvironmentVariable(connectionString);
             conn.Open();
 
             for (int i = 0; i < activities.Count; i++)
-            {
+            {               
+                try
+                {
                 // Gets list of users also have the same activity in their profile
                 SqlCommand cmd = new SqlCommand("SELECT userId FROM ActivityProfile WHERE ActivityProfile.userId != (SELECT id FROM UserAccounts WHERE UserAccounts.username = @username) AND (activity1 = @activity OR activity2 = @activity OR activity3 = @activity OR activity4 = @activity OR activity5 = @activity) AND opt = @opt", conn);
                 cmd.Parameters.AddWithValue("@username", username);
@@ -28,36 +31,41 @@ namespace StudentMultiTool.Backend.DAL
                 cmd.Parameters.AddWithValue("@opt", 1);
                 cmd.ExecuteNonQuery();
                 SqlDataReader dr = cmd.ExecuteReader();
-                try
-                {
+
                     while (dr.Read())
                     {
                         int id = dr.GetInt32(0);
+                        string matchName = GetName(id);
+                        string overlap = ScheduleComparing.GetOverlap(username, id);
+                        Match newMatch = new Match(matchName, activities[i], overlap);
+                        matches.Add(newMatch);
                         int countMatchExists = MatchExists(username, id, activities[i]);
                         // If match doesnt already exist, insert into database
                         if (countMatchExists == 0)
                         {
-                            string overlap = ScheduleComparing.GetOverlap(username, id);
+                            // string overlap = ScheduleComparing.GetOverlap(username, id);
                             InsertMatch(username, id, activities[i], overlap);
                         }
 
                     }
+                    dr.Close();
 
                 }
                 catch (Exception ex)
                 {
-                    return false;
+                    return matches;
                 }
-                dr.Close();
+                
             }
             conn.Close();
-            return true;
+            return matches;
         }
 
         // SQL for matching tutoring profiles
-        public static bool MatchingTutoring(List<string> courses, string username, bool individual, bool requires)
+        public static List<Match> MatchingTutoring(List<string> courses, string username, bool individual, bool requires)
         {
             // Loops through prfile given for tutoring to find matches 
+            List<Match> matches = new List<Match>();
             SqlConnection conn = new SqlConnection();
             conn.ConnectionString = Environment.GetEnvironmentVariable(connectionString);
             conn.Open();
@@ -77,21 +85,25 @@ namespace StudentMultiTool.Backend.DAL
                     while (dr.Read())
                     {
                         int id = dr.GetInt32(0);
+                        string matchName = GetName(id);
+                        string overlap = ScheduleComparing.GetOverlap(username, id);
+                        Match newMatch = new Match(matchName, courses[i], overlap);
+                        matches.Add(newMatch);
                         int countMatchExists = MatchExists(username, id, courses[i]);
                         // If match does not alread exist, enter into database
                         if (countMatchExists == 0)
                         {
-                            string overlap = ScheduleComparing.GetOverlap(username, id);
+                            //string overlap = ScheduleComparing.GetOverlap(username, id);
                             InsertMatch(username, id, courses[i], overlap);
                         }
                     }
                 }
-                catch (Exception e) { return false; }
+                catch (Exception e) { return matches; }
                 dr.Close();
             }
             
             conn.Close();
-            return true;
+            return matches;
         }
 
         // SQL to get all the matches for a single user  

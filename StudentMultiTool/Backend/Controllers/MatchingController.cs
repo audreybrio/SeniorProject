@@ -15,27 +15,22 @@ namespace StudentMultiTool.Backend.Controllers
  
         // Matches activity profiles together 
         [HttpGet("matchActivity/{username}")]
-        public IActionResult MatchingActivity(string username)
+        public List<Match> MatchingActivity(string username)
 
         {
-            bool gotActivityMatches = Matching.MatchingActivity(username);
-            if (!gotActivityMatches)
-            {
-                return NotFound();
-            }
-            return Ok();
+            List<Match> matches = new List<Match>();
+            matches = Matching.MatchingActivity(username);
+            return matches;
+
         }
 
         // Matching Tutoring profiles together 
         [HttpGet("matchTutoring/{username}")]
-        public IActionResult MatchingTutoring(string username)
+        public List<Match> MatchingTutoring(string username)
         {
-            bool gotTutoringMatches = Matching.MatchingTutoring(username);
-            if (!gotTutoringMatches)
-            {
-                return NotFound();
-            }
-            return Ok();
+            List<Match> matches = new List<Match>();
+            matches = Matching.MatchingTutoring(username);
+            return matches;
 
         }
 

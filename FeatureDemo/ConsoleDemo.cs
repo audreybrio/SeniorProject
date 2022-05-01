@@ -53,10 +53,11 @@ namespace ConsoleDemo
                         tutorings.Add("CECS 328");
                         tutoringProfileController.TutoringProfile("jcutri", tutorings, false, true);
                         tutoringProfileController.TutoringProfile("bnickle", tutorings, true, true);*/
+
                         MatchingController matchingController = new MatchingController();
                         matchingController.MatchingActivity("abrio");
 
-                        matchingController.DisplayMatches("abrio");
+                        //matchingController.DisplayMatches("abrio");
 
 
 
