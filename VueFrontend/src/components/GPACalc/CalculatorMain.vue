@@ -27,7 +27,6 @@
     // Imports
     import router from '@/router'
     import jwt_decode from "jwt-decode"
-    import URLS from '../../variables'
 
     export default ({
         //props: ['match'],
