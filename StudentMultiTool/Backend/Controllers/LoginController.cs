@@ -13,6 +13,7 @@ namespace StudentMultiTool.Backend.Controllers
     public class LoginController : Controller
     {
         const string connectionString = "MARVELCONNECTIONSTRING";
+        private int attempts = 0;
         //AppDomain.CurrentDomain.SetPrincipalPolicy(PrincipalPolicy.WindowsPrincipal); 
         //WindowsPrincipal myPrincipal = (WindowsPrincipal)Thread.CurrentPrincipal;
 
@@ -58,22 +59,32 @@ namespace StudentMultiTool.Backend.Controllers
         [HttpPost("authenticate/{username}/{otp}")]
         public IActionResult AuthenticateUser(string username, string otp)
         {
+            attempts++;
+            while (attempts < 5)
+            {
+                int count = LoginUser(username, otp);
+                bool isValid = ValidTime(username);
+                if (!isValid)
+                {
+                    return NotFound();
+                }
 
-            int count = LoginUser(username, otp);
-            bool isValid = ValidTime(username);
-            if (!isValid)
-            {
-                return NotFound();
-            }
+                if (count > 0)
+                {
+                    attempts = 0;
+                    return Ok();
+                }
+                else
+                {
+                    LogIP log = new LogIP();
+                    log.LoggingIP(username);
+                    // return NotFound();
 
-            if(count > 0)
-            {
-                return Ok();
+                }
             }
-            else
-            {
-                return NotFound();
-            }
+            UpdateDisable(username);
+            attempts = 0;
+            return NotFound() ;
 
 
             //// int attempts = 1;
@@ -331,8 +342,8 @@ namespace StudentMultiTool.Backend.Controllers
             String to = email;
             MailMessage mail = new MailMessage(from, to, subject, msg);
             SmtpClient client = new SmtpClient("email-smtp.us-east-1.amazonaws.com");
-            client.Port = 25;
-            client.Credentials = new System.Net.NetworkCredential("AKIA4LFTDFRCSQHGW2BL", "BMAUAXuLN+qSGL0QiezLwtqpfckzibBAwvJ/0AiDtrQa"); //change username and password to your email account username and password
+            client.Port = 587;
+            client.Credentials = new System.Net.NetworkCredential("AKIA4LFTDFRCSQHGW2BL", "BMAUAXuLN+qSGL0QiezLwtqpfckzibBAwvJ/0AiDtrQa"); 
             client.EnableSsl = true;
             client.Send(mail);
         }
@@ -395,14 +406,14 @@ namespace StudentMultiTool.Backend.Controllers
 
 
         // Disables a user if they exceed 5 incorrect login attempts
-        public static void UpdateDisable(string email)
+        public static void UpdateDisable(string username)
         {
             SqlConnection conn = new SqlConnection();
             conn.ConnectionString = Environment.GetEnvironmentVariable(connectionString);
             conn.Open();
-            SqlCommand cmd = new SqlCommand("UPDATE UserAccounts" + " SET active_status = @newStatus" + " WHERE email = @email", conn);
+            SqlCommand cmd = new SqlCommand("UPDATE UserAccounts" + " SET active_status = @newStatus" + " WHERE username = @username", conn);
             cmd.Parameters.AddWithValue("@newStatus", 0);
-            cmd.Parameters.AddWithValue("@email", email);
+            cmd.Parameters.AddWithValue("@username", username);
             cmd.ExecuteNonQuery();
         }
 
