@@ -25,7 +25,6 @@ import RecipeRegister from '../components/MyRecipe/RecipeRegister.vue'
 import RecipeEdit from '../components/MyRecipe/RecipeEdit.vue'
 import RecipeDelete from '../components/MyRecipe/RecipeDelete.vue'
 
-
 const routes = [
     // Core Features
     {
@@ -157,6 +156,41 @@ const routes = [
         name: 'studentInformation',
         component: () => import('../Views/AidEligibility/Info.vue')
     },
+    // Recipe Sharing
+    {
+        path: '/recipeview',
+        name: 'RecipeView',
+        component: RecipeView,
+        props: route => ({ page: parseInt(route.query.page) || 1 })
+    },
+    {
+        path: '/register',
+        name: 'RecipeRegister',
+        component: RecipeRegister
+    },
+    {
+        path: '/recipeview/:id',
+        name: 'RecipeLayout',
+        props: true,
+        component: RecipeLayout,
+        children: [
+            {
+                path: '',
+                name: 'RecipeDetails',
+                component: RecipeDetails,
+            },
+            {
+                path: 'delete',
+                name: 'RecipeDelete',
+                component: RecipeDelete
+            },
+            {
+                path: 'edit',
+                name: 'RecipeEdit',
+                component: RecipeEdit
+            }
+        ]
+    },
 
     //EventPlanning
     {
@@ -164,7 +198,7 @@ const routes = [
         name: 'EventPlannning',
         component: () => import('../Views/EventPlannning/EventPlannning.vue')
     },
-    
+
     // ADD MORE HERE! DON'T ADD AFTER not-found!
 
     // Not found; don't move this one or place anything after it
