@@ -1,8 +1,8 @@
-<template>
-    <GoogleMap api-key="AIzaSyCzpBhiWzAnVHY7-Es0IUuqm9NSEMTYtY0" style="width: 100%; height: 500px" :center="center" :zoom="15">
-        <Marker :options="{ position: center }" />
-    </GoogleMap>
-</template>
+<!--<template>-->
+    <!--<GoogleMap api-key="AIzaSyCzpBhiWzAnVHY7-Es0IUuqm9NSEMTYtY0" style="width: 100%; height: 500px" :center="center" :zoom="15">
+        <Marker options="{ position: center }" />
+    </GoogleMap>-->
+<!--</template>
 
 <script>
     import { GoogleMap, Marker } from "vue3-google-map";
@@ -22,4 +22,4 @@
             this.center.lng = this.longitud
         }
     }
-</script>
+</script>-->

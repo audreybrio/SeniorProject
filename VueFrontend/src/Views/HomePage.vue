@@ -1,6 +1,6 @@
 <template>
     <div class="post">
-        <div v-if="loading" class="loading">
+        <div>
             Hello {{ id }}! :)
         </div>
         <div>
@@ -16,8 +16,11 @@
         <div>
             <button @click="onAid">Aid Eligibility Estimates</button>
             <button @click="onSD">Student Discounts</button>
-            <button @click="onSubmit">Logout</button>
+            <button @click="onMatching">Matching</button>
+            <button @click="onEP">Event Planning</button>
         </div>
+            <button @click="onSubmit">Logout</button>
+        
     </div>
     <router-view />
 </template>
@@ -71,6 +74,11 @@
             onSD() {
                 router.push({ name: "studentDiscounts" });
             },
+            onMatching() {
+                router.push({ name: "matchingMain" })
+            },
+
+
             onAid() {
                 router.push({ name: "studentInformation" });
             }

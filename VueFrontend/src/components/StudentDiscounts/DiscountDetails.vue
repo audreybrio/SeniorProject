@@ -1,4 +1,4 @@
-<template>
+<!--<template>
     <h1>Discount Details</h1>
     <div class="box">
         <div class="backButton">
@@ -110,4 +110,4 @@
         color: white;
         box-shadow: 6px;
     }
-</style>
+</style>-->

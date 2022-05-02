@@ -1,4 +1,4 @@
-<template>
+<!--<template>
     <div style="text-align:center">
         <h3>Search Website</h3>
     </div>
@@ -90,4 +90,4 @@
     .discount .a {
         text-decoration: none;
     }
-</style>
+</style>-->

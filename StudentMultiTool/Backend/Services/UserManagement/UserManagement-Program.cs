@@ -435,8 +435,8 @@ namespace UserManagement
             SqlConnection conn = new SqlConnection();
             conn.ConnectionString = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING");
             conn.Open();
-            SqlCommand cmd = new SqlCommand("INSERT INTO UserAccounts " + "(email, name, username,  passcode, role, school, active_status, token, verified_email) " +
-                                                               "  values (@email, @name, @username, @passcode, @role, @school, @active_status, @token, @verified_email)", conn);
+            SqlCommand cmd = new SqlCommand("INSERT INTO UserAccounts (name, username,  email, passcode, role, school, active_status) " +
+                                                               "  values (@name, @username, @email, @passcode, @role, @school, @active_status)", conn);
             cmd.Parameters.AddWithValue("@email", email);
             cmd.Parameters.AddWithValue("@name", "");
             cmd.Parameters.AddWithValue("@username", username);
@@ -444,8 +444,8 @@ namespace UserManagement
             cmd.Parameters.AddWithValue("@role", "student");
             cmd.Parameters.AddWithValue("@school", school);
             cmd.Parameters.AddWithValue("@active_status", 0);
-            cmd.Parameters.AddWithValue("@token", token);
-            cmd.Parameters.AddWithValue("@verified_email", 0);
+            // cmd.Parameters.AddWithValue("@token", token);
+            // cmd.Parameters.AddWithValue("@verified_email", 0);
             cmd.ExecuteNonQuery();
             conn.Close();
             System.Console.WriteLine("New User Account created successfully.\n");
