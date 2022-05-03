@@ -13,7 +13,7 @@ namespace StudentMultiTool.Backend.Controllers
     public class LoginController : Controller
     {
         const string connectionString = "MARVELCONNECTIONSTRING";
-        private int attempts = 0;
+        //private int attempts = 0;
         //AppDomain.CurrentDomain.SetPrincipalPolicy(PrincipalPolicy.WindowsPrincipal); 
         //WindowsPrincipal myPrincipal = (WindowsPrincipal)Thread.CurrentPrincipal;
 
@@ -56,114 +56,41 @@ namespace StudentMultiTool.Backend.Controllers
         [HttpPost("authenticate/{username}/{otp}")]
         public IActionResult AuthenticateUser(string username, string otp)
         {
-            attempts++;
-            Console.WriteLine(attempts);
-            while (attempts < 6)
-            {
+            //attempts++;
+            //Console.WriteLine(attempts);
+           // while (attempts < 6)
+            //{
                 int count = LoginUser(username, otp);
-                //bool isValid = ValidTime(username);
-                //if (!isValid)
-                //{
-                //    return NotFound();
-                //}
+            //bool isValid = ValidTime(username);
+            //if (!isValid)
+            //{
+            //    return NotFound();
+            //}
 
-                if (count > 0)
-                {
-                    attempts = 0;
-                    return Ok();
-                }
-                else
-                {
-                    LogIP log = new LogIP();
-                    log.LoggingIP(username);
-                    return NotFound();
-
-                }
+            if (count > 0)
+            {
+                return Ok();
             }
-            UpdateDisable(username);
-            attempts = 0;
-            return NotFound() ;
+            else
+            {
+                LogIP log = new LogIP();
+                log.LoggingIP(username);
+                return NotFound();
+
+            }
+
 
         }
-        //public IActionResult Authenticate()
-        //{
 
-        //    Console.WriteLine("Welcome to Student Multi-Tool, Please log in.");
-        //    Console.WriteLine("Enter Email.");
-        //    string email = Console.ReadLine();
-        //    Console.WriteLine("Enter Passphrase");
-        //    string passcode = Console.ReadLine();
 
-        //    bool doesExist, valPasscode, valEmail;
-        //    Validate val = new Validate();
-        //    valPasscode = val.ValidatePasscode(passcode);
-        //    valEmail = val.ValidateEmail(email);
+        [HttpGet]
+        [Route("disable/{username}")]
+        public IActionResult DisableUser(string username)
+        {
+            UpdateDisable(username);
+            return Ok();
+        }
 
-        //    if (valPasscode && valEmail)
-        //    {
-        //        doesExist = UserExist(email, passcode);
-        //        // If user exists
-        //        if (doesExist == true)
-        //        {
-        //            // Get otp and send it
-        //            string otp = Randomize(email);
-        //            //SendEmail(email, otp);
-
-        //            int attempts = 1;
-        //            // User has 5 attempts to log in 
-        //            while (attempts < 6)
-        //            {
-
-        //                Console.WriteLine("Enter Username");
-        //                string username = Console.ReadLine();
-
-        //                Console.WriteLine("Enter OTP");
-        //                string password = Console.ReadLine();
-        //                int count = LoginUser(username, password);
-        //                bool isValid = ValidTime(email);
-        //                if (!isValid)
-        //                {
-        //                    Console.WriteLine("Invalid OTP");
-        //                    break;
-        //                }
-        //                if (count > 0)
-        //                {
-        //                    Console.Write("Login Success");
-        //                    // Changed out for redirct to homepage
-        //                    Logout();
-
-        //                    break;
-        //                }
-        //                else
-        //                {
-        //                    Console.WriteLine("Login Incorrect. Try again.");
-        //                    // Log ip address
-        //                    LogIP log = new LogIP();
-        //                    log.LoggingIP(email);
-        //                    attempts++;
-        //                    continue;
-        //                }
-
-        //            }
-
-        //            if (attempts >= 6)
-        //            {
-        //                Console.WriteLine("Too many incorrect attempts. Account Disabled");
-        //                UpdateDisable(email);
-        //            }
-        //        }
-
-        //        else
-        //        {
-        //            Console.WriteLine("Incorrect Email or Passcode");
-        //        }
-        //    }
-        //    else
-        //    {
-        //        Console.WriteLine("Not Valid Email or Passcode");
-        //    }
-        //    return new OkResult();
-        //}
 
         // Checks if user exists in database
         public bool UserExist(string email, string passcode)
@@ -225,21 +152,80 @@ namespace StudentMultiTool.Backend.Controllers
             conn.ConnectionString = Environment.GetEnvironmentVariable(connectionString);
             conn.Open();
 
-            SqlCommand c = new SqlCommand("SELECT id FROM UserAccounts WHERE UserAccounts.email = @email", conn);
-            c.Parameters.AddWithValue("@email", email);
-            SqlDataReader reader = c.ExecuteReader();
-            int id = 0;
-            reader.Close();
-            id = (int)c.ExecuteScalar();
+            int countUser = UserExists(email);
+            int userId = GetUserId(email);
             DateTime timeStamp = DateTime.Now;
 
-            SqlCommand cmd = new SqlCommand("INSERT INTO OTP (timestamp, otp, userID) VALUES (@timestamp, @otp, @userID)", conn);
-            cmd.Parameters.AddWithValue("@timestamp", timeStamp);
-            cmd.Parameters.AddWithValue("@otp", otp);
-            cmd.Parameters.AddWithValue("@userID", id);
-            cmd.ExecuteNonQuery();
-            return otp;
+            if (countUser == 0)
+            {
+                SqlCommand cmd = new SqlCommand("INSERT INTO OTP (timestamp, otp, userID) VALUES (@timestamp, @otp, @userID)", conn);
+                cmd.Parameters.AddWithValue("@timestamp", timeStamp);
+                cmd.Parameters.AddWithValue("@otp", otp);
+                cmd.Parameters.AddWithValue("@userID", userId);
+                cmd.ExecuteNonQuery();
+                return otp;
+            }
+            else
+            {
+                SqlCommand cmd = new SqlCommand("UPDATE OTP SET timestamp = @timestamp, otp = @otp WHERE userId = @userID", conn);
+                cmd.Parameters.AddWithValue("@timestamp", timeStamp);
+                cmd.Parameters.AddWithValue("@otp", otp);
+                cmd.Parameters.AddWithValue("@userID", userId);
+                cmd.ExecuteNonQuery();
+                return otp;
+            }
+
+
         }
+
+
+
+        public int UserExists(string email)
+        {
+
+            try
+            {
+                SqlConnection conn = new SqlConnection();
+                conn.ConnectionString = Environment.GetEnvironmentVariable(connectionString);
+                conn.Open();
+                SqlCommand c = new SqlCommand("SELECT COUNT(id) FROM OTP WHERE OTP.userId = (SELECT id FROM UserAccounts WHERE UserAccounts.email = @email)", conn);
+                c.Parameters.AddWithValue("@email", email);
+                SqlDataReader reader = c.ExecuteReader();
+                int id = 0;
+                reader.Close();
+                id = (int)c.ExecuteScalar();
+                return id;
+            }
+            catch
+            {
+                return 0;
+            }
+
+        }
+
+        public int GetUserId(string email)
+        {
+            try
+            {
+                SqlConnection conn = new SqlConnection();
+                conn.ConnectionString = Environment.GetEnvironmentVariable(connectionString);
+                conn.Open();
+                SqlCommand c = new SqlCommand("SELECT id FROM UserAccounts WHERE UserAccounts.email = @email", conn);
+                c.Parameters.AddWithValue("@email", email);
+                SqlDataReader reader = c.ExecuteReader();
+                int id = 0;
+                reader.Close();
+                id = (int)c.ExecuteScalar();
+                return id;
+            }
+            catch
+            {
+                return 10;
+            }
+
+        }
+
+
 
         // Checks is user is disabled
         public bool CheckDisabled(string email)
@@ -268,11 +254,6 @@ namespace StudentMultiTool.Backend.Controllers
             client.EnableSsl = true;
             client.Send(mail);
         }
-
-
-
-
-
 
 
 
@@ -337,13 +318,21 @@ namespace StudentMultiTool.Backend.Controllers
         // Disables a user if they exceed 5 incorrect login attempts
         public void UpdateDisable(string username)
         {
-            SqlConnection conn = new SqlConnection();
-            conn.ConnectionString = Environment.GetEnvironmentVariable(connectionString);
-            conn.Open();
-            SqlCommand cmd = new SqlCommand("UPDATE UserAccounts SET active_status = @newStatus WHERE username = @username", conn);
-            cmd.Parameters.AddWithValue("@newStatus", 0);
-            cmd.Parameters.AddWithValue("@username", username);
-            cmd.ExecuteNonQuery();
+            try
+            {
+                SqlConnection conn = new SqlConnection();
+                conn.ConnectionString = Environment.GetEnvironmentVariable(connectionString);
+                conn.Open();
+                SqlCommand cmd = new SqlCommand("UPDATE UserAccounts SET active_status = @newStatus WHERE username = @username", conn);
+                cmd.Parameters.AddWithValue("@newStatus", 0);
+                cmd.Parameters.AddWithValue("@username", username);
+                cmd.ExecuteNonQuery();
+            }
+            catch
+            {
+
+            }
+
         }
 
 

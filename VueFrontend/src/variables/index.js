@@ -43,7 +43,8 @@ const URLS = {
 
         login: {
             validate: apiRoot + "login/validate",
-            authenticate: apiRoot + "login/authenticate"
+            authenticate: apiRoot + "login/authenticate",
+            disable: apiRoot + "login/disable"
         }
     }
 }
