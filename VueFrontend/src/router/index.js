@@ -54,6 +54,11 @@ const routes = [
         name: 'EmailVerification',
         component: EmailVerification
     },
+    {
+        path: '/UserManagement',
+        name: 'UserManagement',
+        component: () => import('../Views/UserManagement/UserManagement.vue')
+    },
 
     // ScheduleBuilder & ScheduleComparison
     // ScheduleBuilder
@@ -129,16 +134,12 @@ const routes = [
         component: DisplayMatches
 
     },
-
     {
         path: '/matcheschild',
         name: 'displayChild',
         component: MatchesChild
 
     },
-
-
-
     {
         path: '/studentDiscounts/discountDetails/:id',
         name: 'discountDetails',
@@ -191,13 +192,12 @@ const routes = [
             }
         ]
     },
-
     //EventPlanning
-    {
-        path: '/eventPlannning',
-        name: 'EventPlannning',
-        component: () => import('../Views/EventPlannning/EventPlannning.vue')
-    },
+    //{
+    //    path: '/eventPlannning',
+    //    name: 'EventPlannning',
+    //    component: () => import('../Views/EventPlannning/EventPlannning.vue')
+    //},
 
     // ADD MORE HERE! DON'T ADD AFTER not-found!
 

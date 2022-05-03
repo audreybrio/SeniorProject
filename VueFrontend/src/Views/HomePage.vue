@@ -3,6 +3,10 @@
         <div>
             Hello {{ id }}! :)
         </div>
+        <div v-if="role === 'admin'">
+            <button @click="onUsageAnalysisDashboard">Usage Analysis Dashboard</button>
+            <button @click="onUserManagement">User Management</button>
+        </div>
         <div>
             <button @click="onAC">Access Control</button>
             <button @click="onScheduleBuilder">Schedule Builder</button>
@@ -17,10 +21,13 @@
             <button @click="onAid">Aid Eligibility Estimates</button>
             <button @click="onSD">Student Discounts</button>
             <button @click="onMatching">Matching</button>
-            <button @click="onEP">Event Planning</button>
         </div>
-            <button @click="onSubmit">Logout</button>
-        
+        <div>
+            <button @click="onEP">Event Planning</button>
+            <button @click="onManageAccount">Manage Account</button>
+        </div>
+        <button @click="onSubmit">Logout</button>
+
     </div>
     <router-view />
 </template>
@@ -34,7 +41,8 @@
             return {
                 loading: false,
                 post: null,
-                id: jwt_decode(window.sessionStorage.getItem("token")).username
+                id: jwt_decode(window.sessionStorage.getItem("token")).username,
+                role: 'admin'
             };
         },
         created() {

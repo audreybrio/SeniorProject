@@ -9,6 +9,10 @@ const URLS = {
     root: root,
     apiRoot: apiRoot,
     api: {
+        admin: {
+            getUsers: apiRoot + "userManagement/getUsers",
+        },
+
         scheduleBuilder: {
             getList: apiRoot + "schedule/getlist",
             getSchedule: apiRoot + "schedule/getschedule",
