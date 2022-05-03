@@ -31,9 +31,6 @@ namespace StudentMultiTool.Backend.Controllers
             valPasscode = val.ValidatePasscode(passcode);
             valEmail = val.ValidateEmail(email);
 
-            Console.WriteLine(valEmail+ " " + valPasscode);
-            
-
             if (valPasscode && valEmail)
             {
                 doesExist = UserExist(email, passcode);
@@ -60,14 +57,15 @@ namespace StudentMultiTool.Backend.Controllers
         public IActionResult AuthenticateUser(string username, string otp)
         {
             attempts++;
-            while (attempts < 5)
+            Console.WriteLine(attempts);
+            while (attempts < 6)
             {
                 int count = LoginUser(username, otp);
-                bool isValid = ValidTime(username);
-                if (!isValid)
-                {
-                    return NotFound();
-                }
+                //bool isValid = ValidTime(username);
+                //if (!isValid)
+                //{
+                //    return NotFound();
+                //}
 
                 if (count > 0)
                 {
@@ -78,7 +76,7 @@ namespace StudentMultiTool.Backend.Controllers
                 {
                     LogIP log = new LogIP();
                     log.LoggingIP(username);
-                    // return NotFound();
+                    return NotFound();
 
                 }
             }
@@ -86,130 +84,91 @@ namespace StudentMultiTool.Backend.Controllers
             attempts = 0;
             return NotFound() ;
 
-
-            //// int attempts = 1;
-            // // User has 5 attempts to log in 
-            // //while (attempts < 6)
-            // //{
-
-            //     //Console.WriteLine("Enter Username");
-            //     //string username = Console.ReadLine();
-
-            //     //Console.WriteLine("Enter OTP");
-            //     //string password = Console.ReadLine();
-            //     int count = LoginUser(username, otp);
-
-            //     bool isValid = ValidTime(username);
-            //     if (!isValid)
-            //     {
-            //         //Console.WriteLine("Invalid OTP");
-            //         //break;
-            //     }
-            //     if (count > 0)
-            //     {
-
-            //         return Ok();
-            //     }
-            //     else
-            //     {
-            //         //Console.WriteLine("Login Incorrect. Try again.");
-            //         // Log ip address
-            //         //LogIP log = new LogIP();
-            //         //log.LoggingIP(username);
-            //        // attempts++;
-            //        // continue;
-            //     }
-
-            // // }
-
-            // return NotFound();
         }
-        public IActionResult Authenticate()
-        {
+        //public IActionResult Authenticate()
+        //{
 
-            Console.WriteLine("Welcome to Student Multi-Tool, Please log in.");
-            Console.WriteLine("Enter Email.");
-            string email = Console.ReadLine();
-            Console.WriteLine("Enter Passphrase");
-            string passcode = Console.ReadLine();
+        //    Console.WriteLine("Welcome to Student Multi-Tool, Please log in.");
+        //    Console.WriteLine("Enter Email.");
+        //    string email = Console.ReadLine();
+        //    Console.WriteLine("Enter Passphrase");
+        //    string passcode = Console.ReadLine();
 
-            bool doesExist, valPasscode, valEmail;
-            Validate val = new Validate();
-            valPasscode = val.ValidatePasscode(passcode);
-            valEmail = val.ValidateEmail(email);
+        //    bool doesExist, valPasscode, valEmail;
+        //    Validate val = new Validate();
+        //    valPasscode = val.ValidatePasscode(passcode);
+        //    valEmail = val.ValidateEmail(email);
 
-            if (valPasscode && valEmail)
-            {
-                doesExist = UserExist(email, passcode);
-                // If user exists
-                if (doesExist == true)
-                {
-                    // Get otp and send it
-                    string otp = Randomize(email);
-                    //SendEmail(email, otp);
+        //    if (valPasscode && valEmail)
+        //    {
+        //        doesExist = UserExist(email, passcode);
+        //        // If user exists
+        //        if (doesExist == true)
+        //        {
+        //            // Get otp and send it
+        //            string otp = Randomize(email);
+        //            //SendEmail(email, otp);
 
-                    int attempts = 1;
-                    // User has 5 attempts to log in 
-                    while (attempts < 6)
-                    {
+        //            int attempts = 1;
+        //            // User has 5 attempts to log in 
+        //            while (attempts < 6)
+        //            {
 
-                        Console.WriteLine("Enter Username");
-                        string username = Console.ReadLine();
+        //                Console.WriteLine("Enter Username");
+        //                string username = Console.ReadLine();
 
-                        Console.WriteLine("Enter OTP");
-                        string password = Console.ReadLine();
-                        int count = LoginUser(username, password);
-                        bool isValid = ValidTime(email);
-                        if (!isValid)
-                        {
-                            Console.WriteLine("Invalid OTP");
-                            break;
-                        }
-                        if (count > 0)
-                        {
-                            Console.Write("Login Success");
-                            // Changed out for redirct to homepage
-                            Logout();
+        //                Console.WriteLine("Enter OTP");
+        //                string password = Console.ReadLine();
+        //                int count = LoginUser(username, password);
+        //                bool isValid = ValidTime(email);
+        //                if (!isValid)
+        //                {
+        //                    Console.WriteLine("Invalid OTP");
+        //                    break;
+        //                }
+        //                if (count > 0)
+        //                {
+        //                    Console.Write("Login Success");
+        //                    // Changed out for redirct to homepage
+        //                    Logout();
 
-                            break;
-                        }
-                        else
-                        {
-                            Console.WriteLine("Login Incorrect. Try again.");
-                            // Log ip address
-                            LogIP log = new LogIP();
-                            log.LoggingIP(email);
-                            attempts++;
-                            continue;
-                        }
+        //                    break;
+        //                }
+        //                else
+        //                {
+        //                    Console.WriteLine("Login Incorrect. Try again.");
+        //                    // Log ip address
+        //                    LogIP log = new LogIP();
+        //                    log.LoggingIP(email);
+        //                    attempts++;
+        //                    continue;
+        //                }
 
-                    }
+        //            }
 
-                    if (attempts >= 6)
-                    {
-                        Console.WriteLine("Too many incorrect attempts. Account Disabled");
-                        UpdateDisable(email);
-                    }
-                }
+        //            if (attempts >= 6)
+        //            {
+        //                Console.WriteLine("Too many incorrect attempts. Account Disabled");
+        //                UpdateDisable(email);
+        //            }
+        //        }
 
-                else
-                {
-                    Console.WriteLine("Incorrect Email or Passcode");
-                }
-            }
-            else
-            {
-                Console.WriteLine("Not Valid Email or Passcode");
-            }
-            return new OkResult();
-        }
+        //        else
+        //        {
+        //            Console.WriteLine("Incorrect Email or Passcode");
+        //        }
+        //    }
+        //    else
+        //    {
+        //        Console.WriteLine("Not Valid Email or Passcode");
+        //    }
+        //    return new OkResult();
+        //}
 
         // Checks if user exists in database
-        public static bool UserExist(string email, string passcode)
+        public bool UserExist(string email, string passcode)
         {
             string passphrase = HashPass(passcode);
-
-
             SqlConnection conn = new SqlConnection();
             conn.ConnectionString = Environment.GetEnvironmentVariable(connectionString);
             conn.Open();
@@ -231,7 +190,6 @@ namespace StudentMultiTool.Backend.Controllers
                 }
                 else
                 {
-                    Console.WriteLine("ERROR: Account Disabled");
                     return false;
                 }
             }
@@ -241,43 +199,8 @@ namespace StudentMultiTool.Backend.Controllers
             }
         }
 
-        //// Logs ip when make incorrect log in attempt
-        //public static void LogIP(string email)
-        //{
-        //    string myIP = GetIP();
-
-        //    SqlConnection conn = new SqlConnection();
-        //    conn.ConnectionString = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING");
-        //    conn.Open();
-        //    SqlCommand c = new SqlCommand("SELECT id FROM UserAccounts WHERE UserAccounts.email = @email", conn);
-        //    c.Parameters.AddWithValue("@email", email);
-        //    SqlDataReader reader = c.ExecuteReader();
-        //    int id = 0;
-        //    reader.Close();
-        //    id = (int)c.ExecuteScalar();
-        //    DateTime timeStamp = DateTime.Now;
-
-
-        //    SqlCommand cmd = new SqlCommand("INSERT INTO Logs (timestamp, layer, category, userID, description) VALUES (@timeStamp, @layer, @category, @userID, @description)", conn);
-        //    cmd.Parameters.AddWithValue("@timeStamp", timeStamp);
-        //    cmd.Parameters.AddWithValue("@layer", "Security");
-        //    cmd.Parameters.AddWithValue("@category", "Error");
-        //    cmd.Parameters.AddWithValue("@userID", id);
-        //    cmd.Parameters.AddWithValue("@description", "Invalid login attempt at " + myIP);
-        //    cmd.ExecuteNonQuery();
-
-
-        //}
-
-        //// Gets ip address of user
-        //public static string GetIP()
-        //{
-        //    string hostName = Dns.GetHostName();
-        //    string myIP = Dns.GetHostEntry(hostName).AddressList[1].ToString();
-        //    return myIP;
-        //}
         // Hashes passcode
-        public static string HashPass(string password)
+        public string HashPass(string password)
         {
 
             string s = "teammarvel";
@@ -293,7 +216,7 @@ namespace StudentMultiTool.Backend.Controllers
         }
 
         // Generates otp and inserts into db
-        public static string Randomize(string email)
+        public string Randomize(string email)
         {
             Random rand = new Random();
             const string chars = "abcdefghijklmnopqrstuvwxyz0123456789";
@@ -316,12 +239,10 @@ namespace StudentMultiTool.Backend.Controllers
             cmd.Parameters.AddWithValue("@userID", id);
             cmd.ExecuteNonQuery();
             return otp;
-
-
         }
 
         // Checks is user is disabled
-        public static bool CheckDisabled(string email)
+        public bool CheckDisabled(string email)
         {
             SqlConnection conn = new SqlConnection();
             conn.ConnectionString = Environment.GetEnvironmentVariable(connectionString);
@@ -334,7 +255,7 @@ namespace StudentMultiTool.Backend.Controllers
         }
 
         // Sends otp via email
-        public static void SendEmail(string email, string otp)
+        public  void SendEmail(string email, string otp)
         {
             String from = "studentmultitool@outlook.com";
             String subject = "OTP code for Student Multi-Tool";
@@ -347,6 +268,14 @@ namespace StudentMultiTool.Backend.Controllers
             client.EnableSsl = true;
             client.Send(mail);
         }
+
+
+
+
+
+
+
+
 
         // Validates user entered correct credentials to enter system
         public static int LoginUser(string username, string password)
@@ -406,56 +335,17 @@ namespace StudentMultiTool.Backend.Controllers
 
 
         // Disables a user if they exceed 5 incorrect login attempts
-        public static void UpdateDisable(string username)
+        public void UpdateDisable(string username)
         {
             SqlConnection conn = new SqlConnection();
             conn.ConnectionString = Environment.GetEnvironmentVariable(connectionString);
             conn.Open();
-            SqlCommand cmd = new SqlCommand("UPDATE UserAccounts" + " SET active_status = @newStatus" + " WHERE username = @username", conn);
+            SqlCommand cmd = new SqlCommand("UPDATE UserAccounts SET active_status = @newStatus WHERE username = @username", conn);
             cmd.Parameters.AddWithValue("@newStatus", 0);
             cmd.Parameters.AddWithValue("@username", username);
             cmd.ExecuteNonQuery();
         }
 
-        public void Logout()
-        {
-            Console.WriteLine("Welcome to Student Multi-Tool Home Page");
-            Console.Title = "StudentMultiTool Home";
-            // Change console text color
-            Console.ForegroundColor = ConsoleColor.Green;
-            // Change terminal height
-            Console.WindowHeight = 40;
-
-            // Create UiPrint Object
-            UIPrint ui = new UIPrint();
-
-            // Create bool object for menu loop
-            bool menuLoop = true;
-            // Create loop for menu
-            while (menuLoop is true)
-            {
-                ui.SystemAccountMenu();
-                // Get user choice
-                int menuChoice = Convert.ToInt32(Console.ReadLine());
-                // Complete the appropriate action
-                switch (menuChoice)
-                {
-                    // Break right away
-                    case 0:
-                        Console.ForegroundColor = ConsoleColor.Cyan;
-                        menuLoop = false;
-                        break;
-                    // Logout - go back to login 
-                    case 1:
-                        Console.ForegroundColor = ConsoleColor.Cyan;
-
-                        LoginController login = new LoginController();
-                        login.Authenticate();
-                        menuLoop = false;
-                        break;
-                }
-            }
-        }
 
 
     }
