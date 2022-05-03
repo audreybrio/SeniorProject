@@ -15,16 +15,16 @@ namespace Tests.Backend.Services.Registration
         [Fact]
         public void RegistrationSuccess()
         {
-            //InputValidation input = new InputValidation();
-            //string email = "Audrey.Brio@student.csulb.edu";
-            //string userName = "AudreyBrio";
-            //string password = "audrey1234";
-            //string school = "csulb";
-            //UserAccount userAcc = new UserAccount(email, password, userName, school);
-            //Update usertoDB = new Update();
-            //usertoDB.UpdateCreate(email, password, userName, school);
-            //bool successCase = input.emailExists(email);
-            //Assert.True(successCase);
+            InputValidation input = new InputValidation();
+            string email = "Audrey.Brio@student.csulb.edu";
+            string userName = "AudreyBrio";
+            string password = "audrey1234";
+            string school = "csulb";
+            UserAccount userAcc = new UserAccount(email, password, userName, school);
+            Update usertoDB = new Update();
+           // usertoDB.UpdateCreate(email, password, userName, school);
+            bool successCase = input.emailExists(email);
+            Assert.True(successCase);
         }
 
         [Fact]

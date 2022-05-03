@@ -12,6 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="src\components\AutomatedModerating\" />
+    <Folder Include="src\components\Matching\" />
     <Folder Include="src\components\Logout\" />
     <Folder Include="src\components\ScheduleComparison\" />
     <Folder Include="src\components\UserManagement\" />
