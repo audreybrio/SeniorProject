@@ -12,7 +12,8 @@
     </div>
 </template>
 <script>
-    import RecipesService from '/src/variables/RecipesService.js'
+    import AccessService from '/src/variables/AccessService.js'
+
 
     export default {
       props: ['id'],
@@ -22,7 +23,7 @@
         }
       },
       created() {
-        RecipesService.getRecipe(this.id).then(response => {
+        AccessService.getRecipe(this.id).then(response => {
             this.recipe = response.data})
             .catch(error => {
                 console.log(error)
@@ -31,7 +32,7 @@
       methods: {
 
           deleteRecipe() {
-              RecipesService.deleteRecipe(this.id).then(function (response) {
+              AccessService.deleteRecipe(this.id).then(function (response) {
                     console.log(response);
                 })
                 .catch(function (error) {

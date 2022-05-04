@@ -47,7 +47,7 @@
 
 
 <script>
-    import RecipesService from '/src/variables/RecipesService.js'
+    import AccessService from '/src/variables/AccessService.js'
 
 	export default {
         props: ['recipe'],
@@ -66,7 +66,7 @@
             onEditPost() {
 
                
-                RecipesService.editRecipe(this.recipe.id, {
+                AccessService.editRecipe(this.recipe.id, {
                     title: this.title, category: this.category, calorieValue: this.calorieValue, overallPrice: this.overallPrice,
                     datePosted: this.datePosted, mealForPeople: this.mealForPeople, description: this.description
                 })

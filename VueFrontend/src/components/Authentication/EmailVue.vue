@@ -12,6 +12,8 @@
         <div>
             <button @click="skip">Test</button>
             <router-link to="/registration">Registration</router-link>
+            <router-link to="/resetpassemail">ForgotPassword?</router-link>
+
         </div>
     </div>
     <router-view />

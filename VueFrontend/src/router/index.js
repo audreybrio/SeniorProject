@@ -24,6 +24,9 @@ import RecipeLayout from '../components/MyRecipe/RecipeLayout.vue'
 import RecipeRegister from '../components/MyRecipe/RecipeRegister.vue'
 import RecipeEdit from '../components/MyRecipe/RecipeEdit.vue'
 import RecipeDelete from '../components/MyRecipe/RecipeDelete.vue'
+import NewPassword from '../components/PasswordReset/NewPassword.vue'
+import EmailSendMessage from '../components/PasswordReset/EmailSendMessage.vue'
+import ResetPasswordEmail from '../components/PasswordReset/ResetPasswordEmail.vue'
 
 const routes = [
     // Core Features
@@ -136,9 +139,6 @@ const routes = [
         component: MatchesChild
 
     },
-
-
-
     {
         path: '/studentDiscounts/discountDetails/:id',
         name: 'discountDetails',
@@ -190,6 +190,22 @@ const routes = [
                 component: RecipeEdit
             }
         ]
+    },
+    {
+        path: '/resetpassemail',
+        name:'ResetPasswordEmail',
+        component: ResetPasswordEmail
+    },
+    {
+        path: '/newpassword',
+        name:'NewPassword',
+        component: NewPassword
+
+    },
+    {
+        path:'/sendemail',
+        name:'EmailSendMessage',
+        component: EmailSendMessage
     },
     
     // ADD MORE HERE! DON'T ADD AFTER not-found!

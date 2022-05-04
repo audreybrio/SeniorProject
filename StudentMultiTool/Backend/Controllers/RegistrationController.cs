@@ -119,8 +119,8 @@ namespace StudentMultiTool.Backend.Controllers
         {
             try
             {
-                // the username and token matches with our database values
-                // the new user account is activated
+                //the username and token matches with our database values
+                //the new user account is activated
                 Update manageAccount = new Update();
                 if (manageAccount.ActivateAccount(username, token))
                 {
