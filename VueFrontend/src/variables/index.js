@@ -11,6 +11,10 @@ const URLS = {
     api: {
         admin: {
             getUsers: apiRoot + "userManagement/getUsers",
+            getRoles: apiRoot + "userManagement/getRoles",
+            updateUsers: apiRoot + "userManagement/updateUsers",
+            deleteUsers: apiRoot + "userManagement/deleteUsers",
+            runBulkOperation: apiRoot + "userManagement/runBulkOperation"
         },
 
         scheduleBuilder: {

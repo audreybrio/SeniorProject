@@ -59,6 +59,11 @@ const routes = [
         name: 'UserManagement',
         component: () => import('../Views/UserManagement/UserManagement.vue')
     },
+    {
+        path: '/UserManagement/BulkOperation',
+        name: 'BulkOperation',
+        component: () => import('../Views/UserManagement/BulkOperation.vue')
+    },
 
     // ScheduleBuilder & ScheduleComparison
     // ScheduleBuilder
@@ -198,6 +203,12 @@ const routes = [
     //    name: 'EventPlannning',
     //    component: () => import('../Views/EventPlannning/EventPlannning.vue')
     //},
+
+    {
+        path: '/notAuthorized',
+        name: 'not-authorized',
+        component: () => import('../Views/NotAuthorized')
+    },
 
     // ADD MORE HERE! DON'T ADD AFTER not-found!
 

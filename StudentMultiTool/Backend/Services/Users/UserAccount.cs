@@ -4,6 +4,7 @@ namespace UserAcc
 {
     public class UserAccount
     {
+        public int Id { get; set; }
         public string name;
         public string username;
         public string password;
@@ -13,7 +14,7 @@ namespace UserAcc
         public bool active;
         public string school;
  
-
+        public UserAccount() { }
         public UserAccount(string email, string password, string userName, string school)
         {
             this.email = email;
