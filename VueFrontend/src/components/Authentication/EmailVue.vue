@@ -1,62 +1,40 @@
 <template>
-<header>         <h2>Login Form</h2>
- </header>
-    <body>
-        <form method="post">
-        <div class="welcome">
-            <h>Welcome to Student Multi-Tool</h>
-        </div>
-
-        <div class="container">
-            <label for="uname"><b>Email</b></label>
-            <input id="email" v-model="email" placeholder="Enter Email" name="Email" required>
-
-            <label for="psw"><b>Password</b></label>
-            <input id="passcode" v-model="passcode" placeholder="Enter Password" name="psw" required>
-                
-            <button type="submit" @click="onSubmit">Login</button>
-                <div>
-                    <router-link to="/registration"><button>Registration</button></router-link>
-                </div>
-        </div>
-        <!-- <div class="container" style="background-color:#f1f1f1">
-            <button type="button" class="cancelbtn">Cancel</button>
-            <span class="psw">Forgot <a href="#">password?</a></span>
-        </div> -->
-        </form>
-
-    </body>
-    <!-- <div class="post">
+    <div class="post">
         <div v-if="loading" class="loading">
             Welcome! Please enter email and passcode!
+        </div>
+        <div class="warning">
+            <div v-if="errors.length" :key="index" class="warning">{{errors}}</div>
         </div>
         <input id="email" v-model="email" placeholder="Email">
         <input id="passcode" v-model="passcode" placeholder="Passocde">
         <button id="button" @click="onSubmit">Submit</button>
         <div>
+            <button @click="skip">Test</button>
             <router-link to="/registration">Registration</router-link>
         </div>
-    </div> -->
+    </div>
     <router-view />
 </template>
 
 <script> // <!--lang="js"-->
     import router from '@/router'
+    // import * as $ from 'jquery'
+    // import axios from "axios"
+    import URLS from '../../variables'
 
     export default ({
         data() {
             return {
                 loading: false,
                 post: null,
+                errors: "",
             };
         },
         created() {
-            // fetch the data when the view is created and the data is
-            // already being observed
             this.fetchData();
         },
         watch: {
-            // call again the method if the route changes
             '$route': 'fetchData'
         },
         methods: {
@@ -65,108 +43,72 @@
                 this.loading = true;
                 this.email = '';
                 this.passcode = '';
+
+
             },
             onSubmit() {
-                if (this.email == "audrey.brio@student.csulb.edu" && this.passcode == "hello world") {
-                    router.push({name: "LoginVue"});
+                //$.ajax({
+                //    url: `${URLS.api.login.validate}/${this.email}/${this.passcode}`,
+                //    context: this,
+                //    method: 'GET',
+                //    success: function () {
+                //        console.log("ajax success")
+                //        router.push({ name: "LoginVue" });
 
-                }
-                else if (this.email == "bradley.nickle@student.csulb.edu" && this.passcode == "marvel fan") {
-                    router.push({ name: "LoginVue" });
+                //    },
+                //    error: function () {
+                //        console.log("error")
+                //        this.errors = "Email/Passcode Incorrect";
+                //    }
+                //})
 
-                }
-                else if (this.email == "joseph.cutri@student.csulb.edu" && this.passcode == "number one") {
-                    router.push({ name: "LoginVue" });
+                fetch(
+                    `${URLS.api.login.validate}/${this.email}/${this.passcode}`, {
+                        method: 'POST',
+                        context: this,
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                    },
 
-                }
-                else if (this.email == "albert.toscano01@student.csulb.edu" && this.passcode == "happy meal") {
-                    router.push({ name: "LoginVue" });
+                }).then((response) => {
+                    if (!response.ok) {
 
-                }
-                else if (this.email == "jacob.delgado01@student.csulb.edu" && this.passcode == "super man") {
-                    router.push({ name: "LoginVue" });
+                        console.log("error")
+                        this.errors = "Email/Passcode Incorrect";
+                    }
+                    else {
+                        console.log("ajax success")
+                        router.push({ name: "LoginVue" })
+                    }
+                    
+                }).catch(() => {
+                    console.log("error")
+                    this.errors = "Email/Passcode Incorrect";
 
-                }
-                else if (this.email == "szeman.tang@student.csulb.edu" && this.passcode == "wonder woman") {
-                    router.push({ name: "LoginVue" });
+                });
+            },
 
-                }
-                else if (this.email == "devarsh.patel@student.csulb.edu" && this.passcode == "pizza guy") {
-                    router.push({ name: "LoginVue" });
+            skip() {
+                window.sessionStorage.setItem("token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiQXVkcmV5IEJyaW8iLCJ1c2VybmFtZSI6ImFicmlvIiwiZW1haWwiOiJhdWRyZXkuYnJpb0BzdHVkZW50LmNzdWxiLmVkdSIsInJvbGUiOiJhZG1pbiIsInNjaG9vbCI6IkNTVUxCIiwiaXNWYWxpZCI6dHJ1ZX0.OUsg0xFq6_1c8ApP3JdKs3t-RhbLUpqFGLsbnL0Cx4U");
+                router.push({ name: "HomePage" })
+            },
 
-                }
-                else {
-                    alert("Incorect email/passcode");
-                }
-            }
+                 
+            
 
         },
     });
 </script>
 <style scoped>
-
-body {
-    font-family: Arial, Helvetica, sans-serif; 
-    display: float, center;
-    vertical-align: middle;    
-    height:100%;
- }
-form {border: 3px solid #f1f1f1; align-items: center; padding: 5rem;}
-
-input[id=email], input[id=passcode] {
-  width: 100%;
-  padding: 12px 20px;
-  margin: 8px 0;
-  display: inline-block;
-  border: 1px solid #ccc;
-  box-sizing: border-box;
-}
-
-button {
-  background-color: #04AA6D;
-  color: white;
-  padding: 14px 20px;
-  margin: 8px 0;
-  border: none;
-  cursor: pointer;
-  width: 100%;
-}
-
-button:hover {
-  opacity: 0.8;
-}
-
-.cancelbtn {
-  width: auto;
-  padding: 10px 18px;
-  background-color: #f44336;
-}
-
-.welcome {
-  text-align: center;
-  margin: 24px 0 12px 0;
-}
-
-.container {
-  padding: 16px;
-}
-
-span.psw {
-  float: right;
-  padding-top: 16px;
-}
-
-/* Change styles for span and cancel button on extra small screens */
-@media screen and (max-width: 300px) {
-  span.psw {
-     display: block;
-     float: none;
-  }
-  .cancelbtn {
-     width: 100%;
-  }
-}
     button {
         font-weight: bold;
+    }
+    .warning {
+        color: red;
+        margin: auto;
+        width: 440px;
+        text-align: center;
+        font-size: 11px;
     }
 </style>

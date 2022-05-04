@@ -1,6 +1,6 @@
 <template>
     <div class="post">
-        <div v-if="loading" class="loading">
+        <div>
             Hello {{ id }}! :)
         </div>
         <div>
@@ -16,9 +16,11 @@
         <div>
             <button @click="onAid">Aid Eligibility Estimates</button>
             <button @click="onSD">Student Discounts</button>
-            <button @click="onRP">Recipes</button>
-            <button @click="onSubmit">Logout</button>
+            <button @click="onMatching">Matching</button>
+            <button @click="onEP">Event Planning</button>
         </div>
+            <button @click="onSubmit">Logout</button>
+        
     </div>
     <router-view />
 </template>
@@ -36,6 +38,10 @@
             };
         },
         created() {
+        },
+        watch: {
+            // call again the method if the route changes
+            '$route': 'fetchData'
         },
         methods: {
             onSubmit() {
@@ -68,18 +74,17 @@
             onSD() {
                 router.push({ name: "studentDiscounts" });
             },
+            onMatching() {
+                router.push({ name: "matchingMain" })
+            },
+
+
             onAid() {
                 router.push({ name: "studentInformation" });
-            },
-            onRP() {
-                router.push({ name: "RecipeView" });
-
             }
         },
     });
 </script>
-
-
 <style scoped>
     button {
         font-weight: bold;

@@ -21,21 +21,20 @@
           recipe: null
         }
       },
-        created() {
-
-        RecipesService.getRecipe(this.id).then((response) =>{
+      created() {
+        RecipesService.getRecipe(this.id).then(response => {
             this.recipe = response.data})
-            .catch( (error) => {
+            .catch(error => {
                 console.log(error)
             })
       },
       methods: {
 
           deleteRecipe() {
-              RecipesService.deleteRecipe(this.id).then((response) => {
+              RecipesService.deleteRecipe(this.id).then(function (response) {
                     console.log(response);
                 })
-                .catch((error) => {
+                .catch(function (error) {
                     console.log(error);
                 });
           }

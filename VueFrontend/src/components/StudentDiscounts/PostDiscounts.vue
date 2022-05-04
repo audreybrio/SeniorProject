@@ -1,4 +1,4 @@
-<template >
+<!--<template >
   <div class="box">
     <div class="alignLeft">
       <label for="formControlRange">Post Discount:</label><br/>
@@ -59,4 +59,4 @@ hr {
         margin-left: auto;
         margin-right: auto;
       }
-</style>
+</style>-->
