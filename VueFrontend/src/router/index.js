@@ -7,6 +7,7 @@ import EmailVue from '../components/Authentication/EmailVue.vue'
 import LoginVue from '../components/Authentication/LoginVue.vue'
 import HomePage from '../Views/HomePage.vue'
 import EmailVerification from '../components/Registration/EmailVerification.vue'
+import AuthenticateUser from '../components/Authentication/AuthenticateUser'
 
 // Application features
 // StudentDiscounts
@@ -52,6 +53,11 @@ const routes = [
         name: 'HomePage',
         component: HomePage
 
+    },
+    {
+        path: '/authenticate',
+        name: 'authenticateUser',
+        component: AuthenticateUser
     },
     {
         path: '/registration',

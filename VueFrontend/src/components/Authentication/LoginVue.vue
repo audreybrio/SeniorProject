@@ -56,44 +56,6 @@
 
             },
             onLogin() {
-                //$.ajax({
-                //    url: `${URLS.api.login.authenticate}/${ this.username}/${this.otp}`,
-                //    context: this,
-                //    method: 'GET',
-                //    success: function () {
-                //        console.log("ajax success")
-                //        if (this.username == "abrio") {
-                //            window.sessionStorage.setItem("token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiQXVkcmV5IEJyaW8iLCJ1c2VybmFtZSI6ImFicmlvIiwiZW1haWwiOiJhdWRyZXkuYnJpb0BzdHVkZW50LmNzdWxiLmVkdSIsInJvbGUiOiJhZG1pbiIsInNjaG9vbCI6IkNTVUxCIiwiaXNWYWxpZCI6InRydWUifQ.KQj0fCIdROg-AsDPomGnmfyNN53cccRPTyiK5DgrPWs");
-                //        }
-                //        else if (this.username == "bnickle") {
-                //            window.sessionStorage.setItem("token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiQnJhZGxleSBOaWNrbGUiLCJ1c2VybmFtZSI6ImJuaWNrbGUiLCJlbWFpbCI6ImJyYWRsZXkubmlja2xlQHN0dWRlbnQuY3N1bGIuZWR1Iiwicm9sZSI6InN0dWRlbnQiLCJzY2hvb2wiOiJDU1VMQiJ9.Ntm8yiFnS7WfrU1FIg37OIgKTbBi7ejCPXLLiVrKRpU");
-                //        }
-                //        else if (this.username == "jcutri") {
-                //            window.sessionStorage.setItem("token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSm9zZXBoIEN1dHJpIiwidXNlcm5hbWUiOiJqY3V0cmkiLCJlbWFpbCI6Impvc2VwaC5jdXRyaUBzdHVkZW50LmNzdWxiLmVkdSIsInJvbGUiOiJzdHVkZW50Iiwic2Nob29sIjoiQ1NVTEIifQ.OzX3sALvaZ9ZN839HNVkE-5XtvYPucteHYok0xSHf_k");
-                //        }
-                //        else if (this.username == "atoscano") {
-                //            window.sessionStorage.setItem("token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiQWxiZXJ0IFRvc2Nhbm8iLCJ1c2VybmFtZSI6ImF0b3NjYW5vIiwiZW1haWwiOiJhbGJlcnQudG9zY2FubzAxQHN0dWRlbnQuY3N1bGIuZWR1Iiwicm9sZSI6ImFkbWluIiwic2Nob29sIjoiQ1NVTEIifQ.2zjbN082tbynsaX5DiP9vurjQaNi6_GONtkDi2l663E");
-                //        }
-                //        else if (this.username == "jdelgado") {
-                //            window.sessionStorage.setItem("token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSmFjb2IgRGVsZ2FkbyIsInVzZXJuYW1lIjoiamRlbGdhZG8iLCJlbWFpbCI6ImphY29iLmRlbGdhZG9Ac3R1ZGVudC5jc3VsYi5lZHUiLCJyb2xlIjoic3R1ZGVudCIsInNjaG9vbCI6IkNTVUxCIn0.tPMhd4RnLJgRSlST6_8jgHLxGXD53v8067ApEY9I5N0");
-                //        }
-                //        else if (this.username == "stang") {
-                //            window.sessionStorage.setItem("token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiU3plTWFuIFRhbmciLCJ1c2VybmFtZSI6InN0YW5nIiwiZW1haWwiOiJzemVtYW4udGFuZ0BzdHVkZW50LmNzdWxiLmVkdSIsInJvbGUiOiJzdHVkZW50Iiwic2Nob29sIjoiQ1NVTEIifQ.uhv7AvYnnoTyfo4-EFMhGJ1RjV2UJ79GHtNrzkk5wMA");
-                //        }
-                //        else if (this.username == "dpatel") {
-                //            window.sessionStorage.setItem("token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiRGV2YXJzaCBQYXRlbCIsInVzZXJuYW1lIjoiZHBhdGVsIiwiZW1haWwiOiJkZXZhcnNoLnBhdGVsQHN0dWRlbnQuY3N1bGIuZWR1Iiwicm9sZSI6InN0dWRlbnQiLCJzY2hvb2wiOiJDU1VMQiJ9.BeIYgDfebLnSJ6RgTdjCc3KNCguixNVYOGelghn1BO8");
-                //        }
-                //        router.push({ name: "HomePage" });
-
-                //    },
-                //    error: function () {
-                //        console.log("error")
-                //        this.count = this.count + 1;
-                //        this.errors = "Username/Otp Incorrect";
-                        
-                        
-                //    }
-                //})
                 this.count++;
                 if (this.count < 6) {
                     fetch(
