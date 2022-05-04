@@ -53,6 +53,19 @@ namespace StudentMultiTool.Backend.Services.DataAccess
                 Console.Error.WriteLine(ex.Message);
             }
         }
+        public bool UpdateQuery(string query)
+        {
+            try
+            {
+                this._Query = query;
+                return true;
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
+            }
+            return false;
+        }
         public bool reset()
         {
             try
