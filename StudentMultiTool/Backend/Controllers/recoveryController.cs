@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using RecipeDetails.Models;
+using StudentMultiTool.Backend.Controllers;
+using StudentMultiTool.Backend.Models.RecoveryAccount;
 
-namespace RecipeDetails.Controllers
+namespace StudentMultiTool.Backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

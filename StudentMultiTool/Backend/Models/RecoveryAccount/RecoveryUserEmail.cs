@@ -1,4 +1,7 @@
-﻿namespace RecipeDetails.Models
+﻿
+
+
+namespace StudentMultiTool.Backend.Models.RecoveryAccount
 {
     public class RecoveryUserEmail
     {

@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const apiClient = axios.create({
-    baseURL: 'http://localhost:5003/api/recipe',
+    baseURL: 'http://localhost:5003/api',
     //baseURL: 'http://ec2-13-52-181-69.us-west-1.compute.amazonaws.com:8080/api/recipe',
     withCredentials: false,
     headers: {
