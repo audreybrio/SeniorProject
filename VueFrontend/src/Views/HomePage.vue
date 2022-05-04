@@ -61,13 +61,6 @@
 
             },
 
-            onUsageAnalysisDashboard() {
-                router.push({ name: "not-found" });
-            },
-            onUserManagement() {
-                router.push({ name: "UserManagement" });
-            },
-
              onAC() {
                 router.push({ name: "not-found" });
             },

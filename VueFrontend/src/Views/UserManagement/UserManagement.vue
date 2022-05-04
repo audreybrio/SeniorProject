@@ -1,11 +1,10 @@
 <template>
-    <h2>User Management</h2>
     <div v-if="display">
     very true!
         <table>
             <thead>
                 <tr>
-                    <th>ID</th>
+                    <th>User ID</th>
                     <th>Username</th>
                     <th>Email</th>
                     <th>Active</th>
@@ -17,17 +16,12 @@
             <tbody>
                 <tr v-for="user in users" :key="user.id">
                     <th>{{ user.id }}</th>
-                    <th><input type="text" v-model="user.username" /></th>
-                    <th><input type="text" v-model="user.email" /></th>
+                    <th>{{ user.username }}</th>
+                    <th>{{ user.email }}</th>
                     <th><input type="checkbox" v-model="user.active" /></th>
-                    <th>
-                        <select v-model="user.role">
-                            <option disabled value="">This user's role</option>
-                            <option v-for="role in possibleRoles" :key="role">{{ role }}</option>
-                        </select>
-                    </th>
-                    <th><button @click="update(user)">Update</button></th>
-                    <th><button @click="onDelete(user)">Delete</button></th>
+                    <th><input type="range" v-model="user.role" /></th>
+                    <th><button>Update</button></th>
+                    <th><button>Delete</button></th>
                 </tr>
             </tbody>
         </table>
@@ -48,8 +42,7 @@
             return {
                 user: null,
                 role: null,
-                users: [],
-                possibleRoles: []
+                users: []
             }
         },
         created() {
@@ -58,24 +51,10 @@
             this.role = ADMIN;
             if (this.role === ADMIN) {
                 this.display = true;
-                this.loadRoles();
                 this.loadUsers();
             }
         },
         methods: {
-            loadRoles() {
-                this.loading = true
-                axios.get(`${URLS.api.admin.getRoles}`, { timeout: 5000 })
-                    .then(response => {
-                        this.possibleRoles = response.data
-                        this.loading = false
-                        alert("Roles loaded")
-                    })
-                    .catch(e => {
-                        this.loading = false
-                        alert("Could not load users\n" + e)
-                    })
-            },
             loadUsers() {
                 this.loading = true
                 axios.get(`${URLS.api.admin.getUsers}`, { timeout: 5000 })
@@ -85,44 +64,11 @@
                         alert("Users loaded")
                     })
                     .catch(e => {
-                        this.loading = false
                         alert("Could not load users\n" + e)
                     })
             },
             routeUnauthorized() {
-                router.push({ name: "not-authorized" });
-            },
-            routeBulk() {
-                router.push({ name: "BulkOperations" });
-            },
-            routeHome() {
-                router.push({ name: "HomePage" });
-            },
-            update(user) {
-                user.passcode = "null"
-                user.password = "null"
-                axios.post(`${URLS.api.admin.updateUsers}`, [user], {
-                    timeout: 5000
-                })
-                    .then(response => {
-                        alert("Updated user with id " + user.id)
-                    })
-                    .catch(e => {
-                        alert("Could not update user with id " + user.id + "\n" + e)
-                    })
-            },
-            onDelete(user) {
-                user.passcode = "null"
-                user.password = "null"
-                axios.post(`${URLS.api.admin.deleteUsers}`, [user], {
-                    timeout: 5000
-                })
-                    .then(response => {
-                        alert("Deleted user with id " + user.id)
-                    })
-                    .catch(e => {
-                        alert("Could not delete user with id " + user.id + "\n" + e)
-                    })
+                // route the user to unauthorized page
             }
         }
     });
