@@ -1,24 +1,24 @@
-<template>
+<!--<template>
     <div class="post">
         <div v-if="loading" class="loading">
             Calculate your GPA !!!!
             <br>
             <br>
-        </div>
+        </div>-->
 
         <!-- Warning Error for if something goes wrong -->
-        <div class="warning">
+        <!--<div class="warning">
             <div v-if="errors.length" :key="index" class="warning">{{errors}}</div>
         </div>
 
         <div>
             Enter number of classes took this semester:
             <input id="sem" name="sem" v-model="ssm" placeholder="Number of courses">
-        </div>
+        </div>-->
 
 
         <!-- Radio buttons for user to select which type of setting they would want for tutoring-->
-        <div>
+        <!--<div>
             Course 1
         </div>
         <div>
@@ -204,4 +204,4 @@
         text-align: center;
         font-size: 11px;
     }
-</style>
+</style>-->

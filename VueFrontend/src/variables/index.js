@@ -44,7 +44,8 @@ const URLS = {
         login: {
             validate: apiRoot + "login/validate",
             authenticate: apiRoot + "login/authenticate",
-            disable: apiRoot + "login/disable"
+            disable: apiRoot + "login/disable",
+            getToken: apiRoot + "login/getToken"
         }
     }
 }

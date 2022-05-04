@@ -106,6 +106,17 @@ namespace StudentMultiTool.Backend.Controllers
             return Ok();
         }
 
+        [HttpGet]
+        [Route("getToken/{username}")]
+        public string GetToken(string username)
+        {
+            string role = GetRole(username);
+            var token = GenerateJwtToken(username, role);
+            Console.WriteLine(token);
+            return token;
+        }
+
+
 
         // Checks if user exists in database
         public bool UserExist(string email, string passcode)
@@ -362,7 +373,7 @@ namespace StudentMultiTool.Backend.Controllers
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
-            Console.WriteLine(tokenHandler.WriteToken(token));
+            //Console.WriteLine(tokenHandler.WriteToken(token));
             return tokenHandler.WriteToken(token);
         }
 
