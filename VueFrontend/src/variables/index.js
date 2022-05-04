@@ -46,6 +46,10 @@ const URLS = {
             authenticate: apiRoot + "login/authenticate",
             disable: apiRoot + "login/disable",
             getToken: apiRoot + "login/getToken"
+        },
+
+        gpaCalc: {
+
         }
     }
 }
