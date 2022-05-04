@@ -90,7 +90,7 @@
             },
 
             skip() {
-                window.sessionStorage.setItem("token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiQXVkcmV5IEJyaW8iLCJ1c2VybmFtZSI6ImFicmlvIiwiZW1haWwiOiJhdWRyZXkuYnJpb0BzdHVkZW50LmNzdWxiLmVkdSIsInJvbGUiOiJhZG1pbiIsInNjaG9vbCI6IkNTVUxCIiwiaXNWYWxpZCI6dHJ1ZX0.OUsg0xFq6_1c8ApP3JdKs3t-RhbLUpqFGLsbnL0Cx4U");
+                window.sessionStorage.setItem("token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFicmlvIiwicm9sZSI6ImFkbWluIiwibmJmIjoxNjUxNjI2NzY4LCJleHAiOjE2NTE3MTMxNjgsImlhdCI6MTY1MTYyNjc2OH0.NqmnnN2bbN36rzjIYzpxd3BTd3WudB_30QpC_ab2spA");
                 router.push({ name: "HomePage" })
             },
 

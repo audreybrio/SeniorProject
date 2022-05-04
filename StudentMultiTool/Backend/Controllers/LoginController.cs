@@ -1,10 +1,14 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Mvc;
 using System.Data.SqlClient;
 using StudentMultiTool.Backend.Services.Authentication;
 using System.Net.Mail;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using System.Text;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace StudentMultiTool.Backend.Controllers
 {
@@ -13,6 +17,14 @@ namespace StudentMultiTool.Backend.Controllers
     public class LoginController : Controller
     {
         const string connectionString = "MARVELCONNECTIONSTRING";
+       // private readonly IConfiguration _configuration;
+        private readonly AppSettings _appSettings;
+
+        public LoginController(IOptions<AppSettings> appSettings)
+        {
+            _appSettings = appSettings.Value;
+        }
+
         //private int attempts = 0;
         //AppDomain.CurrentDomain.SetPrincipalPolicy(PrincipalPolicy.WindowsPrincipal); 
         //WindowsPrincipal myPrincipal = (WindowsPrincipal)Thread.CurrentPrincipal;
@@ -60,7 +72,7 @@ namespace StudentMultiTool.Backend.Controllers
             //Console.WriteLine(attempts);
            // while (attempts < 6)
             //{
-                int count = LoginUser(username, otp);
+            int count = LoginUser(username, otp);
             //bool isValid = ValidTime(username);
             //if (!isValid)
             //{
@@ -69,7 +81,10 @@ namespace StudentMultiTool.Backend.Controllers
 
             if (count > 0)
             {
-                return Ok();
+                string role = GetRole(username);
+                var token = GenerateJwtToken(username, role);
+                Console.WriteLine(token);
+                return Ok(token);
             }
             else
             {
@@ -177,8 +192,6 @@ namespace StudentMultiTool.Backend.Controllers
 
 
         }
-
-
 
         public int UserExists(string email)
         {
@@ -315,6 +328,52 @@ namespace StudentMultiTool.Backend.Controllers
         }
 
 
+        public string GetRole(string username)
+        {
+            try
+            {
+                SqlConnection conn = new SqlConnection();
+                conn.ConnectionString = Environment.GetEnvironmentVariable(connectionString);
+                conn.Open();
+                SqlCommand c = new SqlCommand("SELECT role FROM UserAccounts WHERE UserAccounts.username = @username", conn);
+                c.Parameters.AddWithValue("@username", username);
+                SqlDataReader reader = c.ExecuteReader();
+                string role = "";
+                reader.Close();
+                role = (string)c.ExecuteScalar();
+                return role;
+            }
+            catch
+            {
+                return "student";
+            }
+        }
+
+
+        private string GenerateJwtToken(string username, string role)
+        {
+            
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes("TEAMMARVEL IS WORKING ON STUDENTMULTITOOL");
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new[] { new Claim("username", username), new Claim("role", role) }),
+                Expires = DateTime.UtcNow.AddHours(24),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            };
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            Console.WriteLine(tokenHandler.WriteToken(token));
+            return tokenHandler.WriteToken(token);
+        }
+
+
+
+
+
+
+
+
+
         // Disables a user if they exceed 5 incorrect login attempts
         public void UpdateDisable(string username)
         {
@@ -337,5 +396,10 @@ namespace StudentMultiTool.Backend.Controllers
 
 
 
+    }
+
+    public class AppSettings
+    {
+        public string Secret { get; set; }
     }
 }

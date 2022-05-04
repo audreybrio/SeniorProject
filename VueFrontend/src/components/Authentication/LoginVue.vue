@@ -30,7 +30,8 @@
                 post: null,
                 errors: "",
                 accountDisabled: "Account Disabled",
-                count: 0
+                count: 0,
+                token: "",
                 
 
             };
@@ -103,7 +104,7 @@
                             'Accept': 'application/json',
                             'Content-Type': 'application/json'
                         },
-
+                        
                     }).then((response) => {
                         if (!response.ok) {
 
@@ -112,10 +113,12 @@
                         }
                         else {
                             console.log("ajax success")
-                            if (this.username == "abrio") {
-                                window.sessionStorage.setItem("token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiQXVkcmV5IEJyaW8iLCJ1c2VybmFtZSI6ImFicmlvIiwiZW1haWwiOiJhdWRyZXkuYnJpb0BzdHVkZW50LmNzdWxiLmVkdSIsInJvbGUiOiJhZG1pbiIsInNjaG9vbCI6IkNTVUxCIiwiaXNWYWxpZCI6dHJ1ZX0.OUsg0xFq6_1c8ApP3JdKs3t-RhbLUpqFGLsbnL0Cx4U");
-                            }
-                            else if (this.username == "bnickle") {
+                            this.token = response.data;
+                            window.sessionStorage.setItem("token", this.token);
+                            //if (this.username == "abrio") {
+                            //    window.sessionStorage.setItem("token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiQXVkcmV5IEJyaW8iLCJ1c2VybmFtZSI6ImFicmlvIiwiZW1haWwiOiJhdWRyZXkuYnJpb0BzdHVkZW50LmNzdWxiLmVkdSIsInJvbGUiOiJhZG1pbiIsInNjaG9vbCI6IkNTVUxCIiwiaXNWYWxpZCI6dHJ1ZX0.OUsg0xFq6_1c8ApP3JdKs3t-RhbLUpqFGLsbnL0Cx4U");
+                            //}
+                            if (this.username == "bnickle") {
                                 window.sessionStorage.setItem("token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiQnJhZGxleSBOaWNrbGUiLCJ1c2VybmFtZSI6ImJuaWNrbGUiLCJlbWFpbCI6ImJyYWRsZXkubmlja2xlQHN0dWRlbnQuY3N1bGIuZWR1Iiwicm9sZSI6InN0dWRlbnQiLCJzY2hvb2wiOiJDU1VMQiIsImlzVmFsaWQiOnRydWV9.olESDuKMoq2MlIx1ZnQfpVaCiTKXtC9ofjEVh0SrXkY");
                             }
                             else if (this.username == "jcutri") {
@@ -136,14 +139,10 @@
                             router.push({ name: "HomePage" });
                         }
 
-                    }).catch(() => {
-                        console.log("error")
-                        this.errors = "Email/Passcode Incorrect";
-
-                    });
+                    })
                 }
                 else {
-                    this.errors = "ERON"
+                    this.errors = ""
                     fetch(
                         `${URLS.api.login.disable}/${this.username}`, {
                         method: 'GET',
