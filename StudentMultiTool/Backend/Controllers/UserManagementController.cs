@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using System.IO;
+using Microsoft.AspNetCore.Mvc;
 using UserAcc;
 using StudentMultiTool.Backend.DAL;
+using StudentMultiTool.Backend.Services.UserManagement;
 
 namespace StudentMultiTool.Backend.Controllers
 {
@@ -112,6 +115,43 @@ namespace StudentMultiTool.Backend.Controllers
                 }
             }
             return StatusCode(400, "Bad or malformed request; received " + users.Count + " users");
+        }
+
+        [HttpPost]
+        [Route("bulkops")]
+        public async Task<IActionResult> BulkOps(IFormFile file)
+        {
+            long size = file.Length;
+            if (size > 0)
+            {
+                try
+                {
+                    var filePath = Path.Combine("../smt-storage/", DateTime.UtcNow.ToString(), file.Name);
+                    using (var stream = System.IO.File.Create(filePath))
+                    {
+                        await file.CopyToAsync(stream);
+                    }
+                    bool executed = false;
+
+                    if (executed)
+                    {
+                        return StatusCode(200, "Bulk operation completed");
+                    }
+                    else
+                    {
+                        return StatusCode(500, "Could not complete bulk operation");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return StatusCode(500, ex.GetType().FullName + "\n" + ex.Message);
+                }
+            }
+            else
+            {
+                return StatusCode(415, "Empty file uploads are not supported");
+            }
+            return StatusCode(400, "Bad or malformed request; please try uploadin your file again");
         }
     }
 }
