@@ -241,11 +241,11 @@ const routes = [
     },
     
     //EventPlanning
-    {
-        path: '/eventPlannning',
-        name: 'EventPlannning',
-        component: () => import('../Views/EventPlannning/EventPlannning.vue')
-    },
+    //{
+    //    path: '/eventPlannning',
+    //    name: 'EventPlannning',
+    //    component: () => import('../Views/EventPlannning/EventPlannning.vue')
+    //},
 
     // ADD MORE HERE! DON'T ADD AFTER not-found!
 
