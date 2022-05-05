@@ -7,34 +7,36 @@ namespace StudentMultiTool.Backend.Services.Matching
     public class Matching
     {
         // Matches based off of activity profile 
-        public static bool MatchingActivity(string username)
+        public static List<Match> MatchingActivity(string username)
         {
             // Sees if profile exists, if it does, continues to match
+            List<Match> matches = new List<Match>();
             int profileCount = Activity.ProfileExists(username);
             if (profileCount == 0)
             {
-                return false;
+                return matches;
             }
             List<string> activities = new List<string>();
             activities = GetActivityProfile(username);
-            bool isSuccess = MatchingDAL.MatchingActivity(activities, username);
-            return isSuccess;
+            matches = MatchingDAL.MatchingActivity(activities, username);
+            return matches;
         }
 
         // Matching based off of Tutoring profile
-        public static bool MatchingTutoring(string username)
+        public static List<Match> MatchingTutoring(string username)
         {
             // Sees if profile exists, if it does contrinues to match 
+            List<Match> matches = new List<Match>();
             int profileCount = Tutoring.ProfileExists(username);
             if (profileCount == 0)
             {
-                return false;
+                return matches;
             }
             List<string> courses = new List<string>();
             bool individual, requires;
             (courses, individual, requires) = GetTutoringProfile(username);
-            bool isSuccess = MatchingDAL.MatchingTutoring(courses, username, individual, requires);
-            return isSuccess;
+            matches = MatchingDAL.MatchingTutoring(courses, username, individual, requires);
+            return matches;
         }
 
         // Display Matches to frontend 

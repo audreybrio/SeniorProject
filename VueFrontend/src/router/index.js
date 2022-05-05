@@ -7,23 +7,33 @@ import EmailVue from '../components/Authentication/EmailVue.vue'
 import LoginVue from '../components/Authentication/LoginVue.vue'
 import HomePage from '../Views/HomePage.vue'
 import EmailVerification from '../components/Registration/EmailVerification.vue'
+import AuthenticateUser from '../components/Authentication/AuthenticateUser'
 
 // Application features
 // StudentDiscounts
 import StudentDiscounts from '../components/StudentDiscounts/StudentDiscounts.vue'
+
 import MatchingMain from '../components/Matching/MatchingMain.vue'
 import ActivityProfile from '../components/Matching/ActivityProfile.vue'
 import TutoringProfile from '../components/Matching/TutoringProfile.vue'
 import DisplayMatches from '../components/Matching/DisplayMatches.vue'
 import MatchesChild from '../components/Matching/MatchesChild.vue'
+
 import DiscountDetails from '../components/StudentDiscounts/DiscountDetails.vue'
 import EstablishmentDetails from '../components/StudentDiscounts/EstablishmentDetails.vue'
+
 import RecipeView from '../components/MyRecipe/RecipeView.vue'
 import RecipeDetails from '../components/MyRecipe/RecipeDetails.vue'
 import RecipeLayout from '../components/MyRecipe/RecipeLayout.vue'
 import RecipeRegister from '../components/MyRecipe/RecipeRegister.vue'
 import RecipeEdit from '../components/MyRecipe/RecipeEdit.vue'
 import RecipeDelete from '../components/MyRecipe/RecipeDelete.vue'
+
+import CalculatorMain from '../components/GPACalc/CalculatorMain.vue'
+import GradeCalc from '../components/GPACalc/GradeCalc.vue'
+import GpaCalc from '../components/GPACalc/GpaCalc.vue'
+import DisplayRankings from '../components/GPACalc/DisplayRankings.vue'
+import RankingsChild from '../components/GPACalc/RankingsChild.vue'
 
 const routes = [
     // Core Features
@@ -43,6 +53,11 @@ const routes = [
         name: 'HomePage',
         component: HomePage
 
+    },
+    {
+        path: '/authenticate',
+        name: 'authenticateUser',
+        component: AuthenticateUser
     },
     {
         path: '/registration',
@@ -197,6 +212,7 @@ const routes = [
             }
         ]
     },
+<<<<<<< HEAD
     //EventPlanning
     //{
     //    path: '/eventPlannning',
@@ -208,7 +224,48 @@ const routes = [
         path: '/notAuthorized',
         name: 'not-authorized',
         component: () => import('../Views/NotAuthorized')
+=======
+
+    // Gpa calc
+    {
+        path: '/calculatorMain',
+        name: 'calculatorMain',
+        component: CalculatorMain
+>>>>>>> d0a03ed95ae02939a52e0eb75b9022e1e6d9bdb1
     },
+
+    {
+        path: '/gradecalc',
+        name: 'gradeCalc',
+        component: GradeCalc
+    },
+
+    {
+        path: '/gpacalc',
+        name: 'gpaCalc',
+        component: GpaCalc
+    },
+
+    {
+        path: '/displayrankings',
+        name: 'displayRankings',
+        component: DisplayRankings
+
+    },
+
+    {
+        path: '/rankingschild',
+        name: 'rankingsChild',
+        component: RankingsChild
+
+    },
+    
+    //EventPlanning
+    //{
+    //    path: '/eventPlannning',
+    //    name: 'EventPlannning',
+    //    component: () => import('../Views/EventPlannning/EventPlannning.vue')
+    //},
 
     // ADD MORE HERE! DON'T ADD AFTER not-found!
 

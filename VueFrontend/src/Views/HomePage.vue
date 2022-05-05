@@ -21,7 +21,11 @@
             <!--<button @click="onAid">Aid Eligibility Estimates</button>-->
             <button @click="onSD">Student Discounts</button>
             <button @click="onMatching">Matching</button>
+        </div>
+
+        <div>
             <button @click="onEP">Event Planning</button>
+            <button @click="onCalc">GPA/Grade Calculator</button>
         </div>
         <div>
             <button @click="onManageAccount">Manage Account</button>
@@ -105,9 +109,19 @@
 
 
             onAid() {
+<<<<<<< HEAD
                 //router.push({ name: "studentInformation" });
                 router.push({ name: "EmailVue" });
             }
+=======
+                router.push({ name: "studentInformation" });
+            },
+
+            onCalc() {
+                router.push({name: "calculatorMain"})
+            },
+
+>>>>>>> d0a03ed95ae02939a52e0eb75b9022e1e6d9bdb1
         },
     });
 </script>
