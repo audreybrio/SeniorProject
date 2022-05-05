@@ -18,12 +18,12 @@
             <button @click="onUSD">User Analysis Dashboard</button>
         </div>
         <div>
-            <button @click="onAid">Aid Eligibility Estimates</button>
+            <!--<button @click="onAid">Aid Eligibility Estimates</button>-->
             <button @click="onSD">Student Discounts</button>
             <button @click="onMatching">Matching</button>
+            <button @click="onEP">Event Planning</button>
         </div>
         <div>
-            <button @click="onEP">Event Planning</button>
             <button @click="onManageAccount">Manage Account</button>
         </div>
         <button @click="onSubmit">Logout</button>
@@ -62,10 +62,20 @@
             },
 
             onUsageAnalysisDashboard() {
-                router.push({ name: "not-found" });
+                if (this.role === 'admin') {
+                    router.push({ name: "not-found" });
+                }
+                else {
+                    alert("You lack the necessary role to access that page.")
+                }
             },
             onUserManagement() {
-                router.push({ name: "UserManagement" });
+                if (this.role === 'admin') {
+                    router.push({ name: "UserManagement" });
+                }
+                else {
+                    alert("You lack the necessary role to access that page.")
+                }
             },
 
              onAC() {
@@ -95,7 +105,8 @@
 
 
             onAid() {
-                router.push({ name: "studentInformation" });
+                //router.push({ name: "studentInformation" });
+                router.push({ name: "EmailVue" });
             }
         },
     });
