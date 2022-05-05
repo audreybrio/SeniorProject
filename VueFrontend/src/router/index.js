@@ -175,8 +175,8 @@ const routes = [
     {
         path: '/recipeview',
         name: 'RecipeView',
-        component: RecipeView, 
-        props: route => ({ page: parseInt(route.query.page) || 1})
+        component: RecipeView,
+        props: route => ({ page: parseInt(route.query.page) || 1 })
     },
     {
         path: '/register',
@@ -188,7 +188,7 @@ const routes = [
         name: 'RecipeLayout',
         props: true,
         component: RecipeLayout,
-        children: [  
+        children: [
             {
                 path: '',
                 name: 'RecipeDetails',
@@ -240,6 +240,13 @@ const routes = [
 
     },
     
+    //EventPlanning
+    {
+        path: '/eventPlannning',
+        name: 'EventPlannning',
+        component: () => import('../Views/EventPlannning/EventPlannning.vue')
+    },
+
     // ADD MORE HERE! DON'T ADD AFTER not-found!
 
     // Not found; don't move this one or place anything after it

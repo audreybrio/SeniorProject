@@ -1,4 +1,4 @@
-﻿namespace StudentMultiTool.Backend.Services.EventPlanning
+﻿namespace StudentMultiTool.Backend.Services.Event
 {
 
     public class EventPlanning
