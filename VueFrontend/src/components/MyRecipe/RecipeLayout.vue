@@ -12,7 +12,7 @@
     </div>
 </template>
 <script>
-    import AccessService from '/src/variables/AccessService.js'
+    import AccessService from '/src/variables/index.js'
 
 
     export default {

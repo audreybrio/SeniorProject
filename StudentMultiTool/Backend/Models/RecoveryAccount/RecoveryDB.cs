@@ -26,10 +26,11 @@ namespace StudentMultiTool.Backend.Models.RecoveryAccount
                           baseURL + "/newpassword"; /*+ username + "/" + token;*/
             mail.Body = body;
             mail.Priority = MailPriority.Normal;
-            using (SmtpClient client = new SmtpClient("email-smtp.us-west-1.amazonaws.com", 587))
+            using (SmtpClient client = new SmtpClient("email-smtp.us-east-1.amazonaws.com", 587))
             {
                 client.EnableSsl = true;
-                client.Credentials = new System.Net.NetworkCredential("AKIA4LFTDFRCSQHGW2BL", "BMAUAXuLN+qSGL0QiezLwtqpfckzibBAwvJ/0AiDtrQa"); 
+                client.UseDefaultCredentials = false;
+                client.Credentials = new System.Net.NetworkCredential("AKIA4LFTDFRCSQHGW2BL", "BMAUAXuLN+qSGL0QiezLwtqpfckzibBAwvJ/0AiDtrQa");
                 try
                 {
                     client.Send(mail);
@@ -42,23 +43,8 @@ namespace StudentMultiTool.Backend.Models.RecoveryAccount
                 }
             }
 
-
             return result;
         }
-        /*string baseURL = "https://localhost:5002";
-            mail.From = new MailAddress("studentmultitool@outlook.com");
-            mail.To.Add(new MailAddress(email));
-            mail.Subject = "Email verification for Student Multi-Tool new account";
-            string body = "Thanks for signing up!\n" +
-                          "Your account has been created. You can login with the following credentials after you have activated your account by clicking the URL below.\n \n" +
-                          "------------------------------\n" +
-                          "Username: " + username + "\n" +
-                          "Email: " + email + "\n" +
-                          "------------------------------\n\n" +
-                          "Please click the link to activate your account: " +
-                          baseURL + "/RegistrationForm/" + username + "/" + token;
-            mail.Body = body;
-            mail.Priority = MailPriority.Normal;*/
 
         public bool sendNewPasswordReset (RecoveryPassoward rp)
         {

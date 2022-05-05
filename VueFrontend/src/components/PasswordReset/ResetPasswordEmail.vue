@@ -20,15 +20,39 @@
 
 
 <script>
-    import AccessService from '/src/variables/AccessService.js'
+    import AccessService from '/src/variables/index.js'
+    import useVuelidate from '@vuelidate/core'
+    import { required, email, minLength, maxLength } from '@vuelidate/validators'
 
     export default {
-        
+
+
+        setup () {
+            return { v$: useVuelidate() }
+         },
         data() {
             return {
 
-               username: '',
-               email: ''
+                form:{
+
+                    username: '',
+                    email: ''
+
+                }
+            }
+        },
+        validations() {
+            return {
+                form: {
+                    email: {
+                    required, email 
+                    },
+                    username: {
+                        required, 
+                        min: minLength(6),
+                        max: maxLength(25)
+                    }
+                }
             }
         },
         methods: {

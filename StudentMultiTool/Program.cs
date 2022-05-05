@@ -17,7 +17,7 @@ static class Program
             options.AddPolicy(name: CORSapi,
                 policy =>
                 {
-                    policy.WithOrigins("http://localhost:5003", "http://localhost:5001", "http://localhost:8080", "https://localhost:5002")
+                    policy.WithOrigins("http://localhost:5003", "https://localhost:5001", "http://localhost:8080", "https://localhost:5002")
                     .AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin();
                 });
         });

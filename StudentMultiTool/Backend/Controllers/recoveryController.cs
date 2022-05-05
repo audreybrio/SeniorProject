@@ -1,6 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using StudentMultiTool.Backend.Controllers;
 using StudentMultiTool.Backend.Models.RecoveryAccount;
+using StudentMultiTool.Backend.Models.Registration;
+using StudentMultiTool.Backend.Services.Authentication;
+using StudentMultiTool.Backend.Services.UserManagement;
+using System.Data;
+using UserManagement;
 
 namespace StudentMultiTool.Backend.Controllers
 {
@@ -39,6 +44,9 @@ namespace StudentMultiTool.Backend.Controllers
         public IActionResult PostPassword(RecoveryPassoward rp)
         {
             string m = "nothing";
+
+
+            InputValidation checkValidation = new InputValidation();
 
             if (db.sendNewPasswordReset(rp))
             {

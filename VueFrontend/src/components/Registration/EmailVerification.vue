@@ -45,7 +45,8 @@
                     if (data == "Success") {
                         this.isVerified = true;
                     }
-                    else {
+                    else
+                    {
                         this.isVerified = false;
                     }
                     

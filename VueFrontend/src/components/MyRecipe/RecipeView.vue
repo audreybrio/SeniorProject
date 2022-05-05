@@ -23,7 +23,7 @@
 
 <script>
     import RecipeCard from '../MyRecipe/RecipeCard.vue'
-    import AccessService from '/src/variables/AccessService.js'
+    import AccessService from '/src/variables/index.js'
     import {watchEffect } from 'vue'
 
     export default ({

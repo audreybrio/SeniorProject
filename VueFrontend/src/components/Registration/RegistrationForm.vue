@@ -84,7 +84,8 @@
             areValidInputs() {
                 if (this.validate.username == true && this.validate.password == true && this.validate.email == true
                     && this.validate.university == true && this.validate.usernameExist == false
-                    && this.validate.emailExist == false) {
+                    && this.validate.emailExist == false)
+                {
                     return true
                 }
                 else {

@@ -1,3 +1,6 @@
+import axios from 'axios'
+
+
 const domain = "localhost";
 //const apiPort = "5002";
 //let root = `https://${domain}/`;
@@ -7,6 +10,18 @@ const apiPort = "5003";
 //const apiPort = "8080";
 let root = `http://${domain}/`;
 let apiRoot = `http://${domain}:${apiPort}/api/`;
+
+
+const apiClient = axios.create({
+    baseURL: apiRoot,
+    //baseURL: 'http://ec2-13-52-181-69.us-west-1.compute.amazonaws.com:8080/api/recipe',
+    withCredentials: false,
+    headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+    }
+})
+
 const URLS = {
     domain: domain,
     root: root,
@@ -45,7 +60,30 @@ const URLS = {
             validate: apiRoot + "login/validate",
             authenticate: apiRoot + "login/authenticate"
         }
+    },
+    getRecipes(perPage, page) {
+        return apiClient.get('recipe/getlist/_limit=' + perPage +'/_page=' + page)
+    },
+    getRecipe(id) {
+        return apiClient.get('recipe/getone/' + id)
+    },
+    postRecipe(newrecipe) {
+        return apiClient.post('recipe/newrecipe', newrecipe)
+    },
+    editRecipe(id, editrecipe) {
+        return apiClient.put('recipe/editrecipe/' + id , editrecipe)
+    },
+    deleteRecipe(id) {
+        return apiClient.delete('recipe/deleterecipe/' + id)
+    },
+    postResetEmail(resetemail){
+        return apiClient.post('recovery/reset', resetemail)
+    },
+    newPassword(newpass){
+        return apiClient.post('recovery/passwordchange', newpass)
     }
 }
 
 export default URLS
+
+
