@@ -1,6 +1,21 @@
 <template>
     <h2>User Management</h2>
-    <div v-if="display">
+    <button v-bind="fileUpload" @click="toggleMode" >
+        <p v-if="fileUpload">Single Operation Mode</p>
+        <p v-else>Bulk Operation Mode</p>
+    </button>
+    <div v-if="fileUpload">
+        <label for="fileField">Upload bulk operations file here ( size limit: 1MB )</label>
+        <div>
+            <form>
+                <input type="file" id="fileField" required />
+                <button @click="onClear" type="reset">Clear</button>
+                <button @click="onExecute" type="submit">Execute</button>
+            </form>
+        </div>
+    </div>
+    <!--<div v-if="display">-->
+    <div v-else>
     very true!
         <table>
             <thead>
@@ -32,9 +47,9 @@
             </tbody>
         </table>
     </div>
-    <div v-else>
+    <!--<div v-else>
     false!
-    </div>
+    </div>-->
 </template>
 
 <script lang="js">
@@ -49,7 +64,9 @@
                 user: null,
                 role: null,
                 users: [],
-                possibleRoles: []
+                possibleRoles: [],
+                fileUpload: false,
+                file: null
             }
         },
         created() {
@@ -63,6 +80,31 @@
             }
         },
         methods: {
+            toggleMode() {
+                this.fileUpload = !this.fileUpload
+            },
+            onClear() {
+                this.file = null;
+            },
+            onExecute(file, onUploadProgress) {
+                let confirmed = confirm("Are you sure you want to upload and execute?");
+                if (confirmed) {
+                    let formData = new FormData();
+                    formData.append("file", file);
+                    axios.post(`${URLS.api.admin.runBulkOperation}`, formData, {
+                        headers: {
+                            "Content-Type": "multipart/form-data"
+                        },
+                        onUploadProgress
+                    })
+                        .then(response => {
+                            alert(response)
+                        })
+                        .catch(e => {
+                            alert(e)
+                        })
+                }
+            },
             loadRoles() {
                 this.loading = true
                 axios.get(`${URLS.api.admin.getRoles}`, { timeout: 5000 })
