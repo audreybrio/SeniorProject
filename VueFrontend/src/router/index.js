@@ -72,6 +72,11 @@ const routes = [
         name: 'SelectForBuilder',
         component: () => import('../Views/ScheduleBuilder/SelectForBuilder.vue')
     },
+    {
+        path: '/schedule/collaborators/',
+        name: 'ScheduleCollaborators',
+        component: () => import('../Views/ScheduleBuilder/Collaborators.vue')
+    },
     // ScheduleComparison
     {
         path: '/schedule/comparison/',

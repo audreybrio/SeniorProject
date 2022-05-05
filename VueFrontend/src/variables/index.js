@@ -24,7 +24,11 @@ const URLS = {
             saveSchedule: apiRoot + "schedule/saveschedule",
             createItem: apiRoot + "schedule/createItem",
             updateItem: apiRoot + "schedule/updateItem",
-            deleteItem: apiRoot + "schedule/deleteItem"
+            deleteItem: apiRoot + "schedule/deleteItem",
+            getCollaborators: apiRoot + "schedule/getCollaborators",
+            addCollaborator: apiRoot + "schedule/addCollaborator",
+            updateCollaborator: apiRoot + "schedule/updateCollaborator",
+            deleteCollaborator: apiRoot + "schedule/deleteCollaborator"
         },
 
         matching: {
