@@ -59,11 +59,6 @@ const routes = [
         name: 'UserManagement',
         component: () => import('../Views/UserManagement/UserManagement.vue')
     },
-    {
-        path: '/UserManagement/BulkOperation',
-        name: 'BulkOperation',
-        component: () => import('../Views/UserManagement/BulkOperation.vue')
-    },
 
     // ScheduleBuilder & ScheduleComparison
     // ScheduleBuilder
