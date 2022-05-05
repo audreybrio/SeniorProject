@@ -13,6 +13,26 @@ namespace StudentMultiTool.Backend.DAL
         {
             ConnectionString = Environment.GetEnvironmentVariable(EnvironmentVariableEnum.CONNECTIONSTRING);
         }
+        public string InsertUser(UserAccount user)
+        {
+            int rowsAffected = -1;
+            SqlCommandRunner runner = new SqlCommandRunner(ConnectionString);
+            runner.Query = "INSERT INTO UserAccounts (name, username, email, passcode, role, school, active_status) VALUES " +
+                "(@name, @username, @email, @passcode, @role, @school, @active_status);";
+            runner.AddParam("@name", user.Name);
+            runner.AddParam("@username", user.Username);
+            runner.AddParam("@email", user.Email);
+            runner.AddParam("@passcode", user.Passcode);
+            runner.AddParam("@role", user.Role);
+            runner.AddParam("@school", user.School);
+            runner.AddParam("@active_status", user.Active);
+            rowsAffected = runner.ExecuteNonQuery();
+            if (rowsAffected == 1)
+            {
+                return Success;
+            }
+            return "Could not insert user with username " + user.Username;
+        }
         public string UpdateSingle(UserAccount user)
         {
             SqlCommandRunner runner = new SqlCommandRunner(ConnectionString);
@@ -40,6 +60,12 @@ namespace StudentMultiTool.Backend.DAL
                 query += "role = @role, ";
                 runner.UpdateQuery(query);
                 runner.AddParam("@role", user.Role);
+            }
+            if (!string.IsNullOrEmpty(user.Passcode))
+            {
+                query += "passcode = @passcode, ";
+                runner.UpdateQuery(query);
+                runner.AddParam("@passcode", user.Passcode);
             }
             query += "active_status = @active_status ";
             query += "WHERE id = @id;";
@@ -83,6 +109,7 @@ namespace StudentMultiTool.Backend.DAL
             if (results.Count > 0)
             {
                 UserAccount user = this.UnpackQueryResult(results[0]);
+                return user;
             }
             return null;
         }
@@ -112,6 +139,29 @@ namespace StudentMultiTool.Backend.DAL
                 result.Add(errorUser);
             }
             return result;
+        }
+        public int CountAdmins()
+        {
+            int numAdmins = -1;
+            SqlCommandRunner runner = new SqlCommandRunner(ConnectionString);
+            runner.Query = "SELECT COUNT(id) FROM UserAccounts WHERE role = 'admin';";
+            List<object[]> results = runner.ExecuteReader();
+            if (results.Count > 0)
+            {
+                object[] row = results[0];
+                if (row.Length > 0)
+                {
+                    try
+                    {
+                        numAdmins = (int)row[0];
+                    }
+                    catch (Exception ex)
+                    {
+                        numAdmins = -2;
+                    }
+                }
+            }
+            return numAdmins;
         }
         private UserAccount UnpackQueryResult(object[] results)
         {
