@@ -212,26 +212,12 @@ const routes = [
             }
         ]
     },
-<<<<<<< HEAD
-    //EventPlanning
-    //{
-    //    path: '/eventPlannning',
-    //    name: 'EventPlannning',
-    //    component: () => import('../Views/EventPlannning/EventPlannning.vue')
-    //},
-
-    {
-        path: '/notAuthorized',
-        name: 'not-authorized',
-        component: () => import('../Views/NotAuthorized')
-=======
 
     // Gpa calc
     {
         path: '/calculatorMain',
         name: 'calculatorMain',
         component: CalculatorMain
->>>>>>> d0a03ed95ae02939a52e0eb75b9022e1e6d9bdb1
     },
 
     {
@@ -258,6 +244,9 @@ const routes = [
         name: 'rankingsChild',
         component: RankingsChild
 
+        path: '/notAuthorized',
+        name: 'not-authorized',
+        component: () => import('../Views/NotAuthorized')
     },
     
     //EventPlanning

@@ -109,11 +109,6 @@
 
 
             onAid() {
-<<<<<<< HEAD
-                //router.push({ name: "studentInformation" });
-                router.push({ name: "EmailVue" });
-            }
-=======
                 router.push({ name: "studentInformation" });
             },
 
@@ -121,7 +116,6 @@
                 router.push({name: "calculatorMain"})
             },
 
->>>>>>> d0a03ed95ae02939a52e0eb75b9022e1e6d9bdb1
         },
     });
 </script>
