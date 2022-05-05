@@ -17,7 +17,11 @@
             <button @click="onAid">Aid Eligibility Estimates</button>
             <button @click="onSD">Student Discounts</button>
             <button @click="onMatching">Matching</button>
+        </div>
+
+        <div>
             <button @click="onEP">Event Planning</button>
+            <button @click="onCalc">GPA/Grade Calculator</button>
         </div>
             <button @click="onSubmit">Logout</button>
         
@@ -81,7 +85,12 @@
 
             onAid() {
                 router.push({ name: "studentInformation" });
-            }
+            },
+
+            onCalc() {
+                router.push({name: "calculatorMain"})
+            },
+
         },
     });
 </script>
