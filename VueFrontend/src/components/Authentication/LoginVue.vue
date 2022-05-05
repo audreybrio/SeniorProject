@@ -56,22 +56,30 @@
 
             },
             onLogin() {
+                this.errors = ""
                 this.count++;
+                let authen = []
+                authen.push(this.username)
+                authen.push(this.otp)
+                let data = {
+                    authen: authen
+                }
                 if (this.count < 6) {
                     fetch(
-                        `${URLS.api.login.authenticate}/${this.username}/${this.otp}`, {
+                        `${URLS.api.login.authenticate}`, {
                         method: 'POST',
                         context: this,
                         headers: {
                             'Accept': 'application/json',
                             'Content-Type': 'application/json'
                         },
-                        
+                        body: JSON.stringify(data),
+
                     }).then((response) => {
                         if (!response.ok) {
 
                             console.log("error")
-                            this.errors = "Username/OTP Incorrect";
+                            this.errors = "Username/OTP Incorrect"
                         }
                         else {
                             console.log("ajax success")
@@ -82,9 +90,16 @@
                     }).then((result) => {
                         console.log(result)
                         this.token = JSON.stringify(result);
-                        console.log("token", this.token)
-                        window.sessionStorage.setItem("token", this.token)
-                        router.push({ name: "HomePage" });
+                        if (this.token != undefined) {
+                            console.log("token", this.token)
+                            window.sessionStorage.setItem("token", this.token)
+                            router.push({ name: "HomePage" });
+                        }
+                        else {
+                            console.log("error")
+                            this.errors = "Username/OTP Incorrect"
+                        }
+
                     })
                 }
                 else {

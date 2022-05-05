@@ -47,29 +47,21 @@
 
             },
             onSubmit() {
-                //$.ajax({
-                //    url: `${URLS.api.login.validate}/${this.email}/${this.passcode}`,
-                //    context: this,
-                //    method: 'GET',
-                //    success: function () {
-                //        console.log("ajax success")
-                //        router.push({ name: "LoginVue" });
-
-                //    },
-                //    error: function () {
-                //        console.log("error")
-                //        this.errors = "Email/Passcode Incorrect";
-                //    }
-                //})
-
+                this.errors = ""
+                let creditentials = []
+                creditentials.push(this.email)
+                creditentials.push(this.passcode)
+                let data = {
+                    creditentials: creditentials
+                }
                 fetch(
-                    `${URLS.api.login.validate}/${this.email}/${this.passcode}`, {
-                        method: 'POST',
-                        context: this,
-                        headers: {
-                            'Accept': 'application/json',
-                            'Content-Type': 'application/json'
-                    },
+                    `${URLS.api.login.validate}`, {
+                    method: 'POST',
+                    context: this,
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    }, body: JSON.stringify(data),
 
                 }).then((response) => {
                     if (!response.ok) {

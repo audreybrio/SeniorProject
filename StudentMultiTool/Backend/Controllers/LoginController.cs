@@ -35,9 +35,11 @@ namespace StudentMultiTool.Backend.Controllers
             return Ok("okay");
         }
 
-        [HttpPost("validate/{email}/{passcode}")]
-        public IActionResult EmailPasscodeCheck(string email, string passcode)
-        { 
+        [HttpPost("validate")]
+        public IActionResult EmailPasscodeCheck([FromBody] DataObj credientials)
+        {
+            string email = credientials.creditentials[0];
+            string passcode = credientials.creditentials[1];
             bool valPasscode, valEmail, doesExist;
             Validate val = new Validate();
             valPasscode = val.ValidatePasscode(passcode);
@@ -65,19 +67,19 @@ namespace StudentMultiTool.Backend.Controllers
       
         }
 
-        [HttpPost("authenticate/{username}/{otp}")]
-        public IActionResult AuthenticateUser(string username, string otp)
+        [HttpPost("authenticate")]
+        public IActionResult AuthenticateUser([FromBody] DataObj2 authen)
         {
             //attempts++;
             //Console.WriteLine(attempts);
-           // while (attempts < 6)
+            // while (attempts < 6)
             //{
+            string username = authen.authen[0];
+            Console.WriteLine(username);
+            string otp = authen.authen[1];
+            Console.WriteLine(otp);
             int count = LoginUser(username, otp);
-            //bool isValid = ValidTime(username);
-            //if (!isValid)
-            //{
-            //    return NotFound();
-            //}
+            Console.WriteLine(count);
 
             if (count > 0)
             {
@@ -292,7 +294,7 @@ namespace StudentMultiTool.Backend.Controllers
 
 
 
-            SqlCommand cmd = new SqlCommand("SELECT COUNT (otp)" + " from OTP WHERE " + "OTP.userID = (SELECT id FROM UserAccounts WHERE UserAccounts.username = @username) AND OTP.otp = @password", conn);
+            SqlCommand cmd = new SqlCommand("SELECT COUNT(otp)" + " from OTP WHERE " + "OTP.userID = (SELECT id FROM UserAccounts WHERE UserAccounts.username = @username) AND OTP.otp = @password", conn);
             cmd.Parameters.AddWithValue("@username", username);
             cmd.Parameters.AddWithValue("@password", password);
             SqlDataReader reader = cmd.ExecuteReader();
@@ -413,4 +415,14 @@ namespace StudentMultiTool.Backend.Controllers
     {
         public string Secret { get; set; }
     }
+
+    public class DataObj
+    {
+        public List<string> creditentials { get; set; }
+    }
+    public class DataObj2
+    {
+        public List<string> authen { get; set; }
+    }
+
 }

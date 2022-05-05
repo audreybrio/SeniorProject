@@ -1,24 +1,24 @@
-<!--<template>
+<template>
     <div class="post">
         <div v-if="loading" class="loading">
             Calculate your GPA !!!!
             <br>
             <br>
-        </div>-->
+        </div>
 
-        <!-- Warning Error for if something goes wrong -->
-        <!--<div class="warning">
+         Warning Error for if something goes wrong 
+        <div class="warning">
             <div v-if="errors.length" :key="index" class="warning">{{errors}}</div>
         </div>
 
         <div>
             Enter number of classes took this semester:
             <input id="sem" name="sem" v-model="ssm" placeholder="Number of courses">
-        </div>-->
+        </div>
 
 
-        <!-- Radio buttons for user to select which type of setting they would want for tutoring-->
-        <!--<div>
+         Radio buttons for user to select which type of setting they would want for tutoring
+        <div>
             Course 1
         </div>
         <div>
@@ -156,6 +156,7 @@
                 five: null,
                 six: null,
                 errors: "",
+                unit1: null, unit2: null, unit3: null, unit4: null, unit5: null, unit6: null,
 
             };
         },
@@ -179,13 +180,18 @@
             // Save tutoring profile information
             save() {
                 let unit = []
-                let grade = []
-                if (unit1 != null) { unit.push(this.unit1) }
-                if (unit2 != null) { unit.push(this.unit2) }
-                if (unit3 != null) { unit.push(this.unit3) }
-                if (unit4 != null) { unit.push(this.unit4) }
-                if (unit5 != null) { unit.push(this.unit5) }
-                if (unit6 != null) { unit.push(this.unit6) }
+                //let grade = []
+                if (this.unit1 != null) { unit.push(this.unit1) }
+                if (this.unit2 != null) { unit.push(this.unit2) }
+                if (this.unit3 != null) { unit.push(this.unit3) }
+                if (this.unit4 != null) { unit.push(this.unit4) }
+                if (this.unit5 != null) { unit.push(this.unit5) }
+                if (this.unit6 != null) { unit.push(this.unit6) }
+                console.log(unit)
+                let data = {
+                    unit: unit
+                }
+                console.log("Data: ", data)
 
 
             },
@@ -204,4 +210,4 @@
         text-align: center;
         font-size: 11px;
     }
-</style>-->
+</style>
