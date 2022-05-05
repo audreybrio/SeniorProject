@@ -5,10 +5,17 @@ namespace StudentMultiTool.Backend.Controllers
 {
     public class GPAController : Controller
     {
-        public IActionResult CalculateGPA(string username, List<string> grades, List<string> units)
+        public IActionResult CalculateGPA([FromBody]  DataGrade grade)
         {
             return Ok();
         }
 
+    }
+
+    public class DataGrade
+    {
+        public List<string> Grade { get; set; }
+
+        public List<string> Unit { get; set; }
     }
 }

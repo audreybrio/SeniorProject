@@ -8,8 +8,9 @@ namespace StudentMultiTool.Backend.Controllers
     public class GradeController : Controller
     {
 
-        public bool CalculateGrade(string username, string course, List<string> grades, List<string> outOf)
+        public bool CalculateGrade(string username, List<string> grades, List<string> outOf)
         {
+            float total = 0;
             return true;
         }
 
@@ -17,6 +18,11 @@ namespace StudentMultiTool.Backend.Controllers
         {
             var grades = new List<string>();
             return grades;
+        }
+
+        public bool SaveGrade(string username, string course, float grade)
+        {
+            return false;
         }
 
     }

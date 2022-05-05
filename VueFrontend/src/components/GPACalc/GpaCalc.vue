@@ -6,18 +6,14 @@
             <br>
         </div>
 
-         Warning Error for if something goes wrong 
         <div class="warning">
             <div v-if="errors.length" :key="index" class="warning">{{errors}}</div>
         </div>
 
-        <div>
+        <!--<div>
             Enter number of classes took this semester:
             <input id="sem" name="sem" v-model="ssm" placeholder="Number of courses">
-        </div>
-
-
-         Radio buttons for user to select which type of setting they would want for tutoring
+        </div>-->
         <div>
             Course 1
         </div>
@@ -180,18 +176,61 @@
             // Save tutoring profile information
             save() {
                 let unit = []
-                //let grade = []
+                
                 if (this.unit1 != null) { unit.push(this.unit1) }
                 if (this.unit2 != null) { unit.push(this.unit2) }
                 if (this.unit3 != null) { unit.push(this.unit3) }
                 if (this.unit4 != null) { unit.push(this.unit4) }
                 if (this.unit5 != null) { unit.push(this.unit5) }
                 if (this.unit6 != null) { unit.push(this.unit6) }
+
+                let grade = []
+                if (this.one == "a") { grade.push("A") }
+                else if (this.one == "b") { grade.push("B") }
+                else if (this.one == "c") { grade.push("C") }
+                else if (this.one == "d") { grade.push("D") }
+                else if (this.one == "f") { grade.push("F") }
+
+                if (this.two == "a") { grade.push("A") }
+                else if (this.two == "b") { grade.push("B") }
+                else if (this.two == "c") { grade.push("C") }
+                else if (this.two == "d") { grade.push("D") }
+                else if (this.two == "f") { grade.push("F") }
+
+                if (this.three == "a") { grade.push("A") }
+                else if (this.three == "b") { grade.push("B") }
+                else if (this.three == "c") { grade.push("C") }
+                else if (this.three == "d") { grade.push("D") }
+                else if (this.three == "f") { grade.push("F") }
+
+                if (this.four == "a") { grade.push("A") }
+                else if (this.four == "b") { grade.push("B") }
+                else if (this.four == "c") { grade.push("C") }
+                else if (this.four == "d") { grade.push("D") }
+                else if (this.four == "f") { grade.push("F") }
+
+                if (this.five == "a") { grade.push("A") }
+                else if (this.five == "b") { grade.push("B") }
+                else if (this.five == "c") { grade.push("C") }
+                else if (this.five == "d") { grade.push("D") }
+                else if (this.five == "f") { grade.push("F") }
+
+                if (this.six == "a") { grade.push("A") }
+                else if (this.six == "b") { grade.push("B") }
+                else if (this.six == "c") { grade.push("C") }
+                else if (this.six == "d") { grade.push("D") }
+                else if (this.six == "f") { grade.push("F") }
+                
                 console.log(unit)
                 let data = {
-                    unit: unit
+                    unit: unit,
+                    grade: grade
                 }
                 console.log("Data: ", data)
+
+                if (unit.length != grade.length) {
+                    this.errors = "Error: Missing Information"
+                }
 
 
             },

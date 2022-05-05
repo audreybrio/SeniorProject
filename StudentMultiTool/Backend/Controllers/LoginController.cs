@@ -70,16 +70,10 @@ namespace StudentMultiTool.Backend.Controllers
         [HttpPost("authenticate")]
         public IActionResult AuthenticateUser([FromBody] DataObj2 authen)
         {
-            //attempts++;
-            //Console.WriteLine(attempts);
-            // while (attempts < 6)
-            //{
+
             string username = authen.authen[0];
-            Console.WriteLine(username);
             string otp = authen.authen[1];
-            Console.WriteLine(otp);
             int count = LoginUser(username, otp);
-            Console.WriteLine(count);
 
             if (count > 0)
             {
