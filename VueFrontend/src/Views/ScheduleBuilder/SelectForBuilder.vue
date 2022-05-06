@@ -154,15 +154,12 @@
                 }
             },
             editCollaborators(scheduleId) {
-                console.log("To edit collaborators for @" + scheduleId + "/" + title);
+                console.log("To edit collaborators for @" + scheduleId);
                 router.push({
                     name: 'ScheduleCollaborators',
                     params: {
                         user: this.user,
-                        scheduleId: scheduleId,
-                        title: title,
-                        created: created,
-                        modified: modified,
+                        scheduleId: scheduleId
                     }
                 });
             }

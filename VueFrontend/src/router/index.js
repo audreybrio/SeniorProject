@@ -250,20 +250,18 @@ const routes = [
         name: 'gpaCalc',
         component: GpaCalc
     },
-
     {
         path: '/displayrankings',
         name: 'displayRankings',
         component: DisplayRankings
 
     },
-
     {
         path: '/rankingschild',
         name: 'rankingsChild',
         component: RankingsChild
     },
-    { 
+    {
         path: '/notAuthorized',
         name: 'not-authorized',
         component: () => import('../Views/NotAuthorized')
