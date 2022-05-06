@@ -1,16 +1,23 @@
 <template>
     <div class="reset">
         <h5> FORGOT PASSWORD? </h5>
-        <form @submit.prevent="onSend">
+        <br />
+        <div class="warning">
+            <ul>
+                <li v-for="(error, index) in errors" :key="index" class="warning">{{error}}</li>
+            </ul>
+        </div>
+        <form @submit.prevent="validateUserInput">
+
             <div class="user">
                 <input name="username" v-model="username" placeholder="Enter Username">
             </div>
             <div class="email">
                 <input name="email" v-model="email" placeholder="Enter Email Address">
             </div>
-                
-                <button @click="reset">Reset</button>
-                <button @click="cancel">Cancel</button>           
+
+            <button @click="reset">Reset</button>
+            <button @click="cancel">Cancel</button>
         </form>
     </div>
 
@@ -21,47 +28,38 @@
 
 <script>
     import AccessService from '/src/variables/index.js'
-    import useVuelidate from '@vuelidate/core'
-    import { required, email, minLength, maxLength } from '@vuelidate/validators'
 
     export default {
-
-
-        setup () {
-            return { v$: useVuelidate() }
-         },
         data() {
             return {
+                username: '',
+                email:'',
+                errors:[],
+                validate:{
 
-                form:{
-
-                    username: '',
-                    email: ''
+                    usernameExist: false,
+                    emailExist: false
 
                 }
             }
         },
-        validations() {
-            return {
-                form: {
-                    email: {
-                    required, email 
-                    },
-                    username: {
-                        required, 
-                        min: minLength(6),
-                        max: maxLength(25)
-                    }
+        computed: {
+            areValidInputs(){
+                if (this.validate.usernameExist == true && this.validate.emailExist == true) {
+                    return true
+                }
+                else{
+                    return false
                 }
             }
         },
         methods: {
-            
             onSend() {
                 AccessService.postResetEmail({
-                        username: this.username, email: this.email
-                    })
+                    username: this.username, email: this.email
+                })
                 .then(function (response) {
+                    this.resetInputValues()
                     console.log(response);
                 })
                 .catch(function (error) {
@@ -76,6 +74,53 @@
                 this.$router.push({
                     name: 'EmailVue'
                 })
+            },
+            errorMessagges()
+            {
+
+                this.errors = []
+
+                if (this.validate.usernameExist == false && this.validate.emailExist == false) {
+
+                    this.errors.push("Username does not exists. chances inserting wrong username or email, or you need to create an account.")
+
+                } else
+                {
+                    this.usernameExist = true,
+                    this.emailExist = true
+                }
+
+               
+
+            },
+            validateUserInput() {
+                this.resetValidateValues;
+
+                AccessService.validateUserExist(this.username, this.email).then(response => {
+                    this.validate.usernameExist = response.data;
+                    this.validate.emailExist = response.data;
+                    // log that we've completed
+                    this.errorMessagges()
+                    if (this.areValidInputs) {
+                        // Creates a new user account if user inputs are valid
+
+                        this.onSend()
+                    }
+                    return true
+                })
+                    .catch(error => {
+                        console.log(error)
+                        return false;
+
+                    })
+            },
+            resetValidateValues(){
+                this.validate.usernameExist = false
+                this.validate.emailExist = false
+            },
+            resetInputValues(){
+                this.username = '',
+                this.email = ''
             }
          
         }
@@ -95,7 +140,7 @@
 
 h5 {
     font-size: 2em;
-    font-display: alig;
+    font-display: auto;
 }
 label{
     margin-bottom: 0.5rem;

@@ -1,5 +1,8 @@
-﻿using System.Data.SqlClient;
+﻿using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+using System.Data;
+using System.Data.SqlClient;
 using System.Net.Mail;
+using System.Text;
 
 
 namespace StudentMultiTool.Backend.Models.RecoveryAccount
@@ -13,7 +16,7 @@ namespace StudentMultiTool.Backend.Models.RecoveryAccount
 
             bool result = true;
             MailMessage mail = new MailMessage();
-            string baseURL = "https://localhost:5003";
+            string baseURL = "https://localhost:5002";
             mail.From = new MailAddress("studentmultitool@outlook.com");
             mail.To.Add(new MailAddress(recovery.email));
             mail.Subject = "Email link to reset existing account with Student Multi-Tool";
@@ -46,9 +49,19 @@ namespace StudentMultiTool.Backend.Models.RecoveryAccount
             return result;
         }
 
-        public bool sendNewPasswordReset (RecoveryPassoward rp)
+        public bool sendNewPasswordReset (RecoveryPassoward rp, int userID)
         {
             bool result;
+
+            string s = "teammarvel";
+            byte[] salt = Encoding.ASCII.GetBytes(s);
+
+            string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
+                password: rp.password,
+                salt: salt,
+                prf: KeyDerivationPrf.HMACSHA256,
+                iterationCount: 100000,
+                numBytesRequested: 256 / 8));
 
             try
             {
@@ -64,8 +77,8 @@ namespace StudentMultiTool.Backend.Models.RecoveryAccount
                     try
                     {
                         con.Open();
-                        cmd.Parameters.AddWithValue("@p", rp.password);
-                        cmd.Parameters.AddWithValue("@cp", rp.confirmpassword);
+                        cmd.Parameters.AddWithValue("@p", hashed);
+                        cmd.Parameters.AddWithValue("@cp", hashed);
                         cmd.ExecuteNonQuery();
                         result = true;
                         con.Close();
@@ -77,6 +90,30 @@ namespace StudentMultiTool.Backend.Models.RecoveryAccount
                         result = false;
                     }
                 }
+
+                 using (SqlConnection con = new SqlConnection(connection))
+                 {
+                    String query = "UPDATE [UserAccounts] SET UserAccounts.passcode = @passcode where UserAccounts.id = @userID ;";
+
+                    SqlCommand cmd = new SqlCommand(query, con);
+
+                    try
+                    {
+                        con.Open();
+                        //cmd.Parameters.AddWithValue("@id", r.id);
+                        cmd.Parameters.AddWithValue("@userID", userID);
+                        cmd.Parameters.AddWithValue("@passcode", hashed);
+                        Console.WriteLine("Update in UserAccounts");
+                        cmd.ExecuteNonQuery();
+                        result = true;
+                        con.Close();
+                    }
+                    catch (Exception e)
+                    {
+                        result = false;
+                        Console.WriteLine(e);
+                    }
+                 }
             }
             catch (Exception e)
             {
@@ -85,6 +122,51 @@ namespace StudentMultiTool.Backend.Models.RecoveryAccount
             }
 
             return result;
+        }
+
+
+        public int getUserId(string email)
+        {
+            int ID = 1000;
+
+            try
+            {
+                string connection = @"Server=(localdb)\MSSQLLocalDB;Database=Marvel;Trusted_Connection=True; MultipleActiveResultSets=true;";
+
+                using (SqlConnection con = new SqlConnection(connection))
+                {
+                    String query = "SELECT id" + " from UserAccounts WHERE UserAccounts.email = @email;";
+                        //"SELECT UserAccounts.id FROM [UserAccounts] where username = " + username + " AND email = " + email + ";";
+
+                    SqlCommand cmd = new SqlCommand(query, con);
+
+                    cmd.CommandType = CommandType.Text;
+                    con.Open();
+
+                    try
+                    {
+                        cmd.Parameters.AddWithValue("@email", email);
+                        SqlDataReader rd = cmd.ExecuteReader();
+
+                        while (rd.Read())
+                        {
+                            ID = Convert.ToInt32(rd["id"]);
+                            //Console.WriteLine(String.Format("{0}", rd["id"]));
+                        }
+
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+
+            return ID;
         }
 
     }

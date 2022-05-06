@@ -81,6 +81,13 @@ const URLS = {
     },
     newPassword(newpass){
         return apiClient.post('recovery/passwordchange', newpass)
+    },
+    validateUserExist(username, email) {
+        return apiClient.get('recovery/validate/'+ username + '/' + email)
+    },
+    validatePassExist(email, pass, confPass) {
+        return apiClient.get('recovery/validatepass/' + email + '/' + pass + '/' + confPass)
+
     }
 }
 

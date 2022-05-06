@@ -81,7 +81,7 @@ namespace StudentMultiTool.Backend.Models.Recipe
                 using (SqlConnection con = new SqlConnection(connection))
                 {
 
-                    SqlCommand cmd = new SqlCommand("SELECT * FROM [recipes]where id =" + id + ";", con);
+                    SqlCommand cmd = new SqlCommand("SELECT * FROM [recipes] where id =" + id + ";", con);
 
                     //SqlCommand cmd = new SqlCommand("SELECT * FROM [recipes] where recipes.id=@recipeID;", con);
                     cmd.CommandType = CommandType.Text;
