@@ -28,6 +28,7 @@ import RecipeLayout from '../components/MyRecipe/RecipeLayout.vue'
 import RecipeRegister from '../components/MyRecipe/RecipeRegister.vue'
 import RecipeEdit from '../components/MyRecipe/RecipeEdit.vue'
 import RecipeDelete from '../components/MyRecipe/RecipeDelete.vue'
+
 import NewPassword from '../components/PasswordReset/NewPassword.vue'
 import EmailSendMessage from '../components/PasswordReset/EmailSendMessage.vue'
 import ResetPasswordEmail from '../components/PasswordReset/ResetPasswordEmail.vue'

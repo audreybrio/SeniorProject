@@ -86,10 +86,10 @@ const URLS = {
         return apiClient.post('recipe/newrecipe', newrecipe)
     },
     editRecipe(id, editrecipe) {
-        return apiClient.put('recipe/editrecipe/' + id , editrecipe)
+        return apiClient.post('recipe/editrecipe/' + id , editrecipe)
     },
     deleteRecipe(id) {
-        return apiClient.delete('recipe/deleterecipe/' + id)
+        return apiClient.post('recipe/deleterecipe/' + id)
     },
     postResetEmail(resetemail){
         return apiClient.post('recovery/reset', resetemail)
