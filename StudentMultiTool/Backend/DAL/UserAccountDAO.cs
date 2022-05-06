@@ -1,5 +1,6 @@
 ﻿using System.Data.SqlClient;
 using StudentMultiTool.Backend.Services.DataAccess;
+using StudentMultiTool.Backend.Services.Logging;
 using UserAcc;
 
 namespace StudentMultiTool.Backend.DAL
@@ -16,13 +17,16 @@ namespace StudentMultiTool.Backend.DAL
         public string InsertUser(UserAccount user)
         {
             int rowsAffected = -1;
+            Hasher hasher = new Hasher();
+            string hashedPasscode = hasher.HashPassword(user.Passcode);
+
             SqlCommandRunner runner = new SqlCommandRunner(ConnectionString);
             runner.Query = "INSERT INTO UserAccounts (name, username, email, passcode, role, school, active_status) VALUES " +
                 "(@name, @username, @email, @passcode, @role, @school, @active_status);";
             runner.AddParam("@name", user.Name);
             runner.AddParam("@username", user.Username);
             runner.AddParam("@email", user.Email);
-            runner.AddParam("@passcode", user.Passcode);
+            runner.AddParam("@passcode", hashedPasscode);
             runner.AddParam("@role", user.Role);
             runner.AddParam("@school", user.School);
             runner.AddParam("@active_status", user.Active);
@@ -63,9 +67,11 @@ namespace StudentMultiTool.Backend.DAL
             }
             if (!string.IsNullOrEmpty(user.Passcode))
             {
+                Hasher hasher = new Hasher();
+                string hashedPasscode = hasher.HashPassword(user.Passcode);
                 query += "passcode = @passcode, ";
                 runner.UpdateQuery(query);
-                runner.AddParam("@passcode", user.Passcode);
+                runner.AddParam("@passcode", hashedPasscode);
             }
             query += "active_status = @active_status ";
             query += "WHERE id = @id;";
