@@ -51,8 +51,6 @@
 
 <script>
     import axios from 'axios'
-    import * as $ from 'jquery'
-    //const baseURL = "https://localhost:5002";
     import URLS from '../../variables'
     export default {
         data() {
@@ -83,12 +81,15 @@
                     return false
                 }
                     
-            },
+            }
+        },
+        methods: {
             postData() {
                 axios.get(URLS.api.registration.newRegistration + this.email + "/" + this.passcode + "/" + this.university,
                     { timeout: 5000 })
                     .then(response => {
                         this.isAccountCreated = true;
+                        console.log(response)
                         // resets user input values
                         alert("We have sent an email to " + this.email + " \n \n You need to verify your email to activate"
                             + " your account. If you have not received it, please check your spam or junk email.")
@@ -97,10 +98,7 @@
                     .catch(e => {
                         console.log(e)
                     })
-            }
-        },
-        methods: {
-
+            },
             // errorMessages method populates an array with errors when input values are checked for validation
             errorMessages() {
                 this.errors = []
