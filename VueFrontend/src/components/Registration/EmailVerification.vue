@@ -3,8 +3,8 @@
         <h1>This is the email verification page</h1>
 
         <div v-if="this.isVerified">
-            <div class="congrates">
-                Congratulations {{this.username }}.
+            <div class="congrats">
+                Congratulations!
                 <br />
             </div>
             Your Account is activated. Please log in to your Student Multi-Tool account.
@@ -24,39 +24,29 @@
 </template>
 
 <script>
-    import * as $ from 'jquery'
+    import axios from 'axios'
     import URLS from '../../variables'
     export default {
         data() {
             return {
-                username: this.$route.params.username,
                 token: this.$route.params.token,
                 isVerified: false
             }
         },
         created() {
-            //const baseURL = "https://localhost:5002";
-            $.ajax({
-                url: `${URLS.apiRoot}registration/emailVerification/${this.username}/${this.token}`,
-                context: this,
-                processData: true,
-                method: 'POST',
-                success: function (data) {
-                    if (data == "Success") {
+            axios.get(URLS.api.registration.emailVerification + this.token,
+                { timeout: 5000 })
+                .then(response => {
+                    if (response.data == "Success") {
                         this.isVerified = true;
                     }
                     else {
                         this.isVerified = false;
                     }
-                    
-                    return true;
-                },
-                error: function (error) {
-                    console.log(error);
-                    
-                    return false;
-                }
-            });
+                })
+                .catch(e => {
+                    console.log(e)
+                })
 
         }
     }
@@ -71,7 +61,7 @@
         margin: auto;
         background-color: #ececec;
     }
-    .congrates{
+    .congrats{
         font-size:30px;
     }
 

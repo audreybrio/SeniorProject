@@ -7,7 +7,7 @@ namespace StudentMultiTool.Backend.Services.Authentication
         public EmailVerification() { }
 
         // SendEmail method to verify email and activate the new user account
-        public void SendEmail(string username, string email, string token, string password)
+        public void SendEmail(string email, string token)
         {
             MailMessage mail = new MailMessage();
             string baseURL = "https://localhost:5002";
@@ -15,13 +15,9 @@ namespace StudentMultiTool.Backend.Services.Authentication
             mail.To.Add(new MailAddress(email));
             mail.Subject = "Email verification for Student Multi-Tool new account";
             string body = "Thanks for signing up!\n" +
-                          "Your account has been created. You can login with the following credentials after you have activated your account by clicking the URL below.\n \n" +
-                          "------------------------------\n" +
-                          "Username: " + username + "\n" +
-                          "Password: " + password + "\n" +
-                          "------------------------------\n\n" +
+                          "Your account has been created. You can login with your credentials after you have activated your account by clicking the URL below.\n \n" +
                           "Please click the link to activate your account: " + 
-                          baseURL + "/RegistrationForm/" + username + "/" + token;
+                          baseURL + "/RegistrationForm/" + token;
             mail.Body = body;
             mail.Priority = MailPriority.Normal;
             using (SmtpClient client = new SmtpClient("email-smtp.us-west-1.amazonaws.com", 587))
