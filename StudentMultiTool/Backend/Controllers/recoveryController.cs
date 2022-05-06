@@ -153,19 +153,16 @@ namespace StudentMultiTool.Backend.Controllers
         [HttpPost("postactivate")]
         public IActionResult PostActivate(RecoveryUserEmail r)
         {
-            UserAccountDAO userDB = new UserAccountDAO();
-            UserAccount u = new UserAccount();
+            LoginController lg = new LoginController();
             string m = "nothing";
 
             Console.WriteLine("user== "+ r.username);
 
             Console.WriteLine("Activate== " + r.activate);
+            lg.UpdateEnabled(r.username);
 
-            u = userDB.SelectSingle(r.username);
 
-            u.active = r.activate;
-           
-            if (userDB.UpdateSingle(u) == "Success")
+            if (true)
             {
                 m = "successful";
             }

@@ -105,7 +105,7 @@ const URLS = {
     postDisableAccount(disabledemail) {
         return apiClient.post('recovery/disabled', disabledemail)
     },
-    recoveryAccount(useractivate) {
+    actAccount(useractivate) {
         return apiClient.post('recovery/postactivate', useractivate)
     }
    

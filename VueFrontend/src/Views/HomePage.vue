@@ -113,7 +113,6 @@
             },
             onRecipe() {
                 router.push({ name: "RecipeView" })
-
             },
             onAid() {
                 router.push({ name: "studentInformation" });

@@ -59,7 +59,7 @@
                     username: this.username, email: this.email
                 })
                 .then(function (response) {
-                    this.resetInputValues()
+                    this.resetInputValues();
                     console.log(response);
                 })
                 .catch(function (error) {

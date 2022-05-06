@@ -11,8 +11,8 @@
         <button id="button" @click="onSubmit">Submit</button>
         <div>
             <!--<button @click="skip">Test</button>-->
-            <router-link to="/registration">Registration</router-link>
-            <router-link to="/resetpassemail">ForgotPassword?</router-link>
+            <router-link to="/registration">Registration&nbsp;</router-link>
+            <router-link to="/resetpassemail">&nbsp;ForgotPassword?</router-link>
 
         </div>
     </div>
@@ -51,6 +51,7 @@
                 let creditentials = []
                 creditentials.push(this.email)
                 creditentials.push(this.passcode)
+                console.log(creditentials)
                 let data = {
                     creditentials: creditentials
                 }
