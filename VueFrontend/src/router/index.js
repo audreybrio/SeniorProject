@@ -243,7 +243,8 @@ const routes = [
         path: '/rankingschild',
         name: 'rankingsChild',
         component: RankingsChild
-
+    },
+    {
         path: '/notAuthorized',
         name: 'not-authorized',
         component: () => import('../Views/NotAuthorized')
