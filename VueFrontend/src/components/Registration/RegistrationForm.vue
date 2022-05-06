@@ -11,21 +11,6 @@
         <div>
             <form @submit.prevent="validateUserInput">
                 <div>
-                    <label for="username">Username:</label>
-                    <br />
-                    <input type="text" name="username" v-model="username" placeholder="yourusername12" maxlength="21" required>
-                    <br />
-
-                    <label for="password">Password:</label>
-                    <br />
-                    <input type="password" name="Password" v-model="password" placeholder="YourPassword12" maxlength="25" required>
-                    <br />
-
-                    <label for="retype_password">Re-type password:</label>
-                    <br />
-                    <input type="password" name="Password" v-model="retype_password" placeholder="YourPassword12" maxlength="25" required>
-                    <br />
-
                     <label for="email">Email:</label>
                     <br />
                     <input type="email" name="email" v-model="email" placeholder="Example@student.csulb.edu" maxlength="51" required>
@@ -36,6 +21,16 @@
                     <input type="email" name="retype_email" v-model="retype_email" placeholder="Re-type email" maxlength="51" required>
                     <br />
 
+                    <label for="passcode">Passcode:</label>
+                    <br />
+                    <input type="password" name="Passcode" v-model="passcode" placeholder="YourPasscode12" maxlength="25" required>
+                    <br />
+
+                    <label for="retype_passcode">Re-type passcode:</label>
+                    <br />
+                    <input type="password" name="Passcode" v-model="retype_passcode" placeholder="YourPasscode12" maxlength="25" required>
+                    <br />
+
                     <select v-model="university" required>
                         <option disabled value="">Please select a university</option>
                         <option>CSULB</option>
@@ -44,7 +39,7 @@
                     </select>
                     <br />
 
-                    <input type="submit" value="REGISTER" class="button" formnovalidate>
+                    <input type="submit" value="REGISTER" class="button">
                 </div>
             </form>
             <div class="signin">
@@ -55,6 +50,7 @@
     </template>
 
 <script>
+    import axios from 'axios'
     import * as $ from 'jquery'
     //const baseURL = "https://localhost:5002";
     import URLS from '../../variables'
@@ -62,29 +58,25 @@
         data() {
             return {
                 isAccountCreated: false,
-                username: "",
-                password: "",
-                retype_password: "",
                 email: "",
                 retype_email: "",
+                passcode: "",
+                retype_passcode: "",
                 university: "",
-                items: [],
                 errors: [],
                 validate: {
-                    username: false,
-                    password: false,
                     email: false,
+                    passcode: false,
                     university: false,
-                    usernameExist: true,
                     emailExist: true
                 }
             };
         },
         computed: {
             areValidInputs() {
-                if (this.validate.username == true && this.validate.password == true && this.validate.email == true
-                    && this.validate.university == true && this.validate.usernameExist == false
-                    && this.validate.emailExist == false) {
+                if (this.validate.email == true && this.validate.passcode == true
+                    && this.validate.university == true && this.validate.emailExist == false
+                    && this.passcode == this.retype_passcode) {
                     return true
                 }
                 else {
@@ -93,26 +85,18 @@
                     
             },
             postData() {
-                $.ajax({
-                    url: `${URLS.apiRoot}registration/newRegistration/${this.username}/${this.password}/${this.email}/${this.university}`,
-                    context: this,
-                    processData: true,
-                    method: 'POST',
-                    success: function () {
+                axios.get(URLS.api.registration.newRegistration + this.email + "/" + this.passcode + "/" + this.university,
+                    { timeout: 5000 })
+                    .then(response => {
                         this.isAccountCreated = true;
                         // resets user input values
                         alert("We have sent an email to " + this.email + " \n \n You need to verify your email to activate"
-                        + " your account. If you have not received it, please check your spam or junk email.")
+                            + " your account. If you have not received it, please check your spam or junk email.")
                         this.resetInputValues
-                        
-                        return;
-                    },
-                    error: function (error) {
-                        console.log(error);
-                        return;
-                    }
-                });
-                return true;
+                    })
+                    .catch(e => {
+                        console.log(e)
+                    })
             }
         },
         methods: {
@@ -121,15 +105,11 @@
             errorMessages() {
                 this.errors = []
 
-                if (this.validate.username == false) {
-                    this.errors.push("Username: must be 8 or more charactes and no uppercase/special characters allowed");
+                if (this.passcode != this.retype_passcode) {
+                    this.errors.push("Passcodes do not match")
                 }
-
-                if (this.password != this.retype_password) {
-                    this.errors.push("Passwords do not match")
-                }
-                else if (this.validate.password == false) {
-                    this.errors.push("Password: must be 8 or more characters and no special characters allowed");
+                else if (this.validate.passcode == false) {
+                    this.errors.push("Passcode: must be 8 or more characters and no special characters allowed");
                 }
 
                 if (this.email != this.retype_email) {
@@ -150,12 +130,6 @@
                     this.emailExist = false;
                 }
 
-                if (this.validate.usernameExist == true) {
-                    this.errors.push("Username already exists")
-                }
-                else {
-                    this.usernameExist = false;
-                }
             },
 
             // validateUserInput verifies that user input is valid sending a GET request to the server's api
@@ -163,56 +137,37 @@
             validateUserInput() {
                 this.isAccountCreated = false;
                 this.resetValidateValues;
-                $.ajax({
-                    // set the HTTP request URL
-                    url: `${URLS.apiRoot}registration/validation/${this.username}/${this.password}/${this.email}/${this.university}`,
-                    // set the context object to the vue component
-                    // this line tells vue to update its components
-                    // when the success or error objects complete!
-                    // if it's not set, the components don't update!
-                    context: this,
-                    // HTTP method
-                    method: 'GET',
-                    // On a successful AJAX request:
-                    success: function (data) {
-                        this.validate.username = data[0].username;
-                        this.validate.password = data[0].password;
-                        this.validate.email = data[0].email;
-                        this.validate.university = data[0].university;
-                        this.validate.usernameExist = data[0].usernameExist;
-                        this.validate.emailExist = data[0].emailExist;
+                axios.get(URLS.api.registration.inputValidation + this.email + "/" + this.passcode + "/" + this.university,
+                    { timeout: 5000 })
+                    .then(response => {
+                        this.validate.email = response.data[0].email;
+                        this.validate.passcode = response.data[0].passcode;
+                        this.validate.university = response.data[0].university;
+                        this.validate.emailExist = response.data[0].emailExist;
                         // log that we've completed
                         this.errorMessages()
                         if (this.areValidInputs) {
                             // Creates a new user account if user inputs are valid
                             this.postData
                         }
-                        return true;
-                    },
-                    // On an unsuccessful AJAX request:
-                    error: function (error) {
-                        // log the error
-                        console.log(error);
-                        this.items = null;
-                        return false;
-                    }
-                });
+                    })
+                    .catch(e => {
+                        console.log(e)
+                    })
+
             },
             resetValidateValues() {
-                this.validate.username = false;
-                this.validate.password = false;
                 this.validate.email = false;
+                this.validate.passcode = false;
                 this.validate.university = false;
-                this.validate.usernameExist = true;
                 this.validate.emailExist = true;
             },
             resetInputValues() {
-                this.username = "";
-                this.password = "";
                 this.email = "";
-                this.university = "";
                 this.retype_email = "";
-                this.retype_password = "";
+                this.passcode = "";
+                this.retype_passcode = "";
+                this.university = "";
             },
         }
     };
