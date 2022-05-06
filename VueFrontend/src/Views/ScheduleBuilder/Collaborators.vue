@@ -10,7 +10,7 @@
                     Add a new Collaborator
                     <input v-model="newCollaborator" placeholder="Username" />
                     <button id="newScheduleSubmit" @click="postCollaborator">Add</button>
-                    <button id="search" @click="search()">Search</button>
+                    <button id="search" @click="search()" >Search</button>
                 </p>
             </form>
         </div>
@@ -45,10 +45,11 @@
 
 <script lang="js">
     import * as $ from 'jquery'
-    import router from '../../router'
+    //import router from '../../router'
     import URLS from '../../variables'
     import axios from 'axios'
     export default ({
+        name: "ScheduleCollaborators",
         data() {
             return {
                 loading: false,
@@ -95,12 +96,13 @@
             search() {
                 let exists = false
                 if (this.validateCollaborator()) {
-                    axios.get(`${URLS.api.scheduleBuilder.searchUser}`, user)
+                    axios.get(`${URLS.api.scheduleBuilder.searchUser}`, this.newCollaborator)
                         .then(response => {
                             exists = response.data
                         })
                         .catch(e => {
                             exists = false
+                            alert(e)
                         })
                 }
                 return exists
