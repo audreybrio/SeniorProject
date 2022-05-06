@@ -1,4 +1,4 @@
-<!--<template>
+<template>
     <h1>Discount Details</h1>
     <div class="box">
         <div class="backButton">
@@ -31,14 +31,6 @@
         data() {
             return {
                 discounts: {},
-                /*discounts: [
-                    {
-                        id: 0, website: 'www.csulb.com', title: 'discount1',
-                        details: 'lorem4asdfasdfasdfasdfsdfasdfasdfasdfasdf', dateCreated: '2020-02-03'
-                    },*/
-                    // {title: 'discount2', id: 1, details: 'lorem5'},
-                    // {title: 'discount3', id: 2, details: 'lorem6'}
-                //]
             }
         },
         created() {
@@ -70,7 +62,6 @@
                     error: function (error) {
                         // log the error
                         console.log(error);
-                        this.items = null;
                         return false;
                     }
                 });
@@ -110,4 +101,4 @@
         color: white;
         box-shadow: 6px;
     }
-</style>-->
+</style>
