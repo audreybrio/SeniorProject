@@ -1,12 +1,15 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using StudentMultiTool.Backend.DAL;
 using StudentMultiTool.Backend.Models.ScheduleBuilder;
+using StudentMultiTool.Backend.Services.Logging;
 using StudentMultiTool.Backend.Services.ScheduleBuilder;
 using StudentMultiTool.Backend.Services.ScheduleComparison;
 using System.Data;
 using System.Data.SqlClient;
 using System.Text.Json;
 using System.Text.Json.Nodes;
+using UserAcc;
 
 namespace StudentMultiTool.Backend.Controllers
 {
@@ -166,6 +169,100 @@ namespace StudentMultiTool.Backend.Controllers
 
             }
             return BadRequest(nullOrEmptyResult);
+        }
+
+        [HttpPost]
+        [Route("schedule/addCollaborator/{scheduleId}")]
+        public IActionResult AddCollaborator(int scheduleId, [FromBody] string username)
+        {
+            if (string.IsNullOrEmpty(username))
+            {
+                return BadRequest("Username cannot be blank");
+            }
+            ScheduleManager manager = new ScheduleManager();
+            Schedule? schedule = manager.SelectScheduleWithoutItems(scheduleId);
+            if (schedule != null)
+            {
+                UserAccountDAO uad = new UserAccountDAO();
+                UserAccount? user = uad.SelectSingle(username);
+                if (user != null)
+                {
+                    Hasher hasher = new Hasher();
+                    string userHash = hasher.HashUsername(username);
+                    int rowsAffected = manager.InsertCollaborator(scheduleId, userHash, true, false);
+                    if (rowsAffected < 1)
+                    {
+                        return StatusCode(500, "Could not add collaborator");
+                    }
+                    return Ok(username + " successfully added as a collaborator");
+                }
+                return StatusCode(404, "User " + username + "could not be found");
+            }
+            return StatusCode(404, "Schedule with id " + scheduleId + "could not be found");
+        }
+
+        [HttpPost]
+        [Route("schedule/updateCollaborator/{scheduleId}")]
+        public IActionResult UpdateCollaborator(int scheduleId, [FromBody] CollaboratorDTO collaborator)
+        {
+            if (string.IsNullOrEmpty(collaborator.Username))
+            {
+                return BadRequest("Username cannot be blank");
+            }
+            string username = collaborator.Username;
+            ScheduleManager manager = new ScheduleManager();
+            Schedule? schedule = manager.SelectScheduleWithoutItems(scheduleId);
+            if (schedule != null)
+            {
+                UserAccountDAO uad = new UserAccountDAO();
+                UserAccount? user = uad.SelectSingle(username);
+                if (user != null)
+                {
+                    Hasher hasher = new Hasher();
+                    string userHash = hasher.HashUsername(username);
+                    int rowsAffected = 0;
+                    rowsAffected = manager.UpdateCollaborator(scheduleId, userHash, collaborator.CanWrite, collaborator.IsOwner);
+                    if (rowsAffected < 1)
+                    {
+                        return StatusCode(500, "Could not update collaborator " + username);
+                    }
+                    return Ok("Collaborator" + username + " successfully updated");
+                }
+                return StatusCode(404, "User " + username + "could not be found");
+            }
+            return StatusCode(404, "Schedule with id " + scheduleId + "could not be found");
+        }
+
+        [HttpPost]
+        [Route("schedule/deleteCollaborator/{scheduleId}")]
+        public IActionResult DeleteCollaborator(int scheduleId, [FromBody] CollaboratorDTO collaborator)
+        {
+            if (string.IsNullOrEmpty(collaborator.Username))
+            {
+                return BadRequest("Username cannot be blank");
+            }
+            string username = collaborator.Username;
+            ScheduleManager manager = new ScheduleManager();
+            Schedule? schedule = manager.SelectScheduleWithoutItems(scheduleId);
+            if (schedule != null)
+            {
+                UserAccountDAO uad = new UserAccountDAO();
+                UserAccount? user = uad.SelectSingle(username);
+                if (user != null)
+                {
+                    Hasher hasher = new Hasher();
+                    string userHash = hasher.HashUsername(username);
+                    int rowsAffected = 0;
+                    rowsAffected = manager.DeleteCollaborator(scheduleId, userHash);
+                    if (rowsAffected < 1)
+                    {
+                        return StatusCode(500, "Could not delete collaborator " + username);
+                    }
+                    return Ok(username + " successfully removed as a collaborator");
+                }
+                return StatusCode(404, "User " + username + "could not be found");
+            }
+            return StatusCode(404, "Schedule with id " + scheduleId + "could not be found");
         }
     }
 }
