@@ -4,6 +4,7 @@ namespace UserAcc
 {
     public class UserAccount
     {
+        public int Id { get; set; }
         public string name;
         public string username;
         public string password;
@@ -13,7 +14,17 @@ namespace UserAcc
         public bool active;
         public string school;
  
-
+        public UserAccount()
+        {
+            Name = string.Empty;
+            Username = string.Empty;
+            Password = string.Empty;
+            Passcode = string.Empty;
+            Email = string.Empty;
+            Role = "student";
+            Active = false;
+            School = string.Empty;
+        }
         public UserAccount(string email, string password, string userName, string school)
         {
             this.email = email;
@@ -34,6 +45,7 @@ namespace UserAcc
         public string Email { get => email; set => email = value; }
         public string Password { get => password; set => password = value; }
         public string Passcode { get => passcode; set => passcode = value; }
+        public string School { get => school; set => school = value; }
     }
 
     public class ROLE

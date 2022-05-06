@@ -48,13 +48,13 @@ namespace FeatureDemo
 
             UserAccount userAcc = new UserAccount(email, password, userName, school);
             Update usertoDB = new Update();
-            usertoDB.UpdateCreate(email, password, userName, school);
+            //usertoDB.UpdateCreate(email, password, userName, school);
 
             //We can use Guid to create UniqueIDcodes to concat them to URL for email verification
             //Guid guid = Guid.NewGuid();
             //System.Console.WriteLine("guid vaue: " + guid);
             EmailVerification emailVerif = new EmailVerification();
-            emailVerif.SendEmail("tj.5775@gmail.com", "ExampleUniqueIDcode");
+           // emailVerif.SendEmail("tj.5775@gmail.com", "ExampleUniqueIDcode");
         }
 
 

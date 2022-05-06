@@ -1,4 +1,4 @@
-<template>
+<!--<template>
     <div class="page">
         <div>
             <h3>Post Establishment</h3>
@@ -214,4 +214,4 @@
         height: 6em;
         font-size: 20px;
     }
-</style>
+</style>-->

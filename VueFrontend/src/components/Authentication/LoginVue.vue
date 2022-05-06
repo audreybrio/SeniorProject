@@ -3,25 +3,43 @@
         <div id="login" v-if="loading" class="loading">
             Welcome! Please enter username and OTP!
         </div>
+        <div class="warning">
+            <div v-if="errors.length" :key="index" class="warning">{{errors}}</div>
+        </div>
+        <div class="warning">
+            <div v-if="parseInt(count)>5" :key="count" class="warning">{{accountDisabled}}</div>
+        </div>
         <input v-model="username" placeholder="Username">
         <input v-model="otp" placeholder="OTP">
         <button @click="onLogin">Login</button>
+        <br />
+        <button @click="back">Return</button>
     </div>
 </template>
 
 <script lang="js">
     import router from '@/router'
+    import URLS from '../../variables'
+
     export default ({
         data() {
+            // count: 0;
             return {
                 loading: false,
                 post: null,
+                errors: "",
+                accountDisabled: "Account Disabled",
+                count: 0,
+                token: "",
+                tok: "",
+                
 
             };
         },
         created() {
             // fetch the data when the view is created and the data is
             // already being observed
+            
             this.fetchData();
         },
         watch: {
@@ -34,67 +52,88 @@
                 this.loading = true;
                 this.username = '';
                 this.otp = '';
-
-                fetch('weatherforecast')
-                    .then(r => r.json())
-                    .then(json => {
-                        this.post = json;
-                        this.loading = false;
-                        return;
-                    });
+                
 
             },
             onLogin() {
-                if (this.username == "abrio" && this.otp == "ha3dal9w") {
-                    window.sessionStorage.setItem("token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiQXVkcmV5IEJyaW8iLCJ1c2VybmFtZSI6ImFicmlvIiwiZW1haWwiOiJhdWRyZXkuYnJpb0BzdHVkZW50LmNzdWxiLmVkdSIsInBhc3Njb2RlIjoiaGVsbG8gd29ybGQiLCJyb2xlIjoiYWRtaW4iLCJzY2hvb2wiOiJDU1VMQiJ9.O9qyhghpLVvFIurYuDaAzLV6r9HVpO0DrXBhTbB-3Yo");
-                    router.push({ name: "HomePage" });
-
+                this.errors = ""
+                this.count++;
+                let authen = []
+                authen.push(this.username)
+                authen.push(this.otp)
+                let data = {
+                    authen: authen
                 }
-                else if (this.username == "bnickle" && this.otp == "9c8e0aaj") {
-                    window.sessionStorage.setItem("token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiQnJhZGxleSBOaWNrbGUiLCJ1c2VybmFtZSI6ImJuaWNrbGUiLCJlbWFpbCI6ImJyYWRsZXkubmlja2xlQHN0dWRlbnQuY3N1bGIuZWR1IiwicGFzc2NvZGUiOiJtYXJ2ZWwgZmFuIiwicm9sZSI6InN0dWRlbnQiLCJzY2hvb2wiOiJDU1VMQiJ9.RfciY1UlYZq28gi1yCg0XAL0MiqDzYiyTYj_GEQBLyc");
+                if (this.count < 6) {
+                    fetch(
+                        `${URLS.api.login.authenticate}`, {
+                        method: 'POST',
+                        context: this,
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data),
 
-                    router.push({ name: "HomePage" });
+                    }).then((response) => {
+                        if (!response.ok) {
 
-                }
-                else if (this.username == "jcutri" && this.otp == "vef99e4b") {
-                    window.sessionStorage.setItem("token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSm9zZXBoIEN1dHJpIiwidXNlcm5hbWUiOiJqY3V0cmkiLCJlbWFpbCI6Impvc2VwaC5jdXRyaUBzdHVkZW50LmNzdWxiLmVkdSIsInBhc3Njb2RlIjoibnVtYmVyIG9uZSIsInJvbGUiOiJzdHVkZW50Iiwic2Nob29sIjoiQ1NVTEIifQ.gKoaT7lUQBH1po6U1tOLaSarl4Y4o9rAZRLObv9dyfco");
+                            console.log("error")
+                            this.errors = "Username/OTP Incorrect"
+                        }
+                        else {
+                            console.log("ajax success")
+                            return response.json()
+                           
+                        }
 
-                    router.push({ name: "HomePage" });
+                    }).then((result) => {
+                        console.log(result)
+                        this.token = JSON.stringify(result);
+                        if (this.token != undefined) {
+                            console.log("token", this.token)
+                            window.sessionStorage.setItem("token", this.token)
+                            router.push({ name: "HomePage" });
+                        }
+                        else {
+                            console.log("error")
+                            this.errors = "Username/OTP Incorrect"
+                        }
 
-                }
-                else if (this.username == "atoscano" && this.otp == "9z93c18u") {
-                    window.sessionStorage.setItem("token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiQWxiZXJ0IFRvc2Nhbm8iLCJ1c2VybmFtZSI6ImF0b3NjYW5vIiwiZW1haWwiOiJhbGJlcnQudG9zY2FubzAxQHN0dWRlbnQuY3N1bGIuZWR1IiwicGFzc2NvZGUiOiJoYXBweSBtZWFsIiwicm9sZSI6ImFkbWluIiwic2Nob29sIjoiQ1NVTEIifQ.pWdFoOiopjMglW5yWcFtoPWCch8qFwmNJyciCt8lQlw");
-
-                    router.push({ name: "HomePage" });
-
-                }
-                else if (this.username == "jdelgado" && this.otp == "yjc3ghih") {
-                    window.sessionStorage.setItem("token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSmFjb2IgRGVsZ2FkbyIsInVzZXJuYW1lIjoiamRlbGdhZG8iLCJlbWFpbCI6ImphY29iLmRlbGdhZG9Ac3R1ZGVudC5jc3VsYi5lZHUiLCJwYXNzY29kZSI6InN1cGVyIG1hbiIsInJvbGUiOiJzdHVkZW50Iiwic2Nob29sIjoiQ1NVTEIifQ.hDqZc51Cy5H_8mWs3V3lGqlKm9-HE069F0VxIvhB6PI");
-
-                    router.push({ name: "HomePage" });
-
-                }
-                else if (this.username == "stang" && this.otp == "7kfldn35") {
-                    window.sessionStorage.setItem("token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiU3plTWFuIFRhbmciLCJ1c2VybmFtZSI6InN0YW5nIiwiZW1haWwiOiJzemVtYW4udGFuZ0BzdHVkZW50LmNzdWxiLmVkdSIsInBhc3Njb2RlIjoid29uZGVyIHdvbWFuIiwicm9sZSI6InN0dWRlbnQiLCJzY2hvb2wiOiJDU1VMQiJ9.In7UisIgih29XN30yGGMlEw9ySHbjGlFrVbjD_HAKg0");
-
-                    router.push({ name: "HomePage" });
-
-                }
-                else if (this.username == "dpatel" && this.otp == "1xm6lavf") {
-                    window.sessionStorage.setItem("token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiRGV2YXJzaCBQYXRlbCIsInVzZXJuYW1lIjoiZHBhdGVsIiwiZW1haWwiOiJkZXZhcnNoLnBhdGVsQHN0dWRlbnQuY3N1bGIuZWR1IiwicGFzc2NvZGUiOiJwaXp6YSBndXkiLCJyb2xlIjoic3R1ZGVudCIsInNjaG9vbCI6IkNTVUxCIn0.qwmUc9bhYScOvskSxu0J8KX39tsKJzVGROW-j-F46hI");
-
-                    router.push({ name: "HomePage" });
-
+                    })
                 }
                 else {
-                    alert("Incorect username/otp");
+                    this.errors = ""
+                    fetch(
+                        `${URLS.api.login.disable}/${this.username}`, {
+                        method: 'GET',
+                        context: this,
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+
+                    })
                 }
-            }
+                
+            
+            },
+            back() {
+                router.push({ name: "EmailVue" });
+            },
+
         },
     });
 </script>
 <style scoped>
     button {
         font-weight: bold;
+    }
+    .warning {
+        color: red;
+        margin: auto;
+        width: 440px;
+        text-align: center;
+        font-size: 11px;
     }
 </style>

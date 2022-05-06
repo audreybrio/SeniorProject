@@ -56,7 +56,7 @@ namespace ConsoleDemo
             // Write the ScheduleItems to a file.
             Console.WriteLine("Writing schedule to " + path + " ...");
             ScheduleFileAccessor readWriter = new ScheduleFileAccessor(true);
-            string result = readWriter.WriteScheduleItems(demoSchedule);
+      /*      string result = readWriter.WriteScheduleItems(demoSchedule);
             Console.WriteLine(result);
             if (result.Equals(ScheduleFileAccessor.Success))
             {
@@ -65,7 +65,7 @@ namespace ConsoleDemo
             else
             {
                 Console.WriteLine("Error: " + result);
-            }
+            }*/
 
             // Read the ScheduleItems from a file.
             path = @"C:\Users\Public\scheduleBuilderDemo.json";

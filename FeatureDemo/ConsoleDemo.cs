@@ -1,6 +1,5 @@
 ﻿using FeatureDemo;
-using StudentMultiTool.Backend.Services.Authentication.Controller;
-
+using StudentMultiTool.Backend.Controllers;
 using StudentMultiTool.Backend.Services.BookSelling;
 
 namespace ConsoleDemo
@@ -38,12 +37,30 @@ namespace ConsoleDemo
                         break;
                     // Registration
                     case 1:
-                        RegistrationDemo registration = new RegistrationDemo();
+                        // RegistrationDemo registration = new RegistrationDemo();
                         break;
                     // Login/Logout
                     case 2:
                         LoginController loginController = new LoginController();
-                        loginController.Authenticate();
+                        loginController.UpdateDisable("abrio");
+                            
+/*                      TutoringProfileController tutoringProfileController = new TutoringProfileController();
+                        List<string> tutorings = new List<string>();
+                        tutorings.Add("CECS 451");
+                        tutorings.Add("MATH 323");
+                        tutorings.Add("CECS 491");
+                        tutorings.Add("CECS 453");
+                        tutorings.Add("CECS 328");
+                        tutoringProfileController.TutoringProfile("jcutri", tutorings, false, true);
+                        tutoringProfileController.TutoringProfile("bnickle", tutorings, true, true);*/
+
+                        //MatchingController matchingController = new MatchingController();
+                        //matchingController.MatchingActivity("abrio");
+
+                        //matchingController.DisplayMatches("abrio");
+
+
+
                         break;
                     // Schedule Builder
                     case 3:
