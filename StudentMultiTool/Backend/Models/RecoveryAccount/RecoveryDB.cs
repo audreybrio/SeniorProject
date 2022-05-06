@@ -35,7 +35,46 @@ namespace StudentMultiTool.Backend.Models.RecoveryAccount
                           "Username: " + recovery.username + "\n" +
                           "------------------------------\n\n" +
                           "Please click the link to reset your account password: " +
-                          baseURL + "/newpassword"; /*+ username + "/" + token;*/
+                          baseURL + "/newpassword"; 
+            mail.Body = body;
+            mail.Priority = MailPriority.Normal;
+            using (SmtpClient client = new SmtpClient("email-smtp.us-east-1.amazonaws.com", 587))
+            {
+                client.EnableSsl = true;
+                client.UseDefaultCredentials = false;
+                client.Credentials = new System.Net.NetworkCredential("AKIA4LFTDFRCSQHGW2BL", "BMAUAXuLN+qSGL0QiezLwtqpfckzibBAwvJ/0AiDtrQa");
+                try
+                {
+                    client.Send(mail);
+                    result = true;
+                }
+                catch (Exception ex)
+                {
+                    System.Console.WriteLine("Exception caught in SendEmail(): {0}", ex.ToString());
+                    result = false;
+                }
+            }
+
+            return result;
+        }
+
+
+        public bool sendEmailDisabledAccount(RecoveryUserEmail disable)
+        {
+
+            bool result = true;
+            MailMessage mail = new MailMessage();
+            string baseURL = "https://localhost:5002";
+            mail.From = new MailAddress("studentmultitool@outlook.com");
+            mail.To.Add(new MailAddress(disable.email));
+            mail.Subject = "Email link to reset existing account with Student Multi-Tool";
+            string body = "Thank you for being our users!\n" +
+                          "This is the link will give you access to reactivate your account.\n \n" +
+                          "------------------------------\n" +
+                          "Username: " + disable.username + "\n" +
+                          "------------------------------\n\n" +
+                          "Please click the link to reactivate your account password: " +
+                          baseURL + "/activateaccount";
             mail.Body = body;
             mail.Priority = MailPriority.Normal;
             using (SmtpClient client = new SmtpClient("email-smtp.us-east-1.amazonaws.com", 587))

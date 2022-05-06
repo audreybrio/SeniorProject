@@ -1,10 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using StudentMultiTool.Backend.Controllers;
+using StudentMultiTool.Backend.DAL;
 using StudentMultiTool.Backend.Models.RecoveryAccount;
 using StudentMultiTool.Backend.Models.Registration;
 using StudentMultiTool.Backend.Services.Authentication;
 using StudentMultiTool.Backend.Services.UserManagement;
 using System.Data;
+using UserAcc;
+
 
 namespace StudentMultiTool.Backend.Controllers
 {
@@ -125,6 +128,53 @@ namespace StudentMultiTool.Backend.Controllers
 
             return new JsonResult(m);
 
+        }
+
+
+        [HttpPost("disabled")]
+        public IActionResult PostDisabled(RecoveryUserEmail r)
+        {
+            RecoveryDB db = new RecoveryDB();
+
+            string m = "nothing";
+
+            if (db.sendEmailDisabledAccount(r))
+            {
+                m = "successful";
+            }
+            else
+            {
+                m = "Error";
+            }
+
+            return new JsonResult(m);
+        }
+
+        [HttpPost("postactivate")]
+        public IActionResult PostActivate(RecoveryUserEmail r)
+        {
+            UserAccountDAO userDB = new UserAccountDAO();
+            UserAccount u = new UserAccount();
+            string m = "nothing";
+
+            Console.WriteLine("user== "+ r.username);
+
+            Console.WriteLine("Activate== " + r.activate);
+
+            u = userDB.SelectSingle(r.username);
+
+            u.active = r.activate;
+           
+            if (userDB.UpdateSingle(u) == "Success")
+            {
+                m = "successful";
+            }
+            else
+            {
+                m = "Error";
+            }
+
+            return new JsonResult(m);
         }
     }
 }

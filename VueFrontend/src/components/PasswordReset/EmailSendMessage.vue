@@ -1,9 +1,9 @@
 <template>
     <div class="message">
 
-        <h1> Forgot Passowrd Confirmation</h1>
+        <h1> Account Recovery Confirmation</h1>
         <hr>
-        <p>The email has been sent successfully. Check your email for new Password Update.</p>
+        <p>The email has been sent successfully. Check your email to update your Password or Reactivate an account.</p>
     </div>
     <button @click="Back"> GO BACK TO LOGIN PAGE</button>
 

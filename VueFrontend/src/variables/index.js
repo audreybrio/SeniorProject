@@ -1,6 +1,5 @@
 import axios from 'axios'
 
-
 const domain = "localhost";
 const apiPort = "5003";
 //const domain = "ec2-13-52-181-69.us-west-1.compute.amazonaws.com";
@@ -102,8 +101,14 @@ const URLS = {
     },
     validatePassExist(email, pass, confPass) {
         return apiClient.get('recovery/validatepass/' + email + '/' + pass + '/' + confPass)
-
+    },
+    postDisableAccount(disabledemail) {
+        return apiClient.post('recovery/disabled', disabledemail)
+    },
+    recoveryAccount(useractivate) {
+        return apiClient.post('recovery/postactivate', useractivate)
     }
+   
 }
 
 export default URLS

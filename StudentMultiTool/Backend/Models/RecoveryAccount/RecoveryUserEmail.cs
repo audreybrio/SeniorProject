@@ -13,5 +13,7 @@ namespace StudentMultiTool.Backend.Models.RecoveryAccount
         public bool EmailExist { get; set; }
 
         public bool UsernameExist { get; set; }
+
+        public bool activate { get; set; }
     }
 }

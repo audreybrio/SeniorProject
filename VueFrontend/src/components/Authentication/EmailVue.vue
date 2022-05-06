@@ -45,8 +45,6 @@
                 this.loading = true;
                 this.email = '';
                 this.passcode = '';
-
-
             },
             onSubmit() {
                 this.errors = ""
@@ -69,7 +67,8 @@
                     if (!response.ok) {
 
                         console.log("error")
-                        this.errors = "Email/Passcode Incorrect";
+                        router.push({ name: "DisabledEmail" })
+
                     }
                     else {
                         console.log("ajax success")
