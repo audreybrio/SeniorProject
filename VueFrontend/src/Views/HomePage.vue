@@ -30,6 +30,7 @@
         <div>
             <button @click="onManageAccount">Manage Account</button>
         </div>
+        <button @click="onPrivacy">Do Not Sell My Personal Information</button>
         <button @click="onSubmit">Logout</button>
 
     </div>
@@ -115,7 +116,9 @@
             onCalc() {
                 router.push({name: "calculatorMain"})
             },
-
+            onPrivacy() {
+                router.push({name: "UserPrivacy" })
+            }
         },
     });
 </script>
