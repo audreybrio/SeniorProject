@@ -311,5 +311,36 @@ namespace StudentMultiTool.Backend.Services.ScheduleBuilder
             }
             return result;
         }
+
+        public int UpdateCollaborator(int scheduleId, string userHash, bool canWrite, bool isOwner)
+        {
+            if (this.dbConnectionString == null)
+            {
+                throw new NullReferenceException();
+            }
+            int result = -1;
+            SqlCommandRunner runner = new SqlCommandRunner(dbConnectionString);
+            runner.Query = "UPDATE Collaborators SET canWrite = @canWrite, isOwner = @isOwner WHERE schedule = @schedule AND collaborator = @collaborator;";
+            runner.AddParam("@canWrite", canWrite);
+            runner.AddParam("@isOwner", isOwner);
+            runner.AddParam("@schedule", scheduleId);
+            runner.AddParam("@collaborator", userHash);
+            result = runner.ExecuteNonQuery();
+            return result;
+        }
+        public int DeleteCollaborator(int scheduleId, string userHash)
+        {
+            if (this.dbConnectionString == null)
+            {
+                throw new NullReferenceException();
+            }
+            int result = -1;
+            SqlCommandRunner runner = new SqlCommandRunner(dbConnectionString);
+            runner.Query = "DELETE FROM Collaborators WHERE schedule = @schedule AND collaborator = @collaborator;";
+            runner.AddParam("@schedule", scheduleId);
+            runner.AddParam("@collaborator", userHash);
+            result = runner.ExecuteNonQuery();
+            return result;
+        }
     }
 }
