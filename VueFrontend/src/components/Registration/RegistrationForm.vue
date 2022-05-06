@@ -51,12 +51,14 @@
                 Already have an account? <router-link to="/">Login</router-link>
             </div>
         </div>
+        <button @click="onPrivacy">Do Not Sell My Personal Information</button>
     </section>
     </template>
 
 <script>
     import * as $ from 'jquery'
     //const baseURL = "https://localhost:5002";
+    import router from '../../router'
     import URLS from '../../variables'
     export default {
         data() {
@@ -214,6 +216,9 @@
                 this.retype_email = "";
                 this.retype_password = "";
             },
+            onPrivacy() {
+                router.push({ name: "UserPrivacy" })
+            }
         }
     };
 </script>
