@@ -46,6 +46,7 @@ const URLS = {
         },
 
         gpaCalc: {
+            calculateGPA: apiRoot + "gpaCalc/calculateGPA"
 
         }
     }
