@@ -5,7 +5,7 @@
         <p v-else>Bulk Operation Mode</p>
     </button>
     <div v-if="fileUpload">
-        <label for="fileField">Upload bulk operations file here ( size limit: 1MB )</label>
+        <label for="fileField">Upload bulk operations file here ( size limit: 2GB )</label>
         <div>
             <form>
                 <input type="file" id="fileField" required />
@@ -14,38 +14,74 @@
             </form>
         </div>
     </div>
-    <!--<div v-if="display">-->
     <div v-else>
-    very true!
-        <table>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Username</th>
-                    <th>Email</th>
-                    <th>Active</th>
-                    <th>Role</th>
-                    <th>Update</th>
-                    <th>Delete</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="user in users" :key="user.id">
-                    <th>{{ user.id }}</th>
-                    <th><input type="text" v-model="user.username" /></th>
-                    <th><input type="text" v-model="user.email" /></th>
-                    <th><input type="checkbox" v-model="user.active" /></th>
-                    <th>
-                        <select v-model="user.role">
-                            <option disabled value="">This user's role</option>
-                            <option v-for="role in possibleRoles" :key="role">{{ role }}</option>
-                        </select>
-                    </th>
-                    <th><button @click="update(user)">Update</button></th>
-                    <th><button @click="onDelete(user)">Delete</button></th>
-                </tr>
-            </tbody>
-        </table>
+        <div>
+            <div>
+                <h3>Create a new user.</h3>
+                <label for="createUsername">Username</label>
+                <input type="text" v-model="newUsername" id="createUsername" />
+            <div>
+            </div>
+                <label for="createEmail">Email</label>
+                <input type="text" v-model="newEmail" id="createEmail" />
+            <div>
+            </div>
+                <label for="createPassword">Password</label>
+                <input type="text" v-model="newPassword" id="createPassword" />
+            <div>
+            </div>
+                <label for="createRole">Role</label>
+                <select v-model="newRole" id="createRole">
+                    <option disabled value="">This user's role</option>
+                    <option v-for="role in possibleRoles" :key="role">{{ role }}</option>
+                </select>
+            <div>
+            </div>
+                <label for="createSchool">School</label>
+                <input type="text" v-model="newSchool" id="createSchool" />
+            <div>
+            </div>
+                <label for="createActive">Active</label>
+                <input type="checkbox" v-model="newActive" id="createActive" />
+            </div>
+            <div>
+                <button @click="clearNewUser">Clear</button>
+                <button @click="submitNewUser"> Submit</button>
+            </div>
+        </div>
+        <br />
+        <div>
+            <h3>Update existing users.</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Active</th>
+                        <th>Role</th>
+                        <th>Update</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="user in users" :key="user.id">
+                        <th>{{ user.id }}</th>
+                        <th><input type="text" v-model="user.username" /></th>
+                        <th><input type="text" v-model="user.email" /></th>
+                        <th><input type="checkbox" v-model="user.active" /></th>
+                        <th>
+                            <select v-model="user.role">
+                                <option disabled value="">This user's role</option>
+                                <option v-for="role in possibleRoles" :key="role">{{ role }}</option>
+                            </select>
+                        </th>
+                        <th><button @click="update(user)">Update</button></th>
+                        <th><button @click="onDelete(user)">Delete</button></th>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
     <!--<div v-else>
     false!
@@ -66,7 +102,13 @@
                 users: [],
                 possibleRoles: [],
                 fileUpload: false,
-                file: null
+                file: null,
+                newUsername: "",
+                newEmail: "",
+                newRole: null,
+                newPassword: "",
+                newSchool: "",
+                newActive: true,
             }
         },
         created() {
@@ -165,7 +207,37 @@
                     .catch(e => {
                         alert("Could not delete user with id " + user.id + "\n" + e)
                     })
-            }
+            },
+            clearNewUser() {
+                this.newUsername = ""
+                this.newEmail = ""
+                this.newRole = null
+                this.newPassword = ""
+                this.newSchool = ""
+                this.newActive = true
+            },
+            submitNewUser() {
+                let success = false;
+                let newUser = {
+                    Username: this.newUsername,
+                    Email: this.newEmail,
+                    Role: this.newRole,
+                    Passcode: this.newPassword,
+                    School: this.newSchool,
+                    Active: this.newActive
+                }
+                axios.post(`${URLS.api.admin.createUser}`, newUser)
+                    .then(response => {
+                        alert(response)
+                        success = true
+                    })
+                    .catch(error => {
+                        alert(error)
+                    })
+                if (success) {
+                    this.clearNewUser()
+                }
+            },
         }
     });
 </script>

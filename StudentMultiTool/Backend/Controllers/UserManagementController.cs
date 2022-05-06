@@ -46,6 +46,23 @@ namespace StudentMultiTool.Backend.Controllers
         }
 
         [HttpPost]
+        [Route("createUser")]
+        public ActionResult CreateUser([FromBody] UserAccount user)
+        {
+            if (user != null)
+            {
+                UserAccountDAO uad = new UserAccountDAO();
+                string result = uad.InsertUser(user);
+                if (result.Equals(uad.Success))
+                {
+                    return Ok("User " + user.Username + " created successfully");
+                }
+                return StatusCode(500, result);
+            }
+            return BadRequest("user cannot be null");
+        }
+
+        [HttpPost]
         [Route("updateUsers")]
         public ActionResult UpdateUsers([FromBody] List<UserAccount> users)
         {
