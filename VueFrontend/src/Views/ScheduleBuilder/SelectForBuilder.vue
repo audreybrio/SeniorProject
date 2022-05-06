@@ -25,6 +25,7 @@
                         <th>Owner</th>
                         <th>Edit</th>
                         <th>Delete</th>
+                        <th>Collaborators</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -37,6 +38,7 @@
                         <td>{{ schedule.owner }}</td>
                         <td><button @click="onScheduleBuilder(schedule.id, schedule.title, schedule.created, schedule.modified)">Edit</button></td>
                         <td><button @click="deleteSchedule(schedule.id)">Delete</button></td>
+                        <td><button @click="editCollaborators(schedule.id)">Collaborators</button></td>
                     </tr>
                 </tbody>
             </table>
@@ -73,7 +75,7 @@
                 console.log(requestName);
                 $.ajax({
                     // set the HTTP request URL
-                    url: `${URLS.api.scheduleBuilder.getList}/${this.user}`, 
+                    url: `${URLS.api.scheduleBuilder.getList}/${this.user}`,
 
                     // set the context object to the vue component
                     // this line tells vue to update its components
@@ -151,6 +153,19 @@
                     });
                 }
             },
+            editCollaborators(scheduleId) {
+                console.log("To edit collaborators for @" + scheduleId + "/" + title);
+                router.push({
+                    name: 'ScheduleCollaborators',
+                    params: {
+                        user: this.user,
+                        scheduleId: scheduleId,
+                        title: title,
+                        created: created,
+                        modified: modified,
+                    }
+                });
+            }
         }
     });
 </script>

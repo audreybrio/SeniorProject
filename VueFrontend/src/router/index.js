@@ -69,6 +69,11 @@ const routes = [
         name: 'EmailVerification',
         component: EmailVerification
     },
+    {
+        path: '/UserManagement',
+        name: 'UserManagement',
+        component: () => import('../Views/UserManagement/UserManagement.vue')
+    },
 
     // ScheduleBuilder & ScheduleComparison
     // ScheduleBuilder
@@ -81,6 +86,11 @@ const routes = [
         path: '/schedule/builder/select/',
         name: 'SelectForBuilder',
         component: () => import('../Views/ScheduleBuilder/SelectForBuilder.vue')
+    },
+    {
+        path: '/schedule/collaborators/',
+        name: 'ScheduleCollaborators',
+        component: () => import('../Views/ScheduleBuilder/Collaborators.vue')
     },
     // ScheduleComparison
     {
@@ -144,16 +154,12 @@ const routes = [
         component: DisplayMatches
 
     },
-
     {
         path: '/matcheschild',
         name: 'displayChild',
         component: MatchesChild
 
     },
-
-
-
     {
         path: '/studentDiscounts/discountDetails/:id',
         name: 'discountDetails',
@@ -238,6 +244,9 @@ const routes = [
         name: 'rankingsChild',
         component: RankingsChild
 
+        path: '/notAuthorized',
+        name: 'not-authorized',
+        component: () => import('../Views/NotAuthorized')
     },
     
     //EventPlanning

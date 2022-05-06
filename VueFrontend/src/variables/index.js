@@ -9,6 +9,14 @@ const URLS = {
     root: root,
     apiRoot: apiRoot,
     api: {
+        admin: {
+            getUsers: apiRoot + "userManagement/getUsers",
+            getRoles: apiRoot + "userManagement/getRoles",
+            updateUsers: apiRoot + "userManagement/updateUsers",
+            deleteUsers: apiRoot + "userManagement/deleteUsers",
+            runBulkOperation: apiRoot + "userManagement/runBulkOperation"
+        },
+
         scheduleBuilder: {
             getList: apiRoot + "schedule/getlist",
             getSchedule: apiRoot + "schedule/getschedule",
@@ -16,7 +24,11 @@ const URLS = {
             saveSchedule: apiRoot + "schedule/saveschedule",
             createItem: apiRoot + "schedule/createItem",
             updateItem: apiRoot + "schedule/updateItem",
-            deleteItem: apiRoot + "schedule/deleteItem"
+            deleteItem: apiRoot + "schedule/deleteItem",
+            getCollaborators: apiRoot + "schedule/getCollaborators",
+            addCollaborator: apiRoot + "schedule/addCollaborator",
+            updateCollaborator: apiRoot + "schedule/updateCollaborator",
+            deleteCollaborator: apiRoot + "schedule/deleteCollaborator"
         },
 
         matching: {

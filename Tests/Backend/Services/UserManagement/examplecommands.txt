@@ -1,0 +1,10 @@
+create arbitraryUser arbitraryUser@student.csulb.edu student password1 arby CSULB true
+create exampleUser exampleUser@student.csulb.edu admin password2 example CSULB false
+create truncatedUser trunc8ed@student.csulb.edu student pass3
+create deleteableUser deletable@student.csulb.edu student deletedeletedelete del CSULB true
+
+update truncatedUser - - - - trunky
+
+enable exampleUser
+disable arbitraryUser
+delete deleteableUser

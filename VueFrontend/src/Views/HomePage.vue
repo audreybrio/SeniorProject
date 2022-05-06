@@ -3,6 +3,10 @@
         <div>
             Hello {{ id }}! :)
         </div>
+        <div v-if="role === 'admin'">
+            <button @click="onUsageAnalysisDashboard">Usage Analysis Dashboard</button>
+            <button @click="onUserManagement">User Management</button>
+        </div>
         <div>
             <button @click="onAC">Access Control</button>
             <button @click="onScheduleBuilder">Schedule Builder</button>
@@ -14,7 +18,7 @@
             <button @click="onUSD">User Analysis Dashboard</button>
         </div>
         <div>
-            <button @click="onAid">Aid Eligibility Estimates</button>
+            <!--<button @click="onAid">Aid Eligibility Estimates</button>-->
             <button @click="onSD">Student Discounts</button>
             <button @click="onMatching">Matching</button>
         </div>
@@ -23,8 +27,11 @@
             <button @click="onEP">Event Planning</button>
             <button @click="onCalc">GPA/Grade Calculator</button>
         </div>
-            <button @click="onSubmit">Logout</button>
-        
+        <div>
+            <button @click="onManageAccount">Manage Account</button>
+        </div>
+        <button @click="onSubmit">Logout</button>
+
     </div>
     <router-view />
 </template>
@@ -38,7 +45,8 @@
             return {
                 loading: false,
                 post: null,
-                id: jwt_decode(window.sessionStorage.getItem("token")).username
+                id: jwt_decode(window.sessionStorage.getItem("token")).username,
+                role: 'admin'
             };
         },
         created() {
@@ -55,6 +63,23 @@
                 window.sessionStorage.removeItem("token");
                 router.push({ name: "EmailVue" });
 
+            },
+
+            onUsageAnalysisDashboard() {
+                if (this.role === 'admin') {
+                    router.push({ name: "not-found" });
+                }
+                else {
+                    alert("You lack the necessary role to access that page.")
+                }
+            },
+            onUserManagement() {
+                if (this.role === 'admin') {
+                    router.push({ name: "UserManagement" });
+                }
+                else {
+                    alert("You lack the necessary role to access that page.")
+                }
             },
 
              onAC() {
