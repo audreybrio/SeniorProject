@@ -49,7 +49,7 @@
 
 <script>
 
-    import RecipesService from '/src/variables/RecipesService.js'
+    import AccessService from '/src/variables/index.js'
 
     export default {
         data() {
@@ -66,7 +66,7 @@
         },
         methods: {
             onCreatePost() {
-                    RecipesService.postRecipe({
+                    AccessService.postRecipe({
                         title: this.title, category: this.category, calorieValue: this.calorieValue, overallPrice: this.overallPrice,
                         datePosted: this.datePosted, mealForPeople: this.mealForPeople, description: this.description
                     })

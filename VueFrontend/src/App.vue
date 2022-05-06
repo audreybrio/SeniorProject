@@ -1,8 +1,8 @@
 <template>
-    <h1>Student Multi-Tool</h1>
     <div id="app"></div>
-    <router-view/>
+    <router-view />
 </template>
+
 
 <style>
     #app {
