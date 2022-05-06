@@ -390,6 +390,36 @@ namespace UserManagement
             cmd.Parameters.AddWithValue("@username", username);
             cmd.ExecuteNonQuery();
         }
+
+        bool isActive24Hour(string token)
+        {
+            try
+            {
+                SqlConnection conn = new SqlConnection();
+                conn.ConnectionString = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING");
+                conn.Open();
+                SqlCommand cmd = new SqlCommand("SELECT emailCreated FROM UserAccounts" +
+                                                " WHERE token = @token", conn);
+                cmd.Parameters.AddWithValue("@token", token);
+                cmd.ExecuteNonQuery();
+                DateTime date = (DateTime)cmd.ExecuteScalar();
+                conn.Close();
+                DateTime now = DateTime.Now;
+                if (date.AddDays(1) < now)
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+            catch
+            {
+                return false;
+            }
+
+        }
         public bool ActivateAccount(string token)
         {
             try
@@ -402,7 +432,15 @@ namespace UserManagement
                 cmd.Parameters.AddWithValue("@token", token);
                 cmd.ExecuteNonQuery();
                 conn.Close();
-                return true;
+                if (isActive24Hour(token))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+                
             }
             catch
             {
