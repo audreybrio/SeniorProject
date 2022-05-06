@@ -41,8 +41,8 @@ namespace ConsoleDemo
                         break;
                     // Login/Logout
                     case 2:
-                        //LoginController loginController = new LoginController();
-                        //loginController.Authenticate();
+                        LoginController loginController = new LoginController();
+                        loginController.UpdateDisable("abrio");
                             
 /*                      TutoringProfileController tutoringProfileController = new TutoringProfileController();
                         List<string> tutorings = new List<string>();
@@ -53,10 +53,11 @@ namespace ConsoleDemo
                         tutorings.Add("CECS 328");
                         tutoringProfileController.TutoringProfile("jcutri", tutorings, false, true);
                         tutoringProfileController.TutoringProfile("bnickle", tutorings, true, true);*/
-                        MatchingController matchingController = new MatchingController();
-                        matchingController.MatchingActivity("abrio");
 
-                        matchingController.DisplayMatches("abrio");
+                        //MatchingController matchingController = new MatchingController();
+                        //matchingController.MatchingActivity("abrio");
+
+                        //matchingController.DisplayMatches("abrio");
 
 
 

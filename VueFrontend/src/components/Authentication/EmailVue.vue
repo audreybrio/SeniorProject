@@ -10,7 +10,7 @@
         <input id="passcode" v-model="passcode" placeholder="Passocde">
         <button id="button" @click="onSubmit">Submit</button>
         <div>
-            <button @click="skip">Test</button>
+            <!--<button @click="skip">Test</button>-->
             <router-link to="/registration">Registration</router-link>
             <router-link to="/resetpassemail">ForgotPassword?</router-link>
 
@@ -49,29 +49,21 @@
 
             },
             onSubmit() {
-                //$.ajax({
-                //    url: `${URLS.api.login.validate}/${this.email}/${this.passcode}`,
-                //    context: this,
-                //    method: 'GET',
-                //    success: function () {
-                //        console.log("ajax success")
-                //        router.push({ name: "LoginVue" });
-
-                //    },
-                //    error: function () {
-                //        console.log("error")
-                //        this.errors = "Email/Passcode Incorrect";
-                //    }
-                //})
-
+                this.errors = ""
+                let creditentials = []
+                creditentials.push(this.email)
+                creditentials.push(this.passcode)
+                let data = {
+                    creditentials: creditentials
+                }
                 fetch(
-                    `${URLS.api.login.validate}/${this.email}/${this.passcode}`, {
-                        method: 'POST',
-                        context: this,
-                        headers: {
-                            'Accept': 'application/json',
-                            'Content-Type': 'application/json'
-                    },
+                    `${URLS.api.login.validate}`, {
+                    method: 'POST',
+                    context: this,
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    }, body: JSON.stringify(data),
 
                 }).then((response) => {
                     if (!response.ok) {
@@ -92,8 +84,8 @@
             },
 
             skip() {
-                window.sessionStorage.setItem("token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiQXVkcmV5IEJyaW8iLCJ1c2VybmFtZSI6ImFicmlvIiwiZW1haWwiOiJhdWRyZXkuYnJpb0BzdHVkZW50LmNzdWxiLmVkdSIsInJvbGUiOiJhZG1pbiIsInNjaG9vbCI6IkNTVUxCIiwiaXNWYWxpZCI6dHJ1ZX0.OUsg0xFq6_1c8ApP3JdKs3t-RhbLUpqFGLsbnL0Cx4U");
-                router.push({ name: "HomePage" })
+                window.sessionStorage.setItem("token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFicmlvIiwicm9sZSI6ImFkbWluIiwibmJmIjoxNjUxNjI2NzY4LCJleHAiOjE2NTE3MTMxNjgsImlhdCI6MTY1MTYyNjc2OH0.NqmnnN2bbN36rzjIYzpxd3BTd3WudB_30QpC_ab2spA");
+                router.push({ name: "authenticateUser" })
             },
 
                  

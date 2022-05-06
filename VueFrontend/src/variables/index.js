@@ -2,9 +2,6 @@ import axios from 'axios'
 
 
 const domain = "localhost";
-//const apiPort = "5002";
-//let root = `https://${domain}/`;
-//let apiRoot = `https://${domain}:${apiPort}/api/`;
 const apiPort = "5003";
 //const domain = "ec2-13-52-181-69.us-west-1.compute.amazonaws.com";
 //const apiPort = "8080";
@@ -27,6 +24,14 @@ const URLS = {
     root: root,
     apiRoot: apiRoot,
     api: {
+        admin: {
+            getUsers: apiRoot + "userManagement/getUsers",
+            getRoles: apiRoot + "userManagement/getRoles",
+            updateUsers: apiRoot + "userManagement/updateUsers",
+            deleteUsers: apiRoot + "userManagement/deleteUsers",
+            runBulkOperation: apiRoot + "userManagement/runBulkOperation"
+        },
+
         scheduleBuilder: {
             getList: apiRoot + "schedule/getlist",
             getSchedule: apiRoot + "schedule/getschedule",
@@ -34,7 +39,11 @@ const URLS = {
             saveSchedule: apiRoot + "schedule/saveschedule",
             createItem: apiRoot + "schedule/createItem",
             updateItem: apiRoot + "schedule/updateItem",
-            deleteItem: apiRoot + "schedule/deleteItem"
+            deleteItem: apiRoot + "schedule/deleteItem",
+            getCollaborators: apiRoot + "schedule/getCollaborators",
+            addCollaborator: apiRoot + "schedule/addCollaborator",
+            updateCollaborator: apiRoot + "schedule/updateCollaborator",
+            deleteCollaborator: apiRoot + "schedule/deleteCollaborator"
         },
 
         matching: {
@@ -58,7 +67,13 @@ const URLS = {
 
         login: {
             validate: apiRoot + "login/validate",
-            authenticate: apiRoot + "login/authenticate"
+            authenticate: apiRoot + "login/authenticate",
+            disable: apiRoot + "login/disable",
+            getToken: apiRoot + "login/getToken"
+        },
+
+        gpaCalc: {
+
         }
     },
     getRecipes(perPage, page) {

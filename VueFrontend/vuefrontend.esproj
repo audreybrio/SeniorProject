@@ -11,9 +11,12 @@
     <Script Include="**" Exclude="*.esproj;**\node_modules\**" />
   </ItemGroup>
   <ItemGroup>
+    <Script Remove="src\components\Logout\**" />
+  </ItemGroup>
+  <ItemGroup>
     <Folder Include="src\components\AutomatedModerating\" />
     <Folder Include="src\components\Matching\" />
-    <Folder Include="src\components\Logout\" />
+    <Folder Include="src\components\GPACalc\" />
     <Folder Include="src\components\ScheduleComparison\" />
     <Folder Include="src\components\UserManagement\" />
     <Folder Include="src\static\" />

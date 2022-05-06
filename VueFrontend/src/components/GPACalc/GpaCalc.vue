@@ -1,0 +1,252 @@
+<template>
+    <div class="post">
+        <div v-if="loading" class="loading">
+            Calculate your GPA !!!!
+            <br>
+            <br>
+        </div>
+
+        <div class="warning">
+            <div v-if="errors.length" :key="index" class="warning">{{errors}}</div>
+        </div>
+
+        <!--<div>
+            Enter number of classes took this semester:
+            <input id="sem" name="sem" v-model="ssm" placeholder="Number of courses">
+        </div>-->
+        <div>
+            Course 1
+        </div>
+        <div>
+            Grade:&nbsp;
+            <input type="radio" id="a" value="a" v-model="one">
+            <label for="a">A&nbsp;&nbsp;</label>
+            <input type="radio" id="b" value="b" v-model="one">
+            <label for="b">B&nbsp;&nbsp;</label>
+            <input type="radio" id="c" value="c" v-model="one">
+            <label for="c">C&nbsp;&nbsp;</label>
+            <input type="radio" id="d" value="d" v-model="one">
+            <label for="d">D&nbsp;&nbsp;</label>
+            <input type="radio" id="f" value="f" v-model="one">
+            <label for="f">F&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+
+            <input id="unit1" name="unit1" v-model="unit1" placeholder="Units">
+            <br>
+        </div>
+        <div>
+            Course 2
+        </div>
+        <div>
+            Grade:&nbsp;
+            <input type="radio" id="a" value="a" v-model="two">
+            <label for="a">A&nbsp;&nbsp;</label>
+            <input type="radio" id="b" value="b" v-model="two">
+            <label for="b">B&nbsp;&nbsp;</label>
+            <input type="radio" id="c" value="c" v-model="two">
+            <label for="c">C&nbsp;&nbsp;</label>
+            <input type="radio" id="d" value="d" v-model="two">
+            <label for="d">D&nbsp;&nbsp;</label>
+            <input type="radio" id="f" value="f" v-model="two">
+            <label for="f">F&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+            <input id="unit2" name="unit2" v-model="unit2" placeholder="Units">
+            <br>
+        </div>
+
+        <div>
+            Course 3
+        </div>
+        <div>
+            Grade:&nbsp;
+            <input type="radio" id="a" value="a" v-model="three">
+            <label for="a">A&nbsp;&nbsp;</label>
+            <input type="radio" id="b" value="b" v-model="three">
+            <label for="b">B&nbsp;&nbsp;</label>
+            <input type="radio" id="c" value="c" v-model="three">
+            <label for="c">C&nbsp;&nbsp;</label>
+            <input type="radio" id="d" value="d" v-model="three">
+            <label for="d">D&nbsp;&nbsp;</label>
+            <input type="radio" id="f" value="f" v-model="three">
+            <label for="f">F&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+            <input id="unit3" name="unit3" v-model="unit3" placeholder="Units">
+            <br>
+        </div>
+        <div>
+            Course 4
+        </div>
+        <div>
+            Grade:&nbsp;
+            <input type="radio" id="a" value="a" v-model="four">
+            <label for="a">A&nbsp;&nbsp;</label>
+            <input type="radio" id="b" value="b" v-model="four">
+            <label for="b">B&nbsp;&nbsp;</label>
+            <input type="radio" id="c" value="c" v-model="four">
+            <label for="c">C&nbsp;&nbsp;</label>
+            <input type="radio" id="d" value="d" v-model="four">
+            <label for="d">D&nbsp;&nbsp;</label>
+            <input type="radio" id="f" value="f" v-model="four">
+            <label for="f">F&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+            <input id="unit4" name="unit4" v-model="unit4" placeholder="Units">
+            <br>
+        </div>
+
+        <div>
+            Course 5
+        </div>
+        <div>
+            Grade:&nbsp;
+            <input type="radio" id="a" value="a" v-model="five">
+            <label for="a">A&nbsp;&nbsp;</label>
+            <input type="radio" id="b" value="b" v-model="five">
+            <label for="b">B&nbsp;&nbsp;</label>
+            <input type="radio" id="c" value="c" v-model="five">
+            <label for="c">C&nbsp;&nbsp;</label>
+            <input type="radio" id="d" value="d" v-model="five">
+            <label for="d">D&nbsp;&nbsp;</label>
+            <input type="radio" id="f" value="f" v-model="five">
+            <label for="f">F&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+            <input id="unit5" name="unit5" v-model="unit5" placeholder="Units">
+            <br>
+        </div>
+        <div>
+            Course 6
+        </div>
+        <div>
+            Grade:&nbsp;
+            <input type="radio" id="a" value="a" v-model="six">
+            <label for="a">A&nbsp;&nbsp;</label>
+            <input type="radio" id="b" value="b" v-model="six">
+            <label for="b">B&nbsp;&nbsp;</label>
+            <input type="radio" id="c" value="c" v-model="six">
+            <label for="c">C&nbsp;&nbsp;</label>
+            <input type="radio" id="d" value="d" v-model="six">
+            <label for="d">D&nbsp;&nbsp;</label>
+            <input type="radio" id="f" value="f" v-model="six">
+            <label for="f">F&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+            <input id="unit6" name="unit6" v-model="unit6" placeholder="Units">
+            <br>
+        </div>
+
+        <br />
+        <button @click="save">Calculate GPA!</button>
+        <button @click="onSubmit">Back</button>
+    </div>
+    <router-view />
+</template>
+
+<script lang="js">
+    // Imports
+    import router from '@/router'
+    import jwt_decode from "jwt-decode"
+   // import URLS from '../../variables'
+
+    export default ({
+        data() {
+            return {
+                loading: false,
+                post: null,
+                id: jwt_decode(window.sessionStorage.getItem("token")).username,
+                one: null,
+                two: null,
+                three: null,
+                four: null,
+                five: null,
+                six: null,
+                errors: "",
+                unit1: null, unit2: null, unit3: null, unit4: null, unit5: null, unit6: null,
+
+            };
+        },
+        created() {
+            this.fetchData();
+        },
+        watch: {
+            '$route': 'fetchData'
+        },
+        methods: {
+            fetchData() {
+                this.post = null;
+                this.loading = true;
+
+            },
+            // Go back to main matching page
+            onSubmit() {
+                router.push({name: "calculatorMain"})
+            },
+
+            // Save tutoring profile information
+            save() {
+                let unit = []
+                
+                if (this.unit1 != null) { unit.push(this.unit1) }
+                if (this.unit2 != null) { unit.push(this.unit2) }
+                if (this.unit3 != null) { unit.push(this.unit3) }
+                if (this.unit4 != null) { unit.push(this.unit4) }
+                if (this.unit5 != null) { unit.push(this.unit5) }
+                if (this.unit6 != null) { unit.push(this.unit6) }
+
+                let grade = []
+                if (this.one == "a") { grade.push("A") }
+                else if (this.one == "b") { grade.push("B") }
+                else if (this.one == "c") { grade.push("C") }
+                else if (this.one == "d") { grade.push("D") }
+                else if (this.one == "f") { grade.push("F") }
+
+                if (this.two == "a") { grade.push("A") }
+                else if (this.two == "b") { grade.push("B") }
+                else if (this.two == "c") { grade.push("C") }
+                else if (this.two == "d") { grade.push("D") }
+                else if (this.two == "f") { grade.push("F") }
+
+                if (this.three == "a") { grade.push("A") }
+                else if (this.three == "b") { grade.push("B") }
+                else if (this.three == "c") { grade.push("C") }
+                else if (this.three == "d") { grade.push("D") }
+                else if (this.three == "f") { grade.push("F") }
+
+                if (this.four == "a") { grade.push("A") }
+                else if (this.four == "b") { grade.push("B") }
+                else if (this.four == "c") { grade.push("C") }
+                else if (this.four == "d") { grade.push("D") }
+                else if (this.four == "f") { grade.push("F") }
+
+                if (this.five == "a") { grade.push("A") }
+                else if (this.five == "b") { grade.push("B") }
+                else if (this.five == "c") { grade.push("C") }
+                else if (this.five == "d") { grade.push("D") }
+                else if (this.five == "f") { grade.push("F") }
+
+                if (this.six == "a") { grade.push("A") }
+                else if (this.six == "b") { grade.push("B") }
+                else if (this.six == "c") { grade.push("C") }
+                else if (this.six == "d") { grade.push("D") }
+                else if (this.six == "f") { grade.push("F") }
+                
+                console.log(unit)
+                let data = {
+                    unit: unit,
+                    grade: grade
+                }
+                console.log("Data: ", data)
+
+                if (unit.length != grade.length) {
+                    this.errors = "Error: Missing Information"
+                }
+
+
+            },
+        },
+    });
+</script>
+<style scoped>
+    button {
+        font-weight: bold;
+    }
+
+    .warning {
+        color: red;
+        margin: auto;
+        width: 440px;
+        text-align: center;
+        font-size: 11px;
+    }
+</style>

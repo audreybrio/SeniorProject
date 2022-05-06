@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using StudentMultiTool.Backend.Services.EventPlanning;
+using StudentMultiTool.Backend.Services.Event;
 using StudentMultiTool.Backend.Services.UserManagement;
 
 namespace StudentMultiTool.Backend.Controllers
@@ -9,48 +9,88 @@ namespace StudentMultiTool.Backend.Controllers
     [ApiController]
     public class EventPlanningController : ControllerBase
     {
+
+        EventPlanningUi post = new EventPlanningUi();
+
         private readonly ILogger<EventPlanning> _logger;
         public EventPlanningController(ILogger<EventPlanning> logger)
         {
             _logger = logger;
         }
 
-        // post event for Establishment
-        [HttpPost]
-        [HttpPost("postEevent/{eventtitle}/{eventtime}/{date}/{location}/{description}")]
-        public IActionResult postEevent(string eventtitle, string eventtime, string date, string location, string description)
+        [HttpGet("getDetails")]
+        public IEnumerable<EventPlanning> getDetailsEstablishment()
         {
-            EventPlanningUi post = new EventPlanningUi();
-            if(post.postEevent(eventtitle, eventtime, date, location, description))
+
+            return post.getDetails();
+
+        }
+
+        // view single event
+        [HttpGet("getEventPlanning/{id}")]
+        public IEnumerable<EventPlanning> getSingle(int id)
+        {
+
+            return post.getSingleEvent(id);
+
+        }
+
+        // post all event 
+        [HttpPost("postEvent")]
+        public IActionResult addValues(EventPlanning e)
+        {
+            string m;
+            if(post.addValues(e))
             {
-                return Ok("Success");
+                m = "Succefully Added";
             }
             else
             {
-                return BadRequest();
+                m = "error";
             }
 
+            return Ok(m);       
         }
-       
 
-        // get posts for Establishments
-        [HttpGet("getEventPlanning")]
-        public IEnumerable<EventPlanning> getDiscountsWe()
+        //update event
+        [HttpPut("update/{id}")]
+        public IActionResult edit (int id, EventPlanning e)
         {
+            string m;
+            if (post.updateEevent(id, e))
+            {
+                m = "Succefully Updated";
+            }
+            else
+            {
+                m = "error";
+            }
 
-            EventPlanningUi post = new EventPlanningUi();
-            return post.getEventPlanning();
+            return Ok(m);
+
 
         }
+
+        //delete event
+        [HttpDelete("delete/{id}")]
+        public IActionResult remove(int id)
+        {
+            string m;
+            if (post.deleteEevent(id))
+            {
+                m = "Succefully Deleted";
+            }
+            else
+            {
+                m = "error";
+            }
+
+            return Ok(m);
+
+        }
+
 
         // get post details for establishment
-        [HttpGet("getDetails /{id}")]
-        public IEnumerable<EventPlanning> getDetailsEstablishment(string id)
-        {
-
-            EventPlanningUi post = new EventPlanningUi();
-            return post.getDetails(id);
-
-        }
+     
     }
 }
