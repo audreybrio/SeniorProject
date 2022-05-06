@@ -12,20 +12,35 @@ namespace StudentMultiTool.Backend.Controllers
         [HttpPost("calculateGPA")]
         public IActionResult CalculateGPA([FromBody]  DataGrade grade)
         {
-            List<string> grades = new List<string>();
-            List<string> units = new List<string>();    
+            // Creates lists
+            List<double> grades = new List<double>();
+            List<int> units = new List<int>();  
+            // Gets value for each grade
             for (int i = 0; i < grade.Grade.Count; i++)
             {
-                grades.Add(grade.Grade[i]);
-                //Console.WriteLine(grade.Grade[i]);
+                if (grade.Grade[i] == "A+") { grades.Add(4.0); }
+                else if (grade.Grade[i] == "A") { grades.Add(4.0); }
+                else if (grade.Grade[i] == "A-") { grades.Add(3.7); }
+                else if (grade.Grade[i] == "B+") { grades.Add(3.3); }
+                else if (grade.Grade[i] == "B") { grades.Add(3.0); }
+                else if (grade.Grade[i] == "B-") { grades.Add(2.7); }
+                else if (grade.Grade[i] == "C+") { grades.Add(2.3); }
+                else if (grade.Grade[i] == "C") { grades.Add(2.0); }
+                else if (grade.Grade[i] == "C-") { grades.Add(1.7); }
+                else if (grade.Grade[i] == "D+") { grades.Add(1.3); }
+                else if (grade.Grade[i] == "D") { grades.Add(1.0); }
+                else if (grade.Grade[i] == "D-") { grades.Add(0.7); }
+                else if (grade.Grade[i] == "F") { grades.Add(0.0); }
             }
 
+
+            // Gets value for unit
             for (int i = 0; i < grade.Unit.Count; i++)
             {
-                units.Add(grade.Unit[i]);
+                units.Add(Int32.Parse(grade.Unit[i]));
                 //Console.WriteLine(grade.Unit[i]);
             }
-
+            // Calaculates Gpa
             GPA calcGpa = new GPA();
             double gpa = calcGpa.CalculateGPA(grades, units);
             Console.WriteLine(gpa);
@@ -35,6 +50,7 @@ namespace StudentMultiTool.Backend.Controllers
 
     }
 
+    // To get data from body
     public class DataGrade
     {
         public List<string> Grade { get; set; }

@@ -2,24 +2,28 @@
 {
     public class GPA
     {
-        public double CalculateGPA(List<string> grades, List<string> units)
+        // Calculates given gpa for a user 
+        public double CalculateGPA(List<double> grades, List<int> units)
         {
             int totalUnits = 0;
             double totalPoints = 0;
             double gpa = 0;
+            // Loops to get total points
             for (int i = 0; i < grades.Count; i++)
             {
-                totalPoints = totalPoints + Int32.Parse(grades[i]) * Int32.Parse(units[i]);
+                totalPoints = totalPoints + grades[i] * units[i];
             }
-
-            for(int i = 0; i < units.Count; i++)
-            {
-                totalUnits = totalUnits + Int32.Parse(units[i]);
-            }
-
+            //for(int i = 0; i < units.Count; i++)
+            //{
+            //    totalUnits = totalUnits + Int32.Parse(units[i]);
+            //}
+            // Gets total units
+            totalUnits = units.Sum();
+            // Calculates gpa
             gpa = totalPoints / totalUnits;
-
-            return gpa;
+            // Rounds off
+            double roundedGpa = Math.Round(gpa,3);
+            return roundedGpa;
         }
     }
 }
