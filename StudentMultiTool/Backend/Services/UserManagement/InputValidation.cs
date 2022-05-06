@@ -24,8 +24,7 @@ namespace StudentMultiTool.Backend.Services.UserManagement
         public bool emailExists(string email)
         {
             SqlConnection conn = new SqlConnection();
-            conn.ConnectionString = @"Server=(localdb)\MSSQLLocalDB;Database=Marvel;Trusted_Connection=True; MultipleActiveResultSets=true;";
-                //Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING");
+            conn.ConnectionString = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING");
             conn.Open();
             SqlCommand cmd3 = new SqlCommand("SELECT COUNT (email)" + " from UserAccounts " + "WHERE UserAccounts.email = @email", conn);
             cmd3.Parameters.AddWithValue("@email", email);
@@ -124,8 +123,7 @@ namespace StudentMultiTool.Backend.Services.UserManagement
         public bool usernameExists(string username)
         {
             SqlConnection conn = new SqlConnection();
-            conn.ConnectionString = @"Server=(localdb)\MSSQLLocalDB;Database=Marvel;Trusted_Connection=True; MultipleActiveResultSets=true;";
-                //Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING");
+            conn.ConnectionString = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING");
             conn.Open();
             SqlCommand cmd3 = new SqlCommand("SELECT COUNT (username)" + " from UserAccounts " + "WHERE UserAccounts.username = @username", conn);
             cmd3.Parameters.AddWithValue("@username", username);
