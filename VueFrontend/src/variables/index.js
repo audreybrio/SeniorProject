@@ -71,6 +71,12 @@ const URLS = {
             getToken: apiRoot + "login/getToken"
         },
 
+        registration: {
+            newRegistration: apiRoot + "registration/newRegistration/",
+            inputValidation: apiRoot + "registration/validation/",
+            emailVerification: apiRoot + "registration/emailVerification/"
+        },
+
         gpaCalc: {
 
         }

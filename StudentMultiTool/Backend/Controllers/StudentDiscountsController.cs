@@ -38,8 +38,6 @@ namespace StudentMultiTool.Backend.Controllers
         [HttpPost("postWebsite/{title}/{website}/{description}")]
         public IActionResult postWebsite(string title, string website, string description)
         {
-            //return Ok("Success");
-
             DiscountsManager discount = new DiscountsManager();
             if (discount.postDiscountWebsite(title, website, description))
             {

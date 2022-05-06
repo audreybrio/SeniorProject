@@ -74,7 +74,7 @@ const routes = [
         component: RegistrationForm
     },
     {
-        path: '/Registrationform/:username/:token',
+        path: '/Registrationform/:token',
         name: 'EmailVerification',
         component: EmailVerification
     },

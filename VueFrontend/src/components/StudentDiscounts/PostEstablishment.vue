@@ -12,7 +12,7 @@
             <div>
                 <label for="discountName">Discount Title:</label>
                 <br />
-                <input type="text" id="discountName" v-model="discountInfo.title" ref="start" maxlength="30" required>
+                <input type="text" id="discountName" v-model="discountInfo.title" maxlength="30" required>
                 <br />
                 <label for="establishment">Establishment:</label>
                 <br />
@@ -66,9 +66,6 @@
                     validDescription: false
                 }
             }
-        },
-        mounted() {
-            this.$refs.start.focus();
         },
         methods: {
             submitButtonPressed() {
