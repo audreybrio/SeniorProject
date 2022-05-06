@@ -12,9 +12,16 @@ const URLS = {
         admin: {
             getUsers: apiRoot + "userManagement/getUsers",
             getRoles: apiRoot + "userManagement/getRoles",
+            createUser: apiRoot + "userManagement/createUser",
             updateUsers: apiRoot + "userManagement/updateUsers",
             deleteUsers: apiRoot + "userManagement/deleteUsers",
             runBulkOperation: apiRoot + "userManagement/runBulkOperation"
+        },
+
+        userPrivacy: {
+            getOptions: apiRoot + "userPrivacy/getOptions",
+            setOptions: apiRoot + "userPrivacy/setOptions",
+            accountDeletion: apiRoot + "userPrivacy/accountDeletion"
         },
 
         scheduleBuilder: {
