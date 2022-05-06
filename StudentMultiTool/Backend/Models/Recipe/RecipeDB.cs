@@ -6,7 +6,6 @@ namespace StudentMultiTool.Backend.Models.Recipe
 {
     public class RecipeDB
     {
-        //string connection = @"Server=(localdb)\MSSQLLocalDB;Database=RecipeData;Trusted_Connection=True; MultipleActiveResultSets=true;";
         string connection = Environment.GetEnvironmentVariable(EnvironmentVariableEnum.CONNECTIONSTRING);
 
         public List<Recipe> GetAllRecipe(int perPage, int page)
@@ -20,8 +19,7 @@ namespace StudentMultiTool.Backend.Models.Recipe
 
                     SqlCommand cmd = new SqlCommand("SELECT * FROM [recipes];", con);
 
-                    //SqlCommand cmd = new SqlCommand("SELECT * FROM [recipes] where recipes.id=@recipeID;", con);
-                    //cmd.CommandType = CommandType.Text;
+                
                     con.Open();
 
                     try
@@ -83,7 +81,6 @@ namespace StudentMultiTool.Backend.Models.Recipe
 
                     SqlCommand cmd = new SqlCommand("SELECT * FROM [recipes] where id =" + id + ";", con);
 
-                    //SqlCommand cmd = new SqlCommand("SELECT * FROM [recipes] where recipes.id=@recipeID;", con);
                     cmd.CommandType = CommandType.Text;
                     con.Open();
 

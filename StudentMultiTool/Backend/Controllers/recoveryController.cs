@@ -19,12 +19,13 @@ namespace StudentMultiTool.Backend.Controllers
             _logger = logger;
         }
 
-        RecoveryDB db = new RecoveryDB();
 
 
         [HttpPost("reset")]
         public IActionResult Post(RecoveryUserEmail r)
         {
+            RecoveryDB db = new RecoveryDB();
+
             string m = "nothing";
 
             if (db.sendEmailPasswordReset(r))
@@ -42,7 +43,9 @@ namespace StudentMultiTool.Backend.Controllers
         [HttpGet("validate/{username}/{email}")]
         public IActionResult validateInput(string username, string email)
         {
-            
+
+            RecoveryDB db = new RecoveryDB();
+
             bool result = false;
             int userID  = 0;
 
@@ -66,7 +69,8 @@ namespace StudentMultiTool.Backend.Controllers
         [HttpGet("validatepass/{email}/{pass}/{confpass}")]
         public IActionResult validatePassInput(string email, string pass, string confpass)
         {
-           
+            RecoveryDB db = new RecoveryDB();
+
             bool result = false;
             bool theyaresame = false;
 
@@ -98,6 +102,8 @@ namespace StudentMultiTool.Backend.Controllers
         [HttpPost("passwordchange")]
         public IActionResult PostPassword(RecoveryPassoward rp)
         {
+            RecoveryDB db = new RecoveryDB();
+
             string m = "nothing";
 
             int userID = db.getUserId(rp.email);
@@ -108,8 +114,7 @@ namespace StudentMultiTool.Backend.Controllers
             if (db.sendNewPasswordReset(rp, userID))
             {
 
-                Console.WriteLine("Successfully");
-                Console.WriteLine("did i get right ID " + userID);
+          
 
                 m = "successful";
             }

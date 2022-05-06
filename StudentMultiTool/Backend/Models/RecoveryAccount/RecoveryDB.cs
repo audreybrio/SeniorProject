@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+using StudentMultiTool.Backend.Services.DataAccess;
 using System.Data;
 using System.Data.SqlClient;
 using System.Net.Mail;
@@ -9,10 +10,18 @@ namespace StudentMultiTool.Backend.Models.RecoveryAccount
 {
     public class RecoveryDB
     {
+        public string connection { get; set; }
+
+
+        public RecoveryDB ()
+        {
+            connection = Environment.GetEnvironmentVariable(EnvironmentVariableEnum.CONNECTIONSTRING);
+
+        }
+
 
         public bool sendEmailPasswordReset(RecoveryUserEmail recovery)
         {
-            //string connection = @"Server=(localdb)\MSSQLLocalDB;Database=Marvel;Trusted_Connection=True; MultipleActiveResultSets=true;";
 
             bool result = true;
             MailMessage mail = new MailMessage();
@@ -65,7 +74,6 @@ namespace StudentMultiTool.Backend.Models.RecoveryAccount
 
             try
             {
-                string connection = @"Server=(localdb)\MSSQLLocalDB;Database=Marvel;Trusted_Connection=True; MultipleActiveResultSets=true;";
 
 
                 using (SqlConnection con = new SqlConnection(connection))
@@ -100,7 +108,6 @@ namespace StudentMultiTool.Backend.Models.RecoveryAccount
                     try
                     {
                         con.Open();
-                        //cmd.Parameters.AddWithValue("@id", r.id);
                         cmd.Parameters.AddWithValue("@userID", userID);
                         cmd.Parameters.AddWithValue("@passcode", hashed);
                         Console.WriteLine("Update in UserAccounts");
@@ -131,12 +138,11 @@ namespace StudentMultiTool.Backend.Models.RecoveryAccount
 
             try
             {
-                string connection = @"Server=(localdb)\MSSQLLocalDB;Database=Marvel;Trusted_Connection=True; MultipleActiveResultSets=true;";
+                //string connection = @"Server=(localdb)\MSSQLLocalDB;Database=Marvel;Trusted_Connection=True; MultipleActiveResultSets=true;";
 
                 using (SqlConnection con = new SqlConnection(connection))
                 {
                     String query = "SELECT id" + " from UserAccounts WHERE UserAccounts.email = @email;";
-                        //"SELECT UserAccounts.id FROM [UserAccounts] where username = " + username + " AND email = " + email + ";";
 
                     SqlCommand cmd = new SqlCommand(query, con);
 
@@ -151,7 +157,6 @@ namespace StudentMultiTool.Backend.Models.RecoveryAccount
                         while (rd.Read())
                         {
                             ID = Convert.ToInt32(rd["id"]);
-                            //Console.WriteLine(String.Format("{0}", rd["id"]));
                         }
 
                     }
