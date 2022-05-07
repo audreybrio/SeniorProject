@@ -1,4 +1,4 @@
-<!--<template>
+<template>
     <h1>Establishment Discount Details</h1>
     <div class="box">
         <div class="backButton">
@@ -17,24 +17,24 @@
                 <br />
                 {{discount.description}}
             </div>
-            <br/>-->
-            <!--<ShowMap :latitud="33.7838" :longitud="-118.1141"/>-->
-        <!--</div>
+            <br />
+            <ShowMap :latitud="parseFloat(discount.lat)" :longitud="parseFloat(discount.lng)" />
+        </div>
         <br />
         <br />
     </div>
 </template>
 
 <script>
-    // import ShowMap from './ShowMap.vue'
+    import ShowMap from './ShowMap.vue'
     import * as $ from 'jquery'
     import URLS from '../../variables'
     //const baseURL = "https://localhost:5002";
     export default {
         props: ['id'],
-        //components: {
-        //    ShowMap
-        //},
+        components: {
+            ShowMap
+        },
         data() {
             return {
                 discounts: {},
@@ -111,4 +111,4 @@
         color: white;
         box-shadow: 6px;
     }
-</style>-->
+</style>
