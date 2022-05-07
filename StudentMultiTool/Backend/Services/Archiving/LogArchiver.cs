@@ -36,7 +36,7 @@ namespace Marvel.Services.Logging
             while(reader.Read())
             {
                 ids.Add(reader.GetInt32(0));
-                vs.Add(fileLogWriter.AddLog(reader.GetString(2), reader.GetString(3), reader.GetInt32(4), reader.GetString(5), reader.GetDateTime(1)));
+                vs.Add(fileLogWriter.AddLog(reader.GetString(2), reader.GetString(3), reader.GetString(4), reader.GetString(5), reader.GetDateTime(1)));
             }
 
             foreach (Task<int> current in vs)

@@ -20,7 +20,7 @@ namespace Marvel.Services.Logging
         // Add a new log to the queue. Returns the number of logs successfully added.
         // Intended to be called with a discard, like so: _ = myLogWriter.AddLog(...);
         // Reference: https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/async/
-        public virtual async Task<int> AddLog(string category, string level, int user, string description)
+        public virtual async Task<int> AddLog(string category, string level, string user, string description)
         {
             int result = 0;
             Log newLog = new Log(category, level, user, description);
@@ -91,7 +91,7 @@ namespace Marvel.Services.Logging
         // Add a new log to the queue. Returns the number of logs successfully added.
         // Intended to be called with a discard, like so: _ = myLogWriter.AddLog(...);
         // Reference: https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/async/
-        public override async Task<int> AddLog(string category, string level, int user, string description)
+        public override async Task<int> AddLog(string category, string level, string user, string description)
         {
             int result = -1;
             Log newLog = new Log(category, level, user, description);
@@ -195,7 +195,7 @@ namespace Marvel.Services.Logging
         // Add a new log to the queue. Returns the number of logs successfully added.
         // Intended to be called with a discard, like so: _ = myLogWriter.AddLog(...);
         // Reference: https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/async/
-        public override async Task<int> AddLog(string category, string level, int user, string description)
+        public override async Task<int> AddLog(string category, string level, string user, string description)
         {
             int result = 0;
             Log newLog = new Log(category, level, user, description);
@@ -214,7 +214,7 @@ namespace Marvel.Services.Logging
         }
 
         // Add an existing log to the queue. Returns the number of logs successfully added.
-        public async Task<int> AddLog(string category, string level, int user, string description, DateTime timestamp)
+        public async Task<int> AddLog(string category, string level, string user, string description, DateTime timestamp)
         {
             int result = 0;
             Log newLog = new Log(category, level, user, description, timestamp);
