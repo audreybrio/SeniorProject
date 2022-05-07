@@ -378,14 +378,6 @@ namespace StudentMultiTool.Backend.Controllers
             return tokenHandler.WriteToken(token);
         }
 
-
-
-
-
-
-
-
-
         // Disables a user if they exceed 5 incorrect login attempts
         public void UpdateDisable(string username)
         {

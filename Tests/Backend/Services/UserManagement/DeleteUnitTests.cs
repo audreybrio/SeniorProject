@@ -11,26 +11,18 @@ namespace DeleteTesting
         [Fact]
         public void DeleteUserFail()
         {
-
-
             string user = "mkries";
             bool isDeleted = UserManager.DeleteUser(user);
             Assert.False(isDeleted);
-
-
         }
 
         // Deleting a user successfully
         [Fact]
         public void DeleteUserSuccess()
         {
-
-            
             string user = "jmann";
             bool isDeleted = UserManager.DeleteUser(user);
             Assert.True(isDeleted);
-
-
         }
     }
 }

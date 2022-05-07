@@ -23,8 +23,6 @@ namespace StudentMultiTool.Backend.Controllers
         [HttpGet("getlist/_limit={perPage}/_page={page}")]
         public IActionResult Index(int perPage, int page)
         {
-            //return new JsonResult (customerRecipe.Skip(skip).Take(perPage).ToList());
-            //return new JsonResult(customerRecipe);
 
             return new JsonResult(_recipeDB.GetAllRecipe(perPage, page));
 
@@ -34,9 +32,7 @@ namespace StudentMultiTool.Backend.Controllers
         [HttpGet("getone/{id}")]
         public IActionResult Get(int id)
         {
-
             return new JsonResult(_recipeDB.GetSingleRecipe(id));
-
         }
 
 
@@ -47,7 +43,6 @@ namespace StudentMultiTool.Backend.Controllers
             if (_recipeDB.addValue(r))
             {
                 message = "Successfully Added";
-
             }
             else
             {
@@ -70,9 +65,6 @@ namespace StudentMultiTool.Backend.Controllers
             {
                 message = "Error";
             }
-
-
-
             return new JsonResult(message);
 
         }
@@ -85,7 +77,6 @@ namespace StudentMultiTool.Backend.Controllers
             if (_recipeDB.deleteValue(id))
             {
                 message = "Successfully Deleted";
-
             }
             else
             {
@@ -99,7 +90,6 @@ namespace StudentMultiTool.Backend.Controllers
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
-            
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }

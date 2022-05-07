@@ -5,7 +5,8 @@ namespace Authorization{
     
     class authorize{
         
-    public static string getUserRole(string username){
+        public static string getUserRole(string username )
+        {
             SqlConnection conn = new SqlConnection();
             conn.ConnectionString = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING");
             conn.Open();
@@ -13,9 +14,12 @@ namespace Authorization{
             cmd.ExecuteNonQuery();
             string role = "";
             role = (string)cmd.ExecuteScalar();
+
             return role;
         }
 
+
+     
   /*  static void Main(string[] args)
         {
             SqlConnection conn = new SqlConnection();

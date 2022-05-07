@@ -5,13 +5,14 @@ namespace StudentMultiTool.Backend.Services.Authentication
 {
     public class EmailVerification
     {
+        public string baseURL = "https://localhost:5002";
+
         public EmailVerification() { }
         
         public bool sendEmailPasswordReset(RecoveryUserEmail recovery)
         {
             bool result = false;
             MailMessage mail = new MailMessage();
-            string baseURL = "https://localhost:5002";
             mail.From = new MailAddress("studentmultitool@outlook.com");
             mail.To.Add(new MailAddress(recovery.email));
             mail.Subject = "Email link to reset existing account with Student Multi-Tool";
@@ -52,7 +53,6 @@ namespace StudentMultiTool.Backend.Services.Authentication
 
             bool result = false;
             MailMessage mail = new MailMessage();
-            string baseURL = "https://localhost:5002";
             mail.From = new MailAddress("studentmultitool@outlook.com");
             mail.To.Add(new MailAddress(disable.email));
             mail.Subject = "Email link to reset existing account with Student Multi-Tool";
@@ -89,7 +89,6 @@ namespace StudentMultiTool.Backend.Services.Authentication
         public void SendEmail(string email, string token)
         {
             MailMessage mail = new MailMessage();
-            string baseURL = "https://localhost:5002";
             mail.From = new MailAddress("studentmultitool@outlook.com");
             mail.To.Add(new MailAddress(email));
             mail.Subject = "Email verification for Student Multi-Tool new account";
