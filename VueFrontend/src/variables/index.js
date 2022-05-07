@@ -35,7 +35,8 @@ const URLS = {
             getCollaborators: apiRoot + "schedule/getCollaborators",
             addCollaborator: apiRoot + "schedule/addCollaborator",
             updateCollaborator: apiRoot + "schedule/updateCollaborator",
-            deleteCollaborator: apiRoot + "schedule/deleteCollaborator"
+            deleteCollaborator: apiRoot + "schedule/deleteCollaborator",
+            searchUser: apiRoot + "schedule/searchUser"
         },
 
         matching: {

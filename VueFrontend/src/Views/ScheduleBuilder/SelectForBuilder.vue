@@ -62,11 +62,8 @@
             };
         },
         created() {
+            this.user = this.$route.params.user;
             this.getList();
-        },
-        watch: {
-            // call again the method if the route changes
-            '$route': 'getList'
         },
         methods: {
             getList() {
