@@ -88,7 +88,7 @@ namespace StudentMultiTool.Backend.Controllers
 
             InputValidation inputValidation = new InputValidation();
 
-            if (inputValidation.validatePassword(pass) && theyaresame && inputValidation.emailExists(email))
+            if (inputValidation.validatePasscode(pass) && theyaresame && inputValidation.emailExists(email))
             {
                 result = true;
             }

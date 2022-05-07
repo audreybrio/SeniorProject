@@ -37,15 +37,19 @@
             this.getWebDiscounts()
         },
         methods: {
-            getWebDiscounts() {
-                axios.get(URLS.api.studentDiscounts.getWebsites,
+            async getWebDiscounts() {
+                const response = await axios.get(URLS.api.studentDiscounts.getWebsites,
+                    { timeout: 5000 });
+                this.discounts = response.data;
+
+                /*axios.get(URLS.api.studentDiscounts.getWebsites,
                     { timeout: 5000 })
                     .then(response => {
                         this.discounts = response.data
                     })
                     .catch(e => {
                         console.error("There was an error", e)
-                    })
+                    })*/
             }
         }
     }

@@ -86,13 +86,6 @@ const URLS = {
             getEstDetails: apiRoot + "studentdiscounts/getEstDetails",
         },
 
-        studentDiscounts: {
-            postEstablishment: apiRoot + "studentdiscounts/postEstablishment/",
-            postWebsite: apiRoot + "studentdiscounts/postWebsite/",
-            getEstablishments: apiRoot + "studentdiscounts/getDiscountsEstablishment",
-            getWebsites: apiRoot + "studentdiscounts/getDiscountsWebsite",
-        },
-
         gpaCalc: {
 
         }

@@ -26,36 +26,22 @@
             this.getEstDiscounts()
         },
         methods: {
-            getEstDiscounts() {
-                axios.get(URLS.api.studentDiscounts.getEstablishments,
+            async getEstDiscounts() {
+                const response = await axios.get(URLS.api.studentDiscounts.getEstablishments,
+                    { timeout: 5000 });
+                this.discounts = response.data;
+
+                /*axios.get(URLS.api.studentDiscounts.getEstablishments,
                     { timeout: 5000 })
                     .then(response => {
                         this.discounts = response.data
                     })
                     .catch(e => {
                         console.error("There was an error", e)
-                    })
+                    })*/
             }
         }
     }
-  },
-  created(){
-      this.getEstDiscounts()
-    },
-  methods:{
-      getEstDiscounts() {
-          axios.get(URLS.api.studentDiscounts.getEstablishments,
-              { timeout: 5000 })
-              .then(response => {
-                  console.log(response)
-                  this.discounts = response.data
-              })
-              .catch(e => {
-                  console.log(e)
-              })
-      }
-  }
-}
 </script>
 
 <style scoped>
