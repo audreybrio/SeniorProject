@@ -18,7 +18,8 @@
                 <br />
                 <input type="text" id="establishment" v-model="discountInfo.name" maxlength="30" required>
                 <br />
-                <label for="address">Address: <div style="all:initial; font-size: 20px; color:blue;">{{discountInfo.address}}</div></label>
+                <label for="address"> Address: </label>
+                <div> style="all:initial; font-size: 20px; color:blue;">{{discountInfo.address}}</div>
                 <br />
                 <vue-google-autocomplete ref="discountInfo.address"
                                          id="map"

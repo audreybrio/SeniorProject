@@ -11,7 +11,9 @@
         <button id="button" @click="onSubmit">Submit</button>
         <div>
             <!--<button @click="skip">Test</button>-->
-            <router-link to="/registration">Registration</router-link>
+            <router-link to="/registration">Registration&nbsp;</router-link>
+            <router-link to="/resetpassemail">&nbsp;ForgotPassword?</router-link>
+
         </div>
     </div>
     <router-view />
@@ -43,14 +45,13 @@
                 this.loading = true;
                 this.email = '';
                 this.passcode = '';
-
-
             },
             onSubmit() {
                 this.errors = ""
                 let creditentials = []
                 creditentials.push(this.email)
                 creditentials.push(this.passcode)
+                console.log(creditentials)
                 let data = {
                     creditentials: creditentials
                 }
@@ -67,7 +68,8 @@
                     if (!response.ok) {
 
                         console.log("error")
-                        this.errors = "Email/Passcode Incorrect";
+                        router.push({ name: "DisabledEmail" })
+
                     }
                     else {
                         console.log("ajax success")

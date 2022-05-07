@@ -29,11 +29,20 @@ import RecipeRegister from '../components/MyRecipe/RecipeRegister.vue'
 import RecipeEdit from '../components/MyRecipe/RecipeEdit.vue'
 import RecipeDelete from '../components/MyRecipe/RecipeDelete.vue'
 
+import NewPassword from '../components/PasswordReset/NewPassword.vue'
+import EmailSendMessage from '../components/PasswordReset/EmailSendMessage.vue'
+import ResetPasswordEmail from '../components/PasswordReset/ResetPasswordEmail.vue'
+
+import DisabledEmail from '../components/ActivateDisabledAccount/DisabledEmail.vue'
+import ActivateAccount from '../components/ActivateDisabledAccount/ActivateAccount.vue'
+
 import CalculatorMain from '../components/GPACalc/CalculatorMain.vue'
 import GradeCalc from '../components/GPACalc/GradeCalc.vue'
 import GpaCalc from '../components/GPACalc/GpaCalc.vue'
 import DisplayRankings from '../components/GPACalc/DisplayRankings.vue'
 import RankingsChild from '../components/GPACalc/RankingsChild.vue'
+
+
 
 const routes = [
     // Core Features
@@ -212,6 +221,33 @@ const routes = [
             }
         ]
     },
+    {
+        path: '/resetpassemail',
+        name:'ResetPasswordEmail',
+        component: ResetPasswordEmail
+    },
+    {
+        path: '/newpassword',
+        name:'NewPassword',
+        component: NewPassword
+
+    },
+    {
+        path: '/sendemail',
+        name: 'EmailSendMessage',
+        component: EmailSendMessage
+    },
+    {
+        path: '/disableaccount',
+        name: 'DisabledEmail',
+        component: DisabledEmail
+    },
+    {
+        path: '/activateaccount',
+        name: 'ActivateAccount',
+        component: ActivateAccount
+        
+    },
 
     // Gpa calc
     {
@@ -231,14 +267,12 @@ const routes = [
         name: 'gpaCalc',
         component: GpaCalc
     },
-
     {
         path: '/displayrankings',
         name: 'displayRankings',
         component: DisplayRankings
 
     },
-
     {
         path: '/rankingschild',
         name: 'rankingsChild',
