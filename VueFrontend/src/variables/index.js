@@ -58,9 +58,9 @@ const URLS = {
         },
 
         registration: {
-            newRegistration: apiRoot + "registration/newRegistration/",
+            newRegistration: apiRoot + "registration/newRegistration",
             inputValidation: apiRoot + "registration/validation/",
-            emailVerification: apiRoot + "registration/emailVerification/"
+            emailVerification: apiRoot + "registration/emailVerification"
         },
 
         gpaCalc: {
