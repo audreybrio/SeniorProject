@@ -15,8 +15,6 @@
 <script>
     import axios from 'axios'
     import URLS from '../../variables'
-
-
     export default {
         data() {
             return {
@@ -40,6 +38,24 @@
             }
         }
     }
+  },
+  created(){
+      this.getEstDiscounts()
+    },
+  methods:{
+      getEstDiscounts() {
+          axios.get(URLS.api.studentDiscounts.getEstablishments,
+              { timeout: 5000 })
+              .then(response => {
+                  console.log(response)
+                  this.discounts = response.data
+              })
+              .catch(e => {
+                  console.log(e)
+              })
+      }
+  }
+}
 </script>
 
 <style scoped>

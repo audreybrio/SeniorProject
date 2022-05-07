@@ -30,6 +30,11 @@
         <div>
             <button @click="onManageAccount">Manage Account</button>
         </div>
+        <div>
+            <button @click="onRecipe"> Recipe </button>
+        </div>
+
+
         <button @click="onSubmit">Logout</button>
 
     </div>
@@ -106,8 +111,9 @@
             onMatching() {
                 router.push({ name: "matchingMain" })
             },
-
-
+            onRecipe() {
+                router.push({ name: "RecipeView" })
+            },
             onAid() {
                 router.push({ name: "studentInformation" });
             },

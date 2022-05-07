@@ -57,7 +57,7 @@ namespace StudentMultiTool.Backend.Controllers
             return new JsonResult(message);
         }
 
-        [HttpPut("editrecipe/{id}")]
+        [HttpPost("editrecipe/{id}")]
         public IActionResult Put(int id, Recipe r)
         {
             string message;
@@ -78,7 +78,7 @@ namespace StudentMultiTool.Backend.Controllers
         }
 
 
-        [HttpDelete("deleterecipe/{id}")]
+        [HttpPost("deleterecipe/{id}")]
         public IActionResult Delete(int id)
         {
             string message;

@@ -20,9 +20,13 @@ namespace StudentMultiTool.Backend.Controllers
        // private readonly IConfiguration _configuration;
         private readonly AppSettings _appSettings;
 
-        public LoginController(IOptions<AppSettings> appSettings)
+       /* public LoginController(IOptions<AppSettings> appSettings)
         {
             _appSettings = appSettings.Value;
+        }*/
+
+        public LoginController()
+        {
         }
 
         //private int attempts = 0;
@@ -85,7 +89,7 @@ namespace StudentMultiTool.Backend.Controllers
             else
             {
                 LogIP log = new LogIP();
-                log.LoggingIP(username);
+               // log.LoggingIP(username);
                 return NotFound();
 
             }
@@ -161,6 +165,7 @@ namespace StudentMultiTool.Backend.Controllers
                 prf: KeyDerivationPrf.HMACSHA256,
                 iterationCount: 100000,
                 numBytesRequested: 256 / 8));
+            Console.WriteLine(hashed);
             return hashed;
         }
 
@@ -391,6 +396,25 @@ namespace StudentMultiTool.Backend.Controllers
                 conn.Open();
                 SqlCommand cmd = new SqlCommand("UPDATE UserAccounts SET active_status = @newStatus WHERE username = @username", conn);
                 cmd.Parameters.AddWithValue("@newStatus", 0);
+                cmd.Parameters.AddWithValue("@username", username);
+                cmd.ExecuteNonQuery();
+            }
+            catch
+            {
+
+            }
+
+        }
+
+        public void UpdateEnabled(string username)
+        {
+            try
+            {
+                SqlConnection conn = new SqlConnection();
+                conn.ConnectionString = Environment.GetEnvironmentVariable(connectionString);
+                conn.Open();
+                SqlCommand cmd = new SqlCommand("UPDATE UserAccounts SET active_status = @newStatus WHERE username = @username", conn);
+                cmd.Parameters.AddWithValue("@newStatus", 1);
                 cmd.Parameters.AddWithValue("@username", username);
                 cmd.ExecuteNonQuery();
             }

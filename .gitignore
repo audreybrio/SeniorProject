@@ -38,3 +38,5 @@ nupkg/
 /StudentMultiTool/Properties/PublishProfiles
 /StudentMultiTool/schedules
 /smt-storage/schedules
+node_modules
+node_modules

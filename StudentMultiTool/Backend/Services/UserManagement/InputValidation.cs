@@ -140,6 +140,7 @@ namespace StudentMultiTool.Backend.Services.UserManagement
                 return true;
             }
         }
+
         public bool validateSchool(string school)
         {
             school = school.ToString();
