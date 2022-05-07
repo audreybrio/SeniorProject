@@ -417,6 +417,7 @@ namespace StudentMultiTool.Backend.Controllers
                 cmd.Parameters.AddWithValue("@newStatus", 1);
                 cmd.Parameters.AddWithValue("@username", username);
                 cmd.ExecuteNonQuery();
+
             }
             catch
             {

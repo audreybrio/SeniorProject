@@ -28,10 +28,10 @@ namespace StudentMultiTool.Backend.Controllers
         public IActionResult Post(RecoveryUserEmail r)
         {
             RecoveryDB db = new RecoveryDB();
-
+            EmailVerification email = new EmailVerification();
             string m = "nothing";
 
-            if (db.sendEmailPasswordReset(r))
+            if (email.sendEmailPasswordReset(r))
             {
                 m = "successful";
             }
@@ -88,7 +88,7 @@ namespace StudentMultiTool.Backend.Controllers
 
             InputValidation inputValidation = new InputValidation();
 
-            if (inputValidation.validatePassword(pass) && theyaresame && inputValidation.emailExists(email))
+            if (inputValidation.validatePasscode(pass) && theyaresame && inputValidation.emailExists(email))
             {
                 result = true;
             }
@@ -109,15 +109,8 @@ namespace StudentMultiTool.Backend.Controllers
 
             string m = "nothing";
 
-            int userID = db.getUserId(rp.email);
-            Console.WriteLine("did i get right ID " + userID);
-
-            InputValidation checkValidation = new InputValidation();
-
-            if (db.sendNewPasswordReset(rp, userID))
+            if (db.sendNewPasswordReset(rp, rp.email))
             {
-
-          
 
                 m = "successful";
             }
@@ -135,10 +128,11 @@ namespace StudentMultiTool.Backend.Controllers
         public IActionResult PostDisabled(RecoveryUserEmail r)
         {
             RecoveryDB db = new RecoveryDB();
+            EmailVerification email = new EmailVerification();
 
             string m = "nothing";
 
-            if (db.sendEmailDisabledAccount(r))
+            if (email.sendEmailDisabledAccount(r))
             {
                 m = "successful";
             }
@@ -156,14 +150,12 @@ namespace StudentMultiTool.Backend.Controllers
             LoginController lg = new LoginController();
             string m = "nothing";
 
-            Console.WriteLine("user== "+ r.username);
+            InputValidation inputValidation = new InputValidation();
 
-            Console.WriteLine("Activate== " + r.activate);
-            lg.UpdateEnabled(r.username);
-
-
-            if (true)
+            if (inputValidation.validateUsername(r.username))
             {
+                lg.UpdateEnabled(r.username);
+
                 m = "successful";
             }
             else
