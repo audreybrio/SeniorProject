@@ -9,5 +9,12 @@
         public CollaboratorDTO()
         {
         }
+        public CollaboratorDTO(int Schedule, string Username, bool CanWrite, bool IsOwner)
+        {
+            this.Schedule = Schedule;
+            this.Username = Username;
+            this.CanWrite = CanWrite;
+            this.IsOwner = IsOwner;
+        }
     }
 }
