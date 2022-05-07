@@ -5,9 +5,10 @@ namespace StudentMultiTool.Backend.DAL
 {
     public class GradeDAL
     {
-
+        // Connection string 
         const string connectionString = "MARVELCONNECTIONSTRING";
 
+        // SQL to insert grade if doesnt alreeady exist 
         public bool SaveGradeInsert(string username, string course, double grade, int section)
         {
             try
@@ -30,6 +31,7 @@ namespace StudentMultiTool.Backend.DAL
             }
         }
 
+        // SQL to update grade if already exists 
         public bool SaveGradeUpdate(string username, string course, double grade, int section)
         {
             try
@@ -52,6 +54,7 @@ namespace StudentMultiTool.Backend.DAL
             }
         }
 
+        // SQL to check if grade is already in the database
         public bool GradeExists(string username, string course, int section)
         {
             try
@@ -83,6 +86,7 @@ namespace StudentMultiTool.Backend.DAL
 
         }
 
+        // SQL to get lists of grades to display 
         public List<GradeModel> DisplayRanking(string course, int section)
         {
             List<GradeModel> rankings = new List<GradeModel>();

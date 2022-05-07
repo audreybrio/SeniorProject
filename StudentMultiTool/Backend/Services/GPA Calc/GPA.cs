@@ -13,11 +13,6 @@
             {
                 totalPoints = totalPoints + grades[i] * units[i];
             }
-            //for(int i = 0; i < units.Count; i++)
-            //{
-            //    totalUnits = totalUnits + Int32.Parse(units[i]);
-            //}
-            // Gets total units
             totalUnits = units.Sum();
             // Calculates gpa
             gpa = totalPoints / totalUnits;

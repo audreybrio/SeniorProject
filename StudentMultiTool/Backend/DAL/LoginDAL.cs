@@ -1,6 +1,6 @@
 ﻿namespace StudentMultiTool.Backend.DAL
 {
-    public class GpaDAL
+    public class LoginDAL
     {
     }
 }

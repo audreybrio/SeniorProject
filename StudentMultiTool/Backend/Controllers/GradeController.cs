@@ -9,12 +9,15 @@ namespace StudentMultiTool.Backend.Controllers
     [Route("api/" + "gradeCalc")]
     public class GradeController : Controller
     {
+
+        // Calculates graade 
         [HttpPost("calculateGrade")]
         public IActionResult CalculateGrade([FromBody] DataGrade assignment)
         {
 
             try
             {
+                // Turns lists into doubles and ints 
                 List<double> assignments = new List<double>();
                 List<int> points = new List<int>();
 
@@ -41,12 +44,14 @@ namespace StudentMultiTool.Backend.Controllers
         }
 
 
+        // Saves the grade for comparison purposes 
         [HttpPost("saveGrade/{username}/{course}/{section}")]
         public IActionResult SaveeGrade([FromBody] DataGrade assignment, string username, string course, string section)
         {
 
             try
             {
+                // Turns lists into doubles and ints
                 List<double> assignments = new List<double>();
                 List<int> points = new List<int>();
 
@@ -59,6 +64,7 @@ namespace StudentMultiTool.Backend.Controllers
                 {
                     points.Add(Int32.Parse(assignment.points[i]));
                 }
+                // Gets grade
                 Grade calcGrade = new Grade();
                 double grade = calcGrade.CalculateGrade(assignments, points);
                 bool gradeSaved = calcGrade.SaveGrade(username, course, grade, Int32.Parse(section));
@@ -75,6 +81,7 @@ namespace StudentMultiTool.Backend.Controllers
 
         }
 
+        // Displays ranking of grades
         [HttpGet("displayRanking/{course}/{section}")]
         public List<GradeModel> DisplayRanking(string course, string section)
         {

@@ -12,7 +12,7 @@ namespace Tests.Backend.Services.GPATests
     public class GPATesting
     {
 
-        // Matching activity profile first with someone who has already crreated activity profile, then with a person who has not
+        // Calculates correct gpa 
         [Fact]
         public void CalculateCorrectGpa()
         {
@@ -32,6 +32,7 @@ namespace Tests.Backend.Services.GPATests
 
         }
 
+        // Calculates incorrect gpa 
         [Fact]
         public void CalculateIncorrectGpa()
         {

@@ -11,6 +11,7 @@
             <div v-if="errors.length" :key="index" class="warning">{{errors}}</div>
         </div>
 
+        <!-- Enter course and section needed for saving-->
         <div>
             Insert A Name And Section for this course (only need if saving)&nbsp;&nbsp;
             <input id="course" name="course" v-model="course" placeholder="Course Name">&nbsp;
@@ -30,7 +31,7 @@
             <button @click="go">Enter </button>
         </div>
 
-
+        <!-- For user to enter assignment points -->
         <div v-if="isVisible == true">
             <span v-for="n in assignments" :key="n">
                 <br />
@@ -41,7 +42,7 @@
             </span>
         </div>
 
-  
+  <!-- Displays grade-->
     <div>
         <br />
         <div v-if="grade!=0 && grade!=null" :key="index" class="grade">Grade is: {{grade}}</div>
@@ -88,14 +89,14 @@
                 this.loading = true;
 
             },
-            // Go back to main matching page
+            // Go back to main calculator page
             onSubmit() {
                 router.push({ name: "calculatorMain"})
             },
 
-            // Save tutoring profile information
+            // Calculates grade (without saving)
             calculate() {
-                // Gets entered course information
+                // Gets entered point information
                 this.errors = ""
                 let assignments = [];
                 let points = [];
@@ -105,21 +106,21 @@
 
                 let i = 0
                 let j = 0
-
+                // Gets from binding
                 for (i; i < this.assign.length; i++) {
                     if (this.assign[i] != "") {
                         assignments.push(this.assign[i])
                     }
                     
                 }
-
+                // Gets from binding
                 for (j; j < this.value.length; j++) {
                     if (this.value[j] != "") {
                         points.push(this.value[j])
                     }
                    
                 }
-
+                // If missing information 
                 if (assignments.length != points.length) {
                     this.errors = "Error: Missing Information"
                 }
@@ -165,7 +166,7 @@
                     })
                 }
             },
-
+            // Calculates grade and saves grade
             save() {
                 this.errors = ""
                 let assignments = [];
@@ -182,6 +183,7 @@
                         points.push(this.value[j])
                     }
                 }
+                // Missing information 
                 if (this.course == null) {
                     this.errors = "Error: Missing Course"
                 }
@@ -191,6 +193,7 @@
                 else if (assignments.length != points.length) {
                     this.errors = "Error: Missing Information"
                 }
+                // Calculates and saves grade
                 else {
                     console.log(assignments)
                     let data = {
@@ -234,8 +237,9 @@
                 }
 
             },
-
+            // Show the correct nummber of assignments 
             go() {
+                // How many assignment user selects
                 this.errors=""
                 this.isVisible = true
                 this.assign = []
