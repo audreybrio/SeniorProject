@@ -1,4 +1,4 @@
-<!--<template>
+<template>
     <div class="page">
         <div>
             <h3>Post Establishment</h3>
@@ -22,7 +22,6 @@
                 <br />
                 <vue-google-autocomplete ref="discountInfo.address"
                                          id="map"
-                                         classname="form-control"
                                          placeholder="Enter a valid address"
                                          v-on:placechanged="getAddressData"
                                          country="us"></vue-google-autocomplete>
@@ -39,8 +38,7 @@
 
 <script>
     import VueGoogleAutocomplete from "vue-google-autocomplete";
-    import * as $ from 'jquery'
-    //const baseURL = "https://localhost:5002";
+    import axios from 'axios'
     import URLS from '../../variables'
     export default {
 
@@ -66,6 +64,7 @@
                 }
             }
         },
+
         methods: {
             submitButtonPressed() {
                 this.resetValidInput()
@@ -78,31 +77,16 @@
                 }
             },
             postDiscount() {
-                $.ajax({
-                    // set the HTTP request URL
-                    url: `${URLS.apiRoot}studentdiscounts/postEstablishment/${this.discountInfo.title}
-                           /${this.discountInfo.name}/${this.discountInfo.address}/${this.discountInfo.lat}
-                           /${this.discountInfo.lng}/${this.discountInfo.description}`,
-                    // set the context object to the vue component
-                    // this line tells vue to update its components
-                    // when the success or error objects complete!
-                    // if it's not set, the components don't update!
-                    context: this,
-                    // HTTP method
-                    method: 'POST',
-                    // On a successful AJAX request:
-                    success: function () {
-                        
-                        // log that we've completed
-                        return true;
-                    },
-                    // On an unsuccessful AJAX request:
-                    error: function (error) {
-                        // log the error
-                        console.log(error);
-                        return false;
-                    }
-                });
+                axios.get(URLS.api.studentDiscounts.postEstablishment + this.discountInfo.title +
+                    "/" + this.discountInfo.name + "/" + this.discountInfo.address + "/" + this.discountInfo.lat +
+                    "/" + this.discountInfo.lng + "/" + this.discountInfo.description,
+                    { timeout: 5000 })
+                    .then(response => {
+                        console.log(response)
+                    })
+                    .catch(e => {
+                        console.log(e)
+                    })
             },
             resetInputFields() {
                 this.discountInfo.title = ''
@@ -170,6 +154,7 @@
         border: 1px solid gold;
         border-radius: 5px 4px;
     }
+
     .warning {
         color: red;
         margin: auto;
@@ -214,4 +199,4 @@
         height: 6em;
         font-size: 20px;
     }
-</style>-->
+</style>
