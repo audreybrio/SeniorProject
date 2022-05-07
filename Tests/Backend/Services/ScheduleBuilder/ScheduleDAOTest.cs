@@ -7,10 +7,11 @@ using System.Threading.Tasks;
 using StudentMultiTool.Backend.Models.ScheduleBuilder;
 using StudentMultiTool.Backend.Services.ScheduleBuilder;
 using System.Text.Json.Nodes;
+using StudentMultiTool.Backend.DAL;
 
 namespace Tests.Backend.Services.ScheduleBuilder
 {
-    public class ScheduleManagerTest
+    public class ScheduleDAOTest
     {
         private string testConnectionString = Environment.GetEnvironmentVariable("MARVELTESTCONNECTIONSTRING");
         private string testBaseFilePath = "../smt-storage/testSchedules/";
@@ -18,7 +19,7 @@ namespace Tests.Backend.Services.ScheduleBuilder
         [Fact]
         public void ScheduleManagerConstructor1()
         {
-            ScheduleManager manager = new ScheduleManager();
+            ScheduleDAO manager = new ScheduleDAO();
             Assert.NotNull(manager);
             Assert.NotNull(manager.dbConnectionString);
             Assert.NotNull(manager.BaseFilePath);
@@ -26,7 +27,7 @@ namespace Tests.Backend.Services.ScheduleBuilder
         [Fact]
         public void ScheduleManagerConstructor2()
         {
-            ScheduleManager manager = new ScheduleManager(testConnectionString, testBaseFilePath);
+            ScheduleDAO manager = new ScheduleDAO(testConnectionString, testBaseFilePath);
             Assert.NotNull(manager);
             Assert.NotNull(manager.dbConnectionString);
             Assert.NotNull(manager.BaseFilePath);
@@ -44,7 +45,7 @@ namespace Tests.Backend.Services.ScheduleBuilder
                 "ScheduleManagerTest.testSchedule",
                 "ScheduleManagerTest." + DateTime.Now.ToString() + ".json"
             );
-            ScheduleManager manager = new ScheduleManager(testConnectionString, testBaseFilePath);
+            ScheduleDAO manager = new ScheduleDAO(testConnectionString, testBaseFilePath);
 
             // Since this method returns the ID of the resulting schedule if successful,
             // we can only check that result is not null. We won't necessarily know what ID
@@ -64,7 +65,7 @@ namespace Tests.Backend.Services.ScheduleBuilder
                 "ScheduleManagerTest.testSchedule",
                 "ScheduleManagerTest." + DateTime.Now.ToString() + ".json"
             );
-            ScheduleManager manager = new ScheduleManager(testConnectionString, testBaseFilePath);
+            ScheduleDAO manager = new ScheduleDAO(testConnectionString, testBaseFilePath);
 
             // Since this method returns the ID of the resulting schedule if successful,
             // we can only check that result is not null. We won't necessarily know what ID
@@ -94,7 +95,7 @@ namespace Tests.Backend.Services.ScheduleBuilder
                 "ScheduleManagerTest.testSchedule",
                 "ScheduleManagerTest." + DateTime.Now.ToString() + ".json"
             );
-            ScheduleManager manager = new ScheduleManager(testConnectionString, testBaseFilePath);
+            ScheduleDAO manager = new ScheduleDAO(testConnectionString, testBaseFilePath);
 
             // Since this method returns the ID of the resulting schedule if successful,
             // we can only check that result is not null. We won't necessarily know what ID
@@ -122,7 +123,7 @@ namespace Tests.Backend.Services.ScheduleBuilder
                 "ScheduleManagerTest.testSchedule",
                 "ScheduleManagerTest." + DateTime.Now.ToString() + ".json"
             );
-            ScheduleManager manager = new ScheduleManager(testConnectionString, testBaseFilePath);
+            ScheduleDAO manager = new ScheduleDAO(testConnectionString, testBaseFilePath);
 
             // Since this method returns the ID of the resulting schedule if successful,
             // we can only check that result is not null. We won't necessarily know what ID
@@ -158,7 +159,7 @@ namespace Tests.Backend.Services.ScheduleBuilder
                 "ScheduleManagerTest.testSchedule",
                 "ScheduleManagerTest." + DateTime.Now.ToString() + ".json"
             );
-            ScheduleManager manager = new ScheduleManager(testConnectionString, testBaseFilePath);
+            ScheduleDAO manager = new ScheduleDAO(testConnectionString, testBaseFilePath);
             int id = 1;
             int creator = 123;
             ScheduleItem testItem = new ScheduleItem(id, creator);
@@ -207,7 +208,7 @@ namespace Tests.Backend.Services.ScheduleBuilder
                 "ScheduleManagerTest.testSchedule",
                 "ScheduleManagerTest." + DateTime.Now.ToString() + ".json"
             );
-            ScheduleManager manager = new ScheduleManager(testConnectionString, testBaseFilePath);
+            ScheduleDAO manager = new ScheduleDAO(testConnectionString, testBaseFilePath);
             int id = -1;
             int creator = 123;
             ScheduleItem testItem = new ScheduleItem(id, creator);
@@ -259,7 +260,7 @@ namespace Tests.Backend.Services.ScheduleBuilder
                 "ScheduleManagerTest.testSchedule",
                 "ScheduleManagerTest." + DateTime.Now.ToString() + ".json"
             );
-            ScheduleManager manager = new ScheduleManager(testConnectionString, testBaseFilePath);
+            ScheduleDAO manager = new ScheduleDAO(testConnectionString, testBaseFilePath);
             int id = -1;
             int creator = 123;
             ScheduleItem originalItem = new ScheduleItem(id, creator);
@@ -327,7 +328,7 @@ namespace Tests.Backend.Services.ScheduleBuilder
                 "ScheduleManagerTest.testSchedule",
                 "ScheduleManagerTest." + DateTime.Now.ToString() + ".json"
             );
-            ScheduleManager manager = new ScheduleManager();
+            ScheduleDAO manager = new ScheduleDAO();
             // Add testItem to testSchedule
             manager.CreateScheduleItem(ref testSchedule, ref testItem);
 
