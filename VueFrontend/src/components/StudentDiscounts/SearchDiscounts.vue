@@ -1,4 +1,4 @@
-<!--<template>
+<template>
   <div class="box">
     <div class="alignLeft">
       <label for="formControlRange">Search Discount:</label><br/>
@@ -56,4 +56,4 @@ export default {
         margin-left: auto;
         margin-right: auto;
       }
-</style>-->
+</style>

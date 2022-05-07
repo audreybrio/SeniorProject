@@ -1,4 +1,4 @@
-<!--<template>
+<template>
     <div class="page">
         <h3>Post Website</h3>
         <ul>
@@ -23,8 +23,7 @@
 </template>
 
 <script>
-    import * as $ from 'jquery'
-    //const baseURL = "https://localhost:5002";
+    import axios from 'axios'
     import URLS from '../../variables'
     export default {
         data() {
@@ -105,28 +104,15 @@
                 this.discountInfo.description = ''
             },
             postDiscount() {
-                $.ajax({
-                    // set the HTTP request URL
-                    url: `${URLS.apiRoot}studentdiscounts/postWebsite/${this.discountInfo.title}/${this.discountInfo.website}/${this.discountInfo.description}`,
-                    // set the context object to the vue component
-                    // this line tells vue to update its components
-                    // when the success or error objects complete!
-                    // if it's not set, the components don't update!
-                    context: this,
-                    // HTTP method
-                    method: 'POST',
-                    // On a successful AJAX request:
-                    success: function () {
-                        // log that we've completed
-                        return true;
-                    },
-                    // On an unsuccessful AJAX request:
-                    error: function (error) {
-                        // log the error
-                        console.log(error);
-                        return false;
-                    }
-                });
+                axios.get(URLS.api.studentDiscounts.postWebsite + this.discountInfo.title +
+                    "/" + this.discountInfo.website + "/" + this.discountInfo.description,
+                    { timeout: 5000 })
+                    .then(response => {
+                        console.log(response)
+                    })
+                    .catch(e => {
+                        console.log(e)
+                    })
             }
         }
     }
@@ -184,4 +170,4 @@
         height: 6em;
         font-size: 20px;
     }
-</style>-->
+</style>
