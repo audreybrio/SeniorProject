@@ -48,6 +48,12 @@ const URLS = {
         gpaCalc: {
             calculateGPA: apiRoot + "gpaCalc/calculateGPA"
 
+        },
+
+        gradeCalc: {
+            calculateGrade: apiRoot + "gradeCalc/calculateGrade",
+            saveGrade: apiRoot + "gradeCalc/saveGrade",
+            displayRanking: apiRoot + "gradeCalc/displayRanking"
         }
     }
 }

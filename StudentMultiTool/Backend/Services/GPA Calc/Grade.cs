@@ -1,22 +1,61 @@
-﻿namespace StudentMultiTool.Backend.Services.GPA_Calc
+﻿using StudentMultiTool.Backend.DAL;
+using StudentMultiTool.Backend.Models.GPACalc;
+namespace StudentMultiTool.Backend.Services.GPA_Calc
 {
     public class Grade
     {
 
-        public bool CalculateGrade(string username, string course, List<string> grades, List<string> outOf)
+        public double CalculateGrade(List<double> grades, List<int> outOf)
         {
-            float total = 0;
-            for (int i = 0; i < grades.Count; i++)
+            try
             {
-                total = total + Int32.Parse(grades[i]) / Int32.Parse(outOf[i]);
+                double total = 0;
+                double earnedPointTotal = grades.Sum();
+                double totalPoints = outOf.Sum();
+                total = (earnedPointTotal / totalPoints) * 100;
+                double roundedGrade = Math.Round(total, 3);
+                return roundedGrade;
             }
-            return true;
+            catch
+            {
+                return 0;
+            }
+
         }
 
-        public List<string> DisplayRanking(string course)
+        public bool SaveGrade(string username, string course, double grade, int section)
         {
-            var grades = new List<string>();
-            return grades;
+            try
+            {
+                GradeDAL gradeDal = new GradeDAL();
+                bool doesExist = gradeDal.GradeExists(username, course, section);
+                bool isSuccessful;
+                if (doesExist)
+                {
+                    isSuccessful = gradeDal.SaveGradeUpdate(username, course, grade, section);
+                }
+                else{
+                    isSuccessful = gradeDal.SaveGradeInsert(username, course, grade, section);
+                }
+                return isSuccessful;
+            }
+            catch
+            {
+                return false;
+            }
+
+        }
+
+        public List<GradeModel> DisplayRanking(string course, int section)
+        {
+            List<GradeModel> ranking = new List<GradeModel>();
+            GradeDAL grade = new GradeDAL();
+            ranking = grade.DisplayRanking(course, section);
+            foreach (GradeModel rank in ranking)
+            {
+                Console.WriteLine(rank.id + "" + rank.course + " " + rank.grade);
+            }
+            return ranking;
         }
     }
 }

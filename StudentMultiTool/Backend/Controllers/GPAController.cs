@@ -10,7 +10,7 @@ namespace StudentMultiTool.Backend.Controllers
     public class GPAController : Controller
     {
         [HttpPost("calculateGPA")]
-        public IActionResult CalculateGPA([FromBody]  DataGrade grade)
+        public IActionResult CalculateGPA([FromBody]  DataGpa grade)
         {
             // Creates lists
             List<double> grades = new List<double>();
@@ -51,7 +51,7 @@ namespace StudentMultiTool.Backend.Controllers
     }
 
     // To get data from body
-    public class DataGrade
+    public class DataGpa
     {
         public List<string> Grade { get; set; }
 
