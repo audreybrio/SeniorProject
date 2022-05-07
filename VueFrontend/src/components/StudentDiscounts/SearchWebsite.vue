@@ -41,11 +41,10 @@
                 axios.get(URLS.api.studentDiscounts.getWebsites,
                     { timeout: 5000 })
                     .then(response => {
-                        console.log(response)
                         this.discounts = response.data
                     })
                     .catch(e => {
-                        console.log(e)
+                        console.error("There was an error", e)
                     })
             }
         }

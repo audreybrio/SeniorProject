@@ -27,9 +27,8 @@
 
 <script>
     import ShowMap from './ShowMap.vue'
-    import * as $ from 'jquery'
     import URLS from '../../variables'
-    //const baseURL = "https://localhost:5002";
+    import axios from 'axios'
     export default {
         props: ['id'],
         components: {
@@ -38,8 +37,6 @@
         data() {
             return {
                 discounts: {},
-                //lat: "",
-                //lng: ""
             }
         },
         created() {
@@ -48,33 +45,14 @@
         },
         methods: {
             getDetails() {
-                var result = $.ajax({
-                    // set the HTTP request URL
-                    url: `${URLS.apiRoot}studentdiscounts/getEstDetails/${this.id}`,
-                    // set the context object to the vue component
-                    // this line tells vue to update its components
-                    // when the success or error objects complete!
-                    // if it's not set, the components don't update!
-                    context: this,
-                    // HTTP method
-                    method: 'GET',
-                    // On a successful AJAX request:
-                    success: function (data) {
-                        this.discounts = data
-                        //console.log(data)
-                        // log that we've completed
-                        //this.discounts = data
-                        return true;
-                    },
-                    // On an unsuccessful AJAX request:
-                    error: function (error) {
-                        // log the error
-                        console.log(error);
-                        this.items = null;
-                        return false;
-                    }
-                });
-                return result
+                axios.get(URLS.api.studentDiscounts.getEstDetails + "/" + this.id,
+                    { timeout: 5000 })
+                    .then(response => {
+                        this.discounts = response.data
+                    })
+                    .catch(e => {
+                        console.error("There was an error", e)
+                    })
             }
 
 

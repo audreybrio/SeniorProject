@@ -48,8 +48,6 @@
                 this.errorMessages()
                 if (this.isValid()) {
                     this.postDiscount()
-                    this.isDiscountPosted = true
-                    this.resetInputFields()
                 }
 
             },
@@ -104,14 +102,21 @@
                 this.discountInfo.description = ''
             },
             postDiscount() {
-                axios.get(URLS.api.studentDiscounts.postWebsite + this.discountInfo.title +
-                    "/" + this.discountInfo.website + "/" + this.discountInfo.description,
+                axios.post(URLS.api.studentDiscounts.postWebsite,
+                    {
+                        title: this.discountInfo.title,
+                        website: this.discountInfo.website,
+                        description: this.discountInfo.description
+                    },
                     { timeout: 5000 })
                     .then(response => {
-                        console.log(response)
+                        if (response.status == 200) {
+                            this.isDiscountPosted = true
+                            this.resetInputFields()
+                        }
                     })
                     .catch(e => {
-                        console.log(e)
+                        console.error("There was an error", e)
                     })
             }
         }

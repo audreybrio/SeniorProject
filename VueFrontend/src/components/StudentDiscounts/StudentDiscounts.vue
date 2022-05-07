@@ -65,7 +65,6 @@
 
     .page {
         margin: auto;
-        /*padding: auto;*/
     }
 
     .header {

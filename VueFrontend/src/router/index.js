@@ -38,7 +38,8 @@ import RankingsChild from '../components/GPACalc/RankingsChild.vue'
 const routes = [
     // Core Features
     {
-        path: '/',
+        path: '/emailVue',
+        // path: '/',
         name: 'EmailVue',
         component: EmailVue
     },
@@ -123,8 +124,8 @@ const routes = [
 
     // StudentDiscounts
     {
-        path: '/studentDiscounts',
-        // path: '/',
+        // path: '/studentDiscounts',
+        path: '/',
         name: 'studentDiscounts',
         component: StudentDiscounts,
     },
