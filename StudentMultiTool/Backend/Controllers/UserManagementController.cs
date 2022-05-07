@@ -15,160 +15,68 @@ namespace StudentMultiTool.Backend.Controllers
         [Route("getusers")]
         public List<UserAccount> GetUsers()
         {
-            UserAccountDAO uad = new UserAccountDAO();
-            List<UserAccount> results = new List<UserAccount>();
-            try
-            {
-                results = uad.SelectAll();
-            }
-            catch (Exception ex)
-            {
-                UserAccount error = new UserAccount();
-                error.Id = -1;
-                error.name = ex.Message;
-                if (!string.IsNullOrEmpty(ex.GetType().FullName))
-                {
-                    error.username = ex.GetType().FullName;
-                }
-                results.Add(error);
-            }
-            return results;
+            UserManager manager = new UserManager();
+            return manager.GetUsers();
         }
 
         [HttpGet]
         [Route("getRoles")]
         public List<string> GetRoles()
         {
-            //return new List<string> { "admin", "student" };
-            RoleDAO rd = new RoleDAO();
-            List<string> results = rd.SelectAllRoles();
-            return results;
+            UserManager manager = new UserManager();
+            return manager.GetRoles();
         }
 
         [HttpPost]
         [Route("createUser")]
         public ActionResult CreateUser([FromBody] UserAccount user)
         {
-            if (user != null)
+            UserManager manager = new UserManager();
+            string result = manager.CreateUser(user);
+            if (result.Equals(manager.Success))
             {
-                UserAccountDAO uad = new UserAccountDAO();
-                string result = uad.InsertUser(user);
-                if (result.Equals(uad.Success))
-                {
-                    return Ok("User " + user.Username + " created successfully");
-                }
-                return StatusCode(500, result);
+                return Ok("User " + user.Username + " created successfully");
             }
-            return BadRequest("user cannot be null");
+            return StatusCode(500, result);
         }
 
         [HttpPost]
         [Route("updateUsers")]
         public ActionResult UpdateUsers([FromBody] List<UserAccount> users)
         {
-            if (users.Count > 0)
+            UserManager manager = new UserManager();
+            string result = manager.UpdateUsers(users);
+            if (result.Equals(manager.Success))
             {
-                UserAccountDAO uad = new UserAccountDAO();
-                int updated = 0;
-                int errors = 0;
-                foreach (UserAccount user in users)
-                {
-                    try
-                    {
-                        string currentResult = uad.UpdateSingle(user);
-                        if (currentResult.Equals(uad.Success))
-                        {
-                            updated++;
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        errors++;
-                    }
-                }
-                if (updated == 0)
-                {
-                    return StatusCode(500, "Could not update users, with " + errors.ToString() + " errors, out of " + users.Count + " users");
-                }
-                else
-                {
-                    return StatusCode(200, "Updated " + updated.ToString() + " users with " + errors.ToString() + " errors, out of " + users.Count + " users");
-                }
+                return Ok(result);
             }
-            return StatusCode(400, "Bad or malformed request; received " + users.Count + " users");
+            return StatusCode(500, result);
         }
 
         [HttpPost]
         [Route("deleteUsers")]
         public ActionResult DeleteUsers([FromBody] List<UserAccount> users)
         {
-            if (users.Count > 0)
+            UserManager manager = new UserManager();
+            string result = manager.DeleteUsers(users);
+            if (result.Equals(manager.Success))
             {
-                UserAccountDAO uad = new UserAccountDAO();
-                int deleted = 0;
-                int errors = 0;
-                foreach (UserAccount user in users)
-                {
-                    try
-                    {
-                        string currentResult = uad.DeleteSingle(user);
-                        if (currentResult.Equals(uad.Success))
-                        {
-                            deleted++;
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        errors++;
-                    }
-                }
-                if (deleted == 0)
-                {
-                    return StatusCode(500, "Could not update users, with " + errors.ToString() + " errors, out of " + users.Count + " users");
-                }
-                else
-                {
-                    return StatusCode(200, "Updated " + deleted.ToString() + " users with " + errors.ToString() + " errors, out of " + users.Count + " users");
-                }
+                return Ok(result);
             }
-            return StatusCode(400, "Bad or malformed request; received " + users.Count + " users");
+            return StatusCode(500, result);
         }
 
         [HttpPost]
         [Route("bulkops")]
         public async Task<IActionResult> BulkOps(IFormFile file)
         {
-            long size = file.Length;
-            if (size > 0)
+            UserManager manager = new UserManager();
+            string result = await manager.BulkOps(file);
+            if (result.Equals(manager.Success))
             {
-                try
-                {
-                    var filePath = Path.Combine("../smt-storage/", DateTime.UtcNow.ToString(), file.Name);
-                    using (var stream = System.IO.File.Create(filePath))
-                    {
-                        await file.CopyToAsync(stream);
-                    }
-                    bool executed = false;
-
-                    if (executed)
-                    {
-                        return StatusCode(200, "Bulk operation completed");
-                    }
-                    else
-                    {
-                        return StatusCode(500, "Could not complete bulk operation");
-                    }
-                }
-                catch (Exception ex)
-                {
-                    return StatusCode(500, ex.GetType().FullName + "\n" + ex.Message);
-                }
+                return Ok(result);
             }
-            else
-            {
-                return StatusCode(415, "Empty file uploads are not supported");
-            }
-            return StatusCode(400, "Bad or malformed request; please try uploadin your file again");
+            return StatusCode(500, result);
         }
     }
 }
