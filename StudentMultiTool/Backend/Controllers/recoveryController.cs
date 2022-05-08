@@ -2,7 +2,7 @@
 using StudentMultiTool.Backend.Controllers;
 using StudentMultiTool.Backend.DAL;
 using StudentMultiTool.Backend.Models.RecoveryAccount;
-using StudentMultiTool.Backend.Models.Registration;
+using StudentMultiTool.Backend.Services.Authorization;
 using StudentMultiTool.Backend.Services.Authentication;
 using StudentMultiTool.Backend.Services.UserManagement;
 using System.Data;
@@ -11,6 +11,7 @@ using UserAcc;
 
 namespace StudentMultiTool.Backend.Controllers
 {
+
     [Route("api/[controller]")]
     [ApiController]
     public class recoveryController : Controller
@@ -21,7 +22,6 @@ namespace StudentMultiTool.Backend.Controllers
         {
             _logger = logger;
         }
-
 
 
         [HttpPost("reset")]
