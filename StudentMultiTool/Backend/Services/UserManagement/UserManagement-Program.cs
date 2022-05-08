@@ -29,7 +29,7 @@ namespace UserManagement
                 if(validUsername == true && validPasscode == true)
                 {
                     String token = Guid.NewGuid().ToString();
-                    updateDB.UpdateCreate(email, passcode, school, token);
+                    updateDB.UpdateCreate(username, email, passcode, school, token);
                     return true;
                 }
                 else
@@ -483,7 +483,7 @@ namespace UserManagement
             return hashed;
         }
 
-        public void UpdateCreate(string email, string passcode, string school, string token)
+        public void UpdateCreate(string username, string email, string passcode, string school, string token)
         {
             // inserts the created user into the database
             passcode = HashPass(passcode);
@@ -494,7 +494,7 @@ namespace UserManagement
                                                                "  values (@name, @username, @email, @passcode, @role, @school, @active_status, @token, @verified_email)", conn);
             cmd.Parameters.AddWithValue("@email", email);
             cmd.Parameters.AddWithValue("@name", "");
-            cmd.Parameters.AddWithValue("@username", "");
+            cmd.Parameters.AddWithValue("@username", username);
             cmd.Parameters.AddWithValue("@passcode", passcode);
             cmd.Parameters.AddWithValue("@role", "student");
             cmd.Parameters.AddWithValue("@school", school);
