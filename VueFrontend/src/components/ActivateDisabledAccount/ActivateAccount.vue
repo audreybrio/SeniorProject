@@ -7,10 +7,10 @@
                 <div class="user">
                     <input name="username" v-model="username" placeholder="Enter Username">
                 </div>
-                <select v-bind="activate" required>
+                <select v-model="activate" required>
                     <option disabled value="">Please select an option. </option>
                     <option v-bind:value="true">Activate</option>
-                    <option value="false">Diactivate</option>
+                    <option v-bind:value="false">Diactivate</option>
                 </select>
             </div>
             <button >Submit</button>
@@ -26,7 +26,7 @@
         props: {
             activate: {
                 type: Boolean,
-                default: true
+                default: false
             }
         },
         data() {

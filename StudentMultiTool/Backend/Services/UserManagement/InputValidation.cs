@@ -86,7 +86,7 @@ namespace StudentMultiTool.Backend.Services.UserManagement
         public bool validateUsername(string username)
         {
             bool validUsername = true;
-            if (username.Length >= 8)
+            if (username.Length >=  5) //8)
             {
                 byte[] asciiInput = Encoding.ASCII.GetBytes(username);
                 foreach (byte element in asciiInput)
