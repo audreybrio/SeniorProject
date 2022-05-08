@@ -93,7 +93,7 @@
                         passcode: this.passcode,
                         university: this.university
                     },
-                    { timeout: 5000 })
+                    )
                     .then(response => {
                         this.isAccountCreated = true;
                         if (response.status == 200) {
