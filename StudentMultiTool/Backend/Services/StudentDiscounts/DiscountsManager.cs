@@ -30,10 +30,12 @@ namespace StudentMultiTool.Backend.Services.StudentDiscounts
                         string lat = (string)reader["latitud"];
                         string lng = (string)reader["longitud"];
                         string description = (string)reader["description"];
-                        string dataCreated = (string)reader["dateCreated"];
+                        //string dataCreated = (string)reader["dateCreated"];
+                        DateTime dataCreated = (DateTime)reader["dateCreated"];
                         int likes = (int)reader["likes"];
                         int dislikes = (int)reader["dislikes"];
-                        DiscountsEstabl discount = new DiscountsEstabl(id, name, title, address, lat, lng, description, dataCreated, likes, dislikes);
+                        //DiscountsEstabl discount = new DiscountsEstabl(id, name, title, address, lat, lng, description, dataCreated, likes, dislikes);
+                        DiscountsEstabl discount = new DiscountsEstabl(id, name, title, address, lat, lng, description, dataCreated.ToString(), likes, dislikes);
                         result.Add(discount);
                     }
                 }
@@ -70,10 +72,12 @@ namespace StudentMultiTool.Backend.Services.StudentDiscounts
                         string lat = (string)reader["latitud"];
                         string lng = (string)reader["longitud"];
                         string description = (string)reader["description"];
-                        string dataCreated = (string)reader["dateCreated"];
+                        //string dataCreated = (string)reader["dateCreated"];
+                        DateTime dataCreated = (DateTime)reader["dateCreated"];
                         int likes = (int)reader["likes"];
                         int dislikes = (int)reader["dislikes"];
-                        DiscountsEstabl discount = new DiscountsEstabl(id, name, title, address, lat, lng, description, dataCreated, likes, dislikes);
+                        //DiscountsWeb discount = new DiscountsWeb(id, title, webside, description, dataCreated, likes, dislikes);
+                        DiscountsEstabl discount = new DiscountsEstabl(id, name, title, address, lat, lng, description, dataCreated.ToString(), likes, dislikes);
                         result.Add(discount);
                     }
                 }
@@ -106,10 +110,12 @@ namespace StudentMultiTool.Backend.Services.StudentDiscounts
                         string title = (string)reader["title"];
                         string webside = (string)reader["website"];
                         string description = (string)reader["description"];
-                        string dataCreated = (string)reader["dateCreated"];
+                        //string dataCreated = (string)reader["dateCreated"];
+                        DateTime dataCreated = (DateTime)reader["dateCreated"];
                         int likes = (int)reader["likes"];
                         int dislikes = (int)reader["dislikes"];
-                        DiscountsWeb discount = new DiscountsWeb(id, title, webside, description, dataCreated, likes, dislikes);
+                        //DiscountsWeb discount = new DiscountsWeb(id, title, webside, description, dataCreated, likes, dislikes);
+                        DiscountsWeb discount = new DiscountsWeb(id, title, webside, description, dataCreated.ToString(), likes, dislikes);
                         result.Add(discount);
                     }
                 }
@@ -142,10 +148,12 @@ namespace StudentMultiTool.Backend.Services.StudentDiscounts
                         string title = (string)reader["title"];
                         string webside = (string)reader["website"];
                         string description = (string)reader["description"];
-                        string dataCreated = (string)reader["dateCreated"];
+                        //string dataCreated = (string)reader["dateCreated"];
+                        DateTime dataCreated = (DateTime)reader["dateCreated"];
                         int likes = (int)reader["likes"];
                         int dislikes = (int)reader["dislikes"];
-                        DiscountsWeb discount = new DiscountsWeb(id, title, webside, description, dataCreated, likes, dislikes);
+                        //DiscountsWeb discount = new DiscountsWeb(id, title, webside, description, dataCreated, likes, dislikes);
+                        DiscountsWeb discount = new DiscountsWeb(id, title, webside, description, dataCreated.ToString(), likes, dislikes);
                         result.Add(discount);
                     }
                 }
