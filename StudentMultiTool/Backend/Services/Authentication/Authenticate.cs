@@ -2,9 +2,9 @@
 using Microsoft.IdentityModel.Tokens;
 using StudentMultiTool.Backend.DAL;
 using System.IdentityModel.Tokens.Jwt;
-using System.Net.Mail;
 using System.Security.Claims;
 using System.Text;
+using StudentMultiTool.Backend.Services.Email;
 
 namespace StudentMultiTool.Backend.Services.Authentication
 {
@@ -27,7 +27,8 @@ namespace StudentMultiTool.Backend.Services.Authentication
                 {
                     string otp = Randomize();
                     loginDAL.Randomize(email, otp);
-                    bool emailSent = SendEmail(email, otp);
+                    SendEmail send = new SendEmail();
+                    bool emailSent = send.SendOTPEmail(email, otp);
                     return emailSent;
                 }
 
@@ -112,27 +113,27 @@ namespace StudentMultiTool.Backend.Services.Authentication
             return otp;
         }
 
-        public bool SendEmail(string email, string otp)
-        {
-            try
-            {
-                String from = "studentmultitool@outlook.com";
-                String subject = "OTP code for Student Multi-Tool";
-                String msg = otp;
-                String to = email;
-                MailMessage mail = new MailMessage(from, to, subject, msg);
-                SmtpClient client = new SmtpClient("email-smtp.us-east-1.amazonaws.com");
-                client.Port = 587;
-                client.Credentials = new System.Net.NetworkCredential("AKIA4LFTDFRCSQHGW2BL", "BMAUAXuLN+qSGL0QiezLwtqpfckzibBAwvJ/0AiDtrQa");
-                client.EnableSsl = true;
-                client.Send(mail);
-                return true;
-            }
-            catch (Exception ex)
-            {
-                return false;
-            }
-        }
+        //public bool SendEmail(string email, string otp)
+        //{
+        //    try
+        //    {
+        //        String from = "studentmultitool@outlook.com";
+        //        String subject = "OTP code for Student Multi-Tool";
+        //        String msg = otp;
+        //        String to = email;
+        //        MailMessage mail = new MailMessage(from, to, subject, msg);
+        //        SmtpClient client = new SmtpClient("email-smtp.us-east-1.amazonaws.com");
+        //        client.Port = 587;
+        //        client.Credentials = new System.Net.NetworkCredential("AKIA4LFTDFRCSQHGW2BL", "BMAUAXuLN+qSGL0QiezLwtqpfckzibBAwvJ/0AiDtrQa");
+        //        client.EnableSsl = true;
+        //        client.Send(mail);
+        //        return true;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return false;
+        //    }
+        //}
 
         private string GenerateJwtToken(string username, string role)
         {
