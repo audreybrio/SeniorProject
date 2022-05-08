@@ -90,6 +90,7 @@ namespace StudentMultiTool.Backend.Services.Authentication
         public void SendEmail(string email, string token)
         {
             MailMessage mail = new MailMessage();
+
             mail.From = new MailAddress("studentmultitool@outlook.com");
             mail.To.Add(new MailAddress(email));
             mail.Subject = "Email verification for Student Multi-Tool new account";

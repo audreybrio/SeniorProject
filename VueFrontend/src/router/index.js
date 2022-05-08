@@ -12,15 +12,14 @@ import AuthenticateUser from '../components/Authentication/AuthenticateUser'
 // Application features
 // StudentDiscounts
 import StudentDiscounts from '../components/StudentDiscounts/StudentDiscounts.vue'
+import DiscountDetails from '../components/StudentDiscounts/DiscountDetails.vue'
+import EstablishmentDetails from '../components/StudentDiscounts/EstablishmentDetails.vue'
 
 import MatchingMain from '../components/Matching/MatchingMain.vue'
 import ActivityProfile from '../components/Matching/ActivityProfile.vue'
 import TutoringProfile from '../components/Matching/TutoringProfile.vue'
 import DisplayMatches from '../components/Matching/DisplayMatches.vue'
 import MatchesChild from '../components/Matching/MatchesChild.vue'
-
-import DiscountDetails from '../components/StudentDiscounts/DiscountDetails.vue'
-import EstablishmentDetails from '../components/StudentDiscounts/EstablishmentDetails.vue'
 
 import RecipeView from '../components/MyRecipe/RecipeView.vue'
 import RecipeDetails from '../components/MyRecipe/RecipeDetails.vue'

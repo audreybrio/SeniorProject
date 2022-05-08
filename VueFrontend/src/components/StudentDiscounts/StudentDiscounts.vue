@@ -32,26 +32,26 @@
             PostDiscounts,
             SearchDiscounts
         },
-        data(){
-          return{
-            isSearch: true,
-            isPost: false
-          }
+        data() {
+            return {
+                isSearch: false,
+                isPost: true
+            }
 
         },
         methods: {
-          searchSwitch(){
-              if (!this.isSearch) {
-              this.isSearch = true
-              this.isPost = false
+            searchSwitch() {
+                if (!this.isSearch) {
+                    this.isSearch = true
+                    this.isPost = false
+                }
+            },
+            postSwitch() {
+                if (!this.isPost) {
+                    this.isSearch = false
+                    this.isPost = true
+                }
             }
-          },
-          postSwitch(){
-            if (!this.isPost){
-              this.isSearch = false
-              this.isPost = true
-            }
-          }
 
         },
     }</script>
@@ -62,9 +62,9 @@
         margin-right: 20px;
         float: right;
     }
+
     .page {
         margin: auto;
-        /*padding: auto;*/
     }
 
     .header {

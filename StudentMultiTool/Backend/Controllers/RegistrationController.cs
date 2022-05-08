@@ -54,9 +54,9 @@ namespace StudentMultiTool.Backend.Controllers
             // Returns the array of valid or invalid input values
             return Enumerable.Range(1, 1).Select(index => new Registration
             {
-                Passcode = localPasscode,
-                Email = localEmail,
-                University = localUniversity,
+                ValidPasscode = localPasscode,
+                ValidEmail = localEmail,
+                ValidUniversity = localUniversity,
                 EmailExist = localEmailExist
             })
             .ToArray();
@@ -65,55 +65,53 @@ namespace StudentMultiTool.Backend.Controllers
 
         // Create a new user and sends email verification.
         // Returns the status of the operation.
-        [HttpGet]
-        [HttpGet("newRegistration/{email}/{passcode}/{university}")]
-        public IActionResult newRegistration(string email, string passcode, string university)
+        [HttpPost("newRegistration")]
+        public IActionResult newRegistration(Registration record)
         {
             try
             {
-                Console.WriteLine("In new registration");
                 // Generates Unique ID token to verify user email
-                String token = Guid.NewGuid().ToString();
+                string token = Guid.NewGuid().ToString();
 
                 // Creates a new user account in the UserAccounts table
                 Update usertoDB = new Update();
-                usertoDB.UpdateCreate(email, passcode, university, token);
+                usertoDB.UpdateCreate(record.Email, record.Passcode, record.University, token);
 
                 // Sends the email verification to the user's email address
                 EmailVerification emailVerifycation = new EmailVerification();
-                emailVerifycation.SendEmail(email, token);
+                emailVerifycation.SendEmail(record.Email, token);
                 return Ok("Success");
             }catch(Exception ex)
             {
-                return NotFound();
+                return BadRequest(ex.Message);
             }
 
         }
 
         // Activates user account if username and token matches.
         // Returns the status of the operation.
-        [HttpGet]
-        [HttpGet("emailVerification/{token}")]
-        public IActionResult activateUserAccount(string token)
+        
+        [HttpPost("emailVerification")]
+        public IActionResult activateUserAccount(Registration registration)
         {
             try
             {
                 //the username and token matches with our database values
                 //the new user account is activated
                 Update manageAccount = new Update();
-                if (manageAccount.ActivateAccount(token))
+                if (manageAccount.ActivateAccount(registration.Token))
                 {
                     return Ok("Success");
                 }
                 else
                 {
-                    return Ok("Error");
+                    return NotFound();
                 }
 
             }
             catch (Exception ex)
             {
-                return NotFound();
+               return BadRequest(ex.Message);
             }
         }
     }

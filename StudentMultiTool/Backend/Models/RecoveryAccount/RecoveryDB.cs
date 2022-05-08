@@ -13,13 +13,13 @@ namespace StudentMultiTool.Backend.Models.RecoveryAccount
         public string connection { get; set; }
 
 
-        public RecoveryDB ()
+        public RecoveryDB()
         {
             connection = Environment.GetEnvironmentVariable(EnvironmentVariableEnum.CONNECTIONSTRING);
 
         }
-
         public bool sendNewPasswordReset (RecoveryPassoward rp, string email)
+
         {
             bool result;
 

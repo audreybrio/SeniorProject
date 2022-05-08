@@ -17,12 +17,12 @@ namespace StudentMultiTool.Backend.Controllers
         }
 
         // post student discount for Establishment
-        [HttpGet]
-        [HttpGet("postEstablishment/{title}/{name}/{address}/{latitude}/{longitud}/{description}")]
-        public IActionResult postEstablishment(string title, string name, string address, string latitude, string longitud, string description)
+        [HttpPost("postEstablishment")]
+        public IActionResult postEstablishment(StudentDiscounts stDiscount)
         {
             DiscountsManager discount = new DiscountsManager();
-            if(discount.postDiscountEstablishment(title, name, address, latitude, longitud, description))
+            if(discount.postDiscountEstablishment(stDiscount.Title, stDiscount.Name, stDiscount.Address,
+                stDiscount.Latitud, stDiscount.Longitud, stDiscount.Description))
             {
                 return Ok("Success");
             }
@@ -34,12 +34,11 @@ namespace StudentMultiTool.Backend.Controllers
         }
 
         // post student discount for Website
-        [HttpGet]
-        [HttpGet("postWebsite/{title}/{website}/{description}")]
-        public IActionResult postWebsite(string title, string website, string description)
+        [HttpPost("postWebsite")]
+        public IActionResult postWebsite(StudentDiscounts stDiscount)
         {
             DiscountsManager discount = new DiscountsManager();
-            if (discount.postDiscountWebsite(title, website, description))
+            if (discount.postDiscountWebsite(stDiscount.Title, stDiscount.Website, stDiscount.Description))
             {
                 return Ok("Success");
             }

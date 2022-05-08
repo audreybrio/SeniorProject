@@ -23,8 +23,7 @@
 </template>
 
 <script>
-    import * as $ from 'jquery'
-    //const baseURL = "https://localhost:5002";
+    import axios from 'axios'
     import URLS from '../../variables'
     export default {
         props: ['id'],
@@ -41,33 +40,15 @@
                 window.location.href = "https://" + url
             },
             getDetails() {
-                $.ajax({
-                    // set the HTTP request URL
-                    url: `${URLS.apiRoot}studentdiscounts/getWebDetails/${this.id}`,
-                    // set the context object to the vue component
-                    // this line tells vue to update its components
-                    // when the success or error objects complete!
-                    // if it's not set, the components don't update!
-                    context: this,
-                    // HTTP method
-                    method: 'GET',
-                    // On a successful AJAX request:
-                    success: function (data) {
-                        this.discounts = data
-                        // log that we've completed
-                        //this.discounts = data
-                        return true;
-                    },
-                    // On an unsuccessful AJAX request:
-                    error: function (error) {
-                        // log the error
-                        console.log(error);
-                        return false;
-                    }
-                });
+                axios.get(URLS.api.studentDiscounts.getWebDetails + "/" + this.id,
+                    { timeout: 5000 })
+                    .then(response => {
+                        this.discounts = response.data
+                    })
+                    .catch(e => {
+                        console.error("There was an error", e)
+                    })
             }
-        
-
         }
     }
 </script>
