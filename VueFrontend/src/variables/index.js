@@ -1,10 +1,13 @@
+const LOCALHOST = "localhost";
 const domain = "localhost";
 const apiPort = "5003";
+const protocol = "http";
 //const domain = "ec2-13-52-181-69.us-west-1.compute.amazonaws.com";
 //const apiPort = "8080";
-let root = `http://${domain}/`;
-let apiRoot = `http://${domain}:${apiPort}/api/`;
+let root = `${protocol}://${domain}/`;
+let apiRoot = `${protocol}://${domain}:${apiPort}/api/`
 const URLS = {
+    LOCALHOST: LOCALHOST,
     domain: domain,
     root: root,
     apiRoot: apiRoot,
