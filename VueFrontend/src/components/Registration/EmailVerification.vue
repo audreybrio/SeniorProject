@@ -34,7 +34,8 @@
             }
         },
         created() {
-            axios.get(URLS.api.registration.emailVerification + this.token,
+            axios.post(URLS.api.registration.emailVerification,
+                { token: this.token },
                 { timeout: 5000 })
                 .then(response => {
                     if (response.data == "Success") {

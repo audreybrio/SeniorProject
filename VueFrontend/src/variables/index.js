@@ -72,16 +72,18 @@ const URLS = {
         },
 
         registration: {
-            newRegistration: apiRoot + "registration/newRegistration/",
+            newRegistration: apiRoot + "registration/newRegistration",
             inputValidation: apiRoot + "registration/validation/",
-            emailVerification: apiRoot + "registration/emailVerification/"
+            emailVerification: apiRoot + "registration/emailVerification"
         },
 
         studentDiscounts: {
-            postEstablishment: apiRoot + "studentdiscounts/postEstablishment/",
-            postWebsite: apiRoot + "studentdiscounts/postWebsite/",
+            postEstablishment: apiRoot + "studentdiscounts/postEstablishment",
+            postWebsite: apiRoot + "studentdiscounts/postWebsite",
             getEstablishments: apiRoot + "studentdiscounts/getDiscountsEstablishment",
             getWebsites: apiRoot + "studentdiscounts/getDiscountsWebsite",
+            getWebDetails: apiRoot + "studentdiscounts/getWebDetails",
+            getEstDetails: apiRoot + "studentdiscounts/getEstDetails",
         },
 
         gpaCalc: {

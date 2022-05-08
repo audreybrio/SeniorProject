@@ -15,39 +15,40 @@
 <script>
     import axios from 'axios'
     import URLS from '../../variables'
+    export default {
+        data() {
+            return {
+                discounts: {},
+                displayMap: false,
+            }
+        },
+        created() {
+            this.getEstDiscounts()
+        },
+        methods: {
+            async getEstDiscounts() {
+                const response = await axios.get(URLS.api.studentDiscounts.getEstablishments,
+                    { timeout: 5000 });
+                this.discounts = response.data;
 
-
-export default {
-  data () {
-        return {
-            discounts: {},
-            displayMap: false,
+                /*axios.get(URLS.api.studentDiscounts.getEstablishments,
+                    { timeout: 5000 })
+                    .then(response => {
+                        this.discounts = response.data
+                    })
+                    .catch(e => {
+                        console.error("There was an error", e)
+                    })*/
+            }
+        }
     }
-  },
-  created(){
-      this.getEstDiscounts()
-    },
-  methods:{
-      getEstDiscounts() {
-          axios.get(URLS.api.studentDiscounts.getEstablishments,
-              { timeout: 5000 })
-              .then(response => {
-                  console.log(response)
-                  this.discounts = response.data
-              })
-              .catch(e => {
-                  console.log(e)
-              })
-      }
-  }
-}
 </script>
 
 <style scoped>
     .ui.button,
-    .dot.circle.icon{
-    background-color: #ff5a5f;
-    color:white;
+    .dot.circle.icon {
+        background-color: #ff5a5f;
+        color: white;
     }
 
     .alignLeft {
@@ -55,6 +56,7 @@ export default {
         margin-left: 50px;
         font-weight: bold;
     }
+
     .discount h2 {
         background-color: #f4f4f4;
         padding: 20px;

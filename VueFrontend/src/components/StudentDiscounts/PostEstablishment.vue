@@ -18,12 +18,10 @@
                 <br />
                 <input type="text" id="establishment" v-model="discountInfo.name" maxlength="30" required>
                 <br />
-                <label for="address"> Address: </label>
-                <div> style="all:initial; font-size: 20px; color:blue;">{{discountInfo.address}}</div>
+                <label for="address"> Address: <div style="all:initial; font-size: 20px; color:blue;">{{discountInfo.address}}</div></label>
                 <br />
                 <vue-google-autocomplete ref="discountInfo.address"
                                          id="map"
-                                         
                                          placeholder="Enter a valid address"
                                          v-on:placechanged="getAddressData"
                                          country="us"></vue-google-autocomplete>
@@ -74,20 +72,27 @@
                 this.errorMessages()
                 if (this.areValidInputs()) {
                     this.postDiscount()
-                    this.isDiscountPosted = true
-                    this.resetInputFields()
                 }
             },
             postDiscount() {
-                axios.get(URLS.api.studentDiscounts.postEstablishment + this.discountInfo.title +
-                    "/" + this.discountInfo.name + "/" + this.discountInfo.address + "/" + this.discountInfo.lat +
-                    "/" + this.discountInfo.lng + "/" + this.discountInfo.description,
+                axios.post(URLS.api.studentDiscounts.postEstablishment,
+                    {
+                        title: this.discountInfo.title,
+                        name: this.discountInfo.name,
+                        address: this.discountInfo.address,
+                        latitud: this.discountInfo.lat.toString(),
+                        longitud: this.discountInfo.lng.toString(),
+                        description: this.discountInfo.description
+                    },
                     { timeout: 5000 })
                     .then(response => {
-                        console.log(response)
+                        if (response.status == 200) {
+                            this.isDiscountPosted = true
+                            this.resetInputFields()
+                        }
                     })
                     .catch(e => {
-                        console.log(e)
+                        console.error("There was an error", e)
                     })
             },
             resetInputFields() {
@@ -156,6 +161,7 @@
         border: 1px solid gold;
         border-radius: 5px 4px;
     }
+
     .warning {
         color: red;
         margin: auto;

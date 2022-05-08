@@ -71,6 +71,7 @@
             };
         },
         computed: {
+            // if all user inputs are valid, returns true
             areValidInputs() {
                 if (this.validate.email == true && this.validate.passcode == true
                     && this.validate.university == true && this.validate.emailExist == false
@@ -84,19 +85,29 @@
             }
         },
         methods: {
+            // creates a new user account and saves the data in the DB
             postData() {
-                axios.get(URLS.api.registration.newRegistration + this.email + "/" + this.passcode + "/" + this.university,
+                axios.post(URLS.api.registration.newRegistration,
+                    {
+                        email: this.email,
+                        passcode: this.passcode,
+                        university: this.university
+                    },
                     { timeout: 5000 })
                     .then(response => {
                         this.isAccountCreated = true;
-                        console.log(response)
+                        if (response.status == 200) {
+                            alert("We have sent an email to " + this.email + " \n \n You need to verify your email to activate"
+                                + " your account. If you have not received it, please check your spam or junk email.")
+                        }
+                        else {
+                            alert("There was an error creating a new account.")
+                        }
                         // resets user input values
-                        alert("We have sent an email to " + this.email + " \n \n You need to verify your email to activate"
-                            + " your account. If you have not received it, please check your spam or junk email.")
-                        this.resetInputValues
+                        this.resetInputValues()
                     })
                     .catch(e => {
-                        console.log(e)
+                        console.error("There was an error", e)
                     })
             },
             // errorMessages method populates an array with errors when input values are checked for validation
@@ -138,19 +149,19 @@
                 axios.get(URLS.api.registration.inputValidation + this.email + "/" + this.passcode + "/" + this.university,
                     { timeout: 5000 })
                     .then(response => {
-                        this.validate.email = response.data[0].email;
-                        this.validate.passcode = response.data[0].passcode;
-                        this.validate.university = response.data[0].university;
+                        this.validate.email = response.data[0].validEmail;
+                        this.validate.passcode = response.data[0].validPasscode;
+                        this.validate.university = response.data[0].validUniversity;
                         this.validate.emailExist = response.data[0].emailExist;
                         // log that we've completed
                         this.errorMessages()
                         if (this.areValidInputs) {
                             // Creates a new user account if user inputs are valid
-                            this.postData
+                            this.postData()
                         }
                     })
                     .catch(e => {
-                        console.log(e)
+                        console.error("There was an error", e)
                     })
 
             },
