@@ -42,7 +42,7 @@ const URLS = {
             validate: apiRoot + "login/validate",
             authenticate: apiRoot + "login/authenticate",
             disable: apiRoot + "login/disable",
-            getToken: apiRoot + "login/getToken"
+            getToken: apiRoot + "login/getToken",
         },
 
         gpaCalc: {
