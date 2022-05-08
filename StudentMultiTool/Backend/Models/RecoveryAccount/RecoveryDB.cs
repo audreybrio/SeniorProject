@@ -25,7 +25,8 @@ namespace StudentMultiTool.Backend.Models.RecoveryAccount
 
             bool result = true;
             MailMessage mail = new MailMessage();
-            string baseURL = "https://localhost:5002";
+            //string baseURL = "https://localhost:5002";
+            string baseURL = "http://studentmultitool.me";
             mail.From = new MailAddress("studentmultitool@outlook.com");
             mail.To.Add(new MailAddress(recovery.email));
             mail.Subject = "Email link to reset existing account with Student Multi-Tool";
@@ -64,7 +65,8 @@ namespace StudentMultiTool.Backend.Models.RecoveryAccount
 
             bool result = true;
             MailMessage mail = new MailMessage();
-            string baseURL = "https://localhost:5002";
+            //string baseURL = "https://localhost:5002";
+            string baseURL = "http://studentmultitool.me";
             mail.From = new MailAddress("studentmultitool@outlook.com");
             mail.To.Add(new MailAddress(disable.email));
             mail.Subject = "Email link to reset existing account with Student Multi-Tool";
