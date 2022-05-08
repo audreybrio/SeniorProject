@@ -22,7 +22,7 @@
                     <br />
 
                     <label for="passcode">Passcode:</label>
-                    <br />
+                    <div class="passcode">must be 8 or more characters and no special characters allowed</div>
                     <input type="password" name="Passcode" v-model="passcode" placeholder="YourPasscode12" maxlength="25" required>
                     <br />
 
@@ -183,6 +183,12 @@
 </script>
 
 <style scoped>
+    .passcode {
+        color: red;
+        margin: auto;
+        text-align: left;
+        font-size: 11px;
+    }
     .signin {
         margin:auto;
         margin-top: 7px;
