@@ -102,6 +102,7 @@
                 this.editing = false;
             },
             updateItem(updatedItem) {
+                this.editing = false;
                 // emit to parent component
                 this.$emit("item-updated", updatedItem);
             },
@@ -109,6 +110,7 @@
                 this.editing = false;
             },
             deleteItem(deleteableItem) {
+                this.editing = false;
                 this.$emit("item-deleted", deleteableItem);
             }
         }

@@ -68,6 +68,9 @@
         },
         created() {
             this.loadSchedule();
+            for (let i = 0; i < this.items.length; i++) {
+                this.items[i].editing = false
+            }
             
             this.title = this.$route.params.title;
             this.created = this.$route.params.created;

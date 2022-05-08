@@ -34,20 +34,6 @@
             <input v-model="this.daysOfWeek[5]" id="fridayField" type="checkbox" />
             <label for="saturdayField">Saturday</label>
             <input v-model="this.daysOfWeek[6]" id="saturdayField" type="checkbox" />
-            <!--<label for="sundayField">Sunday</label>
-    <input :value="item.daysOfWeek[0]" id="sundayField" type="checkbox" @input="$emit('update:days[0]', $event.target.value)" />
-    <label for="mondayField">Monday</label>
-    <input :value="item.daysOfWeek[1]" id="mondayField" type="checkbox" @input="$emit('update:days[1]', $event.target.value)" />
-    <label for="tuesdayField">Tuesday</label>
-    <input :value="item.daysOfWeek[2]" id="tuesdayField" type="checkbox" @input="$emit('update:days[2]', $event.target.value)" />
-    <label for="wednesdayField">Wednesday</label>
-    <input :value="item.daysOfWeek[3]" id="wednesdayField" type="checkbox" @input="$emit('update:days[3]', $event.target.value)" />
-    <label for="thursdayField">Thursday</label>
-    <input :value="item.daysOfWeek[4]" id="thursdayField" type="checkbox" @input="$emit('update:days[4]', $event.target.value)" />
-    <label for="fridayField">Friday</label>
-    <input :value="item.daysOfWeek[5]" id="fridayField" type="checkbox" @input="$emit('update:days[5]', $event.target.value)" />
-    <label for="saturdayField">Saturday</label>
-    <input :value="item.daysOfWeek[6]" id="saturdayField" type="checkbox" @input="$emit('update:days[6]', $event.target.value)" />-->
         </div>
 
         <div>
@@ -182,7 +168,7 @@
                 );
             },
             onSubmit() {
-                this.$emit('cancel');
+                //this.$emit('cancel');
                 console.log("Form submitted");
                 console.log("Creating new item");
                 // Check that the user checked at least one day
