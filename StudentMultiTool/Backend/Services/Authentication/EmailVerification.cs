@@ -21,11 +21,13 @@ namespace StudentMultiTool.Backend.Services.Authentication
                           baseURL + "/RegistrationForm/" + token;
             mail.Body = body;
             mail.Priority = MailPriority.Normal;
-            using (SmtpClient client = new SmtpClient("email-smtp.us-west-1.amazonaws.com", 587))
+            //using (SmtpClient client = new SmtpClient("email-smtp.us-west-1.amazonaws.com", 587))
+            using (SmtpClient client = new SmtpClient("email-smtp.us-east-1.amazonaws.com", 587))
             {
                 client.EnableSsl = true;
-                client.Credentials = new System.Net.NetworkCredential("AKIAW7HGHSCLGUZQVTOS", "BJxJD2wRP3HgnF6B0WKhEoNGgcmeOOZcSA5ZhOT7oQeR"); //change username and password to your email account username and password
-                
+                //client.Credentials = new System.Net.NetworkCredential("AKIAW7HGHSCLGUZQVTOS", "BJxJD2wRP3HgnF6B0WKhEoNGgcmeOOZcSA5ZhOT7oQeR"); //change username and password to your email account username and password
+                client.Credentials = new System.Net.NetworkCredential("AKIA4LFTDFRCSQHGW2BL", "BMAUAXuLN+qSGL0QiezLwtqpfckzibBAwvJ/0AiDtrQa"); //change username and password to your email account username and password
+
                 try
                 {
                     client.Send(mail);
