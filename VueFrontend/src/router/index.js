@@ -132,7 +132,6 @@ const routes = [
     // StudentDiscounts
     {
         path: '/studentDiscounts',
-        // path: '/',
         name: 'studentDiscounts',
         component: StudentDiscounts,
     },
