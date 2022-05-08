@@ -99,6 +99,11 @@ const routes = [
         component: () => import('../Views/ScheduleComparison/ScheduleComparison.vue')
     },
     {
+        path: '/schedule/comparison/user/:user/selection/:selection',
+        name: 'ScheduleComparison',
+        component: () => import('../Views/ScheduleComparison/ScheduleComparison.vue')
+    },
+    {
         path: '/schedule/comparison/select/',
         name: 'SelectForComparison',
         component: () => import('../Views/ScheduleComparison/SelectForComparison.vue')
