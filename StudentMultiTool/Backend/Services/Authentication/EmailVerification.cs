@@ -10,18 +10,15 @@ namespace StudentMultiTool.Backend.Services.Authentication
 
         public EmailVerification() { }
         
-        public bool sendEmailPasswordReset(RecoveryUserEmail recovery)
+        public bool sendEmailPasswordReset(string email)
         {
             bool result = false;
             MailMessage mail = new MailMessage();
             mail.From = new MailAddress("studentmultitool@outlook.com");
-            mail.To.Add(new MailAddress(recovery.email));
+            mail.To.Add(new MailAddress(email));
             mail.Subject = "Email link to reset existing account with Student Multi-Tool";
             string body = "Thank you for being our users!\n" +
                           "This is the link will give you access to reset your password.\n \n" +
-                          "------------------------------\n" +
-                          "Username: " + recovery.username + "\n" +
-                          "------------------------------\n\n" +
                           "Please click the link to reset your account password: " +
                           baseURL + "/newpassword"; 
             mail.Body = body;
@@ -49,19 +46,16 @@ namespace StudentMultiTool.Backend.Services.Authentication
         }
 
 
-        public bool sendEmailDisabledAccount(RecoveryUserEmail disable)
+        public bool sendEmailDisabledAccount(string email)
         {
 
             bool result = false;
             MailMessage mail = new MailMessage();
             mail.From = new MailAddress("studentmultitool@outlook.com");
-            mail.To.Add(new MailAddress(disable.email));
+            mail.To.Add(new MailAddress(email));
             mail.Subject = "Email link to reset existing account with Student Multi-Tool";
             string body = "Thank you for being our users!\n" +
                           "This is the link will give you access to reactivate your account.\n \n" +
-                          "------------------------------\n" +
-                          "Username: " + disable.username + "\n" +
-                          "------------------------------\n\n" +
                           "Please click the link to reactivate your account password: " +
                           baseURL + "/activateaccount";
             mail.Body = body;

@@ -1,9 +1,10 @@
 using System;
 using System.Data.SqlClient;
 
-namespace Authorization{
-    
-    class authorize{
+namespace StudentMultiTool.Backend.Services.Authorization
+{
+    public class auth
+    {
         
         public static string getUserRole(string username )
         {
@@ -19,29 +20,6 @@ namespace Authorization{
         }
 
 
-     
-  /*  static void Main(string[] args)
-        {
-            SqlConnection conn = new SqlConnection();
-            conn.ConnectionString = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING");
-            conn.Open();
-            string userName = System.Security.Principal.WindowsIdentity.GetCurrent().Name;
-            SqlCommand cmd = new SqlCommand("SELECT COUNT(username)" + "FROM UserTable" + "WHERE UserTable.username = userName", conn);
-            cmd.ExecuteNonQuery();
-            int count = (int)cmd.ExecuteScalar();
-            if (count > 0){
-                string userRole = getUserRole(userName);
-                if (userRole == "Admin"){
-
-                }
-                if (userRole == "Student"){
-                    
-                }
-            }
-            else{
-                Console.WriteLine("Error: Current user is an unauthorized user.");
-            }
-
-        }*/
+       
     }
 }

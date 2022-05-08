@@ -29,10 +29,13 @@ namespace StudentMultiTool.Backend.Controllers
         {
             RecoveryDB db = new RecoveryDB();
             EmailVerification email = new EmailVerification();
+            InputValidation inputValidation = new InputValidation();
+
             string m = "nothing";
 
-            if (email.sendEmailPasswordReset(r))
+            if (inputValidation.emailExists(r.email) && inputValidation.validateEmail(r.email))
             {
+                email.sendEmailPasswordReset(r.email);
                 m = "successful";
             }
             else
@@ -56,10 +59,11 @@ namespace StudentMultiTool.Backend.Controllers
             InputValidation inputValidation = new InputValidation();
 
             
-            if (inputValidation.emailExists(email) && inputValidation.usernameExists(username))
+            if (inputValidation.validateEmail(email) && inputValidation.validateUsername(username) && inputValidation.usernameExists(username))
             {
                 result = true;
-            }else
+            }
+            else
             {
                 result = false;
             }
@@ -88,7 +92,7 @@ namespace StudentMultiTool.Backend.Controllers
 
             InputValidation inputValidation = new InputValidation();
 
-            if (inputValidation.validatePasscode(pass) && theyaresame && inputValidation.emailExists(email))
+            if (inputValidation.validatePasscode(pass) && theyaresame && inputValidation.validateEmail(email))
             {
                 result = true;
             }
@@ -106,12 +110,13 @@ namespace StudentMultiTool.Backend.Controllers
         public IActionResult PostPassword(RecoveryPassoward rp)
         {
             RecoveryDB db = new RecoveryDB();
+            InputValidation inputValidation = new InputValidation();
 
             string m = "nothing";
 
-            if (db.sendNewPasswordReset(rp, rp.email))
+            if (inputValidation.emailExists(rp.email))
             {
-
+                db.sendNewPasswordReset(rp, rp.email);
                 m = "successful";
             }
             else
@@ -125,15 +130,17 @@ namespace StudentMultiTool.Backend.Controllers
 
 
         [HttpPost("disabled")]
-        public IActionResult PostDisabled(RecoveryUserEmail r)
+        public IActionResult PostDisabledEmail(RecoveryUserEmail r)
         {
             RecoveryDB db = new RecoveryDB();
-            EmailVerification email = new EmailVerification();
+            EmailVerification e = new EmailVerification();
+            InputValidation inputValidation = new InputValidation();
 
             string m = "nothing";
 
-            if (email.sendEmailDisabledAccount(r))
+            if (inputValidation.emailExists(r.email))
             {
+                e.sendEmailDisabledAccount(r.email);
                 m = "successful";
             }
             else
@@ -147,12 +154,13 @@ namespace StudentMultiTool.Backend.Controllers
         [HttpPost("postactivate")]
         public IActionResult PostActivate(RecoveryUserEmail r)
         {
+
             LoginController lg = new LoginController();
             string m = "nothing";
 
             InputValidation inputValidation = new InputValidation();
 
-            if (inputValidation.validateUsername(r.username))
+            if (inputValidation.usernameExists(r.username))
             {
                 lg.UpdateDisableEnabled(r.username, r.actdiact);
 
