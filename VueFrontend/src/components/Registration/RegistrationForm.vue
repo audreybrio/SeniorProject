@@ -11,14 +11,19 @@
         <div>
             <form @submit.prevent="validateUserInput">
                 <div>
+                    <label for="username">Username:</label>
+                    <br />
+                    <input type="text" name="username" v-model="username" placeholder="YourUserName" maxlength="50" required>
+                    <br />
+
                     <label for="email">Email:</label>
                     <br />
-                    <input type="email" name="email" v-model="email" placeholder="Example@student.csulb.edu" maxlength="51" required>
+                    <input type="email" name="email" v-model="email" placeholder="Example@student.csulb.edu" maxlength="50" required>
                     <br />
 
                     <label for="retype_email">Re-type email:</label>
                     <br />
-                    <input type="email" name="retype_email" v-model="retype_email" placeholder="Re-type email" maxlength="51" required>
+                    <input type="email" name="retype_email" v-model="retype_email" placeholder="Re-type email" maxlength="50" required>
                     <br />
 
                     <label for="passcode">Passcode:</label>
@@ -56,6 +61,7 @@
         data() {
             return {
                 isAccountCreated: false,
+                username: "",
                 email: "",
                 retype_email: "",
                 passcode: "",
@@ -63,19 +69,22 @@
                 university: "",
                 errors: [],
                 validate: {
+                    username: false,
                     email: false,
                     passcode: false,
                     university: false,
-                    emailExist: true
+                    emailExist: true,
+                    usernameExist: true
                 }
             };
         },
         computed: {
             // if all user inputs are valid, returns true
             areValidInputs() {
-                if (this.validate.email == true && this.validate.passcode == true
-                    && this.validate.university == true && this.validate.emailExist == false
-                    && this.passcode == this.retype_passcode) {
+                if (this.validate.username == true && this.validate.email == true &&
+                    this.validate.passcode == true && this.validate.university == true &&
+                    this.validate.emailExist == false && this.validate.usernameExist == false &&
+                    this.passcode == this.retype_passcode) {
                     return true
                 }
                 else {
@@ -87,8 +96,10 @@
         methods: {
             // creates a new user account and saves the data in the DB
             postData() {
+                console.log("postData....")
                 axios.post(URLS.api.registration.newRegistration,
                     {
+                        username: this.username,
                         email: this.email,
                         passcode: this.passcode,
                         university: this.university
@@ -113,6 +124,13 @@
             // errorMessages method populates an array with errors when input values are checked for validation
             errorMessages() {
                 this.errors = []
+
+                if (this.validate.usernameExist == true) {
+                    this.errors.push("Username: " + this.username + " already exist")
+                }
+                else if (this.validate.username == false) {
+                    this.errors.push("Username: must be 8 or more characters and no special characters allowed")
+                }
 
                 if (this.passcode != this.retype_passcode) {
                     this.errors.push("Passcodes do not match")
@@ -146,13 +164,16 @@
             validateUserInput() {
                 this.isAccountCreated = false;
                 this.resetValidateValues;
-                axios.get(URLS.api.registration.inputValidation + this.email + "/" + this.passcode + "/" + this.university,
+                axios.get(URLS.api.registration.inputValidation + this.username + "/" + this.email + "/" + this.passcode + "/" + this.university,
                     { timeout: 5000 })
                     .then(response => {
+                        this.validate.username = response.data[0].validUsername;
                         this.validate.email = response.data[0].validEmail;
                         this.validate.passcode = response.data[0].validPasscode;
                         this.validate.university = response.data[0].validUniversity;
                         this.validate.emailExist = response.data[0].emailExist;
+                        this.validate.usernameExist = response.data[0].usernameExist;
+                        console.log(this.validate)
                         // log that we've completed
                         this.errorMessages()
                         if (this.areValidInputs) {
@@ -166,12 +187,15 @@
 
             },
             resetValidateValues() {
+                this.validate.username = false;
                 this.validate.email = false;
                 this.validate.passcode = false;
                 this.validate.university = false;
                 this.validate.emailExist = true;
+                this.validate.usernameExist = true;
             },
             resetInputValues() {
+                this.username = "";
                 this.email = "";
                 this.retype_email = "";
                 this.passcode = "";
