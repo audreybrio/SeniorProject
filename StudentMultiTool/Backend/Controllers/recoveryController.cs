@@ -154,7 +154,7 @@ namespace StudentMultiTool.Backend.Controllers
 
             if (inputValidation.validateUsername(r.username))
             {
-                lg.UpdateEnabled(r.username);
+                lg.UpdateDisableEnabled(r.username, r.actdiact);
 
                 m = "successful";
             }
