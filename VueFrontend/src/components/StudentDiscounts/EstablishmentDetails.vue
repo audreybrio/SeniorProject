@@ -1,40 +1,40 @@
-<!--<template>
+<template>
     <h1>Establishment Discount Details</h1>
     <div class="box">
         <div class="backButton">
             <button @click="$router.go(-1)">Back</button>
         </div>
         <br /><br />
-        <div v-for="discount in discounts" :key="discount.id">
-            <h2 class="title">{{discount.title}}</h2>
-            <div class="date">Date Posted: {{discount.date}}</div>
-            <br />
-            <br />
-            <div class="details">
-                Address: {{discount.address}}
-                <br />
-                Description:
-                <br />
-                {{discount.description}}
-            </div>
-            <br/>-->
-            <!--<ShowMap :latitud="33.7838" :longitud="-118.1141"/>-->
-        <!--</div>
+              <div v-for="discount in discounts" :key="discount.id">
+                  <h2 class="title">{{discount.title}}</h2>
+                  <div class="date">Date Posted: {{discount.date}}</div>
+                  <br />
+                  <br />
+                  <div class="details">
+                      Address: {{discount.address}}
+                      <br />
+                      Description:
+                      <br />
+                      {{discount.description}}
+                  </div>
+                  <br />
+                  <ShowMap :latitud="parseFloat(discount.lat)" :longitud="parseFloat(discount.lng)" />
+              </div>
         <br />
         <br />
     </div>
 </template>
 
 <script>
-    // import ShowMap from './ShowMap.vue'
+    import ShowMap from './ShowMap.vue'
     import * as $ from 'jquery'
     import URLS from '../../variables'
     //const baseURL = "https://localhost:5002";
     export default {
         props: ['id'],
-        //components: {
-        //    ShowMap
-        //},
+        components: {
+            ShowMap
+        },
         data() {
             return {
                 discounts: {},
@@ -111,4 +111,4 @@
         color: white;
         box-shadow: 6px;
     }
-</style>-->
+</style>

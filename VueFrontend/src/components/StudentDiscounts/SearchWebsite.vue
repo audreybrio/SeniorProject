@@ -1,4 +1,4 @@
-<!--<template>
+<template>
     <div style="text-align:center">
         <h3>Search Website</h3>
     </div>
@@ -13,8 +13,7 @@
 </template>
 
 <script>
-    import * as $ from 'jquery'
-    //const baseURL = "https://localhost:5002";
+    import axios from 'axios'
     import URLS from '../../variables'
     export default {
         data() {
@@ -39,32 +38,15 @@
         },
         methods: {
             getWebDiscounts() {
-                //this.isAccountCreated = false;
-                //this.resetValidateValues;
-                $.ajax({
-                    // set the HTTP request URL
-                    url: `${URLS.apiRoot}studentdiscounts/getDiscountsWebsite`,
-                    // set the context object to the vue component
-                    // this line tells vue to update its components
-                    // when the success or error objects complete!
-                    // if it's not set, the components don't update!
-                    context: this,
-                    // HTTP method
-                    method: 'GET',
-                    // On a successful AJAX request:
-                    success: function (data) {
-                        // log that we've completed
-                        this.discounts = data
-                        return true;
-                    },
-                    // On an unsuccessful AJAX request:
-                    error: function (error) {
-                        // log the error
-                        console.log(error);
-                        this.items = null;
-                        return false;
-                    }
-                });
+                axios.get(URLS.api.studentDiscounts.getWebsites,
+                    { timeout: 5000 })
+                    .then(response => {
+                        console.log(response)
+                        this.discounts = response.data
+                    })
+                    .catch(e => {
+                        console.log(e)
+                    })
             }
         }
     }
@@ -90,4 +72,4 @@
     .discount .a {
         text-decoration: none;
     }
-</style>-->
+</style>

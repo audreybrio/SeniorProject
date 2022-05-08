@@ -17,8 +17,8 @@ namespace StudentMultiTool.Backend.Controllers
         }
 
         // post student discount for Establishment
-        [HttpPost]
-        [HttpPost("postEstablishment/{title}/{name}/{address}/{latitude}/{longitud}/{description}")]
+        [HttpGet]
+        [HttpGet("postEstablishment/{title}/{name}/{address}/{latitude}/{longitud}/{description}")]
         public IActionResult postEstablishment(string title, string name, string address, string latitude, string longitud, string description)
         {
             DiscountsManager discount = new DiscountsManager();
@@ -34,8 +34,8 @@ namespace StudentMultiTool.Backend.Controllers
         }
 
         // post student discount for Website
-        [HttpPost]
-        [HttpPost("postWebsite/{title}/{website}/{description}")]
+        [HttpGet]
+        [HttpGet("postWebsite/{title}/{website}/{description}")]
         public IActionResult postWebsite(string title, string website, string description)
         {
             DiscountsManager discount = new DiscountsManager();
