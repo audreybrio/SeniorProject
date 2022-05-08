@@ -17,7 +17,7 @@ namespace StudentMultiTool.Backend.Services.Authorization.Helpers
         protected override void OnConfiguring(DbContextOptionsBuilder Options)
         {
             // in memory database used for simplicity, change to a real db for production applications
-            Options.UseInMemoryDatabase("Marvel");
+            Options.UseInMemoryDatabase("UserAccounts");
         }
     }
 }

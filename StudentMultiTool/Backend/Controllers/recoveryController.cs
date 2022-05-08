@@ -3,7 +3,7 @@ using StudentMultiTool.Backend.Controllers;
 using StudentMultiTool.Backend.DAL;
 using StudentMultiTool.Backend.Models.RecoveryAccount;
 using StudentMultiTool.Backend.Services.Authorization;
-using StudentMultiTool.Backend.Services.Authentication;
+using StudentMultiTool.Backend.Services.Email;
 using StudentMultiTool.Backend.Services.UserManagement;
 using System.Data;
 using UserAcc;
@@ -28,14 +28,14 @@ namespace StudentMultiTool.Backend.Controllers
         public IActionResult Post(RecoveryUserEmail r)
         {
             RecoveryDB db = new RecoveryDB();
-            EmailVerification email = new EmailVerification();
+            SendEmail e = new SendEmail();
             InputValidation inputValidation = new InputValidation();
 
             string m = "nothing";
 
             if (inputValidation.emailExists(r.email) && inputValidation.validateEmail(r.email))
             {
-                email.sendEmailPasswordReset(r.email);
+                e.sendEmailPasswordReset(r.email);
                 m = "successful";
             }
             else
@@ -133,7 +133,7 @@ namespace StudentMultiTool.Backend.Controllers
         public IActionResult PostDisabledEmail(RecoveryUserEmail r)
         {
             RecoveryDB db = new RecoveryDB();
-            EmailVerification e = new EmailVerification();
+            SendEmail e = new SendEmail();
             InputValidation inputValidation = new InputValidation();
 
             string m = "nothing";

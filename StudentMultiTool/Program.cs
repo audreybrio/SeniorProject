@@ -34,6 +34,7 @@ static class Program
             var jsonInputFormatter = options.InputFormatters.OfType<SystemTextJsonInputFormatter>().Single();
             jsonInputFormatter.SupportedMediaTypes.Add("application/json");
         });
+
         var config = new ConfigurationBuilder()
         .AddJsonFile("appsettings.json", optional: false)
         .Build();
