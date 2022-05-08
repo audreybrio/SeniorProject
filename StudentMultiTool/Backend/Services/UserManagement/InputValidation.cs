@@ -52,7 +52,7 @@ namespace StudentMultiTool.Backend.Services.UserManagement
                 byte[] asciiInput = Encoding.ASCII.GetBytes(passcode);
                 foreach (byte element in asciiInput)
                 {
-                    if (element < 48)
+                    if (element < 48 && element != 32)
                     {
                         validPasscode = false;
                     }
@@ -95,12 +95,16 @@ namespace StudentMultiTool.Backend.Services.UserManagement
                     {
                         validUsername = false;
                     }
-                    else if (element > 57 && element < 97)
+                    else if (element > 57 && element < 65)
                     {
                         if (element != 64)
                         {
                             validUsername = false;
                         }
+                    }
+                    else if (element > 90 && element < 97)
+                    {
+                        validUsername = false;
                     }
                     else if (element > 122)
                     {

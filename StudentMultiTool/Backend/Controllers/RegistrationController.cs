@@ -19,16 +19,28 @@ namespace StudentMultiTool.Backend.Controllers
 
         // validateInput method returns an array of IEnumerable with the valid or invalid
         // values for the user's input
-        [HttpGet("validation/{email}/{passcode}/{university}")]
-        public IEnumerable<Registration> validateInput(string email, string passcode, string university)
+        [HttpGet("validation/{username}/{email}/{passcode}/{university}")]
+        public IEnumerable<Registration> validateInput(string username, string email, string passcode, string university)
         {
+            bool localUsername = false;
             bool localPasscode = false;
             bool localEmail = false;
             bool localUniversity = false;
             bool localEmailExist = false;
+            bool localUsernameExist = false;
 
             // If statements to verify each user's input
             InputValidation inputValidation = new InputValidation();
+            if (inputValidation.validateUsername(username))
+            {
+                localUsername = true;
+            }
+
+            if (inputValidation.usernameExists(username))
+            {
+                localUsernameExist = true;
+            }
+
             if (inputValidation.validatePasscode(passcode))
             {
                 localPasscode = true;
@@ -53,10 +65,12 @@ namespace StudentMultiTool.Backend.Controllers
             // Returns the array of valid or invalid input values
             return Enumerable.Range(1, 1).Select(index => new Registration
             {
+                ValidUsername = localUsername,
                 ValidPasscode = localPasscode,
                 ValidEmail = localEmail,
                 ValidUniversity = localUniversity,
-                EmailExist = localEmailExist
+                EmailExist = localEmailExist,
+                UsernameExist = localUsernameExist
             })
             .ToArray();
         }
@@ -74,7 +88,7 @@ namespace StudentMultiTool.Backend.Controllers
 
                 // Creates a new user account in the UserAccounts table
                 Update usertoDB = new Update();
-                usertoDB.UpdateCreate(record.Email, record.Passcode, record.University, token);
+                usertoDB.UpdateCreate(record.Username, record.Email, record.Passcode, record.University, token);
 
                 // Sends the email verification to the user's email address
                 SendEmail sendEmail = new SendEmail();
