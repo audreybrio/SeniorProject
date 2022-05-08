@@ -6,7 +6,7 @@
     <div>
         <Schedules
                    :items="items"
-                   :editableItems="true"
+                   :editableItems="false"
                    @item-updated="updateItem"
                    @item-deleted="deleteItem" />
     </div>
