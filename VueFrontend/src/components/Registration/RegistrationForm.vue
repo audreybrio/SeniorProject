@@ -96,7 +96,6 @@
         methods: {
             // creates a new user account and saves the data in the DB
             postData() {
-                console.log("postData....")
                 axios.post(URLS.api.registration.newRegistration,
                     {
                         username: this.username,
@@ -173,7 +172,6 @@
                         this.validate.university = response.data[0].validUniversity;
                         this.validate.emailExist = response.data[0].emailExist;
                         this.validate.usernameExist = response.data[0].usernameExist;
-                        console.log(this.validate)
                         // log that we've completed
                         this.errorMessages()
                         if (this.areValidInputs) {
