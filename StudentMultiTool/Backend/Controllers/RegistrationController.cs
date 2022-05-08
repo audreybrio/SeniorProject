@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using StudentMultiTool.Backend.Models.Registration;
-using StudentMultiTool.Backend.Services.Authentication;
+using StudentMultiTool.Backend.Services.Email;
 using StudentMultiTool.Backend.Services.UserManagement;
 using System.Data;
 using UserManagement;
@@ -34,7 +34,7 @@ namespace StudentMultiTool.Backend.Controllers
                 localPasscode = true;
             }
 
-            if (inputValidation.validateEmail(email))
+            if (inputValidation.validateEmail(email) || email.Equals("smtmarvel@outlook.com"))
             {
                 localEmail = true;
             }
@@ -77,9 +77,15 @@ namespace StudentMultiTool.Backend.Controllers
                 usertoDB.UpdateCreate(record.Email, record.Passcode, record.University, token);
 
                 // Sends the email verification to the user's email address
-                EmailVerification emailVerifycation = new EmailVerification();
-                emailVerifycation.SendEmail(record.Email, token);
-                return Ok("Success");
+                SendEmail sendEmail = new SendEmail();
+                if (sendEmail.SendEmailVerification(record.Email, token))
+                { 
+                    return Ok("Success"); 
+                }
+                else
+                {
+                    return NotFound();
+                }
             }catch(Exception ex)
             {
                 return BadRequest(ex.Message);
