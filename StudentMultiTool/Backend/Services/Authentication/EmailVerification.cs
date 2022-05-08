@@ -5,6 +5,7 @@ namespace StudentMultiTool.Backend.Services.Authentication
 {
     public class EmailVerification
     {
+        // URL Link 
         public string baseURL = "https://localhost:5002";
 
         public EmailVerification() { }
