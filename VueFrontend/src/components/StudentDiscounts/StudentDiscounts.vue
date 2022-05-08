@@ -34,8 +34,8 @@
         },
         data() {
             return {
-                isSearch: true,
-                isPost: false
+                isSearch: false,
+                isPost: true
             }
 
         },

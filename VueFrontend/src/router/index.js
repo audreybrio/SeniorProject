@@ -21,8 +21,6 @@ import TutoringProfile from '../components/Matching/TutoringProfile.vue'
 import DisplayMatches from '../components/Matching/DisplayMatches.vue'
 import MatchesChild from '../components/Matching/MatchesChild.vue'
 
-
-
 import RecipeView from '../components/MyRecipe/RecipeView.vue'
 import RecipeDetails from '../components/MyRecipe/RecipeDetails.vue'
 import RecipeLayout from '../components/MyRecipe/RecipeLayout.vue'
