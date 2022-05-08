@@ -6,14 +6,12 @@
 
         <div class="newSchedule">
             <form id="newCollaboratorForm">
-                <p>
-                    Add a new Collaborator
-                    <input v-model="newCollaborator" placeholder="Username" />
-                    <p v-if="search()">{{ this.newCollaborator }} exists</p>
-                    <p v-else>{{ this.newCollaborator }} does not exist</p>
-                    <button id="newScheduleSubmit" @click="postCollaborator" >Add</button>
-                    <button id="search" @click="search()" >Search</button>
-                <p/>
+                <p>Add a new Collaborator</p>
+                <input v-model="newCollaborator" placeholder="Username" />
+                <p v-if="search()">{{ this.newCollaborator }} exists</p>
+                <p v-else>{{ this.newCollaborator }} does not exist</p>
+                <button id="newScheduleSubmit" @click="postCollaborator">Add</button>
+                <!--<button id="search" @click="search()">Search</button>-->
             </form>
         </div>
 
