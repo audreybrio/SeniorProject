@@ -30,9 +30,8 @@ namespace StudentMultiTool.Backend.Controllers
             RecoveryDB db = new RecoveryDB();
             SendEmail e = new SendEmail();
             InputValidation inputValidation = new InputValidation();
-
             string m = "nothing";
-
+           
             if (inputValidation.emailExists(r.email) && inputValidation.validateEmail(r.email))
             {
                 e.sendEmailPasswordReset(r.email);
@@ -154,17 +153,15 @@ namespace StudentMultiTool.Backend.Controllers
         [HttpPost("postactivate")]
         public IActionResult PostActivate(RecoveryUserEmail r)
         {
-
-            LoginController lg = new LoginController();
             string m = "nothing";
-
+            LoginController lg = new LoginController();
             InputValidation inputValidation = new InputValidation();
 
             if (inputValidation.usernameExists(r.username))
             {
                 lg.UpdateDisableEnabled(r.username, r.actdiact);
-
                 m = "successful";
+
             }
             else
             {
