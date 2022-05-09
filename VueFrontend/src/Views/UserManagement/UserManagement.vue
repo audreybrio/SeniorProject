@@ -7,11 +7,9 @@
     <div v-if="fileUpload">
         <label for="fileField">Upload bulk operations file here ( size limit: 2GB )</label>
         <div>
-            <form>
-                <input type="file" id="fileField" required />
-                <button @click="onClear" type="reset">Clear</button>
-                <button @click="onExecute" type="submit">Execute</button>
-            </form>
+            <input type="file" id="file" ref="file" single @change="onFileChange($event)" />
+            <button @click="onClear" type="reset">Clear</button>
+            <button @click="onExecute" type="submit">Execute</button>
         </div>
     </div>
     <div v-else>
@@ -94,6 +92,7 @@
     import URLS from '../../variables'
     import axios from 'axios'
     const ADMIN = 'admin'
+    import ref from 'vue'
     export default ({
         data() {
             return {
@@ -121,6 +120,12 @@
                 this.loadUsers();
             }
         },
+        computed: {
+            FileSizeLimit() {
+                //return (2 ** 31) - 1
+                return 2147483647
+            }
+        },
         methods: {
             toggleMode() {
                 this.fileUpload = !this.fileUpload
@@ -128,22 +133,34 @@
             onClear() {
                 this.file = null;
             },
-            onExecute(file, onUploadProgress) {
+            onFileChange(event) {
+                //this.file = this.$refs.file.click();
+                //this.file = this.$refs.file.file;
+                let sizeInBytes = (event.target.files[0].size)
+                console.log(event.target.files[0].size)
+                if (sizeInBytes < this.FileSizeLimit) {
+                    this.file = event.target.files[0];
+                    console.log(this.file)
+                }
+                else {
+                    alert("File is too large to upload! size limit: 2GB")
+                }
+            },
+            onExecute() {
                 let confirmed = confirm("Are you sure you want to upload and execute?");
                 if (confirmed) {
                     let formData = new FormData();
-                    formData.append("file", file);
+                    formData.append("file", this.file);
                     axios.post(`${URLS.api.admin.runBulkOperation}`, formData, {
                         headers: {
                             "Content-Type": "multipart/form-data"
                         },
-                        onUploadProgress
                     })
                         .then(response => {
-                            alert(response)
+                            alert(response.data)
                         })
                         .catch(e => {
-                            alert(e)
+                            alert(e + "\n" + e.data)
                         })
                 }
             },

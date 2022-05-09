@@ -126,12 +126,23 @@ namespace StudentMultiTool.Backend.Services.UserManagement
             {
                 try
                 {
-                    var filePath = Path.Combine("../smt-storage/", DateTime.UtcNow.ToString(), file.Name);
+                    string year = DateTime.UtcNow.Year.ToString();
+                    string month = DateTime.UtcNow.Month.ToString();
+                    string day = DateTime.UtcNow.Day.ToString();
+                    string hour = DateTime.UtcNow.Hour.ToString();
+                    string minute = DateTime.UtcNow.Minute.ToString();
+                    string second = DateTime.UtcNow.Second.ToString();
+                    string name = "bulkop-" + year + "-" + month + "-" + day + "-" + hour + "-" + minute + "-" + second + ".txt";
+                    var filePath = Path.Combine("../smt-storage/", name);
                     using (var stream = System.IO.File.Create(filePath))
                     {
                         await file.CopyToAsync(stream);
                     }
                     bool executed = false;
+
+                    BulkOperationInterpreter interpreter = new BulkOperationInterpreter();
+                    string result = interpreter.Execute(filePath);
+                    executed = result.Equals(interpreter.Success);
 
                     if (executed)
                     {
@@ -146,6 +157,10 @@ namespace StudentMultiTool.Backend.Services.UserManagement
                 {
                     return ex.GetType().FullName + "\n" + ex.Message;
                 }
+            }
+            else if (size >= 2147483647)
+            {
+                return "Maximum supported file size is 2 GB";
             }
             else
             {

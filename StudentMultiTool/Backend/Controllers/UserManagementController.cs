@@ -67,7 +67,7 @@ namespace StudentMultiTool.Backend.Controllers
         }
 
         [HttpPost]
-        [Route("bulkops")]
+        [Route("runBulkOperation")]
         public async Task<IActionResult> BulkOps(IFormFile file)
         {
             UserManager manager = new UserManager();
