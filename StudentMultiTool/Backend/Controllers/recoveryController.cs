@@ -2,7 +2,6 @@
 using StudentMultiTool.Backend.Controllers;
 using StudentMultiTool.Backend.DAL;
 using StudentMultiTool.Backend.Models.RecoveryAccount;
-using StudentMultiTool.Backend.Services.Authorization;
 using StudentMultiTool.Backend.Services.Email;
 using StudentMultiTool.Backend.Services.UserManagement;
 using System.Data;

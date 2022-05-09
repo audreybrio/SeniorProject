@@ -4,12 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 using UserAcc;
 using StudentMultiTool.Backend.DAL;
 using StudentMultiTool.Backend.Services.UserManagement;
-using StudentMultiTool.Backend.Services.Authorization;
-using StudentMultiTool.Backend.Services.Authorization.Entities;
 
 namespace StudentMultiTool.Backend.Controllers
 {
-    [Authorize(Role.admin)]
     [ApiController]
     [Route("api/usermanagement")]
     public class UserManagementController : Controller

@@ -1,8 +1,5 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc.Formatters;
-using StudentMultiTool.Backend.Services.Authorization;
-using StudentMultiTool.Backend.Services.Authorization.Helpers;
-using StudentMultiTool.Backend.Services.Authorization.Service;
 
 static class Program
 {
@@ -14,7 +11,6 @@ static class Program
 
         // CORS to allow cross-origin requests to port 8080
         // Should be before AddControllers()
-        builder.Services.AddDbContext<DataContext>();
         var CORSapi = "allowApiThruCORS";
         builder.Services.AddCors(options =>
         {
@@ -35,12 +31,8 @@ static class Program
             jsonInputFormatter.SupportedMediaTypes.Add("application/json");
         });
 
-        var config = new ConfigurationBuilder()
-        .AddJsonFile("appsettings.json", optional: false)
-        .Build();
-        builder.Services.Configure<AppSettings>(config);
-        builder.Services.AddScoped<IJwtUtils, JwtUtils>();
-        builder.Services.AddScoped<IUserService, UserService>();
+        
+       
         //builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
         //.AddCookie(options =>
         //{
