@@ -86,6 +86,10 @@ const URLS = {
             getEstDetails: apiRoot + "studentdiscounts/getEstDetails",
         },
 
+        careerOpportunities: {
+            getOpportunities: apiRoot + "careerOpportunities/getOpportunities"
+        },
+
         gpaCalc: {
 
         }

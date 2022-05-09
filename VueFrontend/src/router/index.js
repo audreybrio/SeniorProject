@@ -15,6 +15,9 @@ import StudentDiscounts from '../components/StudentDiscounts/StudentDiscounts.vu
 import DiscountDetails from '../components/StudentDiscounts/DiscountDetails.vue'
 import EstablishmentDetails from '../components/StudentDiscounts/EstablishmentDetails.vue'
 
+// Career Opportunities
+import CareerOpportunities from '../components/CareerOpportunities/CareerOpportunities.vue'
+
 import MatchingMain from '../components/Matching/MatchingMain.vue'
 import ActivityProfile from '../components/Matching/ActivityProfile.vue'
 import TutoringProfile from '../components/Matching/TutoringProfile.vue'
@@ -46,7 +49,7 @@ import RankingsChild from '../components/GPACalc/RankingsChild.vue'
 const routes = [
     // Core Features
     {
-        path: '/',
+        path: '/emailVue',
         name: 'EmailVue',
         component: EmailVue
     },
@@ -134,6 +137,14 @@ const routes = [
         path: '/studentDiscounts',
         name: 'studentDiscounts',
         component: StudentDiscounts,
+    },
+
+    // Career Opportunities
+    {
+        path: '/',
+        // path: '/careerOpportunities',
+        name: 'careerOpportunities',
+        component: CareerOpportunities,
     },
 
     // matching
