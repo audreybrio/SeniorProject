@@ -22,13 +22,4 @@ describe('Display Rankings', function () {
 
     })
 
-    // Checks button works 
-    it('Return to Matching Home', function () {
-        cy.visit('https://localhost:5002/displaymatches')
-
-
-        cy.contains('Return').click()
-
-
-    })
 })
