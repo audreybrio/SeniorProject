@@ -54,10 +54,10 @@ namespace StudentMultiTool.Backend.Services.GPA_Calc
             List<GradeModel> ranking = new List<GradeModel>();
             GradeDAL grade = new GradeDAL();
             ranking = grade.DisplayRanking(course, section);
-            foreach (GradeModel rank in ranking)
-            {
-                Console.WriteLine(rank.id + "" + rank.course + " " + rank.grade);
-            }
+            //foreach (GradeModel rank in ranking)
+            //{
+            //    Console.WriteLine(rank.id + "" + rank.course + " " + rank.grade);
+            //}
             return ranking;
         }
     }
