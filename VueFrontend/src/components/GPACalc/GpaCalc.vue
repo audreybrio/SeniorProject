@@ -16,7 +16,7 @@
         </div>
         <div>
             Grade:&nbsp;
-            <select v-model="one">
+            <select v-model="one" id="gradeOne">
                 <option disabled value="">Select Grade</option>
                 <option v-for="grade in possibleGrades" :key="grade">{{ grade }}</option>
             </select>
@@ -31,7 +31,7 @@
         <div>
             Grade:&nbsp;
 
-            <select v-model="two">
+            <select v-model="two" id="gradeTwo">
                 <option disabled value="">Select Grade</option>
                 <option v-for="grade in possibleGrades" :key="grade">{{ grade }}</option>
             </select>
@@ -45,7 +45,7 @@
             Course 3
             <br />
             Grade:&nbsp;
-            <select v-model="three">
+            <select v-model="three" id="gradeThree">
                 <option disabled value="">Select Grade</option>
                 <option v-for="grade in possibleGrades" :key="grade">{{ grade }}</option>
             </select>
@@ -54,11 +54,11 @@
             <br>
         </div>
         <!-- Course 4 grade and units-->
-        <div v-if="show4 == true">
+        <div v-if="show4 == true" >
             Course 4
             <br />
             Grade:&nbsp;
-            <select v-model="four">
+            <select v-model="four" id="gradeFour">
                 <option disabled value="">Select Grade</option>
                 <option v-for="grade in possibleGrades" :key="grade">{{ grade }}</option>
             </select>
@@ -71,7 +71,7 @@
             Course 5
             <br />
             Grade:&nbsp;
-            <select v-model="five">
+            <select v-model="five" id="gradeFive">
                 <option disabled value="">Select Grade</option>
                 <option v-for="grade in possibleGrades" :key="grade">{{ grade }}</option>
             </select>
@@ -85,7 +85,7 @@
             <br />
             Grade:&nbsp;
 
-            <select v-model="six">
+            <select v-model="six" id="gradeSix">
                 <option disabled value="">Select Grade</option>
                 <option v-for="grade in possibleGrades" :key="grade">{{ grade }}</option>
             </select>
@@ -100,7 +100,7 @@
             <br />
             Grade:&nbsp;
 
-            <select v-model="seven">
+            <select v-model="seven" id="gradeSeven">
                 <option disabled value="">Select Grade</option>
                 <option v-for="grade in possibleGrades" :key="grade">{{ grade }}</option>
             </select>
@@ -115,7 +115,7 @@
             <br />
             Grade:&nbsp;
 
-            <select v-model="eight">
+            <select v-model="eight" id="gradeEight">
                 <option disabled value="">Select Grade</option>
                 <option v-for="grade in possibleGrades" :key="grade">{{ grade }}</option>
             </select>
@@ -133,7 +133,7 @@
         <!-- Dislay GPA-->
         <div>
             <br />
-            <div v-if="gpa!=0 && gpa!=null" :key="index" class="gpa">GPA is: {{gpa}}</div>
+            <div v-if="gpa!=0 && gpa!=null" id="gpaId" :key="index" class="gpa">GPA is: {{gpa}}</div>
         </div>
 
         <br />

@@ -23,7 +23,7 @@
 
             <br>
             How Many Assignements do you have? (#)
-            <select v-model="calcGrade">
+            <select v-model="calcGrade" id="numAssignments">
                 <option disabled value="">Number of Assignments</option>
                 <option v-for="num in totalAssignments" :key="num">{{ num }}</option>
             </select>
@@ -45,7 +45,7 @@
   <!-- Displays grade-->
     <div>
         <br />
-        <div v-if="grade!=0 && grade!=null" :key="index" class="grade">Grade is: {{grade}}</div>
+        <div v-if="grade!=0 && grade!=null" id="gradeId" :key="index" class="grade">Grade is: {{grade}}</div>
     </div>
 
     <br />
