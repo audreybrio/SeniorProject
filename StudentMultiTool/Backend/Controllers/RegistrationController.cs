@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using StudentMultiTool.Backend.Models.Registration;
-using StudentMultiTool.Backend.Services.Authentication;
+using StudentMultiTool.Backend.Services.Email;
 using StudentMultiTool.Backend.Services.UserManagement;
 using System.Data;
 using UserManagement;
@@ -17,23 +17,13 @@ namespace StudentMultiTool.Backend.Controllers
             _logger = logger;
         }
 
-        [HttpGet(Name = "GetRegistration")]
-        public IEnumerable<Registration> Get()
-        {
-            return Enumerable.Range(1, 2).Select(index => new Registration
-            {
-                Username = true
-            })
-            .ToArray();
-        }
-
         // validateInput method returns an array of IEnumerable with the valid or invalid
         // values for the user's input
-        [HttpGet("validation/{username}/{password}/{email}/{university}")]
-        public IEnumerable<Registration> validateInput(string username, string password, string email, string university)
+        [HttpGet("validation/{username}/{email}/{passcode}/{university}")]
+        public IEnumerable<Registration> validateInput(string username, string email, string passcode, string university)
         {
             bool localUsername = false;
-            bool localPassword = false;
+            bool localPasscode = false;
             bool localEmail = false;
             bool localUniversity = false;
             bool localEmailExist = false;
@@ -46,12 +36,17 @@ namespace StudentMultiTool.Backend.Controllers
                 localUsername = true;
             }
 
-            if (inputValidation.validatePassword(password))
+            if (inputValidation.usernameExists(username))
             {
-                localPassword = true;
+                localUsernameExist = true;
             }
 
-            if (inputValidation.validateEmail(email))
+            if (inputValidation.validatePasscode(passcode))
+            {
+                localPasscode = true;
+            }
+
+            if (inputValidation.validateEmail(email) || email.Equals("smtmarvel@outlook.com"))
             {
                 localEmail = true;
             }
@@ -66,20 +61,16 @@ namespace StudentMultiTool.Backend.Controllers
                 localEmailExist = true;
             }
 
-            if (inputValidation.usernameExists(username))
-            {
-                localUsernameExist = true;
-            }
 
             // Returns the array of valid or invalid input values
             return Enumerable.Range(1, 1).Select(index => new Registration
             {
-                Username = localUsername,
-                Password = localPassword,
-                Email = localEmail,
-                University = localUniversity,
+                ValidUsername = localUsername,
+                ValidPasscode = localPasscode,
+                ValidEmail = localEmail,
+                ValidUniversity = localUniversity,
                 EmailExist = localEmailExist,
-                UsernameExist = localUsernameExist,
+                UsernameExist = localUsernameExist
             })
             .ToArray();
         }
@@ -87,54 +78,59 @@ namespace StudentMultiTool.Backend.Controllers
 
         // Create a new user and sends email verification.
         // Returns the status of the operation.
-        [HttpPost]
-        [HttpPost("newRegistration/{username}/{password}/{email}/{university}")]
-        public IActionResult registerNewUser(string username, string password, string email, string university)
+        [HttpPost("newRegistration")]
+        public IActionResult newRegistration(Registration record)
         {
             try
             {
                 // Generates Unique ID token to verify user email
-                String token = Guid.NewGuid().ToString();
+                string token = Guid.NewGuid().ToString();
 
                 // Creates a new user account in the UserAccounts table
                 Update usertoDB = new Update();
-                usertoDB.UpdateCreate(email, password, username, university, token);
+                usertoDB.UpdateCreate(record.Username, record.Email, record.Passcode, record.University, token);
 
                 // Sends the email verification to the user's email address
-                EmailVerification emailVerifycation = new EmailVerification();
-                emailVerifycation.SendEmail(username, email, token, password);
-                return Ok("Success");
+                SendEmail sendEmail = new SendEmail();
+                if (sendEmail.SendEmailVerification(record.Email, token))
+                { 
+                    return Ok("Success"); 
+                }
+                else
+                {
+                    return NotFound();
+                }
             }catch(Exception ex)
             {
-                return NotFound();
+                return BadRequest(ex.Message);
             }
 
         }
 
         // Activates user account if username and token matches.
         // Returns the status of the operation.
-        [HttpPost]
-        [HttpPost("emailVerification/{username}/{token}")]
-        public IActionResult activateUserAccount(string username, string token)
+        
+        [HttpPost("emailVerification")]
+        public IActionResult activateUserAccount(Registration registration)
         {
             try
             {
-                // the username and token matches with our database values
-                // the new user account is activated
+                //the username and token matches with our database values
+                //the new user account is activated
                 Update manageAccount = new Update();
-                if (manageAccount.ActivateAccount(username, token))
+                if (manageAccount.ActivateAccount(registration.Token))
                 {
                     return Ok("Success");
                 }
                 else
                 {
-                    return Ok("Error");
+                    return NotFound();
                 }
 
             }
             catch (Exception ex)
             {
-                return NotFound();
+               return BadRequest(ex.Message);
             }
         }
     }

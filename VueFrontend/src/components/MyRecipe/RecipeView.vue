@@ -23,7 +23,7 @@
 
 <script>
     import RecipeCard from '../MyRecipe/RecipeCard.vue'
-    import RecipesService from '/src/variables/RecipesService.js'
+    import AccessService from '/src/variables/index.js'
     import {watchEffect } from 'vue'
 
     export default ({
@@ -42,7 +42,7 @@
 
             watchEffect(() => {
                 this.recipes = null
-                RecipesService.getRecipes( 4, this.page)
+                AccessService.getRecipes( 4, this.page)
                 .then((response) => {
                     this.recipes = response.data
                     //this.totalRecipes = response.headers['x-total-count']

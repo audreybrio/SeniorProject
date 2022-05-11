@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+using System;
 using System.Data.SqlClient;
+using System.Text;
 
 namespace UserManagement
 {
@@ -27,7 +29,7 @@ namespace UserManagement
                 if(validUsername == true && validPasscode == true)
                 {
                     String token = Guid.NewGuid().ToString();
-                    updateDB.UpdateCreate(email, passcode, username, school, token);
+                    updateDB.UpdateCreate(username, email, passcode, school, token);
                     return true;
                 }
                 else
@@ -388,21 +390,59 @@ namespace UserManagement
             cmd.Parameters.AddWithValue("@username", username);
             cmd.ExecuteNonQuery();
         }
-        public bool ActivateAccount(string username, string token)
+
+        bool isActive24Hour(string token)
         {
-            if(UserTokenMatched(username, token))
+            try
+            {
+                SqlConnection conn = new SqlConnection();
+                conn.ConnectionString = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING");
+                conn.Open();
+                SqlCommand cmd = new SqlCommand("SELECT emailCreated FROM UserAccounts" +
+                                                " WHERE token = @token", conn);
+                cmd.Parameters.AddWithValue("@token", token);
+                cmd.ExecuteNonQuery();
+                DateTime date = (DateTime)cmd.ExecuteScalar();
+                conn.Close();
+                DateTime now = DateTime.Now;
+                if (date.AddDays(1) < now)
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+            catch
+            {
+                return false;
+            }
+
+        }
+        public bool ActivateAccount(string token)
+        {
+            try
             {
                 SqlConnection conn = new SqlConnection();
                 conn.ConnectionString = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING");
                 conn.Open();
                 SqlCommand cmd = new SqlCommand("UPDATE UserAccounts" + " SET active_status = 1, verified_email = 1" + 
-                                                " WHERE username = @username", conn);
-                cmd.Parameters.AddWithValue("@username", username);
+                                                " WHERE token = @token", conn);
+                cmd.Parameters.AddWithValue("@token", token);
                 cmd.ExecuteNonQuery();
                 conn.Close();
-                return true;
+                if (isActive24Hour(token))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+                
             }
-            else
+            catch
             {
                 return false;
             }
@@ -427,16 +467,31 @@ namespace UserManagement
             else { return false; }
             
         }
+        // Hashes passcode
+        public string HashPass(string password)
+        {
 
-        public void UpdateCreate(string email, string passcode, string username, string school, string token)
+            string s = "teammarvel";
+            byte[] salt = Encoding.ASCII.GetBytes(s);
+
+            string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
+                password: password,
+                salt: salt,
+                prf: KeyDerivationPrf.HMACSHA256,
+                iterationCount: 100000,
+                numBytesRequested: 256 / 8));
+            return hashed;
+        }
+
+        public void UpdateCreate(string username, string email, string passcode, string school, string token)
         {
             // inserts the created user into the database
-            
+            passcode = HashPass(passcode);
             SqlConnection conn = new SqlConnection();
             conn.ConnectionString = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING");
             conn.Open();
-            SqlCommand cmd = new SqlCommand("INSERT INTO UserAccounts (name, username,  email, passcode, role, school, active_status) " +
-                                                               "  values (@name, @username, @email, @passcode, @role, @school, @active_status)", conn);
+            SqlCommand cmd = new SqlCommand("INSERT INTO UserAccounts (name, username,  email, passcode, role, school, active_status, token, verified_email) " +
+                                                               "  values (@name, @username, @email, @passcode, @role, @school, @active_status, @token, @verified_email)", conn);
             cmd.Parameters.AddWithValue("@email", email);
             cmd.Parameters.AddWithValue("@name", "");
             cmd.Parameters.AddWithValue("@username", username);
@@ -444,8 +499,8 @@ namespace UserManagement
             cmd.Parameters.AddWithValue("@role", "student");
             cmd.Parameters.AddWithValue("@school", school);
             cmd.Parameters.AddWithValue("@active_status", 0);
-            // cmd.Parameters.AddWithValue("@token", token);
-            // cmd.Parameters.AddWithValue("@verified_email", 0);
+            cmd.Parameters.AddWithValue("@token", token);
+            cmd.Parameters.AddWithValue("@verified_email", 0);
             cmd.ExecuteNonQuery();
             conn.Close();
             System.Console.WriteLine("New User Account created successfully.\n");

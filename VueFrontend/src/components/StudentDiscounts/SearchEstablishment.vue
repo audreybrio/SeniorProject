@@ -1,4 +1,4 @@
-<!--<template>
+<template>
     <div>
         <h3>Search Establishments</h3>
     </div>
@@ -13,60 +13,42 @@
 </template>
 
 <script>
-    import * as $ from 'jquery'
-    //const baseURL = "https://localhost:5002";
+    import axios from 'axios'
     import URLS from '../../variables'
-//import Map1 from './ShowMap.vue'
+    export default {
+        data() {
+            return {
+                discounts: {},
+                displayMap: false,
+            }
+        },
+        created() {
+            this.getEstDiscounts()
+        },
+        methods: {
+            async getEstDiscounts() {
+                const response = await axios.get(URLS.api.studentDiscounts.getEstablishments,
+                    { timeout: 5000 });
+                this.discounts = response.data;
 
-export default {
-  data () {
-        return {
-            discounts: {},
-            displayMap: false,
+                /*axios.get(URLS.api.studentDiscounts.getEstablishments,
+                    { timeout: 5000 })
+                    .then(response => {
+                        this.discounts = response.data
+                    })
+                    .catch(e => {
+                        console.error("There was an error", e)
+                    })*/
+            }
+        }
     }
-  },
-  created(){
-      this.getEstDiscounts()
-    },
-  methods:{
-      getEstDiscounts() {
-          //this.isAccountCreated = false;
-          //this.resetValidateValues;
-          $.ajax({
-              // set the HTTP request URL
-              url: `${URLS.apiRoot}studentdiscounts/getDiscountsEstablishment`,
-              // set the context object to the vue component
-              // this line tells vue to update its components
-              // when the success or error objects complete!
-              // if it's not set, the components don't update!
-              context: this,
-              // HTTP method
-              method: 'GET',
-              // On a successful AJAX request:
-              success: function (data) {
-                  this.discounts = data
-                  // log that we've completed
-
-                  return true;
-              },
-              // On an unsuccessful AJAX request:
-              error: function (error) {
-                  // log the error
-                  console.log(error);
-                  this.items = null;
-                  return false;
-              }
-          });
-      }
-  }
-}
 </script>
 
 <style scoped>
     .ui.button,
-    .dot.circle.icon{
-    background-color: #ff5a5f;
-    color:white;
+    .dot.circle.icon {
+        background-color: #ff5a5f;
+        color: white;
     }
 
     .alignLeft {
@@ -74,6 +56,7 @@ export default {
         margin-left: 50px;
         font-weight: bold;
     }
+
     .discount h2 {
         background-color: #f4f4f4;
         padding: 20px;
@@ -92,4 +75,4 @@ export default {
     .discount .a {
         text-decoration: none;
     }
-</style>-->
+</style>

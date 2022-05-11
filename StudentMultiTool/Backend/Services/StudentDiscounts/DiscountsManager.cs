@@ -6,6 +6,7 @@ namespace StudentMultiTool.Backend.Services.StudentDiscounts
     {
         public DiscountsManager() { }
 
+        // getEstDetails returns the details of the Establishments
         public IEnumerable<DiscountsEstabl> getEstDetails(string attribute)
         {
             string discountsQuery = "SELECT * FROM Discounts WHERE id = @id";
@@ -17,6 +18,7 @@ namespace StudentMultiTool.Backend.Services.StudentDiscounts
             cmd.Parameters.AddWithValue("@id", attribute);
             try
             {
+                // It get the values from the table and saves it in a discountsEstablishments class
                 using (SqlDataReader reader = cmd.ExecuteReader())
                 {
                     while (reader.Read())
@@ -28,10 +30,10 @@ namespace StudentMultiTool.Backend.Services.StudentDiscounts
                         string lat = (string)reader["latitud"];
                         string lng = (string)reader["longitud"];
                         string description = (string)reader["description"];
-                        string dataCreated = (string)reader["dateCreated"];
+                        DateTime dataCreated = (DateTime)reader["dateCreated"];
                         int likes = (int)reader["likes"];
                         int dislikes = (int)reader["dislikes"];
-                        DiscountsEstabl discount = new DiscountsEstabl(id, name, title, address, lat, lng, description, dataCreated, likes, dislikes);
+                        DiscountsEstabl discount = new DiscountsEstabl(id, name, title, address, lat, lng, description, dataCreated.ToString(), likes, dislikes);
                         result.Add(discount);
                     }
                 }
@@ -43,6 +45,8 @@ namespace StudentMultiTool.Backend.Services.StudentDiscounts
             }
             return result;
         }
+
+        // It returns all discounts of the Establishments
         public IEnumerable<DiscountsEstabl> getDiscountsEstablishment()
         {
             string discountsQuery = "SELECT * FROM Discounts WHERE type = @type";
@@ -54,6 +58,7 @@ namespace StudentMultiTool.Backend.Services.StudentDiscounts
             cmd.Parameters.AddWithValue("@type", "Establishment");
             try
             {
+                // It get the values from the table and saves it in a discountsEstablishments class
                 using (SqlDataReader reader = cmd.ExecuteReader())
                 {
                     while (reader.Read())
@@ -65,10 +70,10 @@ namespace StudentMultiTool.Backend.Services.StudentDiscounts
                         string lat = (string)reader["latitud"];
                         string lng = (string)reader["longitud"];
                         string description = (string)reader["description"];
-                        string dataCreated = (string)reader["dateCreated"];
+                        DateTime dataCreated = (DateTime)reader["dateCreated"];
                         int likes = (int)reader["likes"];
                         int dislikes = (int)reader["dislikes"];
-                        DiscountsEstabl discount = new DiscountsEstabl(id, name, title, address, lat, lng, description, dataCreated, likes, dislikes);
+                        DiscountsEstabl discount = new DiscountsEstabl(id, name, title, address, lat, lng, description, dataCreated.ToString(), likes, dislikes);
                         result.Add(discount);
                     }
                 }
@@ -80,6 +85,8 @@ namespace StudentMultiTool.Backend.Services.StudentDiscounts
             }
             return result;
         }
+
+        // It returns the discounts of web discounts
         public IEnumerable<DiscountsWeb> getWebDetails(string attribute)
         {
             string discountsQuery = "SELECT * FROM Discounts WHERE id = @id";
@@ -99,10 +106,10 @@ namespace StudentMultiTool.Backend.Services.StudentDiscounts
                         string title = (string)reader["title"];
                         string webside = (string)reader["website"];
                         string description = (string)reader["description"];
-                        string dataCreated = (string)reader["dateCreated"];
+                        DateTime dataCreated = (DateTime)reader["dateCreated"];
                         int likes = (int)reader["likes"];
                         int dislikes = (int)reader["dislikes"];
-                        DiscountsWeb discount = new DiscountsWeb(id, title, webside, description, dataCreated, likes, dislikes);
+                        DiscountsWeb discount = new DiscountsWeb(id, title, webside, description, dataCreated.ToString(), likes, dislikes);
                         result.Add(discount);
                     }
                 }
@@ -115,6 +122,7 @@ namespace StudentMultiTool.Backend.Services.StudentDiscounts
             return result;
         }
 
+        // it returns all web discounts
         public IEnumerable<DiscountsWeb> getDiscountsWeb()
         {
             string discountsQuery = "SELECT * FROM Discounts WHERE type = @type";
@@ -134,10 +142,10 @@ namespace StudentMultiTool.Backend.Services.StudentDiscounts
                         string title = (string)reader["title"];
                         string webside = (string)reader["website"];
                         string description = (string)reader["description"];
-                        string dataCreated = (string)reader["dateCreated"];
+                        DateTime dataCreated = (DateTime)reader["dateCreated"];
                         int likes = (int)reader["likes"];
                         int dislikes = (int)reader["dislikes"];
-                        DiscountsWeb discount = new DiscountsWeb(id, title, webside, description, dataCreated, likes, dislikes);
+                        DiscountsWeb discount = new DiscountsWeb(id, title, webside, description, dataCreated.ToString(), likes, dislikes);
                         result.Add(discount);
                     }
                 }
@@ -150,6 +158,7 @@ namespace StudentMultiTool.Backend.Services.StudentDiscounts
             return result;
         }
 
+        // It saves the info of a Establishment discount
         public bool postDiscountEstablishment(string name, string title, string address, string latitud, string longitude, string description)
         {
             try
@@ -180,6 +189,7 @@ namespace StudentMultiTool.Backend.Services.StudentDiscounts
 
         }
 
+        // It saves the info of a web discount
         public bool postDiscountWebsite(string title, string website, string description)
         {
             try
