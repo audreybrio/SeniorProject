@@ -35,6 +35,7 @@
     import Schedules from '../../components/ScheduleBuilder/Schedules'
     import CreateItemForms from '../../components/ScheduleBuilder/CreateItemForms'
     import URLS from '../../variables'
+    import jwt_decode from 'jwt-decode'
     export default {
         name: 'ScheduleBuilder',
         components: {
@@ -50,6 +51,7 @@
                 createButtonText: "Create",
                 title: "",
                 schedule: {},
+                user: jwt_decode(window.sessionStorage.getItem("token")).username
             }
         },
         computed: {
@@ -81,7 +83,6 @@
             loadSchedule() {
                 this.loading = true;
                 let requestName = "LoadSchedule";
-                this.user = this.$route.params.user;
                 this.scheduleId = this.$route.params.scheduleId;
                 console.log(requestName);
                 axios.get(`${URLS.api.scheduleBuilder.getSchedule}/${this.user}/${this.scheduleId}`, { timeout: 5000 })

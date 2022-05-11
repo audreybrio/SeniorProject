@@ -48,6 +48,7 @@
     //import router from '../../router'
     import URLS from '../../variables'
     import axios from 'axios'
+    import jwt_decode from 'jwt-decode'
     export default ({
         name: "ScheduleCollaborators",
         data() {
@@ -57,7 +58,7 @@
                 newCollaborator: "",
                 scheduleId: this.$route.params.scheduleId,
                 // get user id or other identifier from the router to plug into getList()
-                user: this.$route.params.user
+                user: jwt_decode(window.sessionStorage.getItem("token")).username
             };
         },
         created() {
