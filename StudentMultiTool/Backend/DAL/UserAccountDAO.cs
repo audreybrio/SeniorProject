@@ -1,6 +1,7 @@
 ﻿using System.Data.SqlClient;
 using StudentMultiTool.Backend.Services.DataAccess;
 using StudentMultiTool.Backend.Services.Logging;
+using StudentMultiTool.Backend.Services.UserPrivacy;
 using UserAcc;
 
 namespace StudentMultiTool.Backend.DAL
