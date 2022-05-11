@@ -47,7 +47,7 @@ namespace StudentMultiTool.Backend.Controllers
                 localPasscode = true;
             }
 
-            if (inputValidation.validateEmail(email) || email.Equals("smtmarvel@outlook.com"))
+            if (inputValidation.validateEmail(email))
             {
                 localEmail = true;
             }

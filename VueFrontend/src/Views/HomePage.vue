@@ -29,8 +29,10 @@
         <div>
             <button @click="onManageAccount">Manage Account</button>
         </div>
+        <button @click="onPrivacy">Do Not Sell My Personal Information</button>
         <div>
             <button @click="onRecipe"> Recipe </button>
+            <button @click="onCareerOpportunities"> Career Opportunities </button>
         </div>
 
 
@@ -102,6 +104,9 @@
             onSD() {
                 router.push({ name: "studentDiscounts" });
             },
+            onCareerOpportunities() {
+                router.push({ name: "careerOpportunities" });
+            },
             onMatching() {
                 router.push({ name: "matchingMain" })
             },
@@ -114,7 +119,9 @@
             onCalc() {
                 router.push({name: "calculatorMain"})
             },
-
+            onPrivacy() {
+                router.push({name: "UserPrivacy" })
+            }
         },
     });
 </script>

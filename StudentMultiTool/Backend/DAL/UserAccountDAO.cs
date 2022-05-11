@@ -1,5 +1,7 @@
 ﻿using System.Data.SqlClient;
 using StudentMultiTool.Backend.Services.DataAccess;
+using StudentMultiTool.Backend.Services.Logging;
+using StudentMultiTool.Backend.Services.UserPrivacy;
 using UserAcc;
 
 namespace StudentMultiTool.Backend.DAL
@@ -16,13 +18,16 @@ namespace StudentMultiTool.Backend.DAL
         public string InsertUser(UserAccount user)
         {
             int rowsAffected = -1;
+            Hasher hasher = new Hasher();
+            string hashedPasscode = hasher.HashPassword(user.Passcode);
+
             SqlCommandRunner runner = new SqlCommandRunner(ConnectionString);
             runner.Query = "INSERT INTO UserAccounts (name, username, email, passcode, role, school, active_status) VALUES " +
                 "(@name, @username, @email, @passcode, @role, @school, @active_status);";
             runner.AddParam("@name", user.Name);
             runner.AddParam("@username", user.Username);
             runner.AddParam("@email", user.Email);
-            runner.AddParam("@passcode", user.Passcode);
+            runner.AddParam("@passcode", hashedPasscode);
             runner.AddParam("@role", user.Role);
             runner.AddParam("@school", user.School);
             runner.AddParam("@active_status", user.Active);
@@ -63,9 +68,11 @@ namespace StudentMultiTool.Backend.DAL
             }
             if (!string.IsNullOrEmpty(user.Passcode))
             {
+                Hasher hasher = new Hasher();
+                string hashedPasscode = hasher.HashPassword(user.Passcode);
                 query += "passcode = @passcode, ";
                 runner.UpdateQuery(query);
-                runner.AddParam("@passcode", user.Passcode);
+                runner.AddParam("@passcode", hashedPasscode);
             }
             query += "active_status = @active_status ";
             query += "WHERE id = @id;";
@@ -85,6 +92,16 @@ namespace StudentMultiTool.Backend.DAL
         }
         public string DeleteSingle(UserAccount user)
         {
+            // Delete the user's hash
+            Hasher hasher = new Hasher();
+            string hash = hasher.HashUsername(user.Username);
+            string deletedHash = DeleteHash(hash);
+            if (!deletedHash.Equals(Success))
+            {
+                return deletedHash;
+            }
+
+            // If the hash was deleted, then delete the user
             SqlCommandRunner runner = new SqlCommandRunner(ConnectionString);
             string query = "DELETE FROM UserAccounts WHERE id = @id;";
             runner.Query = query;
@@ -93,6 +110,23 @@ namespace StudentMultiTool.Backend.DAL
             if (rowsAffected == 0)
             {
                 return "Could not delete user with ID " + user.Id.ToString();
+            }
+            if (rowsAffected > 1)
+            {
+                return rowsAffected.ToString() + " rows deleted, please check the database";
+            }
+            return Success;
+        }
+        private string DeleteHash(string hash)
+        {
+            SqlCommandRunner runner = new SqlCommandRunner(ConnectionString);
+            string query = "DELETE FROM UserHashes WHERE hash = @hash;";
+            runner.Query = query;
+            runner.AddParam("@hash", hash);
+            int rowsAffected = runner.ExecuteNonQuery();
+            if (rowsAffected == 0)
+            {
+                return "Could not delete user hash with hash " + hash;
             }
             if (rowsAffected > 1)
             {

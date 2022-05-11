@@ -51,12 +51,14 @@
                 Already have an account? <router-link to="/">Login</router-link>
             </div>
         </div>
+        <button @click="onPrivacy">Do Not Sell My Personal Information</button>
     </section>
     </template>
 
 <script>
     import axios from 'axios'
     import URLS from '../../variables'
+    import router from '../../router'
     export default {
         data() {
             return {
@@ -96,7 +98,6 @@
         methods: {
             // creates a new user account and saves the data in the DB
             postData() {
-                console.log("postData....")
                 axios.post(URLS.api.registration.newRegistration,
                     {
                         username: this.username,
@@ -173,7 +174,6 @@
                         this.validate.university = response.data[0].validUniversity;
                         this.validate.emailExist = response.data[0].emailExist;
                         this.validate.usernameExist = response.data[0].usernameExist;
-                        console.log(this.validate)
                         // log that we've completed
                         this.errorMessages()
                         if (this.areValidInputs) {
@@ -202,6 +202,9 @@
                 this.retype_passcode = "";
                 this.university = "";
             },
+            onPrivacy() {
+                router.push({ name: "UserPrivacy" })
+            }
         }
     };
 </script>
