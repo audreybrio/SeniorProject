@@ -19,7 +19,7 @@
                 <br />
 
                 <label for="units">Completed units:</label>
-                <input type="number" v-model.number="units" class="units" />
+                <input type="number" v-model="units" class="units" step="0.1" />
                 <br />
 
                 <label for="major">Major:</label>
@@ -61,18 +61,27 @@
                     </div>
                 </div>
                 <br />
+
+                <div class="left-half">
+                    <label for="graduate">Graduate student?</label>
+                </div>
+                <div class="right-half">
+                    <input type="checkbox" v-model="graduated" />
+                </div>
+                <br />
+
+                <div class="left-half">
+                    <label for="searchInternship">Looking for internships?</label>
+                </div>
+                <div class="right-half">
+                    <input type="checkbox" v-model="searchInternship" />
+                </div>
+                <br />
+
                 <div style="text-align: center;">
                     <input type="submit" value="Search" class="submitButton" />
                 </div>
             </form>
-            {{done}}
-            <!-- {{ status }} {{units}} {{major}} <br/>
-            hasCert: {{hasCert}}
-            hasIntern: {{hasIntern}} <br/>
-            hasResearch: {{hasResearch}} <br/>
-            cert: {{certifications}}<br/>
-            internships: {{internships}}<br/>
-            researches: {{researches}} -->
             <br />
         </div>
         <router-view class="row3" />
@@ -80,19 +89,12 @@
 </template>
 
 <script>
-    import axios from 'axios'
-    import URLS from '../../variables'
     export default {
         name: 'CareerOpportunities',
-        components: {
-            // PostDiscounts,
-            // SearchDiscounts
-        },
         data(){
           return{
-            done: "",
             status: "",
-            units: 0.0,
+            units: (0).toFixed(1),
             major: "",
             hasCert: false,
             hasIntern: false,
@@ -102,38 +104,86 @@
             intern: "",
             internships: [],
             research: "",
-            researches: []
+            researches: [],
+            graduated: false,
+            searchInternship: false,
+            keywords: ""
           }
 
         },
         methods: {
           pressMatch(){
-              this.done = "Done"
-              this.getOpportunities()
+              this.combineFields()
+              // It sends the keywords string to the OpportunitiesList component
+              this.$router.push({ name: 'OpportunitiesList', params: { keywords: this.keywords } })
           },
-          getOpportunities(){
-              axios.get(URLS.api.careerOpportunities.getOpportunities)
-                  .then(response => {
-                      console.log(response.data.searchResult)
-                      console.log(response.data.searchResult.searchResultItems)
-                      console.log(response.data.searchResult.searchResultItems[0])
-                      console.log(response.data.searchResult.searchResultItems[0].matchedObjectDescriptor)
-                      console.log(response.data.searchResult.searchResultItems[0].matchedObjectDescriptor.positionTitle)
-                      console.log(response.data.searchResult.searchResultItems[0].matchedObjectDescriptor.organizationName)
-                      console.log(response.data.searchResult.searchResultItems[0].matchedObjectDescriptor.positionLocationDisplay)
-                      console.log(response.data.searchResult.searchResultItems[0].matchedObjectDescriptor.positionUri)
-                      console.log(response.data.searchResult.searchResultItems[0].matchedObjectDescriptor.qualificationSummary)
-                      console.log(response.data.searchResult.searchResultItems[0].matchedObjectDescriptor.userArea.details)
-                      console.log(response.data.searchResult.searchResultItems[0].matchedObjectDescriptor.userArea.details.jobSummary)
-                      console.log(response.data.searchResult.searchResultItems[0].matchedObjectDescriptor.userArea.details.requiredDocuments)
-                      console.log(response.data.searchResult.searchResultItems[0].matchedObjectDescriptor.positionEndDate)
-                      console.log(response.data.searchResult.searchResultItems[0].matchedObjectDescriptor.positionLocation[0].latitude)
-                      console.log(response.data.searchResult.searchResultItems[0].matchedObjectDescriptor.positionLocation[0].longitude)
-                  // console.log(response.data.searchResultItems[0].MatchedObjectDescriptor)
-                  })
-                  .catch(e => {
-                      console.error("There was an error", e)
-                  })
+          // combineFields method combines all filds to create the keywords string
+          combineFields(){
+              this.keywords = this.status
+              if(this.major.length > 0){
+                  this.major = this.major.replaceAll(" ", "%20")
+                  if(this.keywords.length > 0){
+                      this.keywords = this.keywords + "%20" + this.major
+                  }
+                  else{
+                      this.keywords = this.major
+                  }
+              }
+
+              if(this.cert.length > 0){
+                  this.cert = this.cert.replaceAll(" ", "%20")
+                  if(this.keywords.length > 0){
+                       this.keywords = this.keywords + "%20" + this.cert
+                  }
+                  else{
+                      this.keywords = this.cert
+                  }
+              }
+              
+              if(this.intern.length > 0){
+                  this.intern = this.intern.replaceAll(" ", "%20")
+                  if(this.keywords.length > 0){
+                      this.keywords = this.keywords + "%20" + this.intern
+                  }
+                  else{
+                      this.keywords = this.intern
+                  }
+              }
+              
+
+              if(this.research.length > 0){
+                  this.research = this.research.replaceAll(" ", "%20")
+                  if(this.keywords.length > 0){
+                      this.keywords = this.keywords + "%20" + this.research
+                  }
+                  else{
+                      this.keywords = this.research
+                  }
+              }
+              
+
+              if(this.graduated == true){
+                  if(this.keywords.length > 0){
+                      this.keywords = this.keywords + "%20" + "graduate"
+                  }
+                  else{
+                      this.keywords = "graduate"
+                  }
+              }
+
+              if(this.searchInternship == true){
+                  if(this.keywords.length > 0){
+                      this.keywords = this.keywords + "%20" + "computer%20science"
+                  }
+                  else{
+                      this.keywords = "computer%20science"
+                  }
+              }
+
+              if(this.keywords.length == 0){
+                  this.keywords = "computer%20science"
+              }
+              
           },
           addCertification(){
               if(this.cert != ""){
@@ -176,13 +226,13 @@
     .left-half {
         text-align: end;
         float: left;
-        width: 38%;
+        width: 43%;
         height: 25px;
     }
 
     .right-half {
         float: right;
-        width: 62%;
+        width: 57%;
         height: 25px;
     }
 
@@ -212,7 +262,7 @@
         display: table;
         height: 100%;
         width: 100%;
-        width: 400px;
+        width: 404px;
         height: 200px;
         background-color: rgb(212, 200, 210);
     }

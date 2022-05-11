@@ -17,6 +17,8 @@ import EstablishmentDetails from '../components/StudentDiscounts/EstablishmentDe
 
 // Career Opportunities
 import CareerOpportunities from '../components/CareerOpportunities/CareerOpportunities.vue'
+import OpportunitiesList from '../components/CareerOpportunities/OpportunitiesList.vue'
+import OpportunityDetails from '../components/CareerOpportunities/OpportunityDetails.vue'
 
 import MatchingMain from '../components/Matching/MatchingMain.vue'
 import ActivityProfile from '../components/Matching/ActivityProfile.vue'
@@ -49,7 +51,7 @@ import RankingsChild from '../components/GPACalc/RankingsChild.vue'
 const routes = [
     // Core Features
     {
-        path: '/emailVue',
+        path: '/',
         name: 'EmailVue',
         component: EmailVue
     },
@@ -141,10 +143,21 @@ const routes = [
 
     // Career Opportunities
     {
-        path: '/',
-        // path: '/careerOpportunities',
+        path: '/careerOpportunities',
         name: 'careerOpportunities',
         component: CareerOpportunities,
+    },
+    {
+        path: '/careerOpportunities/opportunitiesList/:keywords',
+        name: 'OpportunitiesList',
+        component: OpportunitiesList,
+        props: true
+    },
+    {
+        path: '/careerOpportunities/opportunitiesList/opportunityDetails/:title/:organizationName/:jobSummary/:applicationCloseDate/:url/:location',
+        name: 'OpportunityDetails',
+        component: OpportunityDetails,
+        props: true
     },
 
     // matching

@@ -17,14 +17,15 @@ namespace StudentMultiTool.Backend.Controllers
             _logger = logger;
         }
 
-        [HttpGet("getOpportunities")]
-        public async Task<Opportunities> getOpportunities()
+        // It creates a Http GET request to USAJobs with a keyword string
+        // and returns a Opportunities object
+        [HttpGet("getOpportunities/{keywords}")]
+        public async Task<Opportunities> getOpportunities(string keywords)
         {
             
-            Console.WriteLine("getOpportunities");
             CareerManager careerManager = new CareerManager();
 
-            return await careerManager.getResults();
+            return await careerManager.getResults(keywords);
         }
 
     }
