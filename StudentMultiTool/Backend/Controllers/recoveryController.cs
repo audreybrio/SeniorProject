@@ -194,20 +194,24 @@ namespace StudentMultiTool.Backend.Controllers
 
             Console.WriteLine("user== "+ r.username);
 
-            Console.WriteLine("Activate== " + r.activate);
-            lg.UpdateEnable(r.email);
+            //Console.WriteLine("Activate== " + r.activate);
+            //lg.UpdateEnable(r.email);
+            bool result = false;
+            InputValidation inputValidation = new InputValidation();
 
-
-            if (true)
+            try
             {
-                if (inputValidation.usernameExists(r.username))
+                if (true)
                 {
-                    lg.UpdateDisableEnabled(r.username, r.actdiact);
-                    result = true;
-                }
-                else
-                {
-                    result = false;
+                    if (inputValidation.usernameExists(r.username))
+                    {
+                        lg.UpdateEnable(r.email);
+                         result = true;
+                    }
+                    else
+                    {
+                         result = false;
+                    }
                 }
             }
             catch (Exception ex)
