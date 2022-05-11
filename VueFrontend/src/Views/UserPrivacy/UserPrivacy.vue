@@ -38,10 +38,15 @@
             <li>Personal schedule information (schedule builder, schedule comparison, matching),</li>
             <li>Hobbies and/or interests (matching),</li>
             <li>Grades and/or GPA (GPA calculator),</li>
-            <li>Preferred foods/recipes (recipe sharing),</li>
             <li>Messages (messaging),</li>
             <li>Financial aid status (aid eligibility),</li>
             <li>Resumes and/or resume-related informaiton (career opportunities)</li>
+        </ul>
+        <br />
+        The following information is collected anonymously:
+        <ul>
+            <li>Student discounts,</li>
+            <li>Preferred foods/recipes (recipe sharing)</li>
         </ul>
         We collect this information strictly through user input. This means that we only collect information that you give us.
         We store this data in databases and files owned and operated by us.
@@ -58,36 +63,38 @@
     import axios from 'axios'
     import router from '../../router'
     import URLS from '../../variables'
+    import jwt_decode from 'jwt-decode'
     export default {
         name:'UserPrivacy',
         data() {
             return {
                 sellMyInfo: true,
-                user: this.$route.params.user
+                user: jwt_decode(window.sessionStorage.getItem("token")).username
             }
         },
         created() {
+            this.user = jwt_decode(window.sessionStorage.getItem("token")).username
             this.getCurrentOptions()
         },
         methods: {
             getCurrentOptions() {
-                let result = {
-                    sellMyInfo: this.sellMyInfo,
-                }
-                axios.get(`${URLS.api.userPrivacy.getOptions}`, this.user)
+                let user = this.user
+                axios.get(`${URLS.api.userPrivacy.getOptions}?username=${user}`)
                     .then(response => {
-                        result.sellMyInfo = response.SellMyInfo
+                        console.log(response)
+                        this.sellMyInfo = response.sellMyInfo
                     })
                     .catch(error => {
+                        console.log(error)
                         alert(error)
                     })
-                this.sellMyInfo = result.sellMyInfo
             },
             confirm(){
                 let options = {
                     UserName: this.user,
                     SellMyInfo: this.sellMyInfo
                 }
+                console.log(options)
                 axios.post(`${URLS.api.userPrivacy.setOptions}`, options)
                     .then(response => {
                         console.log(response)
@@ -99,7 +106,7 @@
                 this.SellMyInfo = options.SellMyInfo
             },
             onDelete() {
-                router.push({ name: 'not-found' })
+                router.push({ name: 'AccountDeletion' })
             }
         }
     };

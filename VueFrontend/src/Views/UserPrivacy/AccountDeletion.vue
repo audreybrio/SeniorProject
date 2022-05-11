@@ -16,28 +16,31 @@
     import axios from 'axios'
     import router from '../../router'
     import URLS from '../../variables'
+    import jwt_decode from 'jwt-decode'
     export default {
         name: 'AccountDeletion',
         data() {
             return {
-                user: this.$route.params.user
+                user: jwt_decode(window.sessionStorage.getItem("token")).username
             }
         },
         created() {
         },
         methods: {
             onDelete() {
-                let user = this.user
+                let username = this.user
                 let confirmed = confirm("Are you sure you want to delete your account?\nThis is irreversible.")
                 if (confirmed) {
-                    axios.post(`${URLS.api.userPrivacy.accountDeletion}`, user)
+                    axios.post(`${URLS.api.userPrivacy.accountDeletion}?username=${username}`)
                         .then(response => {
                             console.log(response)
+                            alert("Your account has been deleted.")
+                            router.push({ path: '/' })
                         })
                         .catch(error => {
+                            alert("Error: Could not delete your account\n" + error)
                             console.log(error)
                         })
-                    router.push({ path: '/' })
                 }
             },
             onBack() {
