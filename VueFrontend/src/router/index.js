@@ -100,8 +100,8 @@ const routes = [
     },
     {
         path: '/schedule/comparison/user/:user/selection/:selection',
-        name: 'ScheduleComparison',
-        component: () => import('../Views/ScheduleComparison/ScheduleComparison.vue')
+        name: 'ScheduleComparisonLink',
+        component: () => import('../Views/ScheduleComparison/ScheduleComparisonLink.vue')
     },
     {
         path: '/schedule/comparison/select/',
