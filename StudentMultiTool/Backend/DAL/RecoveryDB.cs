@@ -91,5 +91,40 @@ namespace StudentMultiTool.Backend.Models.RecoveryAccount
 
             return result;
         }
+
+
+
+        public bool UpdateDisableEnabled(string username, bool actdiact)
+        {
+            bool result = false;
+
+
+            using (SqlConnection con = new SqlConnection(connection))
+            {
+                String query = "UPDATE UserAccounts SET active_status = @newStatus WHERE username = @username";
+                SqlCommand cmd = new SqlCommand(query, con);
+
+                try
+                {
+                    con.Open();
+                    cmd.Parameters.AddWithValue("@newStatus", actdiact);
+                    cmd.Parameters.AddWithValue("@username", username);
+                    cmd.ExecuteNonQuery();
+                    result = true;
+                    con.Close();
+                }
+                catch (Exception e)
+                {
+                    result = false;
+                    Console.WriteLine(e);
+                }
+            }
+
+            return result;
+
+        }
     }
+
+
+   
 }

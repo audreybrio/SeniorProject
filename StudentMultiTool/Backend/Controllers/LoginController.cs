@@ -398,24 +398,7 @@ namespace StudentMultiTool.Backend.Controllers
 
         }
 
-        public void UpdateDisableEnabled(string username, bool actdiact)
-        {
-            try
-            {
-                SqlConnection conn = new SqlConnection();
-                conn.ConnectionString = Environment.GetEnvironmentVariable(connectionString);
-                conn.Open();
-                SqlCommand cmd = new SqlCommand("UPDATE UserAccounts SET active_status = @newStatus WHERE username = @username", conn);
-                cmd.Parameters.AddWithValue("@newStatus", actdiact);
-                cmd.Parameters.AddWithValue("@username", username);
-                cmd.ExecuteNonQuery();
-            }
-            catch
-            {
-
-            }
-
-        }
+      
     }
 
     public class AppSettings
