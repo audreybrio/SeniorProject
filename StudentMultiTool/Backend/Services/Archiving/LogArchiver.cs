@@ -6,83 +6,129 @@ using System.Threading.Tasks;
 using System.Data.SqlClient;
 using System.IO.Compression;
 using System.Threading;
+using StudentMultiTool.Backend.Services.DataAccess;
 
 namespace Marvel.Services.Logging
 {
     public class LogArchiver
     {
-        public string sql { get; set; }
-
-        public SqlConnection _connection { get; set; }
+        public string ConnectionString { get; set; }
 
         public LogArchiver()
         {
-            sql = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING");
-            _connection = new SqlConnection(sql);
+            ConnectionString = Environment.GetEnvironmentVariable(EnvironmentVariableEnum.CONNECTIONSTRING);
         }
 
-        public async void run()
+        // Archive all logs older than 30 days
+        public async void Archive()
         {
+            // Get the first day of this month to establish the cutoff date.
             DateTime today = DateTime.Today;
             DateTime month = new DateTime(today.Year, today.Month, 1);
             DateTime first = month.AddMonths(-1);
-            SqlDataReader reader = readFromDb(first);
 
+            // Read the logs
+            List<object[]> logs = readLogs(first);
+
+            // Set up a list of Tasks (to archive each log)
             List<Task<int>> vs = new List<Task<int>>();
 
+            // The list of ids of each log that is being archived
             List<int> ids = new List<int>();
 
+            // Configure the log writer
+            string filePath = Environment.GetEnvironmentVariable(EnvironmentVariableEnum.ARCHIVEFILEPATH);
             FileLogWriter fileLogWriter = new FileLogWriter();
-            while(reader.Read())
+            fileLogWriter.filePath = filePath;
+
+            // Read each log after it's been retreived from the database
+            foreach(object[] log in logs)
             {
-                ids.Add(reader.GetInt32(0));
-                vs.Add(fileLogWriter.AddLog(reader.GetString(2), reader.GetString(3), reader.GetString(4), reader.GetString(5), reader.GetDateTime(1)));
+                // Add the log's id to the list of archived logs
+                ids.Add((int) log[0]);
+
+                // Set up a task to write the log to the archive file
+                vs.Add(fileLogWriter.AddLog(
+                    (string) log[2],
+                    (string) log[3],
+                    (string) log[4],
+                    (string) log[5],
+                    (DateTime) log[1]
+                    ));
             }
 
+            // Archive the logs
             foreach (Task<int> current in vs)
             {
                 await current;
             }
 
-            fileLogWriter.WriteAllLogs();
+            _ = await fileLogWriter.WriteAllLogs();
 
-            deleteFromDB(ids);
+            // Delete the archived logs
+            deleteLogs(ids);
 
-            string filePath = Environment.GetEnvironmentVariable("MARVELARCHIVEFILEPATH");
-            string zipPath = Environment.GetEnvironmentVariable("MARVELARCHIVEZIPPATH");
+            // Compress the archive file
+            string zipPath = Environment.GetEnvironmentVariable(EnvironmentVariableEnum.ARCHIVEZIPPATH);
+            
+            if (!string.IsNullOrEmpty(filePath) && !string.IsNullOrEmpty(zipPath))
+            {
+                // Try to compress the file.
+                try
+                {
+                    ZipFile.CreateFromDirectory(filePath, zipPath);
+                }
+                catch (Exception ex)
+                {
 
-            ZipFile.CreateFromDirectory(filePath, zipPath);
+                }
+            }
 
-            nextArchive(); // Activate next thread
+            // Activate the next archiving thread
+            _ = await WaitForNextArchive();
         }
 
-        public virtual async Task<int> nextArchive()
+        // Waits for the 1st day of the next month to begin archiving again.
+        public virtual async Task<int> WaitForNextArchive()
         {
+            // Establish the next time to archive logs at.
             var current = DateTime.Now;
             var today = DateTime.Today;
             var month = new DateTime(today.Year, today.Month, 1, 0, 0, 0);
             var first = month.AddMonths(+1);
             var restTime = first.Date - today;
+
+            // Wait until the midnight on the 1st of the next month.
             Thread.Sleep(restTime);
 
-            run();
+            // Archive the logs
+            Archive();
 
+            // Exit
             return 0;
         }
 
-        public int deleteFromDB(List<int> ids)
+        // Deletes all logs from the current set of logs that is being archived.
+        public int deleteLogs(List<int> ids)
         {
-            string query = "DELETE FROM logs WHERE (logs.id IN " + String.Join(",", ids) + ")";
-            SqlCommand cmd = new SqlCommand(query, _connection);
-            return cmd.ExecuteNonQuery();
+            int result = -1;
+            SqlCommandRunner runner = new SqlCommandRunner(ConnectionString);
+            runner.Query = "DELETE FROM logs WHERE (logs.id IN @ids);";
+            string logIds = string.Join(",", ids);
+            runner.AddParam("@ids", logIds);
+            result = runner.ExecuteNonQuery();
+            return result;
         }
 
-        public SqlDataReader readFromDb(DateTime cutoff)
+        // Reads all logs from before a cutoff (intended to be the set of all logs older than 30 days).
+        public List<object[]> readLogs(DateTime cutoff)
         {
-            string query = "SELECT * FROM logs WHERE (timestamp < " + cutoff.ToString() + ");";
-            SqlCommand cmd = new SqlCommand(query, _connection);
-
-            return cmd.ExecuteReader();
+            List<object[]> logs = new List<object[]>();
+            SqlCommandRunner runner = new SqlCommandRunner(ConnectionString);
+            runner.Query = "SELECT * FROM logs WHERE (timestamp < @cutoff);";
+            runner.AddParam("@cutoff", cutoff);
+            logs = runner.ExecuteReader();
+            return logs;
         }
 
     }

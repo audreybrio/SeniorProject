@@ -5,7 +5,7 @@ namespace StudentMultiTool.Backend.Services.Authentication
     public class LogIP
     {
         // Gets ip address of user
-        const string connectionString = "MARVELCONNECTIONSTRING";
+        const string connectionString = "MARVELLOGCONNECTIONSTRING";
         public string GetIP()
         {
             string hostName = Dns.GetHostName();

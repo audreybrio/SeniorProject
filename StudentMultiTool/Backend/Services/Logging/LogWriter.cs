@@ -4,6 +4,7 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Data.SqlClient;
 using System.Collections;
+using StudentMultiTool.Backend.Services.DataAccess;
 
 namespace Marvel.Services.Logging
 {
@@ -78,7 +79,7 @@ namespace Marvel.Services.Logging
         {
             try
             {
-                dbConnectionString = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING");
+                dbConnectionString = Environment.GetEnvironmentVariable(EnvironmentVariableEnum.LOGCONNECTIONSTRING);
             }
             catch (Exception ex)
             {
@@ -110,7 +111,7 @@ namespace Marvel.Services.Logging
         }
         public override async Task<int> WriteAllLogs()
         {
-            if (logs.Count < 1)
+            if (logs.Count < 1 || dbConnectionString == null)
             {
                 return 0;
             }
