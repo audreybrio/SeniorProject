@@ -11,8 +11,9 @@ namespace StudentMultiTool.Backend.Controllers
     {
         [HttpGet]
         [Route("getOptions")]
-        public PrivacyOptions GetOptions([FromBody] string username)
+        public PrivacyOptions GetOptions([FromQuery] string username)
         {
+
             UserPrivacyManager userPrivacyManager = new UserPrivacyManager();
             PrivacyOptions options = new PrivacyOptions();
 
@@ -23,7 +24,7 @@ namespace StudentMultiTool.Backend.Controllers
 
         [HttpPost]
         [Route("setOptions")]
-        public IActionResult SetOptions([FromBody] PrivacyOptions options)
+        public IActionResult SetOptions(PrivacyOptions options)
         {
             UserPrivacyManager userPrivacyManager = new UserPrivacyManager();
 
@@ -38,7 +39,7 @@ namespace StudentMultiTool.Backend.Controllers
 
         [HttpPost]
         [Route("accountDeletion")]
-        public IActionResult AccountDeletion([FromBody] string username)
+        public IActionResult AccountDeletion([FromQuery] string username)
         {
             UserPrivacyManager userPrivacyManager = new UserPrivacyManager();
 
