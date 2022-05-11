@@ -102,7 +102,7 @@ namespace StudentMultiTool.Backend.Controllers
         [Route("disable/{username}")]
         public IActionResult DisableUser(string username)
         {
-            UpdateDisable(username);
+            //UpdateDisable(username);
             return Ok();
         }
 
@@ -379,25 +379,7 @@ namespace StudentMultiTool.Backend.Controllers
         }
 
         // Disables a user if they exceed 5 incorrect login attempts
-        public void UpdateDisable(string username)
-        {
-            try
-            {
-                SqlConnection conn = new SqlConnection();
-                conn.ConnectionString = Environment.GetEnvironmentVariable(connectionString);
-                conn.Open();
-                SqlCommand cmd = new SqlCommand("UPDATE UserAccounts SET active_status = @newStatus WHERE username = @username", conn);
-                cmd.Parameters.AddWithValue("@newStatus", 0);
-                cmd.Parameters.AddWithValue("@username", username);
-                cmd.ExecuteNonQuery();
-            }
-            catch
-            {
-
-            }
-
-        }
-
+        
       
     }
 

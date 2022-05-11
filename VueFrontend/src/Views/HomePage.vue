@@ -65,10 +65,9 @@
                 var isJWT = jwt_decode(token);
                 console.log(isJWT);
                 window.sessionStorage.removeItem("token");
-                router.push({ name: "EmailVue" });
+                router.push({ name: "authenticateUser" });
 
             },
-
             onUsageAnalysisDashboard() {
                 if (this.role === 'admin') {
                     router.push({ name: "not-found" });
