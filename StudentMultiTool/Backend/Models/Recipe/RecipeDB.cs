@@ -8,9 +8,9 @@ namespace StudentMultiTool.Backend.Models.Recipe
     {
         string connection = Environment.GetEnvironmentVariable(EnvironmentVariableEnum.CONNECTIONSTRING);
 
-        public List<Recipe> GetAllRecipe(int perPage, int page)
+        public List<RecipeList> GetAllRecipe(int perPage, int page)
         {
-            List<Recipe> customerRecipe = new List<Recipe>();
+            List<RecipeList> customerRecipe = new List<RecipeList>();
 
             try
             {
@@ -29,7 +29,7 @@ namespace StudentMultiTool.Backend.Models.Recipe
                         while (rd.Read())
                         {
 
-                            customerRecipe.Add(new Recipe
+                            customerRecipe.Add(new RecipeList
                             {
                                 id = Convert.ToInt32(rd["id"]),
                                 title = rd["title"].ToString(),
@@ -70,9 +70,9 @@ namespace StudentMultiTool.Backend.Models.Recipe
         }
 
 
-        public Recipe GetSingleRecipe(int id)
+        public RecipeList GetSingleRecipe(int id)
         {
-            Recipe oneRecipe = new Recipe();
+            RecipeList oneRecipe = new RecipeList();
 
             try
             {
@@ -98,8 +98,6 @@ namespace StudentMultiTool.Backend.Models.Recipe
                             oneRecipe.datePosted = rd["datePosted"].ToString();
                             oneRecipe.mealForPeople = Convert.ToInt32(rd["mealForPeople"]);
                             oneRecipe.description = rd["description"].ToString();
-
-
                         }
 
                     }
@@ -119,7 +117,7 @@ namespace StudentMultiTool.Backend.Models.Recipe
             }
             return oneRecipe;
         }
-        public bool addValue(Recipe r)
+        public bool addValue(RecipeList r)
         {
             bool result = false;
             try
@@ -145,6 +143,7 @@ namespace StudentMultiTool.Backend.Models.Recipe
                         cmd.ExecuteNonQuery();
                         result = true;
                         con.Close();
+
                     }
                     catch (Exception e)
                     {
@@ -163,7 +162,7 @@ namespace StudentMultiTool.Backend.Models.Recipe
 
         }
 
-        public bool updateValue(int id, Recipe r)
+        public bool updateValue(int id, RecipeList r)
         {
             bool result = false;
 
@@ -190,6 +189,7 @@ namespace StudentMultiTool.Backend.Models.Recipe
                         cmd.ExecuteNonQuery();
                         result = true;
                         con.Close();
+
                     }
                     catch (Exception e)
                     {

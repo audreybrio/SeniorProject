@@ -2,8 +2,7 @@
 using StudentMultiTool.Backend.Controllers;
 using StudentMultiTool.Backend.DAL;
 using StudentMultiTool.Backend.Models.RecoveryAccount;
-using StudentMultiTool.Backend.Models.Registration;
-using StudentMultiTool.Backend.Services.Authentication;
+using StudentMultiTool.Backend.Services.Email;
 using StudentMultiTool.Backend.Services.UserManagement;
 using System.Data;
 using UserAcc;
@@ -11,6 +10,7 @@ using UserAcc;
 
 namespace StudentMultiTool.Backend.Controllers
 {
+
     [Route("api/[controller]")]
     [ApiController]
     public class recoveryController : Controller
@@ -23,78 +23,104 @@ namespace StudentMultiTool.Backend.Controllers
         }
 
 
-
         [HttpPost("reset")]
         public IActionResult Post(RecoveryUserEmail r)
         {
-            RecoveryDB db = new RecoveryDB();
+            bool result = false;
 
-            string m = "nothing";
+            try
+            {
+                RecoveryDB db = new RecoveryDB();
+                SendEmail e = new SendEmail();
+                InputValidation inputValidation = new InputValidation();
+              
 
-            if (db.sendEmailPasswordReset(r))
-            {
-                m = "successful";
+                if (inputValidation.emailExists(r.email) && inputValidation.validateEmail(r.email))
+                {
+                    e.sendEmailPasswordReset(r.email);
+                    result = true;
+                }
+                else
+                {
+                    result = false;
+                }
             }
-            else
+            catch (Exception ex)
             {
-                m = "Error";
+                return BadRequest(ex.Message);
             }
-            
-            return new JsonResult(m);
+
+            return new JsonResult(result);
         }
 
         [HttpGet("validate/{username}/{email}")]
         public IActionResult validateInput(string username, string email)
         {
-
-            RecoveryDB db = new RecoveryDB();
-
             bool result = false;
-            int userID  = 0;
 
-
-            InputValidation inputValidation = new InputValidation();
-
-            
-            if (inputValidation.emailExists(email) && inputValidation.usernameExists(username))
+            try
             {
-                result = true;
-            }else
+                RecoveryDB db = new RecoveryDB();
+
+                int userID = 0;
+
+
+                InputValidation inputValidation = new InputValidation();
+
+
+                if (inputValidation.validateEmail(email) && inputValidation.validateUsername(username) && inputValidation.usernameExists(username))
+                {
+                    result = true;
+                }
+                else
+                {
+                    result = false;
+                }
+
+            }
+            catch (Exception ex)
             {
-                result = false;
+                return BadRequest(ex.Message);
             }
 
-            return new JsonResult(result); 
-            
-        
+            return new JsonResult(result);
+
+
         }
 
         [HttpGet("validatepass/{email}/{pass}/{confpass}")]
         public IActionResult validatePassInput(string email, string pass, string confpass)
         {
             RecoveryDB db = new RecoveryDB();
-
             bool result = false;
             bool theyaresame = false;
 
-            if (pass == confpass)
+            try
             {
-                theyaresame = true;
-            }
-            else 
-            {
-                theyaresame = false;
-            }
+                if (pass == confpass)
+                {
+                    theyaresame = true;
+                }
+                else
+                {
+                    theyaresame = false;
+                }
 
-            InputValidation inputValidation = new InputValidation();
+                InputValidation inputValidation = new InputValidation();
 
-            if (inputValidation.validatePasscode(pass) && theyaresame && inputValidation.emailExists(email))
-            {
-                result = true;
+                if (inputValidation.validatePasscode(pass) && theyaresame && inputValidation.validateEmail(email))
+                {
+                    result = true;
+                }
+                else
+                {
+                    result = false;
+                }
+
             }
-            else
+            catch (Exception ex)
             {
-                result = false;
+                return BadRequest(ex.Message);
             }
 
 
@@ -106,48 +132,58 @@ namespace StudentMultiTool.Backend.Controllers
         public IActionResult PostPassword(RecoveryPassoward rp)
         {
             RecoveryDB db = new RecoveryDB();
+            InputValidation inputValidation = new InputValidation();
+            bool result = false;
 
-            string m = "nothing";
-
-            int userID = db.getUserId(rp.email);
-            Console.WriteLine("did i get right ID " + userID);
-
-            InputValidation checkValidation = new InputValidation();
-
-            if (db.sendNewPasswordReset(rp, userID))
+            try
             {
-
-          
-
-                m = "successful";
+                if (inputValidation.emailExists(rp.email))
+                {
+                    db.sendNewPasswordReset(rp, rp.email);
+                    result = true;
+                }
+                else
+                {
+                    result = false;
+                }
             }
-            else
+            catch (Exception ex)
             {
-                m = "Error";
+                return BadRequest(ex.Message);
             }
 
-            return new JsonResult(m);
+
+            return new JsonResult(result);
 
         }
 
 
         [HttpPost("disabled")]
-        public IActionResult PostDisabled(RecoveryUserEmail r)
+        public IActionResult PostDisabledEmail(RecoveryUserEmail r)
         {
             RecoveryDB db = new RecoveryDB();
+            SendEmail e = new SendEmail();
+            InputValidation inputValidation = new InputValidation();
+            bool result = false;
 
-            string m = "nothing";
-
-            if (db.sendEmailDisabledAccount(r))
+            try
             {
-                m = "successful";
+                if (inputValidation.emailExists(r.email))
+                {
+                    e.sendEmailDisabledAccount(r.email);
+                    result = true;
+                }
+                else
+                {
+                    result = false;
+                }
             }
-            else
+            catch (Exception ex)
             {
-                m = "Error";
+                return BadRequest(ex.Message);
             }
 
-            return new JsonResult(m);
+            return new JsonResult(result);
         }
 
         [HttpPost("postactivate")]
@@ -164,14 +200,22 @@ namespace StudentMultiTool.Backend.Controllers
 
             if (true)
             {
-                m = "successful";
+                if (inputValidation.usernameExists(r.username))
+                {
+                    lg.UpdateDisableEnabled(r.username, r.actdiact);
+                    result = true;
+                }
+                else
+                {
+                    result = false;
+                }
             }
-            else
+            catch (Exception ex)
             {
-                m = "Error";
+                return BadRequest(ex.Message);
             }
 
-            return new JsonResult(m);
+            return new JsonResult(result);
         }
     }
 }

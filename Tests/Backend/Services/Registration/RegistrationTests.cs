@@ -35,7 +35,7 @@ namespace Tests.Backend.Services.Registration
             string userName = "AudreyBrio";
             string password = "audrey";
             string school = "csulb";
-            bool validCase = input.validatePassword(password);
+            bool validCase = input.validatePasscode(password);
             
             Assert.False(validCase);
         }

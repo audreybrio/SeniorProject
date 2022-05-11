@@ -8,7 +8,6 @@
             <button @click="onUserManagement">User Management</button>
         </div>
         <div>
-            <!--<button @click="onAC">Access Control</button>-->
             <button @click="onScheduleBuilder">Schedule Builder</button>
             <button @click="onScheduleComparison">Schedule Comparison</button>
             <button @click="onUAD">Usage Analysis Dashboard</button>
@@ -88,10 +87,6 @@
                     alert("You lack the necessary role to access that page.")
                 }
             },
-
-             onAC() {
-                router.push({ name: "not-found" });
-            },
             onScheduleBuilder() {
                 router.push({ name: "SelectForBuilder", params: { user: this.id }});
             },
@@ -125,7 +120,6 @@
             onAid() {
                 router.push({ name: "studentInformation" });
             },
-
             onCalc() {
                 router.push({name: "calculatorMain"})
             },

@@ -17,7 +17,6 @@ namespace StudentMultiTool.Backend.Controllers
         // Matches activity profiles together 
         [HttpGet("matchActivity/{username}")]
         public List<Match> MatchingActivity(string username)
-
         {
             List<Match> matches = new List<Match>();
             matches = match.MatchingActivity(username);

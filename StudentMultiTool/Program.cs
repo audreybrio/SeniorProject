@@ -31,6 +31,8 @@ static class Program
             jsonInputFormatter.SupportedMediaTypes.Add("application/json");
         });
 
+        
+       
         //builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
         //.AddCookie(options =>
         //{

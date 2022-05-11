@@ -23,8 +23,6 @@ namespace StudentMultiTool.Backend.Controllers
         [HttpGet("getlist/_limit={perPage}/_page={page}")]
         public IActionResult Index(int perPage, int page)
         {
-            //return new JsonResult (customerRecipe.Skip(skip).Take(perPage).ToList());
-            //return new JsonResult(customerRecipe);
 
             return new JsonResult(_recipeDB.GetAllRecipe(perPage, page));
 
@@ -34,46 +32,58 @@ namespace StudentMultiTool.Backend.Controllers
         [HttpGet("getone/{id}")]
         public IActionResult Get(int id)
         {
-
             return new JsonResult(_recipeDB.GetSingleRecipe(id));
-
         }
 
 
         [HttpPost("newrecipe")]
-        public IActionResult Post(Recipe r)
+        public IActionResult Post(RecipeList r)
         {
-            string message;
-            if (_recipeDB.addValue(r))
+            bool result = false;
+            try
             {
-                message = "Successfully Added";
-
+                if (_recipeDB.addValue(r))
+                {
+                    result = true;
+                }
+                else
+                {
+                    result = false;
+                }
             }
-            else
+            catch (Exception ex)
             {
-                message = "Error";
+                return BadRequest(ex.Message);
             }
 
-            return new JsonResult(message);
+            return new JsonResult(result);
         }
 
+
         [HttpPost("editrecipe/{id}")]
-        public IActionResult Put(int id, Recipe r)
+        public IActionResult Put(int id, RecipeList r)
         {
-            string message;
-            if (_recipeDB.updateValue(id, r))
+            bool result = false;
+
+            try
             {
-                message = "Successfully Updated";
+                if (_recipeDB.updateValue(id, r))
+                {
+                    result = true;
 
+                }
+                else
+                {
+                    result = false;
+                }
             }
-            else
+            catch (Exception ex)
             {
-                message = "Error";
+                return BadRequest(ex.Message);
             }
 
 
-
-            return new JsonResult(message);
+            return new JsonResult(result);
 
         }
 
@@ -81,25 +91,31 @@ namespace StudentMultiTool.Backend.Controllers
         [HttpPost("deleterecipe/{id}")]
         public IActionResult Delete(int id)
         {
-            string message;
-            if (_recipeDB.deleteValue(id))
-            {
-                message = "Successfully Deleted";
+            bool result = false;
 
-            }
-            else
+            try
             {
-                message = "Error";
+                if (_recipeDB.deleteValue(id))
+                {
+                    result = true;
+                }
+                else
+                {
+                    result = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
             }
 
-            return new JsonResult(message);
+            return new JsonResult(result);
 
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
-            
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }

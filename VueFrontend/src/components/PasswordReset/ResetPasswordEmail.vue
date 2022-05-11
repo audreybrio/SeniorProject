@@ -72,7 +72,7 @@
             },
             cancel(){
                 this.$router.push({
-                    name: 'EmailVue'
+                    name: 'authenticateUser'
                 })
             },
             errorMessagges()

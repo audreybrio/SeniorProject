@@ -7,10 +7,10 @@
                 <div class="user">
                     <input name="username" v-model="username" placeholder="Enter Username">
                 </div>
-                <select v-bind="activate" required>
-                    <option disabled value="">Please select an option. </option>
-                    <option v-bind:value="true">Activate</option>
-                    <option value="false">Diactivate</option>
+                <select class="form-control" v-model="actdiact">
+                    <option :value='false'>Select to enable or disable account.</option>
+                    <option :value='true'>ACTIVATE</option>
+                    <option :value='false'>DEACTIVATE</option>
                 </select>
             </div>
             <button >Submit</button>
@@ -23,21 +23,18 @@
     import AccessService from '/src/variables/index.js'
     
     export default {
-        props: {
-            activate: {
-                type: Boolean,
-                default: true
-            }
-        },
+       
         data() {
             return {
-                username: ''
+                username: '',
+                actdiact: false
             }
         },
         methods:
         {
             accountActivate() {
-                AccessService.actAccount({ username: this.username, activate: this.activate })
+                console.log(this.actdiact)
+                AccessService.actAccount({ username: this.username, actdiact: this.actdiact })
                     .then(function (response) {
                         console.log(response);
                 })
@@ -45,9 +42,10 @@
                         console.log(error);
                 });
                 this.$router.push({
-                    name: 'EmailVue',
+                    name: 'authenticateUser',
                 })
              }
+            
          
         }
     }
