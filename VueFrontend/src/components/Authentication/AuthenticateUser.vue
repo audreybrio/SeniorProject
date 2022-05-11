@@ -12,8 +12,8 @@
             <input id="passcode" v-model="passcode" placeholder="Passocde">
             <button id="button" @click="onSubmit">Submit</button>
             <div>
-<!--                <button @click="skip">Test</button>
--->                <router-link to="/registration">Registration&nbsp;</router-link>
+                <button @click="skip">Test</button>
+                <router-link to="/registration">Registration&nbsp;</router-link>
             </div>
             <div>
                 <router-link to="/resetpassemail">&nbsp;ForgotPassword?</router-link>
