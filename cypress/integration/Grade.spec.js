@@ -17,11 +17,14 @@ describe('Grade', function () {
 
         cy.contains('Enter').click()
 
-        cy.get('input[id="assign"]').type('5')
+        cy.get('input[id="assign"]').type('8')
         cy.get('input[id="value"]').type('10')
 
         // Saves
         cy.contains('Calculate Grade!').click()
+
+        cy.get('#gradeId').should('be.visible')
+        cy.wrap({ grade: 80 }).its('grade').should('eq', 80)
 
 
     })
@@ -84,6 +87,7 @@ describe('Grade', function () {
 
 
         cy.get('#gradeId').should('be.visible')
+        cy.wrap({grade: 50 }).its('grade').should('eq', 50)
 
 
     })

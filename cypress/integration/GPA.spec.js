@@ -27,7 +27,7 @@ describe('GPA', function () {
         // Saves
         cy.contains('Calculate GPA!').click()
 
-        //cy.get('#gpaId').should('eq',3.075)
+        cy.get('#gpaId').should('be.visible')
 
         //cy.contains("GPA is: 3.075")
 

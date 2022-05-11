@@ -8,12 +8,12 @@
         <!-- User enters course and section to get ranking of -->
         <div>
             <input id="course" name="course" v-model="course" placeholder="Course">&nbsp;
-            <input id="secction" name="section" v-model="section" placeholder="Section #">&nbsp;
+            <input id="section" name="section" v-model="section" placeholder="Section #">&nbsp;
             <button @click="generateRankings"> Generate Rankings</button>
         </div>
 
         <!-- Displays rankings -->
-        <RankingsChild v-for="rank in rankings" :key="rank.id" :rank="rank">
+        <RankingsChild v-for="rank in rankings" :key="rank.id" :rank="rank" id="classRank">
             <h5>{{rank.id}}</h5>
         </RankingsChild>
 

@@ -4,25 +4,27 @@
             Hello {{ id }}! :)
         </div>
         <div>
-            <button @click="onAC">Access Control</button>
+            <!--<button @click="onAC">Access Control</button>-->
             <button @click="onScheduleBuilder">Schedule Builder</button>
             <button @click="onScheduleComparison">Schedule Comparison</button>
+            <button @click="onUAD">Usage Analysis Dashboard</button>
         </div>
+        <!--<div>-->
+            <!--<button @click="onAM">Automated Moderating</button>
+            <button @click="onBS">Book Selling</button>-->
+            <!--<button @click="onUAD">User Analysis Dashboard</button>
+        </div>-->
         <div>
-            <button @click="onAM">Automated Moderating</button>
-            <button @click="onBS">Book Selling</button>
-            <button @click="onUAD">User Analysis Dashboard</button>
-        </div>
-        <div>
-            <button @click="onAid">Aid Eligibility Estimates</button>
+            <!--<button @click="onAid">Aid Eligibility Estimates</button>-->
             <button @click="onSD">Student Discounts</button>
             <button @click="onMatching">Matching</button>
-        </div>
-
-        <div>
-            <button @click="onEP">Event Planning</button>
             <button @click="onCalc">GPA/Grade Calculator</button>
         </div>
+
+        <!--<div>
+            <button @click="onEP">Event Planning</button>
+     
+        </div>-->
             <button @click="onSubmit">Logout</button>
         
     </div>

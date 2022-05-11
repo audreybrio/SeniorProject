@@ -11,12 +11,14 @@ describe('Display Rankings', function () {
         cy.contains('GPA/Grade Calculator').click()
 
         // Creating activity profile
-        cy.contains('Display Rankings').click()
+        cy.contains('Class Rankings').click()
 
         cy.get('input[id="course"]').type('CECS 491B')
         cy.get('input[id="section"]').type('5')
 
         cy.contains('Generate Rankings').click()
+
+        cy.get('#classRank').should('be.visible')
 
         cy.contains('Return').click()
 
