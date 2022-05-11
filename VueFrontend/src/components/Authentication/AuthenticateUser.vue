@@ -90,15 +90,15 @@
                 let data = {
                     creditentials: creditentials
                 }
+                 
                 fetch(
                     `${URLS.api.login.validate}`, {
-                        method: 'POST',
-                        context: this,
-                        headers: {
-                            'Accept': 'application/json',
-                            'Content-Type': 'application/json'
-                        }, body: JSON.stringify(data),
-
+                    method: 'POST',
+                    context: this,
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    }, body: JSON.stringify(data),
                 }).then((response) => {
                     if (!response.ok) {
 
@@ -107,11 +107,10 @@
                     }
                     else {
                         console.log("ajax success")
-                        // router.push({ name: "" })
+                        /*router.push({ name: "" })*/
                         this.emailCheck = false;
                         this.loginCheck = true;
                     }
-
                 }).catch(() => {
                     console.log("error")
                     this.errors = "Check Email or Passcode is Incorrect if not Account could be disabled click ==>  ";
@@ -168,7 +167,7 @@
                 else {
                     this.errors = ""
                     fetch(
-                        `${URLS.api.login.disable}/${this.username}`, {
+                        `${URLS.api.login.disable}/${this.email}`, {
                         method: 'GET',
                         context: this,
                         headers: {
@@ -177,11 +176,15 @@
                         },
 
                     })
+                    //    .then(response => {
+                    //   // router.push({name: DisabledAccount})
+                    //})
                 }
 
 
             },
             back() {
+                this.errors = ""
                 this.loginCheck = false;
                 this.emailCheck = true;
             },

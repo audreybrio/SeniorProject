@@ -18,7 +18,8 @@ namespace StudentMultiTool.Backend.Controllers
         {
 
             bool updateTutoring;
-            updateTutoring = Tutoring.TutoringProfile(courses.courses, username, individual, requires, opt);
+            Tutoring tutor = new Tutoring();
+            updateTutoring = tutor.TutoringProfile(courses.courses, username, individual, requires, opt);
             if (!updateTutoring)
             {
                 return NotFound();

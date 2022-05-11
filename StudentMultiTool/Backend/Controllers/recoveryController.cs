@@ -198,6 +198,8 @@ namespace StudentMultiTool.Backend.Controllers
                 if (inputValidation.usernameExists(r.username))
                 {
                     rd.UpdateDisableEnabled(r.username, r.actdiact);
+
+
                     result = true;
                 }
                 else
