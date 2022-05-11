@@ -3,6 +3,7 @@
 
     <div id="d1">
         <button @click="register"> ADD NEW RECIPE</button>
+        <button @click="back"> RETURN BACK TO HOME PAGE</button>
 
     </div>
 
@@ -64,12 +65,19 @@
 
         },
         methods: {
-            register() {
-
+            register()
+            {
                 this.$router.push({
                     name: 'RecipeRegister',
                 })
 
+            },
+            back()
+            {
+
+                this.$router.push({
+                    name: 'HomePage',
+                })
             }
         }
         

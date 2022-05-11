@@ -35,11 +35,7 @@ namespace StudentMultiTool.Backend.Services.Authentication
                 cmd.ExecuteNonQuery();
             }
 
-
-
         }
-
-
         public int UserExists(string username)
         {
 

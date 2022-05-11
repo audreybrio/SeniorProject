@@ -17,7 +17,7 @@ export default {
     methods:{
         Back() {
             this.$router.push({
-                    name: 'EmailVue'
+                name: 'authenticateUser'
                 })
         }
     }

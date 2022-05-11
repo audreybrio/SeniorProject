@@ -3,8 +3,6 @@ import { createRouter, createWebHistory } from 'vue-router';
 // Import your views here
 // Core Features
 import RegistrationForm from '../components/Registration/RegistrationForm.vue'
-import EmailVue from '../components/Authentication/EmailVue.vue'
-import LoginVue from '../components/Authentication/LoginVue.vue'
 import HomePage from '../Views/HomePage.vue'
 import EmailVerification from '../components/Registration/EmailVerification.vue'
 import AuthenticateUser from '../components/Authentication/AuthenticateUser'
@@ -47,25 +45,14 @@ const routes = [
     // Core Features
     {
         path: '/',
-        name: 'EmailVue',
-        component: EmailVue
-    },
-    {
-        path: '/login',
-        name: 'LoginVue',
-        component: LoginVue
-
+        name: 'authenticateUser',
+        component: AuthenticateUser
     },
     {
         path: '/home',
         name: 'HomePage',
         component: HomePage
 
-    },
-    {
-        path: '/authenticate',
-        name: 'authenticateUser',
-        component: AuthenticateUser
     },
     {
         path: '/registration',

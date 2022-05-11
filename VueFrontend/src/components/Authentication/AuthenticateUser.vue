@@ -6,14 +6,17 @@
                 Welcome! Please enter email and passcode!
             </div>
             <div class="warning">
-                <div v-if="errors.length" :key="index" class="warning">{{errors}}</div>
+                <div v-if="errors.length" :key="index" class="warning">{{errors}} <button @click="account"> Account Recover</button></div>
             </div>
             <input id="email" v-model="email" placeholder="Email">
             <input id="passcode" v-model="passcode" placeholder="Passocde">
             <button id="button" @click="onSubmit">Submit</button>
             <div>
-                <button @click="skip">Test</button>
-                <router-link to="/registration">Registration</router-link>
+<!--                <button @click="skip">Test</button>
+-->                <router-link to="/registration">Registration&nbsp;</router-link>
+            </div>
+            <div>
+                <router-link to="/resetpassemail">&nbsp;ForgotPassword?</router-link>
             </div>
         </div>
 
@@ -100,7 +103,7 @@
                     if (!response.ok) {
 
                         console.log("error")
-                        this.errors = "Email/Passcode Incorrect";
+                        this.errors = "Check Email or Passcode is Incorrect if not Account could be disabled click ==>  ";
                     }
                     else {
                         console.log("ajax success")
@@ -111,7 +114,7 @@
 
                 }).catch(() => {
                     console.log("error")
-                    this.errors = "Email/Passcode Incorrect";
+                    this.errors = "Check Email or Passcode is Incorrect if not Account could be disabled click ==>  ";
 
                 });
             },
@@ -181,6 +184,13 @@
             back() {
                 this.loginCheck = false;
                 this.emailCheck = true;
+            },
+            account() {
+
+                this.$router.push({
+                    name: 'DisabledEmail',
+                })
+
             },
 
             skip() {
