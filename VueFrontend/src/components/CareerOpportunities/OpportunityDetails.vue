@@ -6,7 +6,7 @@
         <div>
             <h2 class="row1">Opportunities Details</h2>
         </div>
-        <router-link to="{name: 'HomePage'}" class="homepage">HomePage</router-link>
+        <router-link to="/home" class="homepage">HomePage</router-link>
         <div class="container">
             Job Title: {{title}} <br /> <br />
             Location: {{ location }} <br /> <br />
