@@ -58,6 +58,7 @@
 <script>
     import axios from 'axios'
     import URLS from '../../variables'
+    import router from '../../router'
     export default {
         data() {
             return {
