@@ -54,7 +54,17 @@ const URLS = {
             calculateGrade: apiRoot + "gradeCalc/calculateGrade",
             saveGrade: apiRoot + "gradeCalc/saveGrade",
             displayRanking: apiRoot + "gradeCalc/displayRanking"
-        }
+        },
+
+        uad: {
+            mostVisited: apiRoot + "uad/mostVisited",
+            topSchool: apiRoot + "uad/topSchool",
+            averageDuration: apiRoot + "uad/averageDuration",
+            numLogin: apiRoot + "uad/numLogin",
+            numMatches: apiRoot + "uad/numMatches",
+            numRegister: apiRoot + "uad/numRegister"
+
+        },
     }
 }
 

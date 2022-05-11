@@ -7,17 +7,17 @@ namespace StudentMultiTool.Backend.DAL
     {
         const string connectionString = "MARVELCONNECTIONSTRING";
 
+        // SQL to get most visited page
         public List<MostVisited> MostVisited()
         {
             List<MostVisited> topVisited = new List<MostVisited>();
             try
             {
-                // Selects all matches for a single user 
-                
+
                 SqlConnection conn = new SqlConnection();
                 conn.ConnectionString = Environment.GetEnvironmentVariable(connectionString);
                 conn.Open();
-                SqlCommand cmd = new SqlCommand("SELECT viewName, COUNT(viewName) FROM TopVistied group by viewName", conn);
+                SqlCommand cmd = new SqlCommand("SELECT viewName, COUNT(viewName) FROM TopVisited group by viewName order by COUNT(viewName) desc", conn);
                 int totalCount = 0;
                 string viewName = "";
                 SqlDataReader dr = cmd.ExecuteReader();
@@ -32,26 +32,25 @@ namespace StudentMultiTool.Backend.DAL
                 }
                 dr.Close();
                 conn.Close();
-                Console.WriteLine(topVisited);
                 return topVisited;
             }
             catch (Exception ex)
             {
                 return topVisited;
             }
-        }
+}
 
+        // SQL to get school logins
         public List<TopSchool> TopSchool()
         {
             List<TopSchool> topSchool = new List<TopSchool>();
             try
             {
-                // Selects all matches for a single user 
 
                 SqlConnection conn = new SqlConnection();
                 conn.ConnectionString = Environment.GetEnvironmentVariable(connectionString);
                 conn.Open();
-                SqlCommand cmd = new SqlCommand("SELECT school, COUNT(school) FROM UserAccounts group by school", conn);
+                SqlCommand cmd = new SqlCommand("SELECT school, COUNT(school) FROM UserAccounts group by school order by COUNT(school) desc", conn);
                 int totalCount = 0;
                 string school = "";
                 SqlDataReader dr = cmd.ExecuteReader();
@@ -66,7 +65,6 @@ namespace StudentMultiTool.Backend.DAL
                 }
                 dr.Close();
                 conn.Close();
-                Console.WriteLine(topSchool);
                 return topSchool;
             }
             catch (Exception ex)

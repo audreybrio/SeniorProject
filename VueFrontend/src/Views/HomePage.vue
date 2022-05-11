@@ -11,7 +11,7 @@
         <div>
             <button @click="onAM">Automated Moderating</button>
             <button @click="onBS">Book Selling</button>
-            <button @click="onUSD">User Analysis Dashboard</button>
+            <button @click="onUAD">User Analysis Dashboard</button>
         </div>
         <div>
             <button @click="onAid">Aid Eligibility Estimates</button>
@@ -72,8 +72,14 @@
             onBS() {
                 router.push({ name: "bookSelling" });
             },
-            onUSD() {
-                router.push({ name: "not-found" });
+            onUAD() {
+                let role = jwt_decode(window.sessionStorage.getItem("token")).role
+                if (role != "student") {
+                    router.push({ name: "uadMain" });
+                }
+                else {
+                    alert("You do not have permissions to access this page")
+                }
             },
             onSD() {
                 router.push({ name: "studentDiscounts" });
