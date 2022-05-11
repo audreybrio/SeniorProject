@@ -190,14 +190,16 @@ namespace StudentMultiTool.Backend.Controllers
         public IActionResult PostActivate(RecoveryUserEmail r)
         {
             bool result = false;
-            LoginController lg = new LoginController();
+            RecoveryDB rd = new RecoveryDB();
             InputValidation inputValidation = new InputValidation();
 
             try
             {
                 if (inputValidation.usernameExists(r.username))
                 {
-                    //lg.UpdateDisableEnabled(r.username, r.actdiact);
+                    rd.UpdateDisableEnabled(r.username, r.actdiact);
+
+
                     result = true;
                 }
                 else

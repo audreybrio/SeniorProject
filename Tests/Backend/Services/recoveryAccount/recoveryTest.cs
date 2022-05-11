@@ -25,5 +25,18 @@ namespace Tests.Backend.Services.recoveryAccount
 
         }
 
+        [Fact]
+        public void ResetActiavte()
+        {
+            RecoveryDB r = new RecoveryDB();
+
+            string email = "devarsh.patel@student.csulb.edu";
+            bool activate = true;
+            bool success = r.UpdateDisableEnabled(email, activate);
+
+            Assert.True(success);
+
+        }
+
     }
 }

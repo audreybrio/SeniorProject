@@ -71,7 +71,6 @@
                 router.push({ name: "authenticateUser" });
 
             },
-
             onUsageAnalysisDashboard() {
                 if (this.role === 'admin') {
                     router.push({ name: "not-found" });
