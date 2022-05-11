@@ -37,35 +37,53 @@ namespace StudentMultiTool.Backend.Controllers
 
 
         [HttpPost("newrecipe")]
-        public IActionResult Post(Recipe r)
+        public IActionResult Post(RecipeList r)
         {
-            string message;
-            if (_recipeDB.addValue(r))
+            bool result = false;
+            try
             {
-                message = "Successfully Added";
+                if (_recipeDB.addValue(r))
+                {
+                    result = true;
+                }
+                else
+                {
+                    result = false;
+                }
             }
-            else
+            catch (Exception ex)
             {
-                message = "Error";
+                return BadRequest(ex.Message);
             }
 
-            return new JsonResult(message);
+            return new JsonResult(result);
         }
 
-        [HttpPost("editrecipe/{id}")]
-        public IActionResult Put(int id, Recipe r)
-        {
-            string message;
-            if (_recipeDB.updateValue(id, r))
-            {
-                message = "Successfully Updated";
 
-            }
-            else
+        [HttpPost("editrecipe/{id}")]
+        public IActionResult Put(int id, RecipeList r)
+        {
+            bool result = false;
+
+            try
             {
-                message = "Error";
+                if (_recipeDB.updateValue(id, r))
+                {
+                    result = true;
+
+                }
+                else
+                {
+                    result = false;
+                }
             }
-            return new JsonResult(message);
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+
+            return new JsonResult(result);
 
         }
 
@@ -73,17 +91,25 @@ namespace StudentMultiTool.Backend.Controllers
         [HttpPost("deleterecipe/{id}")]
         public IActionResult Delete(int id)
         {
-            string message;
-            if (_recipeDB.deleteValue(id))
+            bool result = false;
+
+            try
             {
-                message = "Successfully Deleted";
+                if (_recipeDB.deleteValue(id))
+                {
+                    result = true;
+                }
+                else
+                {
+                    result = false;
+                }
             }
-            else
+            catch (Exception ex)
             {
-                message = "Error";
+                return BadRequest(ex.Message);
             }
 
-            return new JsonResult(message);
+            return new JsonResult(result);
 
         }
 

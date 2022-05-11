@@ -12,14 +12,12 @@ namespace StudentMultiTool.Backend.Models.RecoveryAccount
     {
         public string connection { get; set; }
 
-
         public RecoveryDB()
         {
             connection = Environment.GetEnvironmentVariable(EnvironmentVariableEnum.CONNECTIONSTRING);
 
         }
         public bool sendNewPasswordReset (RecoveryPassoward rp, string email)
-
         {
             bool result;
 
@@ -82,6 +80,8 @@ namespace StudentMultiTool.Backend.Models.RecoveryAccount
                         Console.WriteLine(e);
                     }
                  }
+
+
             }
             catch (Exception e)
             {
@@ -91,49 +91,5 @@ namespace StudentMultiTool.Backend.Models.RecoveryAccount
 
             return result;
         }
-
-        /*
-        public int getUserId(string email)
-        {
-            int ID = 1000;
-
-            try
-            {
-                //string connection = @"Server=(localdb)\MSSQLLocalDB;Database=Marvel;Trusted_Connection=True; MultipleActiveResultSets=true;";
-
-                using (SqlConnection con = new SqlConnection(connection))
-                {
-                    String query = "SELECT id" + " from UserAccounts WHERE UserAccounts.email = @email;";
-
-                    SqlCommand cmd = new SqlCommand(query, con);
-
-                    cmd.CommandType = CommandType.Text;
-                    con.Open();
-
-                    try
-                    {
-                        cmd.Parameters.AddWithValue("@email", email);
-                        SqlDataReader rd = cmd.ExecuteReader();
-
-                        while (rd.Read())
-                        {
-                            ID = Convert.ToInt32(rd["id"]);
-                        }
-
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine(ex);
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-            }
-
-            return ID;
-        }*/
-
     }
 }

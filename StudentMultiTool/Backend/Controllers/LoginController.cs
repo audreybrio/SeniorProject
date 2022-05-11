@@ -416,9 +416,6 @@ namespace StudentMultiTool.Backend.Controllers
             }
 
         }
-
-
-
     }
 
     public class AppSettings

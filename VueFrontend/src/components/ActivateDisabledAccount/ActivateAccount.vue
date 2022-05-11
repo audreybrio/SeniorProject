@@ -42,7 +42,7 @@
                         console.log(error);
                 });
                 this.$router.push({
-                    name: 'EmailVue',
+                    name: 'authenticateUser',
                 })
              }
             
