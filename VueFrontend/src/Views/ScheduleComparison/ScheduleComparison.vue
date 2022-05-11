@@ -25,6 +25,7 @@
     import Schedules from '../../components/ScheduleBuilder/Schedules'
     import URLS from '../../variables'
     import axios from 'axios'
+    import jwt_decode from 'jwt-decode'
     export default {
         name: 'ScheduleComparison',
         components: {
@@ -34,7 +35,9 @@
             return {
                 items: [],
                 schedules: [],
-                link: ""
+                link: "",
+                user: jwt_decode(window.sessionStorage.getItem("token")).username
+                //user: this.$route.params.user
             }
         },
         computed: {
@@ -44,8 +47,8 @@
         },
         created() {
             // get the parameters from the router to load the comparison
-            this.user = this.$route.params.user;
             this.schedules = this.$route.params.selection;
+
             this.loadComparison();
         },
         methods: {
@@ -53,8 +56,8 @@
             loadComparison() {
                 let params = {
                     user: this.user,
-                    //scheduleIds: JSON.stringify(this.schedules)
-                    scheduleIds: this.schedules
+                    scheduleIds: JSON.stringify(this.schedules)
+                    //scheduleIds: this.schedules
                 }
                 console.log(params)
                 axios.get(`${URLS.api.scheduleComparison.getComparison}`, {
@@ -69,6 +72,9 @@
                     this.link = "https://localhost:5002/" + `schedule/comparison/user/${this.user}/selection/${this.schedules}` :
                     this.link = `${URLS.root}schedule/scomparison/user/${this.user}/selection/${this.schedules}`;
             },
+
+            // explicitly left blank; these shouldn't do anything but the subcomponents for this template expect 
+            // the methods to be here.
             updateItem() {},
             deleteItem() {}
 

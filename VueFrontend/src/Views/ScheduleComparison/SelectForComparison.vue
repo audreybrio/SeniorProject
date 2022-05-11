@@ -50,6 +50,7 @@
     import * as $ from 'jquery'
     import router from '../../router'
     import URLs from '../../variables'
+    import jwt_decode from 'jwt-decode'
     export default ({
         data() {
             return {
@@ -59,7 +60,7 @@
                 newScheduleTitle: "",
 
                 // get user id or other identifier from the router to plug into getList()
-                user: null
+                user: jwt_decode(window.sessionStorage.getItem("token")).username
             };
         },
         computed: {
@@ -68,13 +69,8 @@
             }
         },
         created() {
-            this.user = this.$route.params.user;
             this.selection = [];
             this.getList();
-        },
-        watch: {
-            // call again the method if the route changes
-            '$route': 'getList'
         },
         methods: {
             // Toggle whether or not the schedule was checked. If it was, add it to the 
@@ -136,13 +132,14 @@
 
             // Rotuse the user to the comparison
             onScheduleComparison() {
+                let user = this.user
                 if (!this.selectionLengthIsInRange) {
                     alert("Something went wrong.\nSelect 2 to 5 schedules for comparison.");
                 }
                 else {
                     router.push({
                         name: 'ScheduleComparison',
-                        params: { user: this.user, selection: this.selection }
+                        params: { user: user, selection: this.selection }
                     });
                 }
             },
