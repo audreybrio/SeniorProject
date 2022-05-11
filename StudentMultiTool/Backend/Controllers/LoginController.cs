@@ -24,8 +24,6 @@ namespace StudentMultiTool.Backend.Controllers
                 return NotFound();
             }
             return Ok();
-
-
       
         }
 
