@@ -92,6 +92,16 @@ namespace StudentMultiTool.Backend.DAL
         }
         public string DeleteSingle(UserAccount user)
         {
+            // Delete the user's hash
+            Hasher hasher = new Hasher();
+            string hash = hasher.HashUsername(user.Username);
+            string deletedHash = DeleteHash(hash);
+            if (!deletedHash.Equals(Success))
+            {
+                return deletedHash;
+            }
+
+            // If the hash was deleted, then delete the user
             SqlCommandRunner runner = new SqlCommandRunner(ConnectionString);
             string query = "DELETE FROM UserAccounts WHERE id = @id;";
             runner.Query = query;
@@ -100,6 +110,23 @@ namespace StudentMultiTool.Backend.DAL
             if (rowsAffected == 0)
             {
                 return "Could not delete user with ID " + user.Id.ToString();
+            }
+            if (rowsAffected > 1)
+            {
+                return rowsAffected.ToString() + " rows deleted, please check the database";
+            }
+            return Success;
+        }
+        private string DeleteHash(string hash)
+        {
+            SqlCommandRunner runner = new SqlCommandRunner(ConnectionString);
+            string query = "DELETE FROM UserHashes WHERE hash = @hash;";
+            runner.Query = query;
+            runner.AddParam("@hash", hash);
+            int rowsAffected = runner.ExecuteNonQuery();
+            if (rowsAffected == 0)
+            {
+                return "Could not delete user hash with hash " + hash;
             }
             if (rowsAffected > 1)
             {
