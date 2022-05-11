@@ -37,6 +37,10 @@
             <br />
             <button @click="back">Return</button>
         </div>
+        <div>
+
+        </div>
+        <button @click="onPrivacy">Do Not Sell My Personal Information</button>
     </div>
     <router-view />
 </template>
@@ -195,7 +199,9 @@
             },
 
 
-
+            onPrivacy() {
+                router.push({ name: "UserPrivacy" })
+            }
 
         },
     });

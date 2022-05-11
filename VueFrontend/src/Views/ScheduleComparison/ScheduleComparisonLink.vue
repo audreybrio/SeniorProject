@@ -27,7 +27,7 @@
     import axios from 'axios'
     import jwt_decode from 'jwt-decode'
     export default {
-        name: 'ScheduleComparison',
+        name: 'ScheduleComparisonLink',
         components: {
             Schedules,
         },

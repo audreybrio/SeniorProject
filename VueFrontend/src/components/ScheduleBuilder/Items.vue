@@ -14,7 +14,7 @@
     <div v-else id="noeditdiv">
         <table>
             <thead>
-                <tr>
+                <tr v-if="editable">
                     <td>
                         <button @click="edit()" type="button">Edit</button>
                     </td>
@@ -31,16 +31,16 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
+                <tr v-if="item.title !== ''">
                     <td>{{ item.title }}</td>
                 </tr>
-                <tr>
+                <tr v-if="item.contact !== ''">
                     <td>{{ item.contact }}</td>
                 </tr>
-                <tr>
+                <tr v-if="item.location !== ''">
                     <td>{{ item.location }}</td>
                 </tr>
-                <tr>
+                <tr v-if="item.notes !== ''">
                     <td>{{ item.notes }}</td>
                 </tr>
             </tbody>
@@ -102,6 +102,7 @@
                 this.editing = false;
             },
             updateItem(updatedItem) {
+                this.editing = false;
                 // emit to parent component
                 this.$emit("item-updated", updatedItem);
             },
@@ -109,6 +110,7 @@
                 this.editing = false;
             },
             deleteItem(deleteableItem) {
+                this.editing = false;
                 this.$emit("item-deleted", deleteableItem);
             }
         }

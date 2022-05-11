@@ -51,6 +51,7 @@
                 Already have an account? <router-link to="/">Login</router-link>
             </div>
         </div>
+        <button @click="onPrivacy">Do Not Sell My Personal Information</button>
     </section>
     </template>
 
@@ -202,6 +203,9 @@
                 this.retype_passcode = "";
                 this.university = "";
             },
+            onPrivacy() {
+                router.push({ name: "UserPrivacy" })
+            }
         }
     };
 </script>

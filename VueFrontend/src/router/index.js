@@ -94,6 +94,11 @@ const routes = [
         component: () => import('../Views/ScheduleComparison/ScheduleComparison.vue')
     },
     {
+        path: '/schedule/comparison/user/:user/selection/:selection',
+        name: 'ScheduleComparisonLink',
+        component: () => import('../Views/ScheduleComparison/ScheduleComparisonLink.vue')
+    },
+    {
         path: '/schedule/comparison/select/',
         name: 'SelectForComparison',
         component: () => import('../Views/ScheduleComparison/SelectForComparison.vue')
@@ -275,6 +280,17 @@ const routes = [
     //    name: 'EventPlannning',
     //    component: () => import('../Views/EventPlannning/EventPlannning.vue')
     //},
+
+    {
+        path: '/userPrivacy',
+        name: 'UserPrivacy', 
+        component: () => import('../Views/UserPrivacy/UserPrivacy.vue')
+    },
+    {
+        path: '/accountDeletion',
+        name: 'AccountDeletion',
+        component: () => import('../Views/UserPrivacy/AccountDeletion.vue')
+    },
 
     // ADD MORE HERE! DON'T ADD AFTER not-found!
 

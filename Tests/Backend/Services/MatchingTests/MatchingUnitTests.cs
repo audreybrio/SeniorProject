@@ -17,12 +17,12 @@ namespace Tests.Backend.Services.MatchingTests
         {
             string username = "abrio";
             bool findsMatch;
-            findsMatch = Matching.MatchingActivity(username);
+            findsMatch = Matching.MatchingActivity(username) != null;
             Assert.True(findsMatch);
 
             string username2 = "mkrisel";
             bool findsMatch2;
-            findsMatch2 = Matching.MatchingActivity(username2);
+            findsMatch2 = Matching.MatchingActivity(username2) != null;
             Assert.False(findsMatch2);
         }
 
@@ -32,12 +32,12 @@ namespace Tests.Backend.Services.MatchingTests
         {
             string username = "abrio";
             bool findsMatchSuccess;
-            findsMatchSuccess = Matching.MatchingTutoring(username);
+            findsMatchSuccess = Matching.MatchingTutoring(username) != null;
             Assert.True(findsMatchSuccess);
 
             string username2 = "mkrisel";
             bool findsMatchFail;
-            findsMatchFail = Matching.MatchingTutoring(username2);
+            findsMatchFail = Matching.MatchingTutoring(username2) != null;
             Assert.False(findsMatchFail);
         }
 

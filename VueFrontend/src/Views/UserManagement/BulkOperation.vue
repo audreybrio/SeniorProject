@@ -25,7 +25,7 @@
     export default ({
         data() {
             return {
-                user: null,
+                user: jwt_decode(window.sessionStorage.getItem("token")).username,
                 role: null,
                 file: null
             }
