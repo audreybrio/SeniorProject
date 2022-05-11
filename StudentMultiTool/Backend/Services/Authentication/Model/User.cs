@@ -16,7 +16,6 @@ namespace StudentMultiTool.Backend.Services.Authentication.Model
         public string school;
         public bool active;
 
-
         public User(string n, string u, string e, string pass, string r, string s, bool a)
         {
             this.name = n;

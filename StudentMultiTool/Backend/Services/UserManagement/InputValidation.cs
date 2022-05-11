@@ -46,7 +46,7 @@ namespace StudentMultiTool.Backend.Services.UserManagement
         public bool validatePasscode(string passcode)
         {
             bool validPasscode = true;
-            if (passcode.Length >= 8)
+            if (passcode.Length >= 5 ) //8)
             {
 
                 byte[] asciiInput = Encoding.ASCII.GetBytes(passcode);

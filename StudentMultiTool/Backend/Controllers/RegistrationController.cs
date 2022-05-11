@@ -7,6 +7,7 @@ using UserManagement;
 
 namespace StudentMultiTool.Backend.Controllers
 {
+
     [ApiController]
     [Route("api/" + "registration")]
     public class RegistrationController : Controller

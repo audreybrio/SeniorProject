@@ -378,14 +378,6 @@ namespace StudentMultiTool.Backend.Controllers
             return tokenHandler.WriteToken(token);
         }
 
-
-
-
-
-
-
-
-
         // Disables a user if they exceed 5 incorrect login attempts
         public void UpdateDisable(string username)
         {
@@ -406,7 +398,7 @@ namespace StudentMultiTool.Backend.Controllers
 
         }
 
-        public void UpdateEnabled(string username)
+        public void UpdateDisableEnabled(string username, bool actdiact)
         {
             try
             {
@@ -414,7 +406,7 @@ namespace StudentMultiTool.Backend.Controllers
                 conn.ConnectionString = Environment.GetEnvironmentVariable(connectionString);
                 conn.Open();
                 SqlCommand cmd = new SqlCommand("UPDATE UserAccounts SET active_status = @newStatus WHERE username = @username", conn);
-                cmd.Parameters.AddWithValue("@newStatus", 1);
+                cmd.Parameters.AddWithValue("@newStatus", actdiact);
                 cmd.Parameters.AddWithValue("@username", username);
                 cmd.ExecuteNonQuery();
             }
@@ -424,9 +416,6 @@ namespace StudentMultiTool.Backend.Controllers
             }
 
         }
-
-
-
     }
 
     public class AppSettings

@@ -2,7 +2,7 @@
 
 namespace StudentMultiTool.Backend.Models.Recipe
 {
-    public class Recipe
+    public class RecipeList
     {
         public int id { get; set; }
 
