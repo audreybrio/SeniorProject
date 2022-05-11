@@ -43,8 +43,6 @@ namespace StudentMultiTool.Backend.Controllers
             // Calaculates Gpa
             GPA calcGpa = new GPA();
             double gpa = calcGpa.CalculateGPA(grades, units);
-            Console.WriteLine(gpa);
-            
             return Ok(gpa);
         }
 
