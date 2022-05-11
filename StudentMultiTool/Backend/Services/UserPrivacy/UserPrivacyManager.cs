@@ -16,9 +16,6 @@ namespace StudentMultiTool.Backend.Services.UserPrivacy
             PrivacyOptions options = new PrivacyOptions();
             PrivacyOptionsDAO dao = new PrivacyOptionsDAO();
             options.Username = username;
-            
-            // Set a default value that can be returned in case of error
-            options.SellMyInfo = true;
 
             // Try to get the user's privacy options
             try
@@ -48,7 +45,11 @@ namespace StudentMultiTool.Backend.Services.UserPrivacy
             }
             else
             {
-                return "Could not update privacy options for user " + options.Username;
+                if (!string.IsNullOrEmpty(options.Username))
+                {
+                    return "Could not update privacy options for user " + options.Username;
+                }
+                return "Empty username";
             }
         }
 
@@ -74,7 +75,7 @@ namespace StudentMultiTool.Backend.Services.UserPrivacy
                     ScheduleManager scheduleManager = new ScheduleManager();
 
                     // Get all schedules that the user 
-                    List<Schedule> schedules = (List<Schedule>)scheduleManager.GetList(username);
+                    IEnumerable<Schedule> schedules = scheduleManager.GetList(username);
                     ScheduleDAO scheduleDAO = new ScheduleDAO();
 
                     // Delete each schedule the user owns
