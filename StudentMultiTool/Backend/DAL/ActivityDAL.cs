@@ -11,7 +11,7 @@ namespace StudentMultiTool.Backend.DAL
         const string connectionString = "MARVELCONNECTIONSTRING";
 
         // SQL to update activity profile in the database 
-        public static bool ActivityProfileUpdate(string activity1, string activity2, string activity3, string activity4, string activity5, string username)
+        public bool ActivityProfileUpdate(string activity1, string activity2, string activity3, string activity4, string activity5, string username)
         {
 
             SqlConnection conn = new SqlConnection();
@@ -32,7 +32,7 @@ namespace StudentMultiTool.Backend.DAL
         }
 
         // SQL to insert activity profile in the database 
-        public static bool ActivityProfileInsert(string activity1, string activity2, string activity3, string activity4, string activity5, string username, bool opt){
+        public bool ActivityProfileInsert(string activity1, string activity2, string activity3, string activity4, string activity5, string username, bool opt){
             SqlConnection conn = new SqlConnection();
             conn.ConnectionString = Environment.GetEnvironmentVariable(connectionString);
             conn.Open();
@@ -50,7 +50,7 @@ namespace StudentMultiTool.Backend.DAL
         }
 
         // SQL to check if activity profile for a user alraady exists 
-        public static int ProfileExists(string username)
+        public int ProfileExists(string username)
         {
             SqlConnection conn = new SqlConnection();
             conn.ConnectionString = Environment.GetEnvironmentVariable(connectionString);

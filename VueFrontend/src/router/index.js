@@ -6,6 +6,9 @@ import RegistrationForm from '../components/Registration/RegistrationForm.vue'
 import HomePage from '../Views/HomePage.vue'
 import EmailVerification from '../components/Registration/EmailVerification.vue'
 import AuthenticateUser from '../components/Authentication/AuthenticateUser'
+import UADMain from '../components/UsageAnalysisDashboard/UADMain'
+import MostVisited from '../components/UsageAnalysisDashboard/MostVisited'
+import TopSchool from '../components/UsageAnalysisDashboard/TopSchool'
 
 // Application features
 // StudentDiscounts
@@ -297,7 +300,27 @@ const routes = [
         name: 'not-authorized',
         component: () => import('../Views/NotAuthorized')
     },
-    
+
+    // UAD
+    {
+        path: '/uadmain',
+        name: 'uadMain',
+        component: UADMain
+    },
+
+    {
+        path: '/mostvisited',
+        name: 'mostVisited',
+        component: MostVisited
+
+    },
+
+    {
+        path: '/topschool',
+        name: 'topSchool',
+        component: TopSchool
+
+    },
     //EventPlanning
     //{
     //    path: '/eventPlannning',

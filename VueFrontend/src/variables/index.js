@@ -77,7 +77,7 @@ const URLS = {
             validate: apiRoot + "login/validate",
             authenticate: apiRoot + "login/authenticate",
             disable: apiRoot + "login/disable",
-            getToken: apiRoot + "login/getToken"
+            getToken: apiRoot + "login/getToken",
         },
 
         registration: {
@@ -100,8 +100,24 @@ const URLS = {
         },
 
         gpaCalc: {
+            calculateGPA: apiRoot + "gpaCalc/calculateGPA"
 
-        }
+        },
+
+        gradeCalc: {
+            calculateGrade: apiRoot + "gradeCalc/calculateGrade",
+            saveGrade: apiRoot + "gradeCalc/saveGrade",
+            displayRanking: apiRoot + "gradeCalc/displayRanking"
+        },
+
+        uad: {
+            mostVisited: apiRoot + "uad/mostVisited",
+            topSchool: apiRoot + "uad/topSchool",
+            averageDuration: apiRoot + "uad/averageDuration",
+            numLogin: apiRoot + "uad/numLogin",
+            numMatches: apiRoot + "uad/numMatches",
+            numRegister: apiRoot + "uad/numRegister"
+        },
     },
     getRecipes(perPage, page) {
         return apiClient.get('recipe/getlist/_limit=' + perPage +'/_page=' + page)

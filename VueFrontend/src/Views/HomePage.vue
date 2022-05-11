@@ -10,6 +10,7 @@
         <div>
             <button @click="onScheduleBuilder">Schedule Builder</button>
             <button @click="onScheduleComparison">Schedule Comparison</button>
+            <button @click="onUAD">Usage Analysis Dashboard</button>
         </div>
         <div>
             <button @click="onAM">Automated Moderating</button>
@@ -67,7 +68,7 @@
                 var isJWT = jwt_decode(token);
                 console.log(isJWT);
                 window.sessionStorage.removeItem("token");
-                router.push({ name: "EmailVue" });
+                router.push({ name: "authenticateUser" });
 
             },
 
@@ -99,8 +100,14 @@
             onBS() {
                 router.push({ name: "bookSelling" });
             },
-            onUSD() {
-                router.push({ name: "not-found" });
+            onUAD() {
+                let role = jwt_decode(window.sessionStorage.getItem("token")).role
+                if (role != "student") {
+                    router.push({ name: "uadMain" });
+                }
+                else {
+                    alert("You do not have permissions to access this page")
+                }
             },
             onSD() {
                 router.push({ name: "studentDiscounts" });

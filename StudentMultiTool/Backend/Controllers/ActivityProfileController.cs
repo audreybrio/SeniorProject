@@ -15,8 +15,8 @@ namespace StudentMultiTool.Backend.Controllers
         [HttpPost("update/{username}/{opt}")]
         public IActionResult ActivityProfile([FromBody] Data activities, string username, bool opt)
         {
-
-            bool isActivityUpdated = Activity.ActivityProfile(activities.activities, username, opt);
+            Activity activity = new Activity();
+            bool isActivityUpdated = activity.ActivityProfile(activities.activities, username, opt);
             if (!isActivityUpdated)
             {
                 return NotFound();
