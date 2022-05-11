@@ -1,70 +1,75 @@
 <template>
     <div class="rankings">
-        <!-- Child used to display list of matches -->
+        <!-- Warning for errors-->
+        <div class="warning">
+            <div v-if="errors.length" :key="index" class="warning">{{errors}}</div>
+        </div>
 
-        <input id="course" name="course" v-model="course" placeholder="Course">
-        <button @click="generateRankings"> Generate Rankings</button>
-        <!--<MatchesChild v-for="match in matches" :key="match.match" :match="match">
-    <h5>{{match.match}}</h5>-->
-        <!--<h5>{{match.reason}}</h5>
-    <h5>{{match.overlap}}</h5>-->
-        <!--</MatchesChild>-->
+        <!-- User enters course and section to get ranking of -->
+        <div>
+            <input id="course" name="course" v-model="course" placeholder="Course">&nbsp;
+            <input id="section" name="section" v-model="section" placeholder="Section #">&nbsp;
+            <button @click="generateRankings"> Generate Rankings</button>
+        </div>
+
+        <!-- Displays rankings -->
+        <RankingsChild v-for="rank in rankings" :key="rank.id" :rank="rank" id="classRank">
+            <h5>{{rank.id}}</h5>
+        </RankingsChild>
+
+        <div>
+            <button @click="onSubmit"> Return</button>
+
+        </div>
+        <router-view />
     </div>
-
-    <div>
-        <button @click="onSubmit"> Return</button>
-
-    </div>
-    <router-view />
 </template>
 
 <script>
     // Imports
-    //import axios from "axios"
-    //import jwt_decode from "jwt-decode"
-    //import MatchesChild from '../Matching/MatchesChild.vue'
-    //import URLS from '../../variables'
+    import axios from "axios"
+    // import jwt_decode from "jwt-decode"
+    import RankingsChild from '../GPACalc/RankingsChild.vue'
+    import URLS from '../../variables'
 
 
 
     export default ({
-        //name: 'displayMatches',
-        //props: ['match'],
-        //components: {
-        //    MatchesChild
-        //},
+        name: 'displayRankings',
+        props: ['rank'],
+        components: {
+            RankingsChild
+        },
         data() {
             return {
                 post: null,
-                // matches: [],
+                rankings: [],
                 course: null,
+                errors: "",
+                section: null
             }
         },
-        // Other attempt
-        //mounted() {
-        //    fetch('https://localhost:5002/api/matching/displayMatches')
-        //        .then((res) => res.json())
-        //        .then(data => this.matches = data)
-        //        .catch(err => console.log(err.message))
-        //},
+
         created() {
 
         },
         computed: {
         },
 
-        // Returns to main matching page
+        // Returns to main calculator page
         methods: {
             onSubmit() {
                 this.$router.push({name: 'calculatorMain'})
             },
 
+            // Generates Rankings
             generateRankings() {
-                //let username = jwt_decode(window.sessionStorage.getItem("token")).username
-                //axios.get(`${URLS.api.matching.displayMatches}/${username}`)
-                //    .then(response => this.matches = response.data);
-                //console.log(this.matches);
-            }
+                this.errors = ""
+                axios.get(`${URLS.api.gradeCalc.displayRanking}/${this.course}/${this.section}`)
+                    .then(response => this.rankings = response.data)
+                console.log(this.rankings);
+            },
+
 
         }
 
@@ -76,6 +81,14 @@
         display: flex;
         flex-direction: column;
         align-items: center;
+    }
+
+    .warning {
+        color: red;
+        margin: auto;
+        width: 440px;
+        text-align: center;
+        font-size: 11px;
     }
 
 

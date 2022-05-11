@@ -6,6 +6,9 @@ import RegistrationForm from '../components/Registration/RegistrationForm.vue'
 import HomePage from '../Views/HomePage.vue'
 import EmailVerification from '../components/Registration/EmailVerification.vue'
 import AuthenticateUser from '../components/Authentication/AuthenticateUser'
+import UADMain from '../components/UsageAnalysisDashboard/UADMain'
+import MostVisited from '../components/UsageAnalysisDashboard/MostVisited'
+import TopSchool from '../components/UsageAnalysisDashboard/TopSchool'
 
 // Application features
 // StudentDiscounts
@@ -97,6 +100,11 @@ const routes = [
         path: '/schedule/comparison/',
         name: 'ScheduleComparison',
         component: () => import('../Views/ScheduleComparison/ScheduleComparison.vue')
+    },
+    {
+        path: '/schedule/comparison/user/:user/selection/:selection',
+        name: 'ScheduleComparisonLink',
+        component: () => import('../Views/ScheduleComparison/ScheduleComparisonLink.vue')
     },
     {
         path: '/schedule/comparison/select/',
@@ -292,13 +300,44 @@ const routes = [
         name: 'not-authorized',
         component: () => import('../Views/NotAuthorized')
     },
-    
+
+    // UAD
+    {
+        path: '/uadmain',
+        name: 'uadMain',
+        component: UADMain
+    },
+
+    {
+        path: '/mostvisited',
+        name: 'mostVisited',
+        component: MostVisited
+
+    },
+
+    {
+        path: '/topschool',
+        name: 'topSchool',
+        component: TopSchool
+
+    },
     //EventPlanning
     //{
     //    path: '/eventPlannning',
     //    name: 'EventPlannning',
     //    component: () => import('../Views/EventPlannning/EventPlannning.vue')
     //},
+
+    {
+        path: '/userPrivacy',
+        name: 'UserPrivacy', 
+        component: () => import('../Views/UserPrivacy/UserPrivacy.vue')
+    },
+    {
+        path: '/accountDeletion',
+        name: 'AccountDeletion',
+        component: () => import('../Views/UserPrivacy/AccountDeletion.vue')
+    },
 
     // ADD MORE HERE! DON'T ADD AFTER not-found!
 

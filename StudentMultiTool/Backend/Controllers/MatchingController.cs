@@ -13,12 +13,13 @@ namespace StudentMultiTool.Backend.Controllers
     public class MatchingController : Controller
     {
  
+        Matching match = new Matching();
         // Matches activity profiles together 
         [HttpGet("matchActivity/{username}")]
         public List<Match> MatchingActivity(string username)
         {
             List<Match> matches = new List<Match>();
-            matches = Matching.MatchingActivity(username);
+            matches = match.MatchingActivity(username);
             return matches;
 
         }
@@ -28,7 +29,7 @@ namespace StudentMultiTool.Backend.Controllers
         public List<Match> MatchingTutoring(string username)
         {
             List<Match> matches = new List<Match>();
-            matches = Matching.MatchingTutoring(username);
+            matches = match.MatchingTutoring(username);
             return matches;
 
         }
@@ -38,7 +39,7 @@ namespace StudentMultiTool.Backend.Controllers
         public List<Match> DisplayMatches(string username)
         {
             List<Match> matches = new List<Match>();
-            matches = Matching.DisplayMatches(username);
+            matches = match.DisplayMatches(username);
             return matches;
         }
 
@@ -47,7 +48,7 @@ namespace StudentMultiTool.Backend.Controllers
         [HttpGet("updateOptStatus/{username}/{opt}")]
         public IActionResult UpdateOptStatus(string username, bool opt)
         {
-            bool updateOpt = Matching.UpdateOptStatus(username, opt);
+            bool updateOpt = match.UpdateOptStatus(username, opt);
             if (!updateOpt)
             {
                 return NotFound();

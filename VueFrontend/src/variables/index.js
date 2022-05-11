@@ -1,12 +1,12 @@
-import axios from 'axios'
-
+const LOCALHOST = "localhost";
 const domain = "localhost";
 const apiPort = "5003";
+const protocol = "http";
 //const domain = "ec2-13-52-181-69.us-west-1.compute.amazonaws.com";
 //const apiPort = "8080";
-let root = `http://${domain}/`;
-let apiRoot = `http://${domain}:${apiPort}/api/`;
-
+let root = `${protocol}://${domain}/`;
+let apiRoot = `${protocol}://${domain}:${apiPort}/api/`
+import axios from 'axios'
 
 const apiClient = axios.create({
     baseURL: apiRoot,
@@ -19,6 +19,7 @@ const apiClient = axios.create({
 })
 
 const URLS = {
+    LOCALHOST: LOCALHOST,
     domain: domain,
     root: root,
     apiRoot: apiRoot,
@@ -26,9 +27,16 @@ const URLS = {
         admin: {
             getUsers: apiRoot + "userManagement/getUsers",
             getRoles: apiRoot + "userManagement/getRoles",
+            createUser: apiRoot + "userManagement/createUser",
             updateUsers: apiRoot + "userManagement/updateUsers",
             deleteUsers: apiRoot + "userManagement/deleteUsers",
             runBulkOperation: apiRoot + "userManagement/runBulkOperation"
+        },
+
+        userPrivacy: {
+            getOptions: apiRoot + "userPrivacy/getOptions",
+            setOptions: apiRoot + "userPrivacy/setOptions",
+            accountDeletion: apiRoot + "userPrivacy/accountDeletion"
         },
 
         scheduleBuilder: {
@@ -42,7 +50,8 @@ const URLS = {
             getCollaborators: apiRoot + "schedule/getCollaborators",
             addCollaborator: apiRoot + "schedule/addCollaborator",
             updateCollaborator: apiRoot + "schedule/updateCollaborator",
-            deleteCollaborator: apiRoot + "schedule/deleteCollaborator"
+            deleteCollaborator: apiRoot + "schedule/deleteCollaborator",
+            searchUser: apiRoot + "schedule/searchUser"
         },
 
         matching: {
@@ -68,7 +77,7 @@ const URLS = {
             validate: apiRoot + "login/validate",
             authenticate: apiRoot + "login/authenticate",
             disable: apiRoot + "login/disable",
-            getToken: apiRoot + "login/getToken"
+            getToken: apiRoot + "login/getToken",
         },
 
         registration: {
@@ -91,8 +100,24 @@ const URLS = {
         },
 
         gpaCalc: {
+            calculateGPA: apiRoot + "gpaCalc/calculateGPA"
 
-        }
+        },
+
+        gradeCalc: {
+            calculateGrade: apiRoot + "gradeCalc/calculateGrade",
+            saveGrade: apiRoot + "gradeCalc/saveGrade",
+            displayRanking: apiRoot + "gradeCalc/displayRanking"
+        },
+
+        uad: {
+            mostVisited: apiRoot + "uad/mostVisited",
+            topSchool: apiRoot + "uad/topSchool",
+            averageDuration: apiRoot + "uad/averageDuration",
+            numLogin: apiRoot + "uad/numLogin",
+            numMatches: apiRoot + "uad/numMatches",
+            numRegister: apiRoot + "uad/numRegister"
+        },
     },
     getRecipes(perPage, page) {
         return apiClient.get('recipe/getlist/_limit=' + perPage +'/_page=' + page)

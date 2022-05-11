@@ -6,12 +6,12 @@
 
         <div class="newSchedule">
             <form id="newCollaboratorForm">
-                <p>
-                    Add a new Collaborator
-                    <input v-model="newCollaborator" placeholder="Username" />
-                    <button id="newScheduleSubmit" @click="postCollaborator">Add</button>
-                    <button id="search" @click="search()" >Search</button>
-                </p>
+                <p>Add a new Collaborator</p>
+                <input v-model="newCollaborator" placeholder="Username" />
+                <p v-if="search()">{{ this.newCollaborator }} exists</p>
+                <p v-else>{{ this.newCollaborator }} does not exist</p>
+                <button id="newScheduleSubmit" @click="postCollaborator">Add</button>
+                <!--<button id="search" @click="search()">Search</button>-->
             </form>
         </div>
 
@@ -48,6 +48,7 @@
     //import router from '../../router'
     import URLS from '../../variables'
     import axios from 'axios'
+    import jwt_decode from 'jwt-decode'
     export default ({
         name: "ScheduleCollaborators",
         data() {
@@ -57,10 +58,12 @@
                 newCollaborator: "",
                 scheduleId: this.$route.params.scheduleId,
                 // get user id or other identifier from the router to plug into getList()
-                user: this.$route.params.user
+                user: jwt_decode(window.sessionStorage.getItem("token")).username
             };
         },
         created() {
+            this.scheduleId = this.$route.params.scheduleId
+            this.user = this.$route.params.user
             this.getList();
         },
         watch: {
@@ -91,35 +94,38 @@
                 });
             },
             validateCollaborator() {
-                return (this.newCollaborator !== "" && this.newCollaborator !== null)
+                return (this.newCollaborator !== "")
             },
             search() {
                 let exists = false
                 if (this.validateCollaborator()) {
-                    axios.get(`${URLS.api.scheduleBuilder.searchUser}`, this.newCollaborator)
+                    axios.get(`${URLS.api.scheduleBuilder.searchUser}/${this.newCollaborator}`)
                         .then(response => {
-                            exists = response.data
+                            alert(response)
+                            return true
                         })
                         .catch(e => {
-                            exists = false
                             alert(e)
+                            return false
                         })
                 }
                 return exists
             },
             postCollaborator() {
-                if (this.search()) {
-                    axios.post(`${URLS.api.scheduleBuilder.addCollaborator}/${this.scheduleId}`, this.newCollaborator)
-                        .then(response => {
-                            alert(response.data)
-                        })
-                        .catch(e => {
-                            alert(e)
-                        })
-                }
-                else {
-                    alert("User \"" + this.newCollaborator + "\" does not exist")
-                }
+                const scheduleId = this.scheduleId
+                const collaborator = this.newCollaborator
+                axios.post(`${URLS.api.scheduleBuilder.addCollaborator}/${scheduleId}/${collaborator}`)
+                    .then(response => {
+                        alert(response.data)
+                    })
+                    .catch(e => {
+                        alert(e)
+                    })
+                //if (this.search()) {
+                //}
+                //else {
+                //    alert("User \"" + this.newCollaborator + "\" does not exist")
+                //}
             },
             // Updates a collaborator on a given schedule
             onUpdate(collaborator) {

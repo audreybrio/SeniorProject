@@ -13,7 +13,7 @@
                     <Days
                           v-for="day in days"
                           :key="day"
-                          :items="items"
+                          :items="this.items"
                           :index="this.days.indexOf(day)"
                           :editableItems="editableItems"
                           @item-updated="updateItem"

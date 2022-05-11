@@ -1,6 +1,6 @@
 <template>
     <td>
-        <div v-for="item in items" :key="item.id">
+        <div v-for="item in TodaysItems" :key="item.id">
             <Items :item="item"
                    :index="index"
                    @item-updated="updateItem"
@@ -23,6 +23,10 @@
         },
         components:{
             Items,
+        },
+        created() {
+            console.log("Index: " + this.index)
+            console.log(this.items)
         },
         methods: {
             compareStartTimes(a, b)

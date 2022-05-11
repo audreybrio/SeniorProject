@@ -10,6 +10,7 @@
         <div>
             <button @click="onScheduleBuilder">Schedule Builder</button>
             <button @click="onScheduleComparison">Schedule Comparison</button>
+            <button @click="onUAD">Usage Analysis Dashboard</button>
         </div>
         <div>
             <button @click="onAM">Automated Moderating</button>
@@ -29,6 +30,7 @@
         <div>
             <button @click="onManageAccount">Manage Account</button>
         </div>
+        <button @click="onPrivacy">Do Not Sell My Personal Information</button>
         <div>
             <button @click="onRecipe"> Recipe </button>
             <button @click="onCareerOpportunities"> Career Opportunities </button>
@@ -66,10 +68,9 @@
                 var isJWT = jwt_decode(token);
                 console.log(isJWT);
                 window.sessionStorage.removeItem("token");
-                router.push({ name: "EmailVue" });
+                router.push({ name: "authenticateUser" });
 
             },
-
             onUsageAnalysisDashboard() {
                 if (this.role === 'admin') {
                     router.push({ name: "not-found" });
@@ -98,8 +99,14 @@
             onBS() {
                 router.push({ name: "bookSelling" });
             },
-            onUSD() {
-                router.push({ name: "not-found" });
+            onUAD() {
+                let role = jwt_decode(window.sessionStorage.getItem("token")).role
+                if (role != "student") {
+                    router.push({ name: "uadMain" });
+                }
+                else {
+                    alert("You do not have permissions to access this page")
+                }
             },
             onSD() {
                 router.push({ name: "studentDiscounts" });
@@ -119,7 +126,9 @@
             onCalc() {
                 router.push({name: "calculatorMain"})
             },
-
+            onPrivacy() {
+                router.push({name: "UserPrivacy" })
+            }
         },
     });
 </script>

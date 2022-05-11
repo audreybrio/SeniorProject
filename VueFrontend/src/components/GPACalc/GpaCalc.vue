@@ -5,128 +5,139 @@
             <br>
             <br>
         </div>
-
+        <!-- For Errors-->
         <div class="warning">
             <div v-if="errors.length" :key="index" class="warning">{{errors}}</div>
         </div>
 
-        <!--<div>
-            Enter number of classes took this semester:
-            <input id="sem" name="sem" v-model="ssm" placeholder="Number of courses">
-        </div>-->
+        <!-- Course 1 grade and units-->
         <div>
             Course 1
         </div>
         <div>
             Grade:&nbsp;
-            <input type="radio" id="a" value="a" v-model="one">
-            <label for="a">A&nbsp;&nbsp;</label>
-            <input type="radio" id="b" value="b" v-model="one">
-            <label for="b">B&nbsp;&nbsp;</label>
-            <input type="radio" id="c" value="c" v-model="one">
-            <label for="c">C&nbsp;&nbsp;</label>
-            <input type="radio" id="d" value="d" v-model="one">
-            <label for="d">D&nbsp;&nbsp;</label>
-            <input type="radio" id="f" value="f" v-model="one">
-            <label for="f">F&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-
+            <select v-model="one" id="gradeOne">
+                <option disabled value="">Select Grade</option>
+                <option v-for="grade in possibleGrades" :key="grade">{{ grade }}</option>
+            </select>
+            &nbsp;
             <input id="unit1" name="unit1" v-model="unit1" placeholder="Units">
             <br>
         </div>
+        <!-- Course 2 grade and units-->
         <div>
             Course 2
         </div>
         <div>
             Grade:&nbsp;
-            <input type="radio" id="a" value="a" v-model="two">
-            <label for="a">A&nbsp;&nbsp;</label>
-            <input type="radio" id="b" value="b" v-model="two">
-            <label for="b">B&nbsp;&nbsp;</label>
-            <input type="radio" id="c" value="c" v-model="two">
-            <label for="c">C&nbsp;&nbsp;</label>
-            <input type="radio" id="d" value="d" v-model="two">
-            <label for="d">D&nbsp;&nbsp;</label>
-            <input type="radio" id="f" value="f" v-model="two">
-            <label for="f">F&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+
+            <select v-model="two" id="gradeTwo">
+                <option disabled value="">Select Grade</option>
+                <option v-for="grade in possibleGrades" :key="grade">{{ grade }}</option>
+            </select>
+            &nbsp;
             <input id="unit2" name="unit2" v-model="unit2" placeholder="Units">
             <br>
         </div>
 
-        <div>
+        <!-- Course 3 grade and units-->
+        <div v-if="show3 == true">
             Course 3
-        </div>
-        <div>
+            <br />
             Grade:&nbsp;
-            <input type="radio" id="a" value="a" v-model="three">
-            <label for="a">A&nbsp;&nbsp;</label>
-            <input type="radio" id="b" value="b" v-model="three">
-            <label for="b">B&nbsp;&nbsp;</label>
-            <input type="radio" id="c" value="c" v-model="three">
-            <label for="c">C&nbsp;&nbsp;</label>
-            <input type="radio" id="d" value="d" v-model="three">
-            <label for="d">D&nbsp;&nbsp;</label>
-            <input type="radio" id="f" value="f" v-model="three">
-            <label for="f">F&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+            <select v-model="three" id="gradeThree">
+                <option disabled value="">Select Grade</option>
+                <option v-for="grade in possibleGrades" :key="grade">{{ grade }}</option>
+            </select>
+            &nbsp;
             <input id="unit3" name="unit3" v-model="unit3" placeholder="Units">
             <br>
         </div>
-        <div>
+        <!-- Course 4 grade and units-->
+        <div v-if="show4 == true" >
             Course 4
-        </div>
-        <div>
+            <br />
             Grade:&nbsp;
-            <input type="radio" id="a" value="a" v-model="four">
-            <label for="a">A&nbsp;&nbsp;</label>
-            <input type="radio" id="b" value="b" v-model="four">
-            <label for="b">B&nbsp;&nbsp;</label>
-            <input type="radio" id="c" value="c" v-model="four">
-            <label for="c">C&nbsp;&nbsp;</label>
-            <input type="radio" id="d" value="d" v-model="four">
-            <label for="d">D&nbsp;&nbsp;</label>
-            <input type="radio" id="f" value="f" v-model="four">
-            <label for="f">F&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+            <select v-model="four" id="gradeFour">
+                <option disabled value="">Select Grade</option>
+                <option v-for="grade in possibleGrades" :key="grade">{{ grade }}</option>
+            </select>
+            &nbsp;
             <input id="unit4" name="unit4" v-model="unit4" placeholder="Units">
             <br>
         </div>
-
-        <div>
+        <!-- Course 5 grade and units-->
+        <div v-if="show5 == true">
             Course 5
-        </div>
-        <div>
+            <br />
             Grade:&nbsp;
-            <input type="radio" id="a" value="a" v-model="five">
-            <label for="a">A&nbsp;&nbsp;</label>
-            <input type="radio" id="b" value="b" v-model="five">
-            <label for="b">B&nbsp;&nbsp;</label>
-            <input type="radio" id="c" value="c" v-model="five">
-            <label for="c">C&nbsp;&nbsp;</label>
-            <input type="radio" id="d" value="d" v-model="five">
-            <label for="d">D&nbsp;&nbsp;</label>
-            <input type="radio" id="f" value="f" v-model="five">
-            <label for="f">F&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+            <select v-model="five" id="gradeFive">
+                <option disabled value="">Select Grade</option>
+                <option v-for="grade in possibleGrades" :key="grade">{{ grade }}</option>
+            </select>
+            &nbsp;
             <input id="unit5" name="unit5" v-model="unit5" placeholder="Units">
             <br>
         </div>
-        <div>
+        <!-- Course 6 grade and units-->
+        <div v-if="show6 == true">
             Course 6
-        </div>
-        <div>
+            <br />
             Grade:&nbsp;
-            <input type="radio" id="a" value="a" v-model="six">
-            <label for="a">A&nbsp;&nbsp;</label>
-            <input type="radio" id="b" value="b" v-model="six">
-            <label for="b">B&nbsp;&nbsp;</label>
-            <input type="radio" id="c" value="c" v-model="six">
-            <label for="c">C&nbsp;&nbsp;</label>
-            <input type="radio" id="d" value="d" v-model="six">
-            <label for="d">D&nbsp;&nbsp;</label>
-            <input type="radio" id="f" value="f" v-model="six">
-            <label for="f">F&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+
+            <select v-model="six" id="gradeSix">
+                <option disabled value="">Select Grade</option>
+                <option v-for="grade in possibleGrades" :key="grade">{{ grade }}</option>
+            </select>
+            &nbsp;
             <input id="unit6" name="unit6" v-model="unit6" placeholder="Units">
             <br>
         </div>
 
+        <!-- Course 7 grade and units-->
+        <div v-if="show7 == true">
+            Course 7
+            <br />
+            Grade:&nbsp;
+
+            <select v-model="seven" id="gradeSeven">
+                <option disabled value="">Select Grade</option>
+                <option v-for="grade in possibleGrades" :key="grade">{{ grade }}</option>
+            </select>
+            &nbsp;
+            <input id="unit7" name="unit7" v-model="unit7" placeholder="Units">
+            <br>
+        </div>
+
+        <!-- Course 8 grade and units-->
+        <div v-if="show8 == true">
+            Course 8
+            <br />
+            Grade:&nbsp;
+
+            <select v-model="eight" id="gradeEight">
+                <option disabled value="">Select Grade</option>
+                <option v-for="grade in possibleGrades" :key="grade">{{ grade }}</option>
+            </select>
+            &nbsp;
+            <input id="unit8" name="unit8" v-model="unit8" placeholder="Units">
+            <br>
+        </div>
+
+        <!-- Add/Remove classes-->
+        <div>
+            <br />
+            <button @click="showMore">Add Another Class</button>
+            <button @click="showLess">Remove a Class</button>
+        </div>
+        <!-- Dislay GPA-->
+        <div>
+            <br />
+            <div v-if="gpa!=0 && gpa!=null" id="gpaId" :key="index" class="gpa">GPA is: {{gpa}}</div>
+        </div>
+
         <br />
+        <!-- Calculate GPA and go back-->
         <button @click="save">Calculate GPA!</button>
         <button @click="onSubmit">Back</button>
     </div>
@@ -137,7 +148,7 @@
     // Imports
     import router from '@/router'
     import jwt_decode from "jwt-decode"
-   // import URLS from '../../variables'
+    import URLS from '../../variables'
 
     export default ({
         data() {
@@ -152,7 +163,11 @@
                 five: null,
                 six: null,
                 errors: "",
-                unit1: null, unit2: null, unit3: null, unit4: null, unit5: null, unit6: null,
+                unit1: null, unit2: null, unit3: null, unit4: null, unit5: null, unit6: null, unit7: null, unit8: null,
+                gpa: 0,
+                show3: true, show4: true, show5: true,
+                show6: false, show7: false, show8: false,
+                possibleGrades: ["A+", "A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D+", "D", "D-", "F"]
 
             };
         },
@@ -168,72 +183,105 @@
                 this.loading = true;
 
             },
-            // Go back to main matching page
+            // Go back to main calculator main page
             onSubmit() {
                 router.push({name: "calculatorMain"})
             },
 
-            // Save tutoring profile information
+            // Get information entered from user
             save() {
+                this.errors = ""
+                console.log(this.test)
                 let unit = []
-                
-                if (this.unit1 != null) { unit.push(this.unit1) }
-                if (this.unit2 != null) { unit.push(this.unit2) }
-                if (this.unit3 != null) { unit.push(this.unit3) }
-                if (this.unit4 != null) { unit.push(this.unit4) }
-                if (this.unit5 != null) { unit.push(this.unit5) }
-                if (this.unit6 != null) { unit.push(this.unit6) }
+
+                if (this.unit1 != null && this.unit1 != '') { unit.push(this.unit1) }
+                if (this.unit2 != null && this.unit2 != '') { unit.push(this.unit2) }
+                if (this.unit3 != null && this.unit3 != '') { unit.push(this.unit3) }
+                if (this.unit4 != null && this.unit4 != '') { unit.push(this.unit4) }
+                if (this.unit5 != null && this.unit5 != '') { unit.push(this.unit5) }
+                if (this.unit6 != null && this.unit6 != '') { unit.push(this.unit6) }
+                if (this.unit7 != null && this.unit7 != '') { unit.push(this.unit7) }
+                if (this.unit8 != null && this.unit8 != '') { unit.push(this.unit8) }
 
                 let grade = []
-                if (this.one == "a") { grade.push("A") }
-                else if (this.one == "b") { grade.push("B") }
-                else if (this.one == "c") { grade.push("C") }
-                else if (this.one == "d") { grade.push("D") }
-                else if (this.one == "f") { grade.push("F") }
-
-                if (this.two == "a") { grade.push("A") }
-                else if (this.two == "b") { grade.push("B") }
-                else if (this.two == "c") { grade.push("C") }
-                else if (this.two == "d") { grade.push("D") }
-                else if (this.two == "f") { grade.push("F") }
-
-                if (this.three == "a") { grade.push("A") }
-                else if (this.three == "b") { grade.push("B") }
-                else if (this.three == "c") { grade.push("C") }
-                else if (this.three == "d") { grade.push("D") }
-                else if (this.three == "f") { grade.push("F") }
-
-                if (this.four == "a") { grade.push("A") }
-                else if (this.four == "b") { grade.push("B") }
-                else if (this.four == "c") { grade.push("C") }
-                else if (this.four == "d") { grade.push("D") }
-                else if (this.four == "f") { grade.push("F") }
-
-                if (this.five == "a") { grade.push("A") }
-                else if (this.five == "b") { grade.push("B") }
-                else if (this.five == "c") { grade.push("C") }
-                else if (this.five == "d") { grade.push("D") }
-                else if (this.five == "f") { grade.push("F") }
-
-                if (this.six == "a") { grade.push("A") }
-                else if (this.six == "b") { grade.push("B") }
-                else if (this.six == "c") { grade.push("C") }
-                else if (this.six == "d") { grade.push("D") }
-                else if (this.six == "f") { grade.push("F") }
-                
-                console.log(unit)
-                let data = {
-                    unit: unit,
-                    grade: grade
-                }
-                console.log("Data: ", data)
-
+                if (this.one != null) { grade.push(this.one) }
+                if (this.two != null) { grade.push(this.two) }
+                if (this.three != null) { grade.push(this.three) }
+                if (this.four != null) { grade.push(this.four) }
+                if (this.five != null) { grade.push(this.five) }
+                if (this.six != null) { grade.push(this.six) }
+                if (this.seven != null) { grade.push(this.seven) }
+                if (this.eight != null) { grade.push(this.eight) }
+                // Make sure grades and unit are both inputed
                 if (unit.length != grade.length) {
                     this.errors = "Error: Missing Information"
+                }
+                // Calculates gpa
+                else {
+                    console.log(unit)
+                    let data = {
+                        unit: unit,
+                        grade: grade
+                    }
+                    console.log("Data: ", data)
+
+                    fetch(
+                        `${URLS.api.gpaCalc.calculateGPA}`, {
+                        method: 'POST',
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data),
+
+                    }).then((response) => {
+                        if (!response.ok) {
+
+                            console.log("error")
+                            this.errors = "Calculation Error"
+                        }
+                        else {
+                            console.log("ajax success")
+                            return response.json()
+
+                        }
+                    }).then((result) => {
+                        console.log(result)
+                        this.gpa = JSON.stringify(result);
+                        if (this.gpa != undefined) {
+                            console.log("gpa", this.gpa)
+                        }
+                        else {
+                            console.log("error")
+                        }
+
+                    })
                 }
 
 
             },
+            // Show more classes
+            showMore() {
+                this.errors = ""
+                if (this.show3 == false) { this.show3 = true; }
+                else if (this.show4 == false) { this.show4 = true; }
+                else if (this.show5 == false) { this.show5 = true; }
+                else if (this.show6 == false) { this.show6 = true; }
+                else if (this.show7 == false) { this.show7 = true; }
+                else if (this.show8 == false) { this.show8 = true }
+                else { this.errors = "Max Classes Allowed" }
+            },
+            // Show less classes
+            showLess() {
+                this.errors = ""
+                if (this.show8 == true) { this.show8 = false; this.eight = null; this.unit8 = null }
+                else if (this.show7 == true) { this.show7 = false; this.seven = null; this.unit7 = null }
+                else if (this.show6 == true) { this.show6 = false; this.six = null; this.unit6 = null }
+                else if (this.show5 == true) { this.show5 = false; this.five = null; this.unit5 = null }
+                else if (this.show4 == true) { this.show4 = false; this.four = null; this.unit4 = null }
+                else if (this.show3 == true) { this.show3 = false; this.three = null; this.unit3 = null }
+                else { this.errors = "Cannot remove any more courses" }
+            }
         },
     });
 </script>
@@ -248,5 +296,13 @@
         width: 440px;
         text-align: center;
         font-size: 11px;
+    }
+
+    .gpa {
+        margin: auto;
+        width: 440px;
+        text-align: center;
+        font-size: 22px;
+        font-weight: bold;
     }
 </style>

@@ -21,33 +21,19 @@
         <!-- Days -->
         <div>
             <label for="sundayField">Sunday</label>
-            <input v-model="this.days[0]" :value="item.days[0]" id="sundayField" type="checkbox" />
+            <input v-model="this.daysOfWeek[0]" id="sundayField" type="checkbox" />
             <label for="mondayField">Monday</label>
-            <input v-model="this.days[1]" :value="item.days[1]" id="mondayField" type="checkbox" />
+            <input v-model="this.daysOfWeek[1]" id="mondayField" type="checkbox" />
             <label for="tuesdayField">Tuesday</label>
-            <input v-model="this.days[2]" :value="item.days[2]" id="tuesdayField" type="checkbox" />
+            <input v-model="this.daysOfWeek[2]" id="tuesdayField" type="checkbox" />
             <label for="wednesdayField">Wednesday</label>
-            <input v-model="this.days[3]" :value="item.days[3]" id="wednesdayField" type="checkbox" />
+            <input v-model="this.daysOfWeek[3]" id="wednesdayField" type="checkbox" />
             <label for="thursdayField">Thursday</label>
-            <input v-model="this.days[4]" :value="item.days[4]" id="thursdayField" type="checkbox" />
+            <input v-model="this.daysOfWeek[4]" id="thursdayField" type="checkbox" />
             <label for="fridayField">Friday</label>
-            <input v-model="this.days[5]" :value="item.days[5]" id="fridayField" type="checkbox" />
+            <input v-model="this.daysOfWeek[5]" id="fridayField" type="checkbox" />
             <label for="saturdayField">Saturday</label>
-            <input v-model="this.days[6]" :value="item.days[6]" id="saturdayField" type="checkbox" />
-            <!--<label for="sundayField">Sunday</label>
-    <input :value="item.days[0]" id="sundayField" type="checkbox" @input="$emit('update:days[0]', $event.target.value)" />
-    <label for="mondayField">Monday</label>
-    <input :value="item.days[1]" id="mondayField" type="checkbox" @input="$emit('update:days[1]', $event.target.value)" />
-    <label for="tuesdayField">Tuesday</label>
-    <input :value="item.days[2]" id="tuesdayField" type="checkbox" @input="$emit('update:days[2]', $event.target.value)" />
-    <label for="wednesdayField">Wednesday</label>
-    <input :value="item.days[3]" id="wednesdayField" type="checkbox" @input="$emit('update:days[3]', $event.target.value)" />
-    <label for="thursdayField">Thursday</label>
-    <input :value="item.days[4]" id="thursdayField" type="checkbox" @input="$emit('update:days[4]', $event.target.value)" />
-    <label for="fridayField">Friday</label>
-    <input :value="item.days[5]" id="fridayField" type="checkbox" @input="$emit('update:days[5]', $event.target.value)" />
-    <label for="saturdayField">Saturday</label>
-    <input :value="item.days[6]" id="saturdayField" type="checkbox" @input="$emit('update:days[6]', $event.target.value)" />-->
+            <input v-model="this.daysOfWeek[6]" id="saturdayField" type="checkbox" />
         </div>
 
         <div>
@@ -90,11 +76,31 @@
                 contact: this.item.contact,
                 location: this.item.location,
                 notes: this.item.notes,
-                days: this.item.days,
+                days: this.item.daysOfWeek,
                 startInput: this.constructTime(this.item.startHour, this.item.startMinute),
                 endInput: this.constructTime(this.item.endHour, this.item.endMinute),
                 creatorId: -1,
             };
+        },
+        created() {
+            if (this.item !== null) {
+                this.title = this.item.title
+                this.contact = this.item.contact
+                this.location = this.item.location
+                this.notes = this.item.notes
+                this.daysOfWeek = this.item.daysOfWeek
+                this.startInput = this.constructTime(this.item.startHour, this.item.startMinute)
+                this.endInput = this.constructTime(this.item.endHour, this.item.endMinute)
+                this.creatorId = -1
+            }
+            console.log(this.title)
+            console.log(this.contact)
+            console.log(this.location)
+            console.log(this.notes)
+            console.log(this.daysOfWeek)
+            console.log(this.startInput)
+            console.log(this.endInput)
+            console.log(this.creatorId)
         },
         methods: {
             constructTime(hour, minute) {
@@ -152,23 +158,23 @@
                 // At least one day must be checked (true) for the
                 // form to be valid.
                 return (
-                    this.days[0]
-                    || this.days[1]
-                    || this.days[2]
-                    || this.days[3]
-                    || this.days[4]
-                    || this.days[5]
-                    || this.days[6]
+                    this.daysOfWeek[0]
+                    || this.daysOfWeek[1]
+                    || this.daysOfWeek[2]
+                    || this.daysOfWeek[3]
+                    || this.daysOfWeek[4]
+                    || this.daysOfWeek[5]
+                    || this.daysOfWeek[6]
                 );
             },
             onSubmit() {
-                this.$emit('cancel');
+                //this.$emit('cancel');
                 console.log("Form submitted");
                 console.log("Creating new item");
                 // Check that the user checked at least one day
                 if (!this.validateDays()) {
                     alert("You must select at least one day.");
-                    console.log(this.days);
+                    console.log(this.daysOfWeek);
                     return;
                 }
 
@@ -190,7 +196,7 @@
                     contact: this.contact,
                     location: this.location,
                     notes: this.notes,
-                    days: this.days,
+                    days: this.daysOfWeek,
                     startHour: newStart.hour,
                     startMinute: newStart.minute,
                     endHour: newEnd.hour,

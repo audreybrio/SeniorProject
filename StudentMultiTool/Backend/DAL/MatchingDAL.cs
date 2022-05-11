@@ -12,7 +12,7 @@ namespace StudentMultiTool.Backend.DAL
         const string connectionString = "MARVELCONNECTIONSTRING";
 
         // SQL for matching activities logic
-        public static List<Match> MatchingActivity(List<string> activities, string username)
+        public List<Match> MatchingActivity(List<string> activities, string username)
         {
             // Loops through selected activities to find matches 
             List<Match> matches = new List<Match>();
@@ -62,7 +62,7 @@ namespace StudentMultiTool.Backend.DAL
         }
 
         // SQL for matching tutoring profiles
-        public static List<Match> MatchingTutoring(List<string> courses, string username, bool individual, bool requires)
+        public List<Match> MatchingTutoring(List<string> courses, string username, bool individual, bool requires)
         {
             // Loops through prfile given for tutoring to find matches 
             List<Match> matches = new List<Match>();
@@ -107,7 +107,7 @@ namespace StudentMultiTool.Backend.DAL
         }
 
         // SQL to get all the matches for a single user  
-        public static List<Match> DisplayMatches(string username)
+        public List<Match> DisplayMatches(string username)
         { 
             // Selects all matches for a single user 
             List<Match> matches = new List<Match>();
@@ -138,7 +138,7 @@ namespace StudentMultiTool.Backend.DAL
         }
 
         // SQL to get which activities a user selected, to know what to match for 
-        public static (string, string, string, string, string) GetActivityProfile(string username)
+        public (string, string, string, string, string) GetActivityProfile(string username)
         {
             SqlConnection conn = new SqlConnection();
             conn.ConnectionString = Environment.GetEnvironmentVariable(connectionString);
@@ -162,7 +162,7 @@ namespace StudentMultiTool.Backend.DAL
         }
 
         // SQL to get what infromation is in a users tutoring profile, to know what to match for 
-        public static (string, string, string, string, string, string, bool, bool) GetTutoringProfile(string username)
+        public (string, string, string, string, string, string, bool, bool) GetTutoringProfile(string username)
         {
             List<string> courses = new List<string>();
             SqlConnection conn = new SqlConnection();
@@ -192,7 +192,7 @@ namespace StudentMultiTool.Backend.DAL
         }
 
         // SQL to insert a match into the matches table of database
-        public static bool InsertMatch(string username, int matchId, string reason, string overlap)
+        public bool InsertMatch(string username, int matchId, string reason, string overlap)
         {
             SqlConnection conn = new SqlConnection();
             conn.ConnectionString = Environment.GetEnvironmentVariable(connectionString);
@@ -219,7 +219,7 @@ namespace StudentMultiTool.Backend.DAL
         }
         // SQL to see if a match already exists in the database, as to not enter any duplicates or cause any foreign key errors
         // If row already exists, returns 1, else reutrns 0
-        public static int MatchExists(string username, int matchId, string reason)
+        public int MatchExists(string username, int matchId, string reason)
         {
             SqlConnection conn = new SqlConnection();
             conn.ConnectionString = Environment.GetEnvironmentVariable(connectionString);
@@ -237,7 +237,7 @@ namespace StudentMultiTool.Backend.DAL
         }
 
         // Gets the name of a user from a match 
-        public static string GetName(int id)
+        public string GetName(int id)
         {
             SqlConnection conn = new SqlConnection();
             conn.ConnectionString = Environment.GetEnvironmentVariable(connectionString);
@@ -249,7 +249,7 @@ namespace StudentMultiTool.Backend.DAL
         }
 
         // SQL to see if a user is opted in or not in order to be considered in matching logic 
-        public static bool CheckOptedIn(string username)
+        public bool CheckOptedIn(string username)
         {
             SqlConnection conn = new SqlConnection();
             conn.ConnectionString = Environment.GetEnvironmentVariable(connectionString);
@@ -263,7 +263,7 @@ namespace StudentMultiTool.Backend.DAL
 
 
         // SQL to change a users opt in/out status 
-        public static bool UpdateOptStatus(string username, bool opt)
+        public bool UpdateOptStatus(string username, bool opt)
         {
             SqlConnection conn = new SqlConnection();
             conn.ConnectionString = Environment.GetEnvironmentVariable(connectionString);
@@ -282,7 +282,7 @@ namespace StudentMultiTool.Backend.DAL
 
 
         // SQL to get a users schedule
-        public static bool GetSchedule(string username, int scheduleId)
+        public bool GetSchedule(string username, int scheduleId)
         {
             SqlConnection conn = new SqlConnection();
             conn.ConnectionString = Environment.GetEnvironmentVariable(connectionString);
@@ -296,7 +296,7 @@ namespace StudentMultiTool.Backend.DAL
 
 
         // SQL to compare schedules
-        public static string CompareSchedule(int scheduleAId, int scheduleBId)
+        public string CompareSchedule(int scheduleAId, int scheduleBId)
         {
             SqlConnection conn = new SqlConnection();
             conn.ConnectionString = Environment.GetEnvironmentVariable(connectionString);

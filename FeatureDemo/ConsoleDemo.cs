@@ -41,8 +41,8 @@ namespace ConsoleDemo
                         break;
                     // Login/Logout
                     case 2:
-                        LoginController loginController = new LoginController();
-                        loginController.UpdateDisable("abrio");
+                        //LoginController loginController = new LoginController();
+                        //loginController.UpdateDisable("abrio");
                             
 /*                      TutoringProfileController tutoringProfileController = new TutoringProfileController();
                         List<string> tutorings = new List<string>();
