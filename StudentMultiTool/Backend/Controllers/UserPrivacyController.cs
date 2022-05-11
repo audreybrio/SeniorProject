@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using StudentMultiTool.Backend.DAL;
+using StudentMultiTool.Backend.Services.UserPrivacy;
 using UserAcc;
 
 namespace StudentMultiTool.Backend.Controllers
@@ -10,39 +11,44 @@ namespace StudentMultiTool.Backend.Controllers
     {
         [HttpGet]
         [Route("getOptions")]
-        public IActionResult GetOptions()
+        public PrivacyOptions GetOptions([FromBody] string username)
         {
-            return Ok();
+            UserPrivacyManager userPrivacyManager = new UserPrivacyManager();
+            PrivacyOptions options = new PrivacyOptions();
+
+            // Try to get the privacy options for the current user.
+            options = userPrivacyManager.GetOptions(username);
+            return options;
         }
 
         [HttpPost]
         [Route("setOptions")]
-        public IActionResult SetOptions()
+        public IActionResult SetOptions([FromBody] PrivacyOptions options)
         {
-            return Ok();
+            UserPrivacyManager userPrivacyManager = new UserPrivacyManager();
+
+            // Try to update the privacy options for the current user.
+            string result = userPrivacyManager.SetOptions(options);
+            if (result.Equals(userPrivacyManager.Success))
+            {
+                return Ok();
+            }
+            return StatusCode(500, result);
         }
 
         [HttpPost]
         [Route("accountDeletion")]
         public IActionResult AccountDeletion([FromBody] string username)
         {
-            if (string.IsNullOrEmpty(username))
+            UserPrivacyManager userPrivacyManager = new UserPrivacyManager();
+
+            // Try to delete the current user's account.
+            string result = userPrivacyManager.DeleteAccount(username);
+            if (result.Equals(userPrivacyManager.Success))
             {
-                return BadRequest("username cannot be null");
+                return Ok();
             }
-            UserAccountDAO uad = new UserAccountDAO();
-            UserAccount? user = uad.SelectSingle(username);
-            if (user != null)
-            {
-                string result = uad.DeleteSingle(user);
-                // TODO: data from other features
-                if (result.Equals(uad.Success))
-                {
-                    return Ok(result);
-                }
-                return StatusCode(500, result);
-            }
-            return StatusCode(500, "Could not find user with username \"" + username + "\"");
+            return StatusCode(500, result);
         }
     }
 }
