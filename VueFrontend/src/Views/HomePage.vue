@@ -32,6 +32,7 @@
         <button @click="onPrivacy">Do Not Sell My Personal Information</button>
         <div>
             <button @click="onRecipe"> Recipe </button>
+            <button @click="onCareerOpportunities"> Career Opportunities </button>
         </div>
 
 
@@ -103,6 +104,9 @@
             },
             onSD() {
                 router.push({ name: "studentDiscounts" });
+            },
+            onCareerOpportunities() {
+                router.push({ name: "careerOpportunities" });
             },
             onMatching() {
                 router.push({ name: "matchingMain" })

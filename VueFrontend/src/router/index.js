@@ -13,6 +13,11 @@ import StudentDiscounts from '../components/StudentDiscounts/StudentDiscounts.vu
 import DiscountDetails from '../components/StudentDiscounts/DiscountDetails.vue'
 import EstablishmentDetails from '../components/StudentDiscounts/EstablishmentDetails.vue'
 
+// Career Opportunities
+import CareerOpportunities from '../components/CareerOpportunities/CareerOpportunities.vue'
+import OpportunitiesList from '../components/CareerOpportunities/OpportunitiesList.vue'
+import OpportunityDetails from '../components/CareerOpportunities/OpportunityDetails.vue'
+
 import MatchingMain from '../components/Matching/MatchingMain.vue'
 import ActivityProfile from '../components/Matching/ActivityProfile.vue'
 import TutoringProfile from '../components/Matching/TutoringProfile.vue'
@@ -126,6 +131,25 @@ const routes = [
         path: '/studentDiscounts',
         name: 'studentDiscounts',
         component: StudentDiscounts,
+    },
+
+    // Career Opportunities
+    {
+        path: '/careerOpportunities',
+        name: 'careerOpportunities',
+        component: CareerOpportunities,
+    },
+    {
+        path: '/careerOpportunities/opportunitiesList/:keywords',
+        name: 'OpportunitiesList',
+        component: OpportunitiesList,
+        props: true
+    },
+    {
+        path: '/careerOpportunities/opportunitiesList/opportunityDetails/:title/:organizationName/:jobSummary/:applicationCloseDate/:url/:location',
+        name: 'OpportunityDetails',
+        component: OpportunityDetails,
+        props: true
     },
 
     // matching
