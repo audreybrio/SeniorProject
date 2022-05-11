@@ -1,4 +1,4 @@
-<!--<template>
+<template>
     <div class="page">
         <h3>Post Website</h3>
         <ul>
@@ -8,7 +8,7 @@
         <form @submit.prevent="submitButtonPressed">
             <label for="title">Discount Title:</label>
             <br />
-            <input type="text" id="title" v-model="discountInfo.title" ref="postWeb" maxlength="30" required>
+            <input type="text" id="title" v-model="discountInfo.title" maxlength="30" required>
             <br />
             <label for="website">Website:</label>
             <br />
@@ -23,8 +23,7 @@
 </template>
 
 <script>
-    import * as $ from 'jquery'
-    //const baseURL = "https://localhost:5002";
+    import axios from 'axios'
     import URLS from '../../variables'
     export default {
         data() {
@@ -43,25 +42,20 @@
                 }
             }
         },
-        mounted() {
-            this.$refs.postWeb.focus();
-        },
         methods: {
             submitButtonPressed() {
                 this.resetValidInput()
                 this.errorMessages()
                 if (this.isValid()) {
                     this.postDiscount()
-                    this.isDiscountPosted = true
-                    this.resetInputFields()
                 }
-                
+
             },
             errorMessages() {
                 this.errors = []
 
                 if (this.discountInfo.title.length < 4) {
-                    this.errors.push('Discount title must be 4 or more characters') 
+                    this.errors.push('Discount title must be 4 or more characters')
                 }
                 else {
                     this.validInputWeb.validTitle = true
@@ -108,28 +102,22 @@
                 this.discountInfo.description = ''
             },
             postDiscount() {
-                $.ajax({
-                    // set the HTTP request URL
-                    url: `${URLS.apiRoot}studentdiscounts/postWebsite/${this.discountInfo.title}/${this.discountInfo.website}/${this.discountInfo.description}`,
-                    // set the context object to the vue component
-                    // this line tells vue to update its components
-                    // when the success or error objects complete!
-                    // if it's not set, the components don't update!
-                    context: this,
-                    // HTTP method
-                    method: 'POST',
-                    // On a successful AJAX request:
-                    success: function () {
-                        // log that we've completed
-                        return true;
+                axios.post(URLS.api.studentDiscounts.postWebsite,
+                    {
+                        title: this.discountInfo.title,
+                        website: this.discountInfo.website,
+                        description: this.discountInfo.description
                     },
-                    // On an unsuccessful AJAX request:
-                    error: function (error) {
-                        // log the error
-                        console.log(error);
-                        return false;
-                    }
-                });
+                    { timeout: 5000 })
+                    .then(response => {
+                        if (response.status == 200) {
+                            this.isDiscountPosted = true
+                            this.resetInputFields()
+                        }
+                    })
+                    .catch(e => {
+                        console.error("There was an error", e)
+                    })
             }
         }
     }
@@ -187,4 +175,4 @@
         height: 6em;
         font-size: 20px;
     }
-</style>-->
+</style>

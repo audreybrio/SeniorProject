@@ -35,5 +35,32 @@ namespace StudentMultiTool.Backend.Services.Email
                 return false;
             }
         }
+
+        public bool SendEmailVerification(string email, string token)
+        {
+            string baseURL = "https://localhost:5002";
+            // string baseURL = "http://studentmultitool.me";
+            try
+            {
+                String from = sendFrom;
+                String subject = "Email verification for Student Multi-Tool new account";
+                String msg = "Thanks for signing up!\n" +
+                          "Your account has been created. You can login with your credentials after you have activated your account by clicking the URL below.\n \n" +
+                          "Please click the link to activate your account: " +
+                          baseURL + "/RegistrationForm/" + token;
+                String to = email;
+                MailMessage mail = new MailMessage(from, to, subject, msg);
+                SmtpClient client = new SmtpClient(smtpClient);
+                client.Port = 587;
+                client.Credentials = new System.Net.NetworkCredential(id, password);
+                client.EnableSsl = true;
+                client.Send(mail);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
     }
 }

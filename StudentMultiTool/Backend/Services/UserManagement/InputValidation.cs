@@ -43,43 +43,43 @@ namespace StudentMultiTool.Backend.Services.UserManagement
         }
 
         // password must be 8 or more characters, but it can include integers and uppercase and lowercase characters
-        public bool validatePassword(string password)
+        public bool validatePasscode(string passcode)
         {
-            bool validPassword = true;
-            if (password.Length >= 8)
+            bool validPasscode = true;
+            if (passcode.Length >= 8)
             {
 
-                byte[] asciiInput = Encoding.ASCII.GetBytes(password);
+                byte[] asciiInput = Encoding.ASCII.GetBytes(passcode);
                 foreach (byte element in asciiInput)
                 {
-                    if (element < 48)
+                    if (element < 48 && element != 32)
                     {
-                        validPassword = false;
+                        validPasscode = false;
                     }
                     else if (element > 57 && element < 64)
                     {
-                        validPassword = false;
+                        validPasscode = false;
                     }
                     else if (element > 90 && element < 97)
                     {
-                        validPassword = false;
+                        validPasscode = false;
                     }
                     else if (element > 122)
                     {
-                        validPassword = false;
+                        validPasscode = false;
                     }
                 }
 
             }
             else
             {
-                validPassword = false;
+                validPasscode = false;
             }
-            if (!validPassword)
+            if (!validPasscode)
             {
-                System.Console.WriteLine("Invalid password. Try again!");
+                System.Console.WriteLine("Invalid passcode. Try again!");
             }
-            return validPassword;
+            return validPasscode;
         }
 
         // username must be 8 or more characters, and at least one lowercase characters and a number
@@ -95,12 +95,16 @@ namespace StudentMultiTool.Backend.Services.UserManagement
                     {
                         validUsername = false;
                     }
-                    else if (element > 57 && element < 97)
+                    else if (element > 57 && element < 65)
                     {
                         if (element != 64)
                         {
                             validUsername = false;
                         }
+                    }
+                    else if (element > 90 && element < 97)
+                    {
+                        validUsername = false;
                     }
                     else if (element > 122)
                     {
@@ -140,6 +144,7 @@ namespace StudentMultiTool.Backend.Services.UserManagement
                 return true;
             }
         }
+
         public bool validateSchool(string school)
         {
             school = school.ToString();

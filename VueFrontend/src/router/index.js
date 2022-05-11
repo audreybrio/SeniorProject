@@ -15,15 +15,14 @@ import TopSchool from '../components/UsageAnalysisDashboard/TopSchool'
 // Application features
 // StudentDiscounts
 import StudentDiscounts from '../components/StudentDiscounts/StudentDiscounts.vue'
+import DiscountDetails from '../components/StudentDiscounts/DiscountDetails.vue'
+import EstablishmentDetails from '../components/StudentDiscounts/EstablishmentDetails.vue'
 
 import MatchingMain from '../components/Matching/MatchingMain.vue'
 import ActivityProfile from '../components/Matching/ActivityProfile.vue'
 import TutoringProfile from '../components/Matching/TutoringProfile.vue'
 import DisplayMatches from '../components/Matching/DisplayMatches.vue'
 import MatchesChild from '../components/Matching/MatchesChild.vue'
-
-import DiscountDetails from '../components/StudentDiscounts/DiscountDetails.vue'
-import EstablishmentDetails from '../components/StudentDiscounts/EstablishmentDetails.vue'
 
 import RecipeView from '../components/MyRecipe/RecipeView.vue'
 import RecipeDetails from '../components/MyRecipe/RecipeDetails.vue'
@@ -32,11 +31,20 @@ import RecipeRegister from '../components/MyRecipe/RecipeRegister.vue'
 import RecipeEdit from '../components/MyRecipe/RecipeEdit.vue'
 import RecipeDelete from '../components/MyRecipe/RecipeDelete.vue'
 
+import NewPassword from '../components/PasswordReset/NewPassword.vue'
+import EmailSendMessage from '../components/PasswordReset/EmailSendMessage.vue'
+import ResetPasswordEmail from '../components/PasswordReset/ResetPasswordEmail.vue'
+
+import DisabledEmail from '../components/ActivateDisabledAccount/DisabledEmail.vue'
+import ActivateAccount from '../components/ActivateDisabledAccount/ActivateAccount.vue'
+
 import CalculatorMain from '../components/GPACalc/CalculatorMain.vue'
 import GradeCalc from '../components/GPACalc/GradeCalc.vue'
 import GpaCalc from '../components/GPACalc/GpaCalc.vue'
 import DisplayRankings from '../components/GPACalc/DisplayRankings.vue'
 import RankingsChild from '../components/GPACalc/RankingsChild.vue'
+
+
 
 const routes = [
     // Core Features
@@ -68,9 +76,14 @@ const routes = [
         component: RegistrationForm
     },
     {
-        path: '/Registrationform/:username/:token',
+        path: '/Registrationform/:token',
         name: 'EmailVerification',
         component: EmailVerification
+    },
+    {
+        path: '/UserManagement',
+        name: 'UserManagement',
+        component: () => import('../Views/UserManagement/UserManagement.vue')
     },
 
     // ScheduleBuilder & ScheduleComparison
@@ -84,6 +97,11 @@ const routes = [
         path: '/schedule/builder/select/',
         name: 'SelectForBuilder',
         component: () => import('../Views/ScheduleBuilder/SelectForBuilder.vue')
+    },
+    {
+        path: '/schedule/collaborators/',
+        name: 'ScheduleCollaborators',
+        component: () => import('../Views/ScheduleBuilder/Collaborators.vue')
     },
     // ScheduleComparison
     {
@@ -117,7 +135,6 @@ const routes = [
     // StudentDiscounts
     {
         path: '/studentDiscounts',
-        // path: '/',
         name: 'studentDiscounts',
         component: StudentDiscounts,
     },
@@ -147,16 +164,12 @@ const routes = [
         component: DisplayMatches
 
     },
-
     {
         path: '/matcheschild',
         name: 'displayChild',
         component: MatchesChild
 
     },
-
-
-
     {
         path: '/studentDiscounts/discountDetails/:id',
         name: 'discountDetails',
@@ -209,6 +222,33 @@ const routes = [
             }
         ]
     },
+    {
+        path: '/resetpassemail',
+        name:'ResetPasswordEmail',
+        component: ResetPasswordEmail
+    },
+    {
+        path: '/newpassword',
+        name:'NewPassword',
+        component: NewPassword
+
+    },
+    {
+        path: '/sendemail',
+        name: 'EmailSendMessage',
+        component: EmailSendMessage
+    },
+    {
+        path: '/disableaccount',
+        name: 'DisabledEmail',
+        component: DisabledEmail
+    },
+    {
+        path: '/activateaccount',
+        name: 'ActivateAccount',
+        component: ActivateAccount
+        
+    },
 
     // Gpa calc
     {
@@ -228,19 +268,21 @@ const routes = [
         name: 'gpaCalc',
         component: GpaCalc
     },
-
     {
         path: '/displayrankings',
         name: 'displayRankings',
         component: DisplayRankings
 
     },
-
     {
         path: '/rankingschild',
         name: 'rankingsChild',
         component: RankingsChild
-
+    },
+    {
+        path: '/notAuthorized',
+        name: 'not-authorized',
+        component: () => import('../Views/NotAuthorized')
     },
     // UAD
     {

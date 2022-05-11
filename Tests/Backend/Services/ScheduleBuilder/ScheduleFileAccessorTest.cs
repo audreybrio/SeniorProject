@@ -12,6 +12,7 @@ namespace Tests
 {
     public class ScheduleFileAccessorTest
     {
+        public static string baseFilePath = "../smt-storage/testSchedules/";
         [Fact]
         public async void Constructor()
         {
@@ -186,10 +187,6 @@ namespace Tests
             Assert.Equal(testItems.Count, titlesCorrectlyRead);
             Assert.Equal(testItems.Count, contactsCorrectlyRead);
             Assert.Equal(testItems.Count, locationsCorrectlyRead);
-        }
-        [Fact]
-        public async void ToJson()
-        {
         }
     }
 }
