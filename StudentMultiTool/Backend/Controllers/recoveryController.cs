@@ -153,13 +153,13 @@ namespace StudentMultiTool.Backend.Controllers
         [HttpPost("postactivate")]
         public IActionResult PostActivate(RecoveryUserEmail r)
         {
-            LoginController lg = new LoginController();
+            LoginDAL lg = new LoginDAL();
             string m = "nothing";
 
             Console.WriteLine("user== "+ r.username);
 
             Console.WriteLine("Activate== " + r.activate);
-            lg.UpdateEnabled(r.username);
+            lg.UpdateEnable(r.email);
 
 
             if (true)

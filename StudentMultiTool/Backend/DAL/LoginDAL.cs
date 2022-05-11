@@ -302,5 +302,25 @@ namespace StudentMultiTool.Backend.DAL
             }
 
         }
+
+        public void UpdateEnable(string email)
+        {
+            try
+            {
+                SqlConnection conn = new SqlConnection();
+                conn.ConnectionString = Environment.GetEnvironmentVariable(connectionString);
+                conn.Open();
+                SqlCommand cmd = new SqlCommand("UPDATE UserAccounts SET active_status = @newStatus WHERE email = @email", conn);
+                cmd.Parameters.AddWithValue("@newStatus", 1);
+                cmd.Parameters.AddWithValue("@email", email);
+                cmd.ExecuteNonQuery();
+                conn.Close();
+            }
+            catch
+            {
+
+            }
+
+        }
     }
 }
