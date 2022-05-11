@@ -1,15 +1,44 @@
 <template>
     <div class="post">
-        <div v-if="loading" class="loading">
+        <div>
             Hello {{ id }}! :)
         </div>
-        <button @click="onAC">Access Control</button>
-        <button @click="onSB">Schedule Builder</button>
-        <button @click="onAM">Automated Moderating</button>
-        <button @click="onBS">Book Selling</button>
-        <button @click="onUSD">User Analysis Dashboard</button>
-        <button @click="onSD">Student Discounts</button>
+        <div v-if="role === 'admin'">
+            <button @click="onUsageAnalysisDashboard">Usage Analysis Dashboard</button>
+            <button @click="onUserManagement">User Management</button>
+        </div>
+        <div>
+            <button @click="onScheduleBuilder">Schedule Builder</button>
+            <button @click="onScheduleComparison">Schedule Comparison</button>
+            <button @click="onUAD">Usage Analysis Dashboard</button>
+        </div>
+        <div>
+            <button @click="onAM">Automated Moderating</button>
+            <button @click="onBS">Book Selling</button>
+            <button @click="onUSD">User Analysis Dashboard</button>
+        </div>
+        <div>
+            <!--<button @click="onAid">Aid Eligibility Estimates</button>-->
+            <button @click="onSD">Student Discounts</button>
+            <button @click="onMatching">Matching</button>
+        </div>
+
+        <div>
+            <button @click="onEP">Event Planning</button>
+            <button @click="onCalc">GPA/Grade Calculator</button>
+        </div>
+        <div>
+            <button @click="onManageAccount">Manage Account</button>
+        </div>
+        <button @click="onPrivacy">Do Not Sell My Personal Information</button>
+        <div>
+            <button @click="onRecipe"> Recipe </button>
+            <button @click="onCareerOpportunities"> Career Opportunities </button>
+        </div>
+
+
         <button @click="onSubmit">Logout</button>
+
     </div>
     <router-view />
 </template>
@@ -23,60 +52,83 @@
             return {
                 loading: false,
                 post: null,
-                id: jwt_decode(window.sessionStorage.getItem("token")).username
+                id: jwt_decode(window.sessionStorage.getItem("token")).username,
+                role: 'admin'
             };
         },
         created() {
-            // fetch the data when the view is created and the data is
-            // already being observed
-            this.fetchData();
         },
         watch: {
             // call again the method if the route changes
             '$route': 'fetchData'
         },
         methods: {
-            fetchData() {
-                this.post = null;
-                this.loading = true;
-
-                fetch('weatherforecast')
-                    .then(r => r.json())
-                    .then(json => {
-                        this.post = json;
-                        this.loading = false;
-                        return;
-                    });
-
-            },
             onSubmit() {
                 const token = window.sessionStorage.getItem("token");
                 var isJWT = jwt_decode(token);
                 console.log(isJWT);
                 window.sessionStorage.removeItem("token");
-                router.push({ name: "EmailVue" });
+                router.push({ name: "authenticateUser" });
 
             },
-
-             onAC() {
-                router.push({ name: "EmailVue" });
+            onUsageAnalysisDashboard() {
+                if (this.role === 'admin') {
+                    router.push({ name: "not-found" });
+                }
+                else {
+                    alert("You lack the necessary role to access that page.")
+                }
             },
-            onSB() {
-                router.push({ name: "EmailVue" });
+            onUserManagement() {
+                if (this.role === 'admin') {
+                    router.push({ name: "UserManagement" });
+                }
+                else {
+                    alert("You lack the necessary role to access that page.")
+                }
+            },
+            onScheduleBuilder() {
+                router.push({ name: "SelectForBuilder", params: { user: this.id }});
+            },
+            onScheduleComparison() {
+                router.push({ name: "SelectForComparison", params: { user: this.id }});
             },
             onAM() {
-                router.push({ name: "EmailVue" });
+                router.push({ name: "not-found" });
             },
             onBS() {
                 router.push({ name: "bookSelling" });
             },
-            onUSD() {
-                router.push({ name: "EmailVue" });
+            onUAD() {
+                let role = jwt_decode(window.sessionStorage.getItem("token")).role
+                if (role != "student") {
+                    router.push({ name: "uadMain" });
+                }
+                else {
+                    alert("You do not have permissions to access this page")
+                }
             },
             onSD() {
                 router.push({ name: "studentDiscounts" });
             },
-
+            onCareerOpportunities() {
+                router.push({ name: "careerOpportunities" });
+            },
+            onMatching() {
+                router.push({ name: "matchingMain" })
+            },
+            onRecipe() {
+                router.push({ name: "RecipeView" })
+            },
+            onAid() {
+                router.push({ name: "studentInformation" });
+            },
+            onCalc() {
+                router.push({name: "calculatorMain"})
+            },
+            onPrivacy() {
+                router.push({name: "UserPrivacy" })
+            }
         },
     });
 </script>

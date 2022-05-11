@@ -22,7 +22,7 @@ namespace Tests.Backend.Services.Registration
             string school = "csulb";
             UserAccount userAcc = new UserAccount(email, password, userName, school);
             Update usertoDB = new Update();
-            usertoDB.UpdateCreate(email, password, userName, school);
+           // usertoDB.UpdateCreate(email, password, userName, school);
             bool successCase = input.emailExists(email);
             Assert.True(successCase);
         }
@@ -35,7 +35,7 @@ namespace Tests.Backend.Services.Registration
             string userName = "AudreyBrio";
             string password = "audrey";
             string school = "csulb";
-            bool validCase = input.validatePassword(password);
+            bool validCase = input.validatePasscode(password);
             
             Assert.False(validCase);
         }

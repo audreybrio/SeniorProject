@@ -1,428 +1,281 @@
-﻿using System.Data;
-using System.Data.SqlClient;
+﻿using StudentMultiTool.Backend.DAL;
 using StudentMultiTool.Backend.Models.ScheduleBuilder;
+using StudentMultiTool.Backend.Services.DataAccess;
+using StudentMultiTool.Backend.Services.Logging;
+using StudentMultiTool.Backend.Services.ScheduleComparison;
+using UserAcc;
 
 namespace StudentMultiTool.Backend.Services.ScheduleBuilder
 {
-    // Manages CRUD operations for Schedules.
     public class ScheduleManager
     {
-        public string? dbConnectionString { get; set; } = null;
-        private string _baseFilePath = string.Empty;
-        private ScheduleFileAccessor _fileAccessor = new ScheduleFileAccessor();
-        public string BaseFilePath
+        public string Success { get; } = "Success";
+        // Return a "list" (enumerable) of schedules for a given user.
+        // Only returns a list of schedules that the user is listed as a
+        // collaborator for.
+        // Will always return a list, but there's always the possibility
+        // that the list will be empty.
+        public IEnumerable<Schedule> GetList(string username)
         {
-            get
+            // TODO: check that the user is authenticated
+            // Get user hash so we know who to get schedules for
+            //string? userHash = null;
+            ScheduleListBuilder builder = new ScheduleListBuilder();
+            //userHash = builder.GetUserHash(username);
+            Hasher hasher = new Hasher();
+            string userHash = hasher.HashUsername(username);
+            if (userHash == null)
             {
-                return _baseFilePath;
+                return Enumerable.Empty<Schedule>();
+                //return new List<Schedule>();
             }
-            // Ensure that ScheduleManager.BaseFilePath
-            set
+
+            // Get all schedules the user owns (and/or can collaborate on)
+            IEnumerable<Schedule> list = builder.GetAllSchedulesForUser(userHash).Result;
+            if (list == null)
             {
-                _baseFilePath = (string)value;
-                int lastIndex = value.Length - 1;
-                if (!_baseFilePath[lastIndex].Equals("/"))
+                return Enumerable.Empty<Schedule>();
+                //return new List<Schedule>();
+            }
+            return list;
+        }
+
+        // Return a schedule and its contents based on the ID of the schedule.
+        // Always returns an enumerable, but the enumerable may be empty.
+        public IEnumerable<ScheduleItemDTO> GetSchedule(string user, int scheduleId)
+        {
+            List<ScheduleItemDTO> items = new List<ScheduleItemDTO>();
+
+            // Check that the user has permission to edit the schedule
+            SchedulePermissionValidator validator = new SchedulePermissionValidator();
+            ScheduleListBuilder listBuilder = new ScheduleListBuilder();
+            //string? hash = listBuilder.GetUserHash(user);
+            Hasher hasher = new Hasher();
+            string hash = hasher.HashUsername(user);
+            int isCollaborator = 0;
+
+            // If the user's hash is null, then they probably aren't logged in
+            if (!string.IsNullOrEmpty(hash))
+            {
+                isCollaborator = validator.IsCollaborator(hash, scheduleId);
+            }
+
+            // If the user is a collaborator on the schedule, continue
+            if (isCollaborator > 0)
+            {
+                // Get the schedule's items
+                ScheduleDAO dao = new ScheduleDAO();
+                Schedule? schedule = dao.SelectScheduleWithItems(scheduleId);
+                if (schedule != null)
                 {
-                    _baseFilePath = value + "/";
+                    // Prep the items for data transfer
+                    foreach (ScheduleItem si in schedule.Items)
+                    {
+                        Console.WriteLine(si.Title);
+                        ScheduleItemDTO temp = new ScheduleItemDTO(si);
+                        temp.ScheduleId = scheduleId;
+                        items.Add(temp);
+                    }
+
+                    // Return the items
+                    return items;
+                }
+            }
+            // If something went wrong or the user wasn't a collaborator, return an empty list
+            return Enumerable.Empty<ScheduleItemDTO>();
+        }
+
+        // Create a new schedule for a user.
+        // Returns the status of the operation.
+        public string NewSchedule(string user, string title)
+        {
+            // TODO: check that the user is authenticated
+            int rowsAffected = 0;
+            //string? userHash = null;
+            Hasher hasher = new Hasher();
+            string userHash = hasher.HashUsername(user);
+
+            ScheduleListBuilder builder = new ScheduleListBuilder();
+            //userHash = builder.GetUserHash(user);
+            if (userHash == null)
+            {
+                return "Could not get userHash";
+            }
+
+            // Add schedule to DB
+            Schedule newSchedule = new Schedule(
+               -1,
+               DateTime.Now,
+               DateTime.Now,
+               title,
+               userHash + "-" + title + ".json"
+            );
+            ScheduleDAO dao = new ScheduleDAO();
+            int? newId = dao.InsertSchedule(newSchedule);
+
+            if (newId != null)
+            {
+                // Add the owner as a collaborator to the DB
+                rowsAffected = dao.InsertCollaborator((int)newId, userHash, true, true);
+            }
+
+            if (rowsAffected > 0)
+            {
+                return Success;
+            }
+
+            return "Could not create new schedule";
+        }
+
+        public string SaveSchedule(ScheduleDTO data)
+        {
+            string nullOrEmptyResult = "Request data was null or empty";
+            // Make sure the data isn't null or empty
+            if (data != null)
+            {
+                // Get the file path to write the schedule items to
+                ScheduleDAO dao = new ScheduleDAO();
+                Schedule? schedule = dao.SelectScheduleWithoutItems(data.ScheduleId);
+                if (schedule == null)
+                {
+                    return "Could not find schedule with id " + data.ScheduleId;
+                }
+
+                // Unpack the ScheduleItemDTOs and place them in the schedule.
+                // The ScheduleItem constructor will handle most of the work here
+                foreach (ScheduleItemDTO sid in data.Items)
+                {
+                    ScheduleItem current = new ScheduleItem(sid);
+                    schedule.AddScheduleItem(current);
+                }
+
+                // Write the schedule items to the schedule's file
+                string result = dao.SaveSchedule(ref schedule);
+
+                // Done!
+                if (result.Equals(ScheduleFileAccessor.Success))
+                {
+                    return Success;
                 }
                 else
                 {
-                    _baseFilePath = value;
+                    return "Could not save schedule to file";
                 }
+
             }
-        }
-        public ScheduleManager()
-        {
-            dbConnectionString = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING", EnvironmentVariableTarget.User);
-            BaseFilePath = "./";
-        }
-        public ScheduleManager(string dbConnectionString, string BaseFilePath)
-        {
-            this.dbConnectionString = dbConnectionString;
-            this.BaseFilePath = BaseFilePath;
+            return nullOrEmptyResult;
         }
 
-        // Create a schedule and return its id if successful.
-        public int? InsertSchedule(Schedule newSchedule)
+        public string AddCollaborator(int scheduleId, string username)
         {
-            if (this.dbConnectionString == null)
+            if (string.IsNullOrEmpty(username))
             {
-                throw new NullReferenceException();
+                return "Username cannot be blank";
             }
-            string scheduleQuery = "INSERT INTO Schedules (title, created, modified, path) " +
-                                   "VALUES (@title, @created, @modified, @path);";
-            int? newId = null;
-            string scheduleIDQuery = "SELECT id FROM Schedules WHERE path = @path;";
-            int rowsAffected = 0;
-            using (SqlConnection connection = new SqlConnection(dbConnectionString))
+            ScheduleDAO dao = new ScheduleDAO();
+            Schedule? schedule = dao.SelectScheduleWithoutItems(scheduleId);
+            if (schedule != null)
             {
-                using (SqlCommand command = new SqlCommand(scheduleQuery, connection))
+                UserAccountDAO uad = new UserAccountDAO();
+                UserAccount? user = uad.SelectSingle(username);
+                if (user != null)
                 {
-                    command.Parameters.AddWithValue("@title", newSchedule.Title);
-                    command.Parameters.AddWithValue("@created", newSchedule.Created);
-                    command.Parameters.AddWithValue("@modified", newSchedule.Modified);
-                    command.Parameters.AddWithValue("@path", newSchedule.Path);
-
-                    try
+                    Hasher hasher = new Hasher();
+                    string userHash = hasher.HashUsername(username);
+                    int rowsAffected = dao.InsertCollaborator(scheduleId, userHash, true, false);
+                    if (rowsAffected < 1)
                     {
-                        connection.Open();
-                        rowsAffected = command.ExecuteNonQuery();
-                        connection.Close();
+                        return "Could not add collaborator";
                     }
-                    catch (System.InvalidOperationException ex)
-                    {
-                        Console.WriteLine("The following exception has occurred: " +
-                                ex.GetType().FullName);
-                        Console.WriteLine(ex.Message);
-                    }
-                    catch (SqlException ex)
-                    {
-                        Console.WriteLine("The following exception has occurred: " +
-                                ex.GetType().FullName);
-                        Console.WriteLine(ex.Message);
-                    }
+                    return Success;
                 }
-
-                if (rowsAffected == 1)
-                {
-                    // Get the ID of newSchedule in the db
-                    Console.WriteLine("Get the ID of newSchedule in the db");
-                    using (SqlCommand command = new SqlCommand(scheduleIDQuery, connection))
-                    {
-                        command.Parameters.AddWithValue("@path", newSchedule.Path);
-
-                        try
-                        {
-                            connection.Open();
-                            SqlDataReader reader = command.ExecuteReader();
-                            while (reader.Read())
-                            {
-                                IDataRecord row = (IDataRecord)reader;
-                                newId = (int)row[0];
-                            }
-                            connection.Close();
-                        }
-                        catch (System.InvalidOperationException ex)
-                        {
-                            Console.WriteLine("The following exception has occurred: " +
-                                    ex.GetType().FullName);
-                            Console.WriteLine(ex.Message);
-                        }
-                        catch (SqlException ex)
-                        {
-                            Console.WriteLine("The following exception has occurred: " +
-                                    ex.GetType().FullName);
-                            Console.WriteLine(ex.Message);
-                        }
-                    }
-                }
+                return "User " + username + "could not be found";
             }
-            return newId;
+            return "Schedule with id " + scheduleId + "could not be found";
         }
 
-        // Add a user as a collaborator of a schedule.
-        public int InsertCollaborator(int scheduleId, string userHash, bool canWrite, bool isOwner)
+        public string UpdateCollaborator(int scheduleId, CollaboratorDTO collaborator)
         {
-            if (this.dbConnectionString == null)
+            if (string.IsNullOrEmpty(collaborator.Username))
             {
-                throw new NullReferenceException();
+                return "Username cannot be blank";
             }
-            string collaboratorQuery = "INSERT INTO Collaborators " +
-                                       "(schedule, collaborator, canWrite, isOwner) " +
-                                       "VALUES (@schedule, @collaborator, @canWrite, @isOwner);";
-            int rowsAffected = 0;
-            using (SqlConnection connection = new SqlConnection(dbConnectionString))
+            string username = collaborator.Username;
+            ScheduleDAO dao = new ScheduleDAO();
+            Schedule? schedule = dao.SelectScheduleWithoutItems(scheduleId);
+            if (schedule != null)
             {
-                using (SqlCommand command = new SqlCommand(collaboratorQuery, connection))
+                UserAccountDAO uad = new UserAccountDAO();
+                UserAccount? user = uad.SelectSingle(username);
+                if (user != null)
                 {
-                    command.Parameters.AddWithValue("@schedule", scheduleId);
-                    command.Parameters.AddWithValue("@collaborator", userHash);
-                    command.Parameters.AddWithValue("@canWrite", canWrite);
-                    command.Parameters.AddWithValue("@isOwner", isOwner);
-
-                    try
+                    Hasher hasher = new Hasher();
+                    string userHash = hasher.HashUsername(username);
+                    int rowsAffected = 0;
+                    rowsAffected = dao.UpdateCollaborator(scheduleId, userHash, collaborator.CanWrite, collaborator.IsOwner);
+                    if (rowsAffected < 1)
                     {
-                        connection.Open();
-                        rowsAffected = command.ExecuteNonQuery();
-                        connection.Close();
+                        return "Could not update collaborator " + username;
                     }
-                    catch (System.InvalidOperationException ex)
-                    {
-                        Console.WriteLine("The following exception has occurred: " +
-                                ex.GetType().FullName);
-                        Console.WriteLine(ex.Message);
-                    }
-                    catch (SqlException ex)
-                    {
-                        Console.WriteLine("The following exception has occurred: " +
-                                ex.GetType().FullName);
-                        Console.WriteLine(ex.Message);
-                    }
+                    return Success;
                 }
+                return "User " + username + "could not be found";
             }
-            return rowsAffected;
+            return "Schedule with id " + scheduleId + "could not be found";
         }
 
-        // Delete Schedule
-        public int DeleteSchedule(int scheduleId)
+        public string DeleteCollaborator(int scheduleId, CollaboratorDTO collaborator)
         {
-            int collaboratorsDeleted = this.DeleteAllCollaborators(scheduleId);
-            int rowsAffected = -1;
-            if (this.dbConnectionString == null)
+            if (string.IsNullOrEmpty(collaborator.Username))
             {
-                throw new NullReferenceException();
+                return "Username cannot be blank";
             }
-            // set up query
-            string query = "DELETE FROM Schedules WHERE Schedules.id=@scheduleId";
-            using (SqlConnection connection = new SqlConnection(this.dbConnectionString))
+            string username = collaborator.Username;
+            ScheduleDAO dao = new ScheduleDAO();
+            Schedule? schedule = dao.SelectScheduleWithoutItems(scheduleId);
+            if (schedule != null)
             {
-                using (SqlCommand command = new SqlCommand(query, connection))
+                UserAccountDAO uad = new UserAccountDAO();
+                UserAccount? user = uad.SelectSingle(username);
+                if (user != null)
                 {
-                    command.Parameters.AddWithValue("@scheduleId", scheduleId);
-
-                    try
+                    Hasher hasher = new Hasher();
+                    string userHash = hasher.HashUsername(username);
+                    int rowsAffected = 0;
+                    rowsAffected = dao.DeleteCollaborator(scheduleId, userHash);
+                    if (rowsAffected < 1)
                     {
-                        connection.Open();
-                        rowsAffected = command.ExecuteNonQuery();
-                        connection.Close();
+                        return "Could not delete collaborator " + username;
                     }
-                    catch (System.InvalidOperationException ex)
-                    {
-                        Console.WriteLine("The following exception has occurred: " +
-                                ex.GetType().FullName);
-                        Console.WriteLine(ex.Message);
-                    }
-                    catch (SqlException ex)
-                    {
-                        Console.WriteLine("The following exception has occurred: " +
-                                ex.GetType().FullName);
-                        Console.WriteLine(ex.Message);
-                    }
+                    return Success;
+                }
+                return "User " + username + "could not be found";
+            }
+            return "Schedule with id " + scheduleId + "could not be found";
+        }
+        public IEnumerable<CollaboratorDTO> GetCollaborators(int scheduleId)
+        {
+            SqlCommandRunner runner = new SqlCommandRunner(Environment.GetEnvironmentVariable(EnvironmentVariableEnum.CONNECTIONSTRING));
+            runner.Query = "SELECT username, canWrite, isOwner FROM UserAccounts " +
+                "INNER JOIN UserHashes ON UserAccounts.id = UserHashes.id " +
+                "INNER JOIN Collaborators ON UserHashes.hash = Collaborators.collaborator " +
+                "WHERE Collaborators.schedule = @scheduleId;";
+            runner.AddParam("@scheduleId", scheduleId);
+            List<object[]> results = runner.ExecuteReader();
+            List<CollaboratorDTO> collaborators = new List<CollaboratorDTO>();
+            foreach (object[] row in results)
+            {
+                if (row.Length == 3)
+                {
+                    collaborators.Add(new CollaboratorDTO(
+                        scheduleId,
+                        (string) row[0],
+                        (bool) row[1],
+                        (bool) row[2]
+                        ));
                 }
             }
-            return rowsAffected;
-        }
-        // Remove Collaborators from a Schedule. Called during ScheduleManager.DeleteSchedule().
-        private int DeleteAllCollaborators(int scheduleId)
-        {
-            int rowsAffected = -1;
-            if (this.dbConnectionString == null)
-            {
-                throw new NullReferenceException();
-            }
-            // set up query
-            string query = "DELETE FROM Collaborators WHERE Collaborators.schedule=@scheduleId";
-            using (SqlConnection connection = new SqlConnection(this.dbConnectionString))
-            {
-                using (SqlCommand command = new SqlCommand(query, connection))
-                {
-                    command.Parameters.AddWithValue("@scheduleId", scheduleId);
-
-                    try
-                    {
-                        connection.Open();
-                        rowsAffected = command.ExecuteNonQuery();
-                        connection.Close();
-                    }
-                    catch (System.InvalidOperationException ex)
-                    {
-                        Console.WriteLine("The following exception has occurred: " +
-                                ex.GetType().FullName);
-                        Console.WriteLine(ex.Message);
-                    }
-                    catch (SqlException ex)
-                    {
-                        Console.WriteLine("The following exception has occurred: " +
-                                ex.GetType().FullName);
-                        Console.WriteLine(ex.Message);
-                    }
-                }
-            }
-            return rowsAffected;
-        }
-
-        // Select a Schedule without loading its ScheduleItems.
-        public Schedule? SelectScheduleWithoutItems(int scheduleId)
-        {
-            if (this.dbConnectionString == null)
-            {
-                throw new NullReferenceException();
-            }
-            Schedule? result = null;
-            // set up query
-            string query = "SELECT * FROM Schedules WHERE Schedules.id=@scheduleId";
-            using (SqlConnection connection = new SqlConnection(this.dbConnectionString))
-            {
-                using (SqlCommand command = new SqlCommand(query, connection))
-                {
-                    command.Parameters.AddWithValue("@scheduleId", scheduleId);
-
-                    try
-                    {
-                        connection.Open();
-                        SqlDataReader reader = command.ExecuteReader();
-
-                        // Unpack query results. This loop should have at most one iteration
-                        // due to the primary key uniqueness constraint on the id attribute.
-                        // If there were no query results, then this loop will have zero
-                        // iterations and the result will be null.
-                        while (reader.Read())
-                        {
-                            IDataRecord row = reader;
-                            int? id = (int?)row[0];
-                            string? title = (string?)row[1];
-                            DateTime? created = (DateTime?)row[2];
-                            DateTime? modified = (DateTime?)row[3];
-                            string? path = (string?)row[4];
-
-                            // If the results aren't null, then the Schedule can be constructed
-                            if (id != null && !string.IsNullOrEmpty(title) &&
-                                created != null && modified != null &&
-                                !string.IsNullOrEmpty(path))
-                            {
-                                result = new Schedule(
-                                    (int)id,
-                                    -1,
-                                    (DateTime)created,
-                                    (DateTime)modified,
-                                    (string)title,
-                                    (string)path
-                                );
-                            }
-                        }
-                        connection.Close();
-                    }
-                    catch (System.InvalidOperationException ex)
-                    {
-                        Console.WriteLine("The following exception has occurred: " +
-                                ex.GetType().FullName);
-                        Console.WriteLine(ex.Message);
-                    }
-                    catch (SqlException ex)
-                    {
-                        Console.WriteLine("The following exception has occurred: " +
-                                ex.GetType().FullName);
-                        Console.WriteLine(ex.Message);
-                    }
-                }
-            }
-            return result;
-        }
-        // Select a Schedule and load its ScheduleItems.
-        // Has the same logic as ScheduleManager.SelectScheduleWithoutItems(),
-        // with the additional step for loading ScheduleItems.
-        public Schedule? SelectScheduleWithItems(int scheduleId)
-        {
-            if (this.BaseFilePath == null)
-            {
-                throw new NullReferenceException();
-            }
-            if (this.dbConnectionString == null)
-            {
-                throw new NullReferenceException();
-            }
-            Schedule? result = null;
-            result = this.SelectScheduleWithoutItems(scheduleId);
-
-            // Check that result isn't null before continuing. If
-            // it is null, then this block gets skipped and null is
-            // returned since there's not going to be a file path to
-            // check.
-            if (result != null)
-            {
-                //// Load ScheduleItems for the given schedule
-                //ScheduleFileAccessor accessor = new ScheduleFileAccessor();
-
-                // Set up the file path
-                string path = this.BaseFilePath + result.Path;
-                List<ScheduleItem> items = _fileAccessor.ReadScheduleItems(result.Path);
-                foreach (ScheduleItem item in items)
-                {
-                    result.AddScheduleItem(item);
-                }
-            }
-            return result;
-        }
-
-        // Creates a ScheduleItem and adds it to a given Schedule
-        public bool CreateScheduleItem(ref Schedule s, ref ScheduleItem si)
-        {
-            bool created = false;
-            try
-            {
-                // If there are items in the Schedule, assign si an ID
-                // equal to its index in the list s.Items
-                // First, add si to s
-                s.AddScheduleItem(si);
-
-                // Then, generate its ID based on its index
-                int id = s.Items.Count - 1;
-
-                // Finally, assign its ID
-                s.Items[id].Id = id;
-                created = true;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("The following exception has occurred: " +
-                                ex.GetType().FullName);
-                Console.WriteLine(ex.Message);
-            }
-            return created;
-        }
-        // Updates a ScheduleItem si for a given Schedule s
-        public bool UpdateScheduleItem(ref Schedule s, ref ScheduleItem si)
-        {
-            int i = 0;
-            bool updated = false;
-
-            while (i < s.Items.Count || !updated)
-            {
-                // Check that the ID of the ScheduleItems match. Since we don't
-                // know what fields in si have changed, we can only rely on the ID
-                // being the same.
-                if (s.Items[i].Id == si.Id)
-                {
-                    try
-                    {
-                        s.Items[i] = si;
-                        updated = true;
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine("The following exception has occurred: " +
-                                ex.GetType().FullName);
-                        Console.WriteLine(ex.Message);
-                    }
-                }
-                i++;
-            }
-            return updated;
-        }
-        // Deletes a ScheduleItem si from a given Schedule s
-        public bool DeleteScheduleItem(ref Schedule s, ScheduleItem si)
-        {
-            int i = 0;
-            bool deleted = false;
-            while (i <= s.Items.Count || !deleted)
-            {
-                if (s.Items[i] == si)
-                {
-                    try
-                    {
-                        s.Items.RemoveAt(i);
-                        deleted = true;
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine("The following exception has occurred: " +
-                                ex.GetType().FullName);
-                        Console.WriteLine(ex.Message);
-                    }
-                }
-                i++;
-            }
-            return deleted;
+            return collaborators;
         }
     }
 }

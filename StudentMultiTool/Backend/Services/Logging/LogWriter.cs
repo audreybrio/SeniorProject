@@ -4,6 +4,7 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Data.SqlClient;
 using System.Collections;
+using StudentMultiTool.Backend.Services.DataAccess;
 
 namespace Marvel.Services.Logging
 {
@@ -20,7 +21,7 @@ namespace Marvel.Services.Logging
         // Add a new log to the queue. Returns the number of logs successfully added.
         // Intended to be called with a discard, like so: _ = myLogWriter.AddLog(...);
         // Reference: https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/async/
-        public virtual async Task<int> AddLog(string category, string level, int user, string description)
+        public virtual async Task<int> AddLog(string category, string level, string user, string description)
         {
             int result = 0;
             Log newLog = new Log(category, level, user, description);
@@ -78,7 +79,7 @@ namespace Marvel.Services.Logging
         {
             try
             {
-                dbConnectionString = Environment.GetEnvironmentVariable("MARVELCONNECTIONSTRING", EnvironmentVariableTarget.User);
+                dbConnectionString = Environment.GetEnvironmentVariable(EnvironmentVariableEnum.LOGCONNECTIONSTRING);
             }
             catch (Exception ex)
             {
@@ -91,7 +92,7 @@ namespace Marvel.Services.Logging
         // Add a new log to the queue. Returns the number of logs successfully added.
         // Intended to be called with a discard, like so: _ = myLogWriter.AddLog(...);
         // Reference: https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/async/
-        public override async Task<int> AddLog(string category, string level, int user, string description)
+        public override async Task<int> AddLog(string category, string level, string user, string description)
         {
             int result = -1;
             Log newLog = new Log(category, level, user, description);
@@ -110,7 +111,7 @@ namespace Marvel.Services.Logging
         }
         public override async Task<int> WriteAllLogs()
         {
-            if (logs.Count < 1)
+            if (logs.Count < 1 || dbConnectionString == null)
             {
                 return 0;
             }
@@ -169,7 +170,7 @@ namespace Marvel.Services.Logging
     public class FileLogWriter : LogWriter
     {
         private Queue<Log> logs { get; }
-        public string filePath { get; set; }
+        public string? filePath { get; set; }
         public FileLogWriter()
         {
             try
@@ -195,7 +196,7 @@ namespace Marvel.Services.Logging
         // Add a new log to the queue. Returns the number of logs successfully added.
         // Intended to be called with a discard, like so: _ = myLogWriter.AddLog(...);
         // Reference: https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/async/
-        public override async Task<int> AddLog(string category, string level, int user, string description)
+        public override async Task<int> AddLog(string category, string level, string user, string description)
         {
             int result = 0;
             Log newLog = new Log(category, level, user, description);
@@ -214,7 +215,7 @@ namespace Marvel.Services.Logging
         }
 
         // Add an existing log to the queue. Returns the number of logs successfully added.
-        public async Task<int> AddLog(string category, string level, int user, string description, DateTime timestamp)
+        public async Task<int> AddLog(string category, string level, string user, string description, DateTime timestamp)
         {
             int result = 0;
             Log newLog = new Log(category, level, user, description, timestamp);

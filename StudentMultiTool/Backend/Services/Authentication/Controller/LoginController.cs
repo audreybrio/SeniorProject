@@ -9,13 +9,15 @@ using System.Security.Principal;
 
 namespace StudentMultiTool.Backend.Services.Authentication.Controller
 {
+    [ApiController]
+    [Route("api/" + "login")]
     public class LoginController : ControllerBase
     {
         const string connectionString = "MARVELCONNECTIONSTRING";
         //AppDomain.CurrentDomain.SetPrincipalPolicy(PrincipalPolicy.WindowsPrincipal); 
         //WindowsPrincipal myPrincipal = (WindowsPrincipal)Thread.CurrentPrincipal;
 
-        [HttpGet]
+        [HttpGet("login")]
         public IActionResult Login()
         {
             return new OkResult();
@@ -239,7 +241,7 @@ namespace StudentMultiTool.Backend.Services.Authentication.Controller
             String to = email;
             MailMessage mail = new MailMessage(from, to, subject, msg);
             SmtpClient client = new SmtpClient("email-smtp.us-east-1.amazonaws.com");
-            client.Port = 25;
+            client.Port = 587;
             client.Credentials = new System.Net.NetworkCredential("AKIA4LFTDFRCSQHGW2BL", "BMAUAXuLN+qSGL0QiezLwtqpfckzibBAwvJ/0AiDtrQa"); //change username and password to your email account username and password
             client.EnableSsl = true;
             client.Send(mail);

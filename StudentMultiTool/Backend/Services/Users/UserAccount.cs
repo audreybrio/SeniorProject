@@ -4,6 +4,7 @@ namespace UserAcc
 {
     public class UserAccount
     {
+        public int Id { get; set; }
         public string name;
         public string username;
         public string password;
@@ -13,7 +14,17 @@ namespace UserAcc
         public bool active;
         public string school;
  
-
+        public UserAccount()
+        {
+            Name = string.Empty;
+            Username = string.Empty;
+            Password = string.Empty;
+            Passcode = string.Empty;
+            Email = string.Empty;
+            Role = "student";
+            Active = false;
+            School = string.Empty;
+        }
         public UserAccount(string email, string password, string userName, string school)
         {
             this.email = email;
@@ -34,44 +45,8 @@ namespace UserAcc
         public string Email { get => email; set => email = value; }
         public string Password { get => password; set => password = value; }
         public string Passcode { get => passcode; set => passcode = value; }
+        public string School { get => school; set => school = value; }
     }
 
-    public class ROLE
-    {
-        private string roleName;
-        private string roleDetail;
-        private bool isAdmin;
-        private bool isStudent;
-
-        public ROLE(string rn, string rd, bool a, bool s)
-        {
-            this.RoleName = rn;
-            this.RoleDetail = rd;
-            this.isAdmin = a;
-            this.isStudent = s;
-
-            PERMISSION = new HashSet<PERMISSION>();
-            UserAccount = new HashSet<UserAccount>();
-        }
-        public string RoleName { get => roleName; set => roleName = value; }
-        public string RoleDetail { get => roleDetail; set => roleDetail = value; }
-        public bool IsAdmin { get => isAdmin; set => isAdmin = value; }
-        public bool IsStudent { get => isStudent; set => isStudent = value; }
-        public virtual ICollection<PERMISSION> PERMISSION { get; set; }
-        public virtual ICollection<UserAccount> UserAccount { get; set; }
-    }
-    public class PERMISSION
-    {
-        private string permissionDetails;
-
-        public PERMISSION(string pd)
-        {
-            this.PermissionDetails = pd;
-            ROLE = new HashSet<ROLE>();
-        }
-
-        public string PermissionDetails { get => permissionDetails; set => permissionDetails = value; }
-
-        public virtual ICollection<ROLE> ROLE { get; set; }
-    }
+    
 }

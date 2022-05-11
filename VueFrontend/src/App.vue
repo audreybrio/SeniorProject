@@ -1,20 +1,9 @@
 <template>
     <h1>Student Multi-Tool</h1>
     <div id="app"></div>
-    <router-view/>
+    <router-view />
 </template>
 
-<!--<script>
-    import EmailVue from '@/components/Authentication/EmailVue.vue'
-    export default {
-        name: 'App',
-        components: {
-            EmailVue
-
-        }
-    }
-
-</script>-->
 
 <style>
     #app {
