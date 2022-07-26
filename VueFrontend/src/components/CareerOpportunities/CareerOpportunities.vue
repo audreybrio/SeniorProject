@@ -5,7 +5,7 @@
         </div>
         <div class="container">
             <div class="homepage">
-                <router-link to="{name: 'HomePage'}">HomePage</router-link>
+                <router-link to="/home">HomePage</router-link>
             </div>
             <form @submit.prevent="pressMatch">
                 <label for="status">Student status: &nbsp;&nbsp;</label>

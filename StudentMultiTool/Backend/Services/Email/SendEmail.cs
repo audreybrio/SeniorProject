@@ -13,8 +13,8 @@ namespace StudentMultiTool.Backend.Services.Email
         const string sendFrom = "studentmultitool@outlook.com";
         const string id = "AKIA4LFTDFRCSQHGW2BL";
         const string password = "BMAUAXuLN+qSGL0QiezLwtqpfckzibBAwvJ/0AiDtrQa";
-        const string baseURL = "https://localhost:5002";
-        // string baseURL = "http://studentmultitool.me";
+        // const string baseURL = "https://localhost:5002";
+        string baseURL = "http://studentmultitool.me";
         public bool SendOTPEmail(string email, string otp)
         {
             try
